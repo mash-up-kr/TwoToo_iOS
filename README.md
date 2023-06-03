@@ -70,3 +70,9 @@ graph
     CoreKit -.-> ChallengeCreateFinishScene & ChallengeRecommendScene & MyInfoScene & PraiseSendScene & ChallengeCertificateScene & ChallengeHistoryDetailScene & NudgeSendScene & SplashScene & LoginScene & InvitationSendScene & InvitationWaitScene
     SceneKit -.-> TwoToo
 ```
+
+## 📊 Branch Rule
+
+![Twotoo_branch](https://github.com/mash-up-kr/TwoToo_iOS/assets/39177603/b49ef81d-2980-4a11-b261-2f6b15e24dca)
+
+
