@@ -1,5 +1,13 @@
 # TwoToo_iOS
 
+## ⚙️ Project Setting
+
+### 템플릿 다운로드 가이드
+```
+cd ./Templates
+make
+```
+
 ## 🏛️ Structure
 
 ```mermaid
