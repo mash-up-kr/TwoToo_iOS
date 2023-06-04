@@ -51,7 +51,6 @@ graph
             ChallengeEssentialInfoInputScene
             ChallengeAdditionalInfoInputScene
             ChallengeRecommendScene
-            ChallengeCreateFinishScene
         end
 
     end
