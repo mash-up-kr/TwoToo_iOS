@@ -13,13 +13,18 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "./Util")
+        .package(path: "./Util"),
+        .package(
+            url: "https://github.com/Alamofire/Alamofire",
+            .upToNextMajor(from: "5.0.0")
+        )
     ],
     targets: [
         .target(
             name: "Network",
             dependencies: [
-                .product(name: "Util", package: "Util")
+                .product(name: "Util", package: "Util"),
+                .product(name: "Alamofire", package: "Alamofire")
             ]
         ),
         .testTarget(
