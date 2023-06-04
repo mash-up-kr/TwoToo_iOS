@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
 		C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E31792A2B041900FD31C8 /* AppDelegate.swift */; };
 		C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */; };
 		C87E317E2A2B041900FD31C8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E317D2A2B041900FD31C8 /* ViewController.swift */; };
 		C87E31812A2B041900FD31C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E317F2A2B041900FD31C8 /* Main.storyboard */; };
 		C87E31832A2B041A00FD31C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87E31822A2B041A00FD31C8 /* Assets.xcassets */; };
 		C87E31862A2B041A00FD31C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E31842A2B041A00FD31C8 /* LaunchScreen.storyboard */; };
+		C87E31902A2B435B00FD31C8 /* SplashScene in Resources */ = {isa = PBXBuildFile; fileRef = C87E318F2A2B435B00FD31C8 /* SplashScene */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C8396CBD2A2C3F2500A79E98 /* SceneKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SceneKit; sourceTree = "<group>"; };
+		C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateFinishScene; sourceTree = "<group>"; };
 		C87E31762A2B041900FD31C8 /* TwoToo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoToo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87E31792A2B041900FD31C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +28,30 @@
 		C87E31822A2B041A00FD31C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C87E31852A2B041A00FD31C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C87E31872A2B041A00FD31C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C87E318F2A2B435B00FD31C8 /* SplashScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SplashScene; sourceTree = "<group>"; };
+		C87E31922A2C2B8800FD31C8 /* CoreKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreKit; sourceTree = "<group>"; };
+		C87E31932A2C2DE700FD31C8 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = "<group>"; };
+		C87E31942A2C2DE700FD31C8 /* Network */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Network; sourceTree = "<group>"; };
+		C87E31952A2C2DE700FD31C8 /* Local */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Local; sourceTree = "<group>"; };
+		C87E31962A2C2DE700FD31C8 /* Util */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Util; sourceTree = "<group>"; };
+		C87E31972A2C2DE700FD31C8 /* Worker */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Worker; sourceTree = "<group>"; };
+		C87E31982A2C2DE700FD31C8 /* Web */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Web; sourceTree = "<group>"; };
+		C87E319A2A2C34A600FD31C8 /* LoginScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LoginScene; sourceTree = "<group>"; };
+		C87E319B2A2C34C600FD31C8 /* NicknameRegistScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NicknameRegistScene; sourceTree = "<group>"; };
+		C87E319C2A2C34D800FD31C8 /* InvitationSendScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = InvitationSendScene; sourceTree = "<group>"; };
+		C87E319D2A2C34F200FD31C8 /* InvitationWaitScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = InvitationWaitScene; sourceTree = "<group>"; };
+		C87E319E2A2C351D00FD31C8 /* MainScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainScene; sourceTree = "<group>"; };
+		C87E319F2A2C353500FD31C8 /* HomeScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HomeScene; sourceTree = "<group>"; };
+		C87E31A32A2C358600FD31C8 /* ChallengeConfirmScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeConfirmScene; sourceTree = "<group>"; };
+		C87E31A42A2C359300FD31C8 /* FlowerSelectScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FlowerSelectScene; sourceTree = "<group>"; };
+		C87E31A62A2C35AA00FD31C8 /* ChallengeCertificateScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCertificateScene; sourceTree = "<group>"; };
+		C87E31A72A2C35B500FD31C8 /* ChallengeHistoryScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeHistoryScene; sourceTree = "<group>"; };
+		C87E31A82A2C35C300FD31C8 /* ChallengeHistoryDetailScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeHistoryDetailScene; sourceTree = "<group>"; };
+		C87E31A92A2C35D200FD31C8 /* NudgeSendScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NudgeSendScene; sourceTree = "<group>"; };
+		C87E31AA2A2C35DE00FD31C8 /* PraiseSendScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PraiseSendScene; sourceTree = "<group>"; };
+		C87E31AB2A2C35F500FD31C8 /* HistoryScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HistoryScene; sourceTree = "<group>"; };
+		C87E31AC2A2C360A00FD31C8 /* MyInfoScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyInfoScene; sourceTree = "<group>"; };
+		C87E31AD2A2C373F00FD31C8 /* ChallengeCreateScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateScene; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +69,11 @@
 		C87E316D2A2B041900FD31C8 = {
 			isa = PBXGroup;
 			children = (
+				C87E31912A2B436200FD31C8 /* Core */,
+				C87E318E2A2B435B00FD31C8 /* Scene */,
 				C87E31782A2B041900FD31C8 /* TwoToo */,
 				C87E31772A2B041900FD31C8 /* Products */,
+				C87E31B22A2C3DBC00FD31C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +99,53 @@
 			path = TwoToo;
 			sourceTree = "<group>";
 		};
+		C87E318E2A2B435B00FD31C8 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				C8396CBD2A2C3F2500A79E98 /* SceneKit */,
+				C87E31AD2A2C373F00FD31C8 /* ChallengeCreateScene */,
+				C87E318F2A2B435B00FD31C8 /* SplashScene */,
+				C87E319A2A2C34A600FD31C8 /* LoginScene */,
+				C87E319B2A2C34C600FD31C8 /* NicknameRegistScene */,
+				C87E319C2A2C34D800FD31C8 /* InvitationSendScene */,
+				C87E319D2A2C34F200FD31C8 /* InvitationWaitScene */,
+				C87E319E2A2C351D00FD31C8 /* MainScene */,
+				C87E319F2A2C353500FD31C8 /* HomeScene */,
+				C87E31A32A2C358600FD31C8 /* ChallengeConfirmScene */,
+				C87E31A42A2C359300FD31C8 /* FlowerSelectScene */,
+				C87E31A62A2C35AA00FD31C8 /* ChallengeCertificateScene */,
+				C87E31A72A2C35B500FD31C8 /* ChallengeHistoryScene */,
+				C87E31A82A2C35C300FD31C8 /* ChallengeHistoryDetailScene */,
+				C87E31A92A2C35D200FD31C8 /* NudgeSendScene */,
+				C87E31AA2A2C35DE00FD31C8 /* PraiseSendScene */,
+				C87E31AB2A2C35F500FD31C8 /* HistoryScene */,
+				C87E31AC2A2C360A00FD31C8 /* MyInfoScene */,
+				C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		C87E31912A2B436200FD31C8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				C87E31932A2C2DE700FD31C8 /* DesignSystem */,
+				C87E31952A2C2DE700FD31C8 /* Local */,
+				C87E31942A2C2DE700FD31C8 /* Network */,
+				C87E31962A2C2DE700FD31C8 /* Util */,
+				C87E31982A2C2DE700FD31C8 /* Web */,
+				C87E31972A2C2DE700FD31C8 /* Worker */,
+				C87E31922A2C2B8800FD31C8 /* CoreKit */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		C87E31B22A2C3DBC00FD31C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -83,6 +162,9 @@
 			dependencies = (
 			);
 			name = TwoToo;
+			packageProductDependencies = (
+				C8396CBF2A2C40BC00A79E98 /* SceneKit */,
+			);
 			productName = TwoToo;
 			productReference = C87E31762A2B041900FD31C8 /* TwoToo.app */;
 			productType = "com.apple.product-type.application";
@@ -125,6 +207,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C87E31902A2B435B00FD31C8 /* SplashScene in Resources */,
 				C87E31862A2B041A00FD31C8 /* LaunchScreen.storyboard in Resources */,
 				C87E31832A2B041A00FD31C8 /* Assets.xcassets in Resources */,
 				C87E31812A2B041900FD31C8 /* Main.storyboard in Resources */,
@@ -294,6 +377,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -321,6 +405,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -356,6 +441,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C8396CBF2A2C40BC00A79E98 /* SceneKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SceneKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C87E316E2A2B041900FD31C8 /* Project object */;
 }
