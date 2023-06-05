@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// `NetworkConnectionStatus`는 네트워크 연결 상태를 나열한 열거형입니다.
+///
+/// 해당 상태를 이용하여 기기의 네트워크 상태를 분기할 수 있습니다.
 public enum NetworkConnectionStatus {
     /// 셀룰러
     case cellular
