@@ -12,13 +12,21 @@ import Foundation
 /// 이 구조체의 값을 변경함으로써 애플리케이션이 네트워크 요청을 할 때 기본적으로 세팅할 값을 수정할 수 있습니다.
 public struct NetworkConfiguration {
     /// 기본 헤더
-    public let headers: HTTPHeaders = [
-        "Content-Type": "application/json"
-    ]
+    public let headers: HTTPHeaders
     /// 기본 URL
-    public let baseURL: String = ""
+    public let baseURL: String
     /// 타임아웃 시간
-    public let maxWaitTime: Double = 15.0
+    public let maxWaitTime: Double
     
-    public init() {}
+    public init(
+        headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ],
+        baseURL: String = "",
+        maxWaitTime: Double = 15.0
+    ) {
+        self.headers = headers
+        self.baseURL = baseURL
+        self.maxWaitTime = maxWaitTime
+    }
 }

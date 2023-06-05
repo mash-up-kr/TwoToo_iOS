@@ -21,7 +21,19 @@ let package = Package(
         .package(
             url: "https://github.com/ashleymills/Reachability.swift",
             .upToNextMajor(from: "5.0.0")
-        )
+        ),
+        .package(
+            url: "https://github.com/Quick/Nimble",
+            .upToNextMajor(from: "12.0.0")
+        ),
+        .package(
+            url: "https://github.com/Quick/Quick",
+            .upToNextMajor(from: "6.0.0")
+        ),
+        .package(
+            url: "https://github.com/AliSoftware/OHHTTPStubs",
+            .upToNextMinor(from: "9.0.0")
+        ),
     ],
     targets: [
         .target(
@@ -34,7 +46,12 @@ let package = Package(
         ),
         .testTarget(
             name: "NetworkTests",
-            dependencies: ["Network"]
+            dependencies: [
+                "Network",
+                .product(name: "Nimble", package: "Nimble"),
+                .product(name: "Quick", package: "Quick"),
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ]
         ),
     ]
 )
