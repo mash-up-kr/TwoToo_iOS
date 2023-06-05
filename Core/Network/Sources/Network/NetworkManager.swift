@@ -22,17 +22,13 @@ public class NetworkManager {
         self.reachability?.connection ?? .unavailable != .unavailable
     }
     
-    private let headers: HTTPHeaders = [
-        "Content-Type": "application/json"
-    ]
-    
-    private let maxWaitTime = 15.0
-    
-    private let baseURL = ""
+    private let configuration: NetworkConfiguration
     
     private var reachability: Reachability? = nil
     
-    public init() {
+    public init(configuration: NetworkConfiguration = .init()) {
+        self.configuration = configuration
+        
         do {
             self.reachability = try Reachability()
             
@@ -70,16 +66,18 @@ public class NetworkManager {
             throw NSError(domain: "no_internet_connection", code: -1)
         }
         
-        var headers = self.headers
+        var headers = self.configuration.headers
         additionalHeaders?.forEach { headers.add($0) }
         
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(
-                self.baseURL + path,
+                self.configuration.baseURL + path,
                 method: method,
                 parameters: parameters,
                 headers: headers,
-                requestModifier: { $0.timeoutInterval = self.maxWaitTime }
+                requestModifier: {
+                    $0.timeoutInterval = self.configuration.maxWaitTime
+                }
             )
             .responseData { response in
                 switch(response.result) {
@@ -110,7 +108,7 @@ public class NetworkManager {
             throw NSError(domain: "no_internet_connection", code: -1)
         }
         
-        var headers = self.headers
+        var headers = self.configuration.headers
         additionalHeaders?.forEach { headers.add($0) }
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -118,9 +116,11 @@ public class NetworkManager {
                 multipartFormData: { multipartFormData in
                     multipartFormData.append(data, withName: "file", fileName: fileName, mimeType: mimeType)
                 },
-                to: self.baseURL + path,
+                to: self.configuration.baseURL + path,
                 headers: headers,
-                requestModifier: { $0.timeoutInterval = self.maxWaitTime }
+                requestModifier: {
+                    $0.timeoutInterval = self.configuration.maxWaitTime
+                }
             )
             .responseData { response in
                 switch(response.result) {
