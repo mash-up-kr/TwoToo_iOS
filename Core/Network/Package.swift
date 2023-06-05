@@ -17,6 +17,10 @@ let package = Package(
         .package(
             url: "https://github.com/Alamofire/Alamofire",
             .upToNextMajor(from: "5.0.0")
+        ),
+        .package(
+            url: "https://github.com/ashleymills/Reachability.swift",
+            .upToNextMajor(from: "5.0.0")
         )
     ],
     targets: [
@@ -24,7 +28,8 @@ let package = Package(
             name: "Network",
             dependencies: [
                 .product(name: "Util", package: "Util"),
-                .product(name: "Alamofire", package: "Alamofire")
+                .product(name: "Alamofire", package: "Alamofire"),
+                .product(name: "Reachability", package: "Reachability.swift")
             ]
         ),
         .testTarget(
