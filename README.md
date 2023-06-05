@@ -4,6 +4,8 @@
 
 [유저 스토리](https://github.com/mash-up-kr/TwoToo_iOS/tree/master/Document/User%20Story)
 
+[유저 플로우](https://github.com/mash-up-kr/TwoToo_iOS/tree/master/Document/Chart%20%26%20Diagram/User%20Flow)
+
 [상태 다이어그램](https://github.com/mash-up-kr/TwoToo_iOS/tree/master/Document/Chart%20%26%20Diagram/State%20Diagram)
 
 
