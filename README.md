@@ -1,5 +1,12 @@
 # TwoToo_iOS
 
+## 📒 Document
+
+[유저 스토리](https://github.com/mash-up-kr/TwoToo_iOS/tree/master/Document/User%20Story)
+
+[상태 다이어그램](https://github.com/mash-up-kr/TwoToo_iOS/tree/master/Document/Chart%20%26%20Diagram/State%20Diagram)
+
+
 ## ⚙️ Project Setting
 
 ### 템플릿 다운로드 가이드
