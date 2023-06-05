@@ -7,12 +7,20 @@
 //
 
 @_exported import Alamofire
+import Combine
 import Foundation
+import Reachability
 
 public class NetworkManager {
     public static let shared = NetworkManager()
     
-    public init() {}
+    public var connectionSubject = CurrentValueSubject<NetworkConnectionStatus, Never>(.offline)
+    
+    public var isConnectedToInternet: Bool {
+        self.connectionSubject.value == .cellular ||
+        self.connectionSubject.value == .wifi ||
+        self.reachability?.connection ?? .unavailable != .unavailable
+    }
     
     private let headers: HTTPHeaders = [
         "Content-Type": "application/json"
@@ -22,14 +30,49 @@ public class NetworkManager {
     
     private let baseURL = ""
     
+    private var reachability: Reachability? = nil
+    
+    public init() {
+        do {
+            self.reachability = try Reachability()
+            
+            self.reachability?.whenReachable = { reachability in
+                switch reachability.connection {
+                    case .wifi:
+                        self.connectionSubject.send(.wifi)
+                        
+                    case .cellular:
+                        self.connectionSubject.send(.cellular)
+                        
+                    default:
+                        self.connectionSubject.send(.offline)
+                }
+            }
+            
+            self.reachability?.whenUnreachable = { _ in
+                self.connectionSubject.send(.offline)
+            }
+
+            try self.reachability?.startNotifier()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     public func request<T: Decodable>(
         path: String,
         method: HTTPMethod,
         parameters: Parameters? = nil,
         additionalHeaders: HTTPHeaders? = nil
     ) async throws -> T {
+        guard self.isConnectedToInternet else {
+            throw NSError(domain: "no_internet_connection", code: -1)
+        }
+        
         var headers = self.headers
         additionalHeaders?.forEach { headers.add($0) }
+        
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(
                 self.baseURL + path,
@@ -46,7 +89,7 @@ public class NetworkManager {
                             continuation.resume(returning: decodedData)
                         }
                         catch {
-                            continuation.resume(throwing: NSError(domain: "decode_error", code: 100))
+                            continuation.resume(throwing: NSError(domain: "decode_error", code: -2))
                         }
                         
                     case let .failure(error):
@@ -63,8 +106,13 @@ public class NetworkManager {
         mimeType: String,
         additionalHeaders: HTTPHeaders? = nil
     ) async throws -> T {
+        guard self.isConnectedToInternet else {
+            throw NSError(domain: "no_internet_connection", code: -1)
+        }
+        
         var headers = self.headers
         additionalHeaders?.forEach { headers.add($0) }
+        
         return try await withCheckedThrowingContinuation { continuation in
             AF.upload(
                 multipartFormData: { multipartFormData in
@@ -82,7 +130,7 @@ public class NetworkManager {
                             continuation.resume(returning: decodedData)
                         }
                         catch {
-                            continuation.resume(throwing: NSError(domain: "decode_error", code: 100))
+                            continuation.resume(throwing: NSError(domain: "decode_error", code: -2))
                         }
                         
                     case let .failure(error):
