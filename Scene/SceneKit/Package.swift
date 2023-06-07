@@ -14,6 +14,8 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "./SplashScene"),
+        .package(path: "./InvitationSendScene"),
+        .package(path: "./InvitationWaitScene"),
         .package(path: "./NicknameRegistScene"),
         .package(path: "./LoginScene"),
         .package(path: "./MainScene")
@@ -23,6 +25,8 @@ let package = Package(
             name: "SceneKit",
             dependencies: [
                 .product(name: "SplashScene", package: "SplashScene"),
+                .product(name: "InvitationSendScene", package: "InvitationSendScene"),
+                .product(name: "InvitationWaitScene", package: "InvitationWaitScene"),
                 .product(name: "NicknameRegistScene", package: "NicknameRegistScene"),
                 .product(name: "LoginScene", package: "LoginScene"),
                 .product(name: "MainScene", package: "MainScene")
