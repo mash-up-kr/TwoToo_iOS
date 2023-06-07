@@ -13,6 +13,7 @@ let package = Package(
         )
     ],
     dependencies: [
+        .package(path: "./CoreKit"),
         .package(
             url: "https://github.com/Quick/Nimble",
             .upToNextMajor(from: "12.0.0")
@@ -21,15 +22,12 @@ let package = Package(
             url: "https://github.com/Quick/Quick",
             .upToNextMajor(from: "6.0.0")
         ),
-        .package(path: "./InvitationSendScene"),
-        .package(path: "./InvitationWaitScene")
     ],
     targets: [
         .target(
             name: "NicknameRegistScene",
             dependencies: [
-                .product(name: "InvitationSendScene", package: "InvitationSendScene"),
-                .product(name: "InvitationWaitScene", package: "InvitationWaitScene"),
+                .product(name: "CoreKit", package: "CoreKit")
             ],
             resources: [.process("Assets")]
         ),
