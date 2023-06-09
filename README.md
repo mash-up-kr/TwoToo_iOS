@@ -72,8 +72,7 @@ graph
     Util -.-> Network
     Util & Local & Network --> Worker
     Worker & DesignSystem & Web --> CoreKit
-    SplashScene & LoginScene & NicknameRegistScene & MainScene -.-> SceneKit
-    InvitationSendScene & InvitationWaitScene -.-> NicknameRegistScene
+    SplashScene & LoginScene & InvitationSendScene & InvitationWaitScene & NicknameRegistScene & MainScene -.-> SceneKit
     HomeScene & HistoryScene & MyInfoScene -.-> MainScene
     ChallengeRecommendScene & ChallengeAdditionalInfoInputScene -.-> ChallengeEssentialInfoInputScene
     ChallengeCreateFinishScene -.-> FlowerSelectScene
@@ -83,7 +82,7 @@ graph
     ChallengeHistoryScene -.-> HistoryScene
     ChallengeConfirmScene -.-> ChallengeAdditionalInfoInputScene
     FlowerSelectScene -.-> ChallengeConfirmScene
-    CoreKit -.-> ChallengeCreateFinishScene & ChallengeRecommendScene & MyInfoScene & PraiseSendScene & ChallengeCertificateScene & ChallengeHistoryDetailScene & NudgeSendScene & SplashScene & LoginScene & InvitationSendScene & InvitationWaitScene
+    CoreKit -.-> ChallengeCreateFinishScene & ChallengeRecommendScene & MyInfoScene & PraiseSendScene & ChallengeCertificateScene & ChallengeHistoryDetailScene & NudgeSendScene & SplashScene & LoginScene & InvitationSendScene & InvitationWaitScene & NicknameRegistScene
     SceneKit -.-> TwoToo
 ```
 
