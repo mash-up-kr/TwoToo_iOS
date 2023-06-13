@@ -30,7 +30,7 @@ extension UIFont {
     }
     
     public static var body2: UIFont {
-        return .omyupretty(size: ._14)
+        return .omyupretty(size: ._15)
     }
     
     public static var body3: UIFont {

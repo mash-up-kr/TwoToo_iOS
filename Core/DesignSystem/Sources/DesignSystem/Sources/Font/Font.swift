@@ -15,7 +15,7 @@ public enum Font {
 
     public enum Size: CGFloat {
         case _12 = 12
-        case _14 = 14
+        case _15 = 15
         case _16 = 16
         case _18 = 18
         case _20 = 20
