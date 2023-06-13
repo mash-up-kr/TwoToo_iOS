@@ -31,7 +31,7 @@ public extension UITableView {
     func dequeueHeaderFooter<T: UITableViewHeaderFooterView>(type: T.Type) -> T {
         let identifier = String(describing: type)
         guard let v = dequeueReusableHeaderFooterView(withIdentifier: identifier) as? T else {
-            fatalError("잘못된 header, footer입니다.")
+            fatalError("identifier: \(String(describing: type)) can not dequeue header, footer cell")
         }
 
         return v
@@ -45,7 +45,7 @@ public extension UITableView {
     func dequeueCell<T: UITableViewCell>(type: T.Type, indexPath: IndexPath) -> T {
         let identifier = String(describing: type)
         guard let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? T else {
-            fatalError("잘못된 cell입니다.")
+            fatalError("identifier: \(String(describing: type)) can not dequeue cell")
         }
 
         return cell
