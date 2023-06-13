@@ -14,7 +14,7 @@ public extension UICollectionView {
     ///   - supplementaryViewClass: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
     func registerHeader(_ supplementaryViewClass: UICollectionReusableView.Type) {
         let supplementaryViewID = String(describing: supplementaryViewClass)
-        register(
+        self.register(
             supplementaryViewClass,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: supplementaryViewID
@@ -26,7 +26,7 @@ public extension UICollectionView {
     ///   - supplementaryViewClass: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
     func registerFooter(_ supplementaryViewClass: UICollectionReusableView.Type) {
         let supplementaryViewID = String(describing: supplementaryViewClass)
-        register(
+        self.register(
             supplementaryViewClass,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: supplementaryViewID
@@ -37,7 +37,7 @@ public extension UICollectionView {
     /// - Parameter cellClass: 등록할 UICollectionViewCell 클래스 (예: UserHealthInfoCollectionViewCell.self)
     func registerCell(_ cellClass: UICollectionViewCell.Type) {
         let cellID = String(describing: cellClass)
-        register(cellClass, forCellWithReuseIdentifier: cellID)
+        self.register(cellClass, forCellWithReuseIdentifier: cellID)
     }
 
     /// UICollectionView header 재사용

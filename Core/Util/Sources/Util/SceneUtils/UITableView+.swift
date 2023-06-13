@@ -14,7 +14,7 @@ public extension UITableView {
     ///   - headerFooterClass: 등록할 header, footer 클래스 (예: MyHealthCareAndRoutineTableViewHeader.self)
     func registerHeaderFooter(_ headerFooterClass: UITableViewHeaderFooterView.Type) {
         let headerFooterID = String(describing: headerFooterClass)
-        register(headerFooterClass, forHeaderFooterViewReuseIdentifier: headerFooterID)
+        self.register(headerFooterClass, forHeaderFooterViewReuseIdentifier: headerFooterID)
     }
 
     /// UITableViewCell 등록
@@ -22,7 +22,7 @@ public extension UITableView {
     ///   - cellClass: 등록할 cell 클래스 (예: MyHealthCareTableViewCell.self)
     func registerCell(_ cellClass: UITableViewCell.Type) {
         let cellID = String(describing: cellClass)
-        register(cellClass, forCellReuseIdentifier: cellID)
+        self.register(cellClass, forCellReuseIdentifier: cellID)
     }
 
     /// header, footer 재사용
