@@ -55,7 +55,7 @@ public extension UICollectionView {
                 type.identifier,
             for: indexPath
         ) as? T else {
-            fatalError("잘못된 header입니다.")
+            fatalError("identifier: \(String(describing: type)) can not dequeue header cell")
         }
 
         return header
@@ -76,7 +76,7 @@ public extension UICollectionView {
                 type.identifier,
             for: indexPath
         ) as? T else {
-            fatalError("잘못된 footer입니다.")
+            fatalError("identifier: \(String(describing: type)) can not dequeue footer cell")
         }
 
         return footer
@@ -90,7 +90,7 @@ public extension UICollectionView {
     func dequeueCell<T: UICollectionViewCell>(type: T.Type, indexPath: IndexPath) -> T {
         let identifier = String(describing: type)
         guard let cell = dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? T else {
-            fatalError("잘못된 cell입니다.")
+            fatalError("identifier: \(String(describing: type)) can not dequeue cell")
         }
 
         return cell
