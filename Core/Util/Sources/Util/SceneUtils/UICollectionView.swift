@@ -11,11 +11,11 @@ public extension UICollectionView {
 
     /// UICollectionView header 등록
     /// - Parameters:
-    ///   - supplementaryViewClass: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
-    func registerHeader(_ supplementaryViewClass: UICollectionReusableView.Type) {
-        let supplementaryViewID = String(describing: supplementaryViewClass)
+    ///   - type: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
+    func registerHeader<T: UICollectionReusableView>(_ type: T.Type) {
+        let supplementaryViewID = String(describing: type)
         self.register(
-            supplementaryViewClass,
+            type,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: supplementaryViewID
         )
@@ -23,21 +23,21 @@ public extension UICollectionView {
 
     /// UICollectionView footer 등록
     /// - Parameters:
-    ///   - supplementaryViewClass: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
-    func registerFooter(_ supplementaryViewClass: UICollectionReusableView.Type) {
-        let supplementaryViewID = String(describing: supplementaryViewClass)
+    ///   - type: 등록할 UICollectionReusableView 클래스 (예: UserHealthInfoCollectionViewHeader.self)
+    func registerFooter<T: UICollectionReusableView>(_ type: T.Type) {
+        let supplementaryViewID = String(describing: type)
         self.register(
-            supplementaryViewClass,
+            type,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: supplementaryViewID
         )
     }
 
     /// UICollectionViewCell 등록
-    /// - Parameter cellClass: 등록할 UICollectionViewCell 클래스 (예: UserHealthInfoCollectionViewCell.self)
-    func registerCell(_ cellClass: UICollectionViewCell.Type) {
-        let cellID = String(describing: cellClass)
-        self.register(cellClass, forCellWithReuseIdentifier: cellID)
+    /// - Parameter type: 등록할 UICollectionViewCell 클래스 (예: UserHealthInfoCollectionViewCell.self)
+    func registerCell<T: UICollectionViewCell>(_ type: T.Type) {
+        let cellID = String(describing: type)
+        self.register(type, forCellWithReuseIdentifier: cellID)
     }
 
     /// UICollectionView header 재사용
