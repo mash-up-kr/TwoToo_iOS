@@ -45,6 +45,43 @@ public enum Font {
             _extension.rawValue
         }
     }
-
+    
+    /// 폰트 파일 등록
+    /// - 앱 초기에 최초 한 번 실행됩니다.
+    // TODO: AppDelegate에 `Font.registerFonts()` 해야함
+    public static func registerTTFont() {
+        let font: TTFont = TTFont()
+        Font.registerFont(fontName: font.name, fontExtension: font.extension)
+    }
+    
 }
 
+extension Font {
+    
+    /// 폰트 파일 등록
+    /// - Parameters:
+    ///   - fontName: 등록할 폰트 파일의 이름
+    ///   - fontExtension: 등록할 폰트 파일의 확장자
+    static func registerFont(fontName: String, fontExtension: String) {
+        
+        let bundle: Bundle = Bundle.module
+
+        guard let fontURL = bundle.url(forResource: fontName,
+                                              withExtension: fontExtension) else {
+            fatalError("Couldn't find font \(fontName).\(fontExtension)")
+        }
+
+        guard let fontDataProvider = CGDataProvider(url: fontURL as CFURL) else {
+            fatalError("Couldn't load data from the font \(fontName)")
+        }
+
+        guard let font = CGFont(fontDataProvider) else {
+            fatalError("Couldn't create font from data")
+        }
+
+        var error: Unmanaged<CFError>?
+        CTFontManagerRegisterGraphicsFont(font, &error)
+        
+    }
+    
+}
