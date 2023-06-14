@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_history_pink.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
