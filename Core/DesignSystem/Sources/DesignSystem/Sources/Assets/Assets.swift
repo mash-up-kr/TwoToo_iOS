@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum AssetImage: String {
+public enum Assets: String {
     
     case flower_bling_cotton
     case flower_bling_tulip
