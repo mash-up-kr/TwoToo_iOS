@@ -51,14 +51,14 @@ public enum AssetImage: String {
     case icon_home_pink
     case icon_history_brown
     case icon_history_pink
-    case main_ground
-    case main_background
     case icon_bubble_write
     case icon_bee
     case icon_mypage_pink
     case icon_bubble_not_mate
     case icon_mypage_brown
     case icon_info
+    case home_ground
+    case home_background
 
     public var image: UIImage? {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)
