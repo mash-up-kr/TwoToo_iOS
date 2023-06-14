@@ -29,8 +29,7 @@ public enum Pallete: String {
     case grey600 = "Grey_600"
     
     public var color: UIColor? {
-        let bundle = Bundle(identifier: "kr.mash-up.TwoToo.DesignSystem")
-        return .init(named: self.rawValue, in: bundle, compatibleWith: nil)
+        return UIColor(named: self.rawValue)
     }
     
 }

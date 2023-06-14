@@ -45,36 +45,6 @@ public enum Font {
             _extension.rawValue
         }
     }
-    
-    /// 폰트 파일 등록
-    /// - 앱 초기에 최초 한 번 실행됩니다.
-    // TODO: AppDelegate에 `Font.registerFonts()` 해야함
-    public static func registerTTFont() {
-        let font: TTFont = TTFont()
-        Font.registerFont(fontName: font.name, fontExtension: font.extension)
-    }
-    
+
 }
 
-extension Font {
-    
-    private static var bundleId: String { "kr.mash-up.TwoToo.DesignSystem" }
-    
-    /// 폰트 파일 등록
-    /// - Parameters:
-    ///   - bundle: 등록할 폰트 파일이 존재하는 Bundle
-    ///   - fontName: 등록할 폰트 파일의 이름
-    ///   - fontExtension: 등록할 폰트 파일의 확장자
-    public static func registerFont(fontName: String, fontExtension: String) {
-        guard let fontURL = Bundle(identifier: bundleId)?.url(forResource: fontName,
-                                                              withExtension: fontExtension),
-              let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
-              let font = CGFont(fontDataProvider) else {
-            debugPrint("Couldn't create font from filename: \(fontName) with extension \(fontExtension)")
-            return
-        }
-        var error: Unmanaged<CFError>?
-        CTFontManagerRegisterGraphicsFont(font, &error)
-    }
-    
-}
