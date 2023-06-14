@@ -29,7 +29,7 @@ public enum Pallete: String {
     case grey600 = "Grey_600"
     
     public var color: UIColor? {
-        return UIColor(named: self.rawValue)
+        return .init(named: self.rawValue, in: Bundle.module, compatibleWith: nil)
     }
     
 }
