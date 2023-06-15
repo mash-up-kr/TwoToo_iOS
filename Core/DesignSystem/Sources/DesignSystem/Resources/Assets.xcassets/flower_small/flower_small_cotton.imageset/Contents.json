@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "flower_small_cotton.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
