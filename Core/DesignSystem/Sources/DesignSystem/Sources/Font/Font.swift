@@ -9,8 +9,16 @@ import UIKit
 
 public enum Font {
     
-    public enum Name: String {
-        case omyupretty = "OmyuPretty"
+    public enum Name {
+        case omyupretty
+        
+        var fileName: String {
+            return "OmyuPretty"
+        }
+        
+        var name: String {
+            return "omyu pretty"
+        }
     }
 
     public enum Size: CGFloat {
@@ -31,14 +39,18 @@ public enum Font {
     public struct TTFont {
         private let _name: Name
         private let _extension: Extension
-
+        
         init(name: Name = .omyupretty, extensions: Extension = .ttf) {
             self._name = name
             self._extension = extensions
         }
-
+        
         var name: String {
-            "\(_name.rawValue)"
+            "\(_name.name)"
+        }
+        
+        var fileName: String {
+            "\(_name.fileName)"
         }
 
         var `extension`: String {
@@ -48,10 +60,9 @@ public enum Font {
     
     /// 폰트 파일 등록
     /// - 앱 초기에 최초 한 번 실행됩니다.
-    // TODO: AppDelegate에 `Font.registerFonts()` 해야함
     public static func registerTTFont() {
-        let font: TTFont = TTFont()
-        Font.registerFont(fontName: font.name, fontExtension: font.extension)
+        let ttFont: TTFont = TTFont()
+        Font.registerFont(fontName: ttFont.fileName, fontExtension: ttFont.extension)
     }
     
 }
