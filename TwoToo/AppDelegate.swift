@@ -5,6 +5,7 @@
 //  Created by 박건우 on 2023/06/03.
 //
 
+import CoreKit
 import UIKit
 
 @main
@@ -14,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        Font.registerTTFont()
+        
         return true
     }
 
