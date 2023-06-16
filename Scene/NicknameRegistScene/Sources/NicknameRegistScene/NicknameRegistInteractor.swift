@@ -76,7 +76,12 @@ extension NicknameRegistInteractor {
 extension NicknameRegistInteractor {
     
     func didLoad() async {
-        
+        if let invitedUser = self.worker.invitedUser {
+            await self.presenter.presentInvitedUser(invitedUser: invitedUser)
+        }
+        else {
+            // none
+        }
     }
 }
 
@@ -85,7 +90,7 @@ extension NicknameRegistInteractor {
 extension NicknameRegistInteractor {
     
     func didEnterNickname(text: String) async {
-        
+        await self.updateNickname(text)
     }
 }
 
@@ -95,6 +100,25 @@ extension NicknameRegistInteractor {
     
     func didTapConfirmButton() async {
         
+        do {
+            try await self.worker.requestSetNickname(nickname: self.nickname)
+        }
+        catch {
+            await self.presenter.presentNicknameError(error: error)
+        }
+        
+        if self.worker.invitedUser == nil {
+            self.didTriggerRouteToInvitationSendScene.send(())
+            return
+        }
+        
+        do {
+            try await self.worker.requestMatching()
+            self.didTriggerRouteToHomeScene.send(())
+        }
+        catch {
+            await self.presenter.presentMatchingError(error: error)
+        }
     }
 }
 
@@ -104,7 +128,12 @@ extension NicknameRegistInteractor {
     
     /// 닉네임 데이터 업데이트 됨
     func didUpdateNickname() async {
-        
+        if self.nickname.isEmpty {
+            await self.presenter.presentDisabledConfirmButton()
+        }
+        else {
+            await self.presenter.presentEnabledConfirmButton()
+        }
     }
 }
 
