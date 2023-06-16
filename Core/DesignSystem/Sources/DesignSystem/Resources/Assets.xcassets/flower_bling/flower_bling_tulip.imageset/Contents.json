@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "flower_bling_tulip.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
