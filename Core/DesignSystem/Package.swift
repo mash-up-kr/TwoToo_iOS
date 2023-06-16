@@ -23,7 +23,8 @@ let package = Package(
             name: "DesignSystem",
             dependencies: [
                 .product(name: "SnapKit", package: "SnapKit")
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "DesignSystemTests",
