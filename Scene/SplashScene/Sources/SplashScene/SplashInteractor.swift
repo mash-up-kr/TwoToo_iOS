@@ -81,7 +81,28 @@ extension SplashInteractor {
 extension SplashInteractor {
     
     func didLoad() async {
-        
+        do {
+            let userState = try await self.worker.fetchUserState()
+            switch userState {
+                case .login:
+                    self.didTriggerRouteToLoginScene.send(())
+                    
+                case .nickname:
+                    self.didTriggerRouteToNickNameScene.send(())
+                    
+                case .invitationSend:
+                    self.didTriggerRouteToInvitationSendScene.send(())
+                    
+                case .invitationWait:
+                    self.didTriggerRouteToInvitationWaitScene.send(())
+                    
+                case .home:
+                    self.didTriggerRouteToHomeScene.send(())
+            }
+        }
+        catch {
+            self.didTriggerRouteToLoginScene.send(())
+        }
     }
 }
 
