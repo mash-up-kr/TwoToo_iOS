@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Pallete.swift
 //  
 //
 //  Created by Julia on 2023/06/10.
@@ -28,8 +28,11 @@ public enum Pallete: String {
     case grey500 = "Grey_500"
     case grey600 = "Grey_600"
     
-    public var color: UIColor? {
-        return .init(named: self.rawValue, in: Bundle.module, compatibleWith: nil)
+    public static func setColor(_ pallete: Pallete) -> UIColor {
+        guard let palleteColor = UIColor(named: pallete.rawValue, in: Bundle.module, compatibleWith: nil) else {
+            return UIColor.clear
+        }
+        return palleteColor
     }
     
 }
