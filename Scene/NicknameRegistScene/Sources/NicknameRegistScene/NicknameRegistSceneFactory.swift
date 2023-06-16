@@ -14,7 +14,18 @@ public protocol NicknameRegistScene: AnyObject, Scene {
 }
 
 public struct NicknameRegistConfiguration {
+    /// 초대장 전송 화면 이동 트리거
+    public var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
+    /// 홈 화면 이동 트리거
+    public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     
+    public init(
+        didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    ) {
+        self.didTriggerRouteToInvitationSendScene = didTriggerRouteToInvitationSendScene
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+    }
 }
 
 public final class NicknameRegistSceneFactory {
@@ -29,7 +40,9 @@ public final class NicknameRegistSceneFactory {
         let interactor = NicknameRegistInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToInvitationSendScene: configuration.didTriggerRouteToInvitationSendScene,
+            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene
         )
         let viewController = NicknameRegistViewController(
             interactor: interactor
