@@ -81,7 +81,12 @@ extension LoginInteractor {
 extension LoginInteractor {
     
     func didLoad() async {
-        
+        if self.worker.isCheckedOnboarding {
+            await self.presenter.presentLogin()
+        }
+        else {
+            await self.presenter.presentOnboarding()
+        }
     }
 }
 
@@ -90,11 +95,65 @@ extension LoginInteractor {
 extension LoginInteractor {
     
     func didTapKakaoLoginButton() async {
-        
+        do {
+            if self.worker.isKakaoTalkAvailable {
+                let result = try await self.worker.loginWithKakaoTalk()
+                switch result {
+                    case .nickname:
+                        self.didTriggerRouteToNickNameScene.send(())
+                        
+                    case .invitationSend:
+                        self.didTriggerRouteToInvitationSendScene.send(())
+                        
+                    case .invitationWait:
+                        self.didTriggerRouteToInvitationWaitScene.send(())
+                        
+                    case .home:
+                        self.didTriggerRouteToHomeScene.send(())
+                }
+            }
+            else {
+                let result = try await self.worker.loginWithKakaoAccount()
+                switch result {
+                    case .nickname:
+                        self.didTriggerRouteToNickNameScene.send(())
+                        
+                    case .invitationSend:
+                        self.didTriggerRouteToInvitationSendScene.send(())
+                        
+                    case .invitationWait:
+                        self.didTriggerRouteToInvitationWaitScene.send(())
+                        
+                    case .home:
+                        self.didTriggerRouteToHomeScene.send(())
+                }
+            }
+        }
+        catch {
+            await self.presenter.presentKakaoLoginError(error: error)
+        }
     }
     
     func didTapAppleLoginButton() async {
-        
+        do {
+            let result = try await self.worker.loginWithApple()
+            switch result {
+                case .nickname:
+                    self.didTriggerRouteToNickNameScene.send(())
+                    
+                case .invitationSend:
+                    self.didTriggerRouteToInvitationSendScene.send(())
+                    
+                case .invitationWait:
+                    self.didTriggerRouteToInvitationWaitScene.send(())
+                    
+                case .home:
+                    self.didTriggerRouteToHomeScene.send(())
+            }
+        }
+        catch {
+            await self.presenter.presentAppleLoginError(error: error)
+        }
     }
 }
 
@@ -103,7 +162,10 @@ extension LoginInteractor {
 extension LoginInteractor {
     
     func didSwipeOnboarding(index: Int) async {
-        
+        if index == 3 {
+            self.worker.isCheckedOnboarding = true
+            await self.presenter.presentLogin()
+        }
     }
 }
 
