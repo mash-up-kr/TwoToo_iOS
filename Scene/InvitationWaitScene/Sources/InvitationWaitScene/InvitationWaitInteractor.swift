@@ -8,9 +8,21 @@
 
 import CoreKit
 
-protocol InvitationWaitBusinessLogic {}
+protocol InvitationWaitBusinessLogic {
+    /// 첫 진입
+    func didLoad() async
+    /// 새로고침 클릭
+    func didTapRefreshButton() async
+    /// 초대장 다시 보내기 버튼 클릭
+    func didTapResendButton() async
+}
 
-protocol InvitationWaitDataStore: AnyObject {}
+protocol InvitationWaitDataStore: AnyObject {
+    /// 홈 화면 이동 트리거
+    var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
+    /// 공유 링크 (optional)
+    var invitationLink: String? { get }
+}
 
 final class InvitationWaitInteractor: InvitationWaitDataStore, InvitationWaitBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
@@ -22,15 +34,22 @@ final class InvitationWaitInteractor: InvitationWaitDataStore, InvitationWaitBus
     init(
         presenter: InvitationWaitPresentationLogic,
         router: InvitationWaitRoutingLogic,
-        worker: InvitationWaitWorkerProtocol
+        worker: InvitationWaitWorkerProtocol,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        invitationLink: String?
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.invitationLink = invitationLink
     }
     
     // MARK: - DataStore
     
+    var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    
+    var invitationLink: String?
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +62,31 @@ extension InvitationWaitInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (진입)
 
 extension InvitationWaitInteractor {
     
+    func didLoad() async {
+        
+    }
+}
+
+// MARK: Feature (새로고침)
+
+extension InvitationWaitInteractor {
+    
+    func didTapRefreshButton() async {
+        
+    }
+}
+
+// MARK: Feature (초대장 다시 보내기)
+
+extension InvitationWaitInteractor {
+    
+    func didTapResendButton() async {
+        
+    }
 }
 
 // MARK: - Application Business Logic
