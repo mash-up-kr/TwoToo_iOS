@@ -57,7 +57,14 @@ extension InvitationSendInteractor {
 extension InvitationSendInteractor {
     
     func didTapInvitationSendButton() async {
-        
+        do {
+            let link = try await self.worker.requestInvitationLinkCreate()
+            self.worker.isInvitationSend = true
+            self.didTriggerRouteToInvitationWaitScene.send(link)
+        }
+        catch {
+            await self.presenter.presentInvitaitonLinkCreateError(error: error)
+        }
     }
 }
 
