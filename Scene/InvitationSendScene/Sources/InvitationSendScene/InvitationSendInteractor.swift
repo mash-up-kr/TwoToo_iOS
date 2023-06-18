@@ -8,9 +8,15 @@
 
 import CoreKit
 
-protocol InvitationSendBusinessLogic {}
+protocol InvitationSendBusinessLogic {
+    /// 초대장 보내기 버튼 클릭
+    func didTapInvitationSendButton() async
+}
 
-protocol InvitationSendDataStore: AnyObject {}
+protocol InvitationSendDataStore: AnyObject {
+    /// 대기 화면 이동 트리거
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never> { get }
+}
 
 final class InvitationSendInteractor: InvitationSendDataStore, InvitationSendBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
@@ -22,15 +28,18 @@ final class InvitationSendInteractor: InvitationSendDataStore, InvitationSendBus
     init(
         presenter: InvitationSendPresentationLogic,
         router: InvitationSendRoutingLogic,
-        worker: InvitationSendWorkerProtocol
+        worker: InvitationSendWorkerProtocol,
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.didTriggerRouteToInvitationWaitScene = didTriggerRouteToInvitationWaitScene
     }
     
     // MARK: - DataStore
     
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +52,13 @@ extension InvitationSendInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (초대장 보내기)
 
 extension InvitationSendInteractor {
     
+    func didTapInvitationSendButton() async {
+        
+    }
 }
 
 // MARK: - Application Business Logic

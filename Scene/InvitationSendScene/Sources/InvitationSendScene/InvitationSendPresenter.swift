@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol InvitationSendPresentationLogic {}
+protocol InvitationSendPresentationLogic {
+    /// 공유 링크 생성 오류를 보여준다.
+    func presentInvitaitonLinkCreateError(error: Error)
+}
 
 final class InvitationSendPresenter {
     weak var viewController: InvitationSendDisplayLogic?
@@ -20,4 +23,7 @@ final class InvitationSendPresenter {
 
 extension InvitationSendPresenter: InvitationSendPresentationLogic {
     
+    func presentInvitaitonLinkCreateError(error: Error) {
+        
+    }
 }
