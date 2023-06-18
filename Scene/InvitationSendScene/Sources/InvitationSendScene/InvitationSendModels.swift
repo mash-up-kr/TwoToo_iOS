@@ -18,5 +18,8 @@ enum InvitationSend {
     
     enum ViewModel {
         
+        struct Toast {
+            var message: String?
+        }
     }
 }
