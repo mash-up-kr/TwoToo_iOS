@@ -67,7 +67,12 @@ extension InvitationWaitInteractor {
 extension InvitationWaitInteractor {
     
     func didLoad() async {
-        
+        if let invitationLink = self.invitationLink {
+            await self.presenter.presentSharedActivity(invitationLink: invitationLink)
+        }
+        else {
+            //
+        }
     }
 }
 
@@ -76,7 +81,18 @@ extension InvitationWaitInteractor {
 extension InvitationWaitInteractor {
     
     func didTapRefreshButton() async {
-        
+        do {
+            let partner = try await self.worker.inquiryPartner()
+            if partner == nil {
+                await self.presenter.presentAcceptanceWait()
+            }
+            else {
+                self.didTriggerRouteToHomeScene.send(())
+            }
+        }
+        catch {
+            await self.presenter.presentPartnerInquiryError(error: error)
+        }
     }
 }
 
@@ -85,7 +101,12 @@ extension InvitationWaitInteractor {
 extension InvitationWaitInteractor {
     
     func didTapResendButton() async {
-        
+        if let invitationLink = self.worker.invitationLink {
+            await self.presenter.presentSharedActivity(invitationLink: invitationLink)
+        }
+        else {
+            await self.presenter.presentInvitationLinkError()
+        }
     }
 }
 
