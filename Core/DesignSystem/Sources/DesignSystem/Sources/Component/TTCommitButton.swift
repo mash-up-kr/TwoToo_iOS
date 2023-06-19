@@ -6,31 +6,39 @@
 //
 
 import UIKit
+import Util
 
-final class TTCommitButton: TTButton {
+final public class TTCommitButton: UIButton, UIComponentBased {
 
     var customButtonType: CustomButtonType = .longCommit
 
     convenience init(customButtonType: CustomButtonType) {
         self.init(frame: .zero)
         self.customButtonType = customButtonType
-        attribute()
-        layout()
+        self.attribute()
+        self.layout()
     }
 
-    override func attribute() {
+    public func attribute() {
         self.setTitle("인증하기", for: .normal)
         self.setTitleColor(.mainWhite, for: .normal)
-        self.titleLabel?.font = customButtonType.fontSize
+        self.titleLabel?.font = self.customButtonType.fontSize
         self.backgroundColor = .grey400
-        self.layer.cornerRadius = customButtonType.buttonCornerRadius ?? 0
-        self.titleEdgeInsets = customButtonType.titlePadding ?? .init(top: 0, left: 0, bottom: 0, right: 0)
+        self.layer.cornerRadius = self.customButtonType.buttonCornerRadius ?? 0
+        self.titleEdgeInsets = self.customButtonType.titlePadding ?? .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    override func layout() {
+    public func layout() {
         self.snp.makeConstraints { make in
-            make.height.equalTo(customButtonType.buttonHeight)
-            make.width.equalTo(customButtonType.buttonWidth)
+            make.height.equalTo(self.customButtonType.buttonHeight)
+            make.width.equalTo(self.customButtonType.buttonWidth)
+        }
+    }
+
+    @MainActor
+    public func didTapButton(completion: (() -> Void)? = nil) {
+        self.addAction {
+            completion?()
         }
     }
 }
