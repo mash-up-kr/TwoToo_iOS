@@ -23,6 +23,7 @@ public class PopupView: UIView, UIComponentBased {
         return v
     }()
 
+    /// 하단 버튼 2개를 묶어둔 StackView
     lazy var buttonStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
@@ -129,7 +130,7 @@ public class PopupView: UIView, UIComponentBased {
         }
     }
 
-    /// 챌린지 상태에 따라 띄어주는 팝업에 보여지는 UIView를 넣는 함수
+    /// 상태에 따라 띄어주는 팝업에 보여지는 UIView를 넣는 함수
     public func setResultView(_ view: UIView) {
         self.resultView.addSubview(view)
     }

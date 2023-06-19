@@ -26,7 +26,7 @@ public class Popup: UIView, UIComponentBased {
 }
 
 extension Popup {
-    public enum PopType {
+    public enum PopupType {
         case allCommit
         case quitChallenge
         case success
@@ -40,10 +40,10 @@ extension Popup {
 
      /// 사용 예시:
      ///    ```swift
-     ///       TTPopup.create(.allCommit)
+     ///       Popup.create(.allCommit)
      ///    ```
 
-    public static func create(_ type: PopType) -> PopupView {
+    public static func create(_ type: PopupType) -> PopupView {
         switch type {
         case .allCommit:
             return PopupView(customePopupType: .allCommit)
