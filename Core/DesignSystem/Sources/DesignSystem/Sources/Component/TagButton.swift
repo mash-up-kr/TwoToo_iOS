@@ -1,5 +1,5 @@
 //
-//  TTChallengeButton.swift
+//  TagButton.swift
 //  
 //
 //  Created by Eddy on 2023/06/14.
@@ -8,7 +8,8 @@
 import UIKit
 import Util
 
-public class TTChallengeButton: UIButton, UIComponentBased {
+/// Tag에서 사용하는 Button
+public class TagButton: UIButton, UIComponentBased {
     public init() {
         super.init(frame: .zero)
         self.attribute()
@@ -41,8 +42,8 @@ public class TTChallengeButton: UIButton, UIComponentBased {
     public func layout() {}
 }
 
-extension TTChallengeButton {
-    /// 챌린지 title 설정해주는 함수
+extension TagButton {
+    /// title 설정해주는 함수
     public func setTitle(_ title: String) {
         self.setTitle(title, for: .normal)
     }

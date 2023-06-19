@@ -1,5 +1,5 @@
 //
-//  TTCommitButton.swift
+//  PrimaryButtonType.swift
 //  
 //
 //  Created by Eddy on 2023/06/19.
@@ -8,9 +8,10 @@
 import UIKit
 import Util
 
-final public class TTCommitButton: UIButton, UIComponentBased {
+/// 기본으로 사용되는 ButtonType
+final public class PrimaryButtonType: UIButton, UIComponentBased {
 
-    var customButtonType: CustomButtonType = .longCommit
+    var customButtonType: CustomButtonType = .large
 
     convenience init(customButtonType: CustomButtonType) {
         self.init(frame: .zero)
@@ -43,57 +44,57 @@ final public class TTCommitButton: UIButton, UIComponentBased {
     }
 }
 
-extension TTCommitButton {
+extension PrimaryButtonType {
     public enum CustomButtonType {
-        case longCommit
-        case mediumCommit
-        case smallCommit
+        case large
+        case medium
+        case small
 
         var fontSize: UIFont? {
             switch self {
-            case .longCommit, .mediumCommit:
+            case .large, .medium:
                 return .h3
-            case .smallCommit:
+            case .small:
                 return .body2
             }
         }
 
         var titlePadding: UIEdgeInsets? {
             switch self {
-            case .longCommit:
+            case .large:
                 return .init(top: 18.5, left: 131, bottom: 18.5, right: 131)
-            case .mediumCommit:
+            case .medium:
                 return .init(top: 18.5, left: 56, bottom: 18.5, right: 56)
-            case .smallCommit:
+            case .small:
                 return .init(top: 6, left: 11, bottom: 6, right: 11)
             }
         }
 
         var buttonCornerRadius: CGFloat? {
             switch self {
-            case .longCommit, .mediumCommit:
+            case .large, .medium:
                 return 20
-            case .smallCommit:
+            case .small:
                 return 10
             }
         }
 
         var buttonWidth: CGFloat {
             switch self {
-            case .longCommit:
+            case .large:
                 return 327
-            case .mediumCommit:
+            case .medium:
                 return 177
-            case .smallCommit:
+            case .small:
                 return 67
             }
         }
 
         var buttonHeight: CGFloat {
             switch self {
-            case .longCommit, .mediumCommit:
+            case .large, .medium:
                 return 57
-            case .smallCommit:
+            case .small:
                 return 27
             }
         }
