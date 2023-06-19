@@ -12,8 +12,8 @@ import SnapKit
 public class TTChallengeButton: UIButton, UIComponentBased {
     public init() {
         super.init(frame: .zero)
-        attribute()
-        layout()
+        self.attribute()
+        self.layout()
     }
 
     required init?(coder: NSCoder) {
@@ -25,6 +25,18 @@ public class TTChallengeButton: UIButton, UIComponentBased {
         self.contentEdgeInsets = .init(top: 10, left: 20, bottom: 10, right: 20)
         self.titleLabel?.font = .h4
         self.setTitleColor(.primary, for: .normal)
+
+        /// Tap 눌렀을 때 선택되었다는 상태와 backgroundColor 변경
+        self.addTapAction {
+            if self.isSelected {
+                self.isSelected = false
+                self.backgroundColor = .mainWhite
+            }
+            else {
+                self.isSelected = true
+                self.backgroundColor = .second01
+            }
+        }
     }
 
     public func layout() {}
@@ -34,14 +46,5 @@ extension TTChallengeButton {
     /// 챌린지 title 설정해주는 함수
     public func setTitle(_ title: String) {
         self.setTitle(title, for: .normal)
-    }
-
-    /// 챌린지 선택되었을 때 배경색 바뀌도록 하는 함수
-    public func isSelected(_ isSelected: Bool) {
-        if isSelected {
-            self.backgroundColor = .second01
-        } else {
-            self.backgroundColor = .mainWhite
-        }
     }
 }

@@ -20,15 +20,15 @@ public class TTButton: UIButton, UIComponentBased {
     /// 인증하기 버튼이 enable 되었을 떄 사용
     public var isCommitEnabled: Bool = false {
         didSet {
-            isCommitEnabled(isCommitEnabled)
+            self.isCommitEnabled(isCommitEnabled)
         }
     }
 
     override public init(frame: CGRect) {
         super.init(frame: .zero)
 
-        attribute()
-        layout()
+        self.attribute()
+        self.layout()
     }
 
     required init?(coder: NSCoder) {
@@ -59,7 +59,7 @@ extension TTButton {
             TTButton.create(.mediumCommit)
          ```
      */
-    public static func create(_ type: TTCommitButtonType) -> TTButton {
+    public static func create(_ type: TTCommitButtonType) -> TTCommitButton {
         switch type {
         case .longCommit:
             return TTCommitButton(customButtonType: .longCommit)
