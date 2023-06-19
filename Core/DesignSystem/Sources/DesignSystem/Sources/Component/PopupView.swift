@@ -1,5 +1,5 @@
 //
-//  TTChallengePopup.swift
+//  PopupView.swift
 //  
 //
 //  Created by Eddy on 2023/06/19.
@@ -7,11 +7,10 @@
 
 import UIKit
 import Util
-import SnapKit
 
-public class TTChallengePopup: UIView, UIComponentBased {
+public class PopupView: UIView, UIComponentBased {
 
-    var customPopupType: PopupType = .allCommit
+    var customPopupType: PopupViewType = .allCommit
 
     lazy var stackView: UIStackView = {
         let v = UIStackView()
@@ -81,7 +80,7 @@ public class TTChallengePopup: UIView, UIComponentBased {
         return v
     }()
 
-    convenience init(customePopupType: PopupType) {
+    convenience init(customePopupType: PopupViewType) {
         self.init(frame: .zero)
         self.customPopupType = customePopupType
 
@@ -108,15 +107,10 @@ public class TTChallengePopup: UIView, UIComponentBased {
         }
     }
 
-    /*
-
-     왼쪽 버튼 눌렀을 때 액션 넣는 법
-
-     leftButton.didTapLeftButton {
-         print("leftButton tapped")
-     }
-     */
-
+     /// 왼쪽 버튼 눌렀을 때 액션 넣는 법
+     /// leftButton.didTapLeftButton {
+     ///     print("leftButton tapped")
+     /// }
     @MainActor
     public func didTapLeftButton(completion: (() -> Void)? = nil) {
         self.leftButton.addAction {
@@ -124,15 +118,10 @@ public class TTChallengePopup: UIView, UIComponentBased {
         }
     }
 
-    /*
-
-     오른쪽 버튼 눌렀을 때 액션 넣는 법
-
-     rightButton.didTapRightButton {
-         print("rightButton tapped")
-     }
-     */
-
+    /// 오른쪽 버튼 눌렀을 때 액션 넣는 법
+    /// rightButton.didTapRightButton {
+    ///     print("rightButton tapped")
+    /// }
     @MainActor
     public func didTapRightButton(completion: (() -> Void)? = nil) {
         self.rightButton.addAction {
@@ -146,8 +135,8 @@ public class TTChallengePopup: UIView, UIComponentBased {
     }
 }
 
-extension TTChallengePopup {
-    public enum PopupType {
+extension PopupView {
+    public enum PopupViewType {
         case allCommit
         case quitChallenge
         case success
