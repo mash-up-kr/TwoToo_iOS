@@ -7,7 +7,6 @@
 
 import UIKit
 import Util
-import SnapKit
 
 public class TTChallengeButton: UIButton, UIComponentBased {
     public init() {

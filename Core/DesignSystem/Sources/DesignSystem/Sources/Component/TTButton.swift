@@ -48,17 +48,13 @@ extension TTButton {
     }
 
     /// 인증하기 버튼을 선택하여 생성해주는 함수
-    /*
-
-     longCommit: 인증하기 버튼 중 가장 긴 버튼(일반적으로 인증할 때 사용)
-     mediumCommit: 인증하기 버튼 중간 사이즈 버튼
-     smallCommit: 인증하기 버튼 작은 사이즈 버튼(히스토리에서 인증할 때 사용)
-
-     사용 예시:
-         ```swift
-            TTButton.create(.mediumCommit)
-         ```
-     */
+    /// longCommit: 인증하기 버튼 중 가장 긴 버튼(일반적으로 인증할 때 사용)
+    /// mediumCommit: 인증하기 버튼 중간 사이즈 버튼
+    /// smallCommit: 인증하기 버튼 작은 사이즈 버튼(히스토리에서 인증할 때 사용)
+    /// 사용 예시:
+    ///    ```swift
+    ///       TTButton.create(.mediumCommit)
+    ///    ```
     public static func create(_ type: TTCommitButtonType) -> TTCommitButton {
         switch type {
         case .longCommit:
@@ -75,7 +71,8 @@ extension TTButton {
         if isEnabled {
             self.backgroundColor = .primary
             self.isEnabled = true
-        } else {
+        }
+        else {
             self.backgroundColor = .grey400
             self.isEnabled = false
         }
