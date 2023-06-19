@@ -65,4 +65,9 @@ public final class LocalDataSource: LocalDataSourceProtocol {
         UserDefaults.standard.removeObject(forKey: key)
     }
     
+    public func removeAll() {
+        UserDefaults.standard.dictionaryRepresentation().keys.forEach { key in
+            UserDefaults.standard.removeObject(forKey: key.description)
+        }
+    }
 }
