@@ -9,7 +9,7 @@ import UIKit
 import Util
 
 public protocol TTNavigationBarDelegate: AnyObject {
-    func tapRightButton()
+    func didTapInfoButton()
 }
 
 /// `TTNavigationBar`는 메인 화면 네비게이션에 사용되는 클래스입니다.
@@ -34,7 +34,7 @@ public final class TTNavigationBar: UIView {
         let v = UIButton()
         v.setImage(.asset(.icon_info), for: .normal)
         v.addAction {
-            self.delegate?.tapRightButton()
+            self.delegate?.didTapInfoButton()
         }
         return v
     }()
@@ -48,7 +48,7 @@ public final class TTNavigationBar: UIView {
     
     /// - Parameters:
     ///  - title: 타이틀 설정
-    ///  - rightButtonIsHidden: 오른쪽 버튼 숨기는 여부
+    ///  - infoButtonIsHidden: 우측 버튼 숨기는 여부
     ///   ///  사용 예시
     ///  ```swift
     /// TTNavigationBar(title: "메인페이지", infoButtonIsHidden: true)

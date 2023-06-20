@@ -9,8 +9,8 @@ import UIKit
 import Util
 
 public protocol TTNavigationDetailBarDelegate: AnyObject {
-    func tapDetailBackButton()
-    func tapDetailRightButton()
+    func didTapDetailMoreButton()
+    func didTapDetailBackButton()
 }
 
 /// `TTNavigationDetailBar`는 상세 화면 네비게이션에 사용되는 클래스입니다.
@@ -35,7 +35,7 @@ public final class TTNavigationDetailBar: UIView {
         let v = UIButton()
         v.setImage(.asset(.icon_back), for: .normal)
         v.addAction {
-            self.delegate?.tapDetailBackButton()
+            self.delegate?.didTapDetailMoreButton()
         }
         return v
     }()
@@ -44,7 +44,7 @@ public final class TTNavigationDetailBar: UIView {
         let v = UIButton()
         v.setImage(.asset(.icon_more), for: .normal)
         v.addAction {
-            self.delegate?.tapDetailRightButton()
+            self.delegate?.didTapDetailBackButton()
         }
         return v
     }()
@@ -58,16 +58,16 @@ public final class TTNavigationDetailBar: UIView {
     
     /// - Parameters:
     ///  - title: 타이틀 설정 (optional)
-    ///  - rightButtonIsHidden: 오른쪽 버튼 숨기는 여부
+    ///  - moreButtonIsHidden: 우측 버튼 숨기는 여부
     ///  사용 예시
     ///  ```swift
     /// TTNavigationDetailBar(title: nil, infoButtonIsHidden: true)
     ///  ```
     public convenience init(title: String?,
-                            infoButtonIsHidden: Bool) {
+                            moreButtonIsHidden: Bool) {
         self.init()
         self.titleLabel.text = title
-        self.infoButton.isHidden = infoButtonIsHidden
+        self.moreButton.isHidden = moreButtonIsHidden
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +77,7 @@ public final class TTNavigationDetailBar: UIView {
     // MARK: - Layout
 
     private func setUI() {
-        [self.titleLabel, self.backButton, self.infoButton].forEach {
+        [self.titleLabel, self.backButton, self.moreButton].forEach {
             self.addSubview($0)
         }
         
@@ -91,7 +91,7 @@ public final class TTNavigationDetailBar: UIView {
             make.centerY.equalToSuperview()
         }
         
-        self.infoButton.snp.makeConstraints { make in
+        self.moreButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
