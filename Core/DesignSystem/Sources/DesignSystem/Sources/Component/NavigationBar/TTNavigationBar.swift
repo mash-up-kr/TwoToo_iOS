@@ -49,6 +49,10 @@ public final class TTNavigationBar: UIView {
     /// - Parameters:
     ///  - title: 타이틀 설정
     ///  - rightButtonIsHidden: 오른쪽 버튼 숨기는 여부
+    ///   ///  사용 예시
+    ///  ```swift
+    /// TTNavigationBar(title: "메인페이지", infoButtonIsHidden: true)
+    ///  ```
     public convenience init(title: String,
                             infoButtonIsHidden: Bool) {
         self.init()
