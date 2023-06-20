@@ -15,8 +15,7 @@ public protocol TTNavigationDetailBarDelegate: AnyObject {
 
 /// `TTNavigationDetailBar`는 상세 화면 네비게이션에 사용되는 클래스입니다.
 public final class TTNavigationDetailBar: UIView {
-    
-    
+
     /// 버튼 이벤트 전달을 위한 델리게이트
     public weak var delegate: TTNavigationDetailBarDelegate?
     
@@ -60,6 +59,10 @@ public final class TTNavigationDetailBar: UIView {
     /// - Parameters:
     ///  - title: 타이틀 설정 (optional)
     ///  - rightButtonIsHidden: 오른쪽 버튼 숨기는 여부
+    ///  사용 예시
+    ///  ```swift
+    /// TTNavigationDetailBar(title: nil, infoButtonIsHidden: true)
+    ///  ```
     public convenience init(title: String?,
                             infoButtonIsHidden: Bool) {
         self.init()
