@@ -14,7 +14,26 @@ public protocol LoginScene: AnyObject, Scene {
 }
 
 public struct LoginConfiguration {
-    
+    /// 닉네임 설정 화면 이동 트리거
+    public var didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>
+    /// 초대장 전송 화면 이동 트리거
+    public var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
+    /// 대기 화면 이동 트리거
+    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>
+    /// 홈 화면 이동 트리거
+    public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+
+    public init(
+        didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    ) {
+        self.didTriggerRouteToNickNameScene = didTriggerRouteToNickNameScene
+        self.didTriggerRouteToInvitationSendScene = didTriggerRouteToInvitationSendScene
+        self.didTriggerRouteToInvitationWaitScene = didTriggerRouteToInvitationWaitScene
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+    }
 }
 
 public final class LoginSceneFactory {
@@ -29,7 +48,11 @@ public final class LoginSceneFactory {
         let interactor = LoginInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToNickNameScene: configuration.didTriggerRouteToNickNameScene,
+            didTriggerRouteToInvitationSendScene: configuration.didTriggerRouteToInvitationSendScene,
+            didTriggerRouteToInvitationWaitScene: configuration.didTriggerRouteToInvitationWaitScene,
+            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene
         )
         let viewController = LoginViewController(
             interactor: interactor
