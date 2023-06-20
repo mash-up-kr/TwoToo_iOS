@@ -40,9 +40,9 @@ public final class TTNavigationDetailBar: UIView {
         return v
     }()
     
-    private lazy var infoButton: UIButton = {
+    private lazy var moreButton: UIButton = {
         let v = UIButton()
-        v.setImage(.asset(.icon_info), for: .normal)
+        v.setImage(.asset(.icon_more), for: .normal)
         v.addAction {
             self.delegate?.tapDetailRightButton()
         }
