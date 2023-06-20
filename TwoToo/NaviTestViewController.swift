@@ -28,21 +28,21 @@ public class NaviTestViewController: UIViewController {
     
     lazy var navi3View: TTNavigationDetailBar = {
         let v = TTNavigationDetailBar(title: nil,
-                                      infoButtonIsHidden: true)
+                                      moreButtonIsHidden: true)
         v.delegate = self
         return v
     }()
     
     lazy var navi4View: TTNavigationDetailBar = {
         let v = TTNavigationDetailBar(title: "상세페이지",
-                                      infoButtonIsHidden: true)
+                                      moreButtonIsHidden: true)
         v.delegate = self
         return v
     }()
     
     lazy var navi5View: TTNavigationDetailBar = {
         let v = TTNavigationDetailBar(title: "상세페이지2",
-                                      infoButtonIsHidden: false)
+                                      moreButtonIsHidden: false)
         v.delegate = self
         return v
     }()
@@ -92,21 +92,21 @@ public class NaviTestViewController: UIViewController {
 
 
 extension NaviTestViewController: TTNavigationBarDelegate{
-    public func tapDetailBackButton() {
-        print("back Detail button")
+    public func didTapDetailMoreButton() {
+        print("Detail More button")
     }
     
-    public func tapDetailRightButton() {
-        print("right Detail button")
+    public func didTapDetailBackButton() {
+        print("Detail Right button")
     }
 }
 
 extension NaviTestViewController: TTNavigationDetailBarDelegate{
     public func tapBackButton() {
-        print("back button")
+        print("Back button")
     }
     
-    public func tapRightButton() {
-        print("right button")
+    public func didTapInfoButton() {
+        print("Info button")
     }
 }
