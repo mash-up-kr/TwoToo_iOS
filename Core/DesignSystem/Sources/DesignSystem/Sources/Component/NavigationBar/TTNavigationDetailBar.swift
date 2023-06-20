@@ -87,12 +87,12 @@ public final class TTNavigationDetailBar: UIView {
         }
         
         self.backButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
         
         self.infoButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(16)
+            make.right.equalToSuperview().inset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
     }
