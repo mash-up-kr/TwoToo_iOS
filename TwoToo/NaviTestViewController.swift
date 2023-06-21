@@ -13,36 +13,39 @@ import DesignSystem
 public class NaviTestViewController: UIViewController {
 
     lazy var naviView: TTNavigationBar = {
-        let v = TTNavigationBar(title: "TwoToo",
-                                infoButtonIsHidden: true)
+        let v = TTNavigationBar(title: "Twotoo",
+                                rightButtonImage: .asset(.icon_cancel))
         v.delegate = self
         return v
     }()
     
     lazy var navi2View: TTNavigationBar = {
         let v = TTNavigationBar(title: "마이페이지",
-                                infoButtonIsHidden: false)
+                                rightButtonImage: .asset(.icon_info))
         v.delegate = self
         return v
     }()
-    
+
     lazy var navi3View: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: nil,
-                                      moreButtonIsHidden: true)
+        let v = TTNavigationDetailBar(title: "상세",
+                                      leftButtonImage: .asset(.icon_back),
+                                      rightButtonImage: .asset(.icon_more))
         v.delegate = self
         return v
     }()
-    
+
     lazy var navi4View: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: "상세페이지",
-                                      moreButtonIsHidden: true)
+        let v = TTNavigationDetailBar(title: nil,
+                                      leftButtonImage: .asset(.icon_back),
+                                      rightButtonImage: nil)
         v.delegate = self
         return v
     }()
-    
+
     lazy var navi5View: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: "상세페이지2",
-                                      moreButtonIsHidden: false)
+        let v = TTNavigationDetailBar(title: "Hello",
+                                      leftButtonImage: .asset(.icon_more),
+                                      rightButtonImage: nil)
         v.delegate = self
         return v
     }()
@@ -92,11 +95,11 @@ public class NaviTestViewController: UIViewController {
 
 
 extension NaviTestViewController: TTNavigationBarDelegate{
-    public func didTapDetailMoreButton() {
+    public func didTapDetailLeftButton() {
         print("Detail More button")
     }
     
-    public func didTapDetailBackButton() {
+    public func didTapDetailRightButton() {
         print("Detail Right button")
     }
 }
@@ -106,7 +109,7 @@ extension NaviTestViewController: TTNavigationDetailBarDelegate{
         print("Back button")
     }
     
-    public func didTapInfoButton() {
+    public func didTaprightButton() {
         print("Info button")
     }
 }

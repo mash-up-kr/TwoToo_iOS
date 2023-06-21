@@ -9,7 +9,7 @@ import UIKit
 import Util
 
 public protocol TTNavigationBarDelegate: AnyObject {
-    func didTapInfoButton()
+    func didTaprightButton()
 }
 
 /// `TTNavigationBar`는 메인 화면 네비게이션에 사용되는 클래스입니다.
@@ -30,12 +30,9 @@ public final class TTNavigationBar: UIView {
         return v
     }()
     
-    private lazy var infoButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         let v = UIButton()
-        v.setImage(.asset(.icon_info), for: .normal)
-        v.addAction {
-            self.delegate?.didTapInfoButton()
-        }
+        v.addAction { self.delegate?.didTaprightButton() }
         return v
     }()
             
@@ -48,16 +45,16 @@ public final class TTNavigationBar: UIView {
     
     /// - Parameters:
     ///  - title: 타이틀 설정
-    ///  - infoButtonIsHidden: 우측 버튼 숨기는 여부
+    ///  - rightButtonImage: 우측 버튼 이미지 설정
     ///   ///  사용 예시
     ///  ```swift
-    /// TTNavigationBar(title: "메인페이지", infoButtonIsHidden: true)
+    /// TTNavigationBar(title: "마이페이지", rightButtonImage: .asset(.icon_info))
     ///  ```
     public convenience init(title: String,
-                            infoButtonIsHidden: Bool) {
+                            rightButtonImage: UIImage?) {
         self.init()
         self.titleLabel.text = title
-        self.infoButton.isHidden = infoButtonIsHidden
+        self.rightButton.setImage(rightButtonImage ?? UIImage(), for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -67,7 +64,7 @@ public final class TTNavigationBar: UIView {
     // MARK: - Layout
 
     private func setUI() {
-        [self.titleLabel, self.infoButton].forEach {
+        [self.titleLabel, self.rightButton].forEach {
             self.addSubview($0)
         }
         
@@ -76,7 +73,7 @@ public final class TTNavigationBar: UIView {
             make.centerY.equalToSuperview()
         }
             
-        self.infoButton.snp.makeConstraints { make in
+        self.rightButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
