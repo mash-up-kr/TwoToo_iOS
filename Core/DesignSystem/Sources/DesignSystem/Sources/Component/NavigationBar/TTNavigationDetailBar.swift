@@ -9,8 +9,8 @@ import UIKit
 import Util
 
 public protocol TTNavigationDetailBarDelegate: AnyObject {
-    func didTapDetailMoreButton()
-    func didTapDetailBackButton()
+    func didTapDetailLeftButton()
+    func didTapDetailRightButton()
 }
 
 /// `TTNavigationDetailBar`는 상세 화면 네비게이션에 사용되는 클래스입니다.
@@ -31,21 +31,15 @@ public final class TTNavigationDetailBar: UIView {
         return v
     }()
     
-    private lazy var backButton: UIButton = {
+    private lazy var leftButton: UIButton = {
         let v = UIButton()
-        v.setImage(.asset(.icon_back), for: .normal)
-        v.addAction {
-            self.delegate?.didTapDetailMoreButton()
-        }
+        v.addAction { self.delegate?.didTapDetailLeftButton() }
         return v
     }()
     
-    private lazy var moreButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         let v = UIButton()
-        v.setImage(.asset(.icon_more), for: .normal)
-        v.addAction {
-            self.delegate?.didTapDetailBackButton()
-        }
+        v.addAction { self.delegate?.didTapDetailRightButton() }
         return v
     }()
     
@@ -57,17 +51,23 @@ public final class TTNavigationDetailBar: UIView {
     }
     
     /// - Parameters:
-    ///  - title: 타이틀 설정 (optional)
-    ///  - moreButtonIsHidden: 우측 버튼 숨기는 여부
+    ///  - title: 타이틀 설정
+    ///  - leftButtonImage: 좌측 버튼 이미지 설정
+    ///  - rightButtonImage: 우측 버튼 이미지 설정
     ///  사용 예시
     ///  ```swift
-    /// TTNavigationDetailBar(title: nil, infoButtonIsHidden: true)
+    /// TTNavigationDetailBar(title: "Hello",
+    ///                       leftButtonImage: .asset(.icon_more),
+    ///                       rightButtonImage: nil)
     ///  ```
     public convenience init(title: String?,
-                            moreButtonIsHidden: Bool) {
+                            leftButtonImage: UIImage?,
+                            rightButtonImage: UIImage?) {
         self.init()
         self.titleLabel.text = title
-        self.moreButton.isHidden = moreButtonIsHidden
+        self.leftButton.setImage(leftButtonImage ?? UIImage() , for: .normal)
+        self.rightButton.setImage(rightButtonImage ?? UIImage()  , for: .normal)
+       
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +77,7 @@ public final class TTNavigationDetailBar: UIView {
     // MARK: - Layout
 
     private func setUI() {
-        [self.titleLabel, self.backButton, self.moreButton].forEach {
+        [self.titleLabel, self.leftButton, self.rightButton].forEach {
             self.addSubview($0)
         }
         
@@ -86,12 +86,12 @@ public final class TTNavigationDetailBar: UIView {
             make.centerY.equalToSuperview()
         }
         
-        self.backButton.snp.makeConstraints { make in
+        self.leftButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
         
-        self.moreButton.snp.makeConstraints { make in
+        self.rightButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
