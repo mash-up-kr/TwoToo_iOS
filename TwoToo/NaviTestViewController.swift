@@ -109,7 +109,7 @@ extension NaviTestViewController: TTNavigationDetailBarDelegate{
         print("Back button")
     }
     
-    public func didTaprightButton() {
+    public func didTapRightButton() {
         print("Info button")
     }
 }

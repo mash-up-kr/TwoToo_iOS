@@ -9,7 +9,7 @@ import UIKit
 import Util
 
 public protocol TTNavigationBarDelegate: AnyObject {
-    func didTaprightButton()
+    func didTapRightButton()
 }
 
 /// `TTNavigationBar`는 메인 화면 네비게이션에 사용되는 클래스입니다.
@@ -32,7 +32,9 @@ public final class TTNavigationBar: UIView {
     
     private lazy var rightButton: UIButton = {
         let v = UIButton()
-        v.addAction { self.delegate?.didTaprightButton() }
+        v.addAction { [weak self] in
+            self?.delegate?.didTapRightButton()
+        }
         return v
     }()
             
@@ -54,7 +56,7 @@ public final class TTNavigationBar: UIView {
                             rightButtonImage: UIImage?) {
         self.init()
         self.titleLabel.text = title
-        self.rightButton.setImage(rightButtonImage ?? UIImage(), for: .normal)
+        self.rightButton.setImage(rightButtonImage, for: .normal)
     }
     
     required init?(coder: NSCoder) {

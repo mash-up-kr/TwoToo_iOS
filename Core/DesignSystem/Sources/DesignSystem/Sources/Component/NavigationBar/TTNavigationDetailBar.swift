@@ -33,13 +33,17 @@ public final class TTNavigationDetailBar: UIView {
     
     private lazy var leftButton: UIButton = {
         let v = UIButton()
-        v.addAction { self.delegate?.didTapDetailLeftButton() }
+        v.addAction { [weak self] in
+            self?.delegate?.didTapDetailLeftButton()
+        }
         return v
     }()
     
     private lazy var rightButton: UIButton = {
         let v = UIButton()
-        v.addAction { self.delegate?.didTapDetailRightButton() }
+        v.addAction { [weak self] in
+            self?.delegate?.didTapDetailRightButton()
+        }
         return v
     }()
     
@@ -47,7 +51,7 @@ public final class TTNavigationDetailBar: UIView {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.setUI()
+        self.layout()
     }
     
     /// - Parameters:
@@ -65,8 +69,8 @@ public final class TTNavigationDetailBar: UIView {
                             rightButtonImage: UIImage?) {
         self.init()
         self.titleLabel.text = title
-        self.leftButton.setImage(leftButtonImage ?? UIImage() , for: .normal)
-        self.rightButton.setImage(rightButtonImage ?? UIImage()  , for: .normal)
+        self.leftButton.setImage(leftButtonImage, for: .normal)
+        self.rightButton.setImage(rightButtonImage , for: .normal)
        
     }
     
@@ -76,7 +80,7 @@ public final class TTNavigationDetailBar: UIView {
     
     // MARK: - Layout
 
-    private func setUI() {
+    private func layout() {
         [self.titleLabel, self.leftButton, self.rightButton].forEach {
             self.addSubview($0)
         }
