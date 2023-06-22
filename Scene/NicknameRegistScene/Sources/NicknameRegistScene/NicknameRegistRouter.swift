@@ -9,7 +9,8 @@
 import UIKit
 
 @MainActor
-protocol NicknameRegistRoutingLogic {}
+protocol NicknameRegistRoutingLogic {
+}
 
 final class NicknameRegistRouter {
     weak var viewController: NicknameRegistViewController?

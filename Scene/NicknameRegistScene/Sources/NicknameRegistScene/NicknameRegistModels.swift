@@ -14,9 +14,19 @@ enum NicknameRegist {
     
     enum Model {
         
+        struct InvitedUser {
+            var name: String
+        }
     }
     
     enum ViewModel {
         
+        struct Nickname {
+            let maxLength: Int = 4
+        }
+        
+        struct Toast {
+            var message: String?
+        }
     }
 }
