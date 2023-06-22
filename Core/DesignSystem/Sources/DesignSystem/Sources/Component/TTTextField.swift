@@ -12,6 +12,7 @@ import Util
 final public class TTTextField: UIView, UIComponentBased {
     /// TextField 최대 글자수
     var maxLength = 0
+    private var textValue = ""
 
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -30,6 +31,7 @@ final public class TTTextField: UIView, UIComponentBased {
         v.setPlaceholder(color: .grey500)
         v.layer.cornerRadius = 10
         v.addLeftPadding(amount: 10)
+        v.delegate = self
 
         return v
     }()
@@ -71,6 +73,11 @@ final public class TTTextField: UIView, UIComponentBased {
         }
     }
 
+
+    public func fetchTextFieldValue(completion: ((String) -> Void)? = nil) {
+        completion?(textValue)
+    }
+
     @objc private func didChangeTextfieldText(_ notification: Notification) {
         if let textField = notification.object as? UITextField {
             if let text = textField.text {
@@ -82,5 +89,13 @@ final public class TTTextField: UIView, UIComponentBased {
                 }
             }
         }
+    }
+}
+
+extension TTTextField: UITextFieldDelegate {
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textValue = textField.text ?? ""
+        return true
     }
 }
