@@ -1,5 +1,5 @@
 //
-//  PrimaryButton.swift
+//  TTPrimaryButton.swift
 //  
 //
 //  Created by Eddy on 2023/06/19.
@@ -9,7 +9,7 @@ import UIKit
 import Util
 
 /// 기본으로 사용되는 Button
-public class PrimaryButton: UIButton, UIComponentBased {
+public class TTPrimaryButton: UIButton, UIComponentBased {
 
     /// title 변경 시 사용
     public var title: String = "" {
@@ -41,29 +41,33 @@ public class PrimaryButton: UIButton, UIComponentBased {
 }
 
 
-extension PrimaryButton {
+extension TTPrimaryButton {
     public enum ButtonType {
         case large
-        case medium
+        case largeLine
         case small
+        case tiny
     }
 
     /// 버튼을 선택하여 생성해주는 함수
     /// large: 버튼 중 가장 긴 버튼
-    /// medium: 버튼 중간 사이즈 버튼
-    /// small: 버튼 작은 사이즈 버튼
+    /// largeLine: 가장 긴 버튼에서 선으로 그려진 버튼
+    /// small: 버튼 중간 사이즈 버튼
+    /// tiny: 버튼 작은 사이즈 버튼
     /// 사용 예시:
     ///    ```swift
-    ///       PrimaryButton.create(.medium)
+    ///       TTPrimaryButton.create(title: "다시 보내기", .largeLint)
     ///    ```
-    public static func create(_ type: ButtonType) -> PrimaryButtonType {
+    public static func create(title: String, _ type: ButtonType) -> TTPrimaryButtonType {
         switch type {
         case .large:
-            return PrimaryButtonType(customButtonType: .large)
-        case .medium:
-            return PrimaryButtonType(customButtonType: .medium)
+            return TTPrimaryButtonType(title: title, customButtonType: .large)
+        case .largeLine:
+            return TTPrimaryButtonType(title: title, customButtonType: .largeLine)
         case .small:
-            return PrimaryButtonType(customButtonType: .small)
+            return TTPrimaryButtonType(title: title, customButtonType: .small)
+        case .tiny:
+            return TTPrimaryButtonType(title: title, customButtonType: .tiny)
         }
     }
 

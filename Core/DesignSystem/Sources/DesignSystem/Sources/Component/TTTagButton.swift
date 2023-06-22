@@ -1,5 +1,5 @@
 //
-//  TagButton.swift
+//  TTTagButton.swift
 //  
 //
 //  Created by Eddy on 2023/06/14.
@@ -9,7 +9,7 @@ import UIKit
 import Util
 
 /// Tag에서 사용하는 Button
-public class TagButton: UIButton, UIComponentBased {
+public class TTTagButton: UIButton, UIComponentBased {
     public init() {
         super.init(frame: .zero)
         self.attribute()
@@ -42,7 +42,7 @@ public class TagButton: UIButton, UIComponentBased {
     public func layout() {}
 }
 
-extension TagButton {
+extension TTTagButton {
     /// title 설정해주는 함수
     public func setTitle(_ title: String) {
         self.setTitle(title, for: .normal)
