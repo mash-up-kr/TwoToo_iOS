@@ -14,7 +14,14 @@ public protocol InvitationSendScene: AnyObject, Scene {
 }
 
 public struct InvitationSendConfiguration {
+    /// 대기 화면 이동 트리거
+    /// - Parameters:
+    ///     - 초대 링크 `String`
+    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
     
+    public init(didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>) {
+        self.didTriggerRouteToInvitationWaitScene = didTriggerRouteToInvitationWaitScene
+    }
 }
 
 public final class InvitationSendSceneFactory {
@@ -29,7 +36,8 @@ public final class InvitationSendSceneFactory {
         let interactor = InvitationSendInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToInvitationWaitScene: configuration.didTriggerRouteToInvitationWaitScene
         )
         let viewController = InvitationSendViewController(
             interactor: interactor
