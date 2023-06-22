@@ -14,7 +14,18 @@ public protocol InvitationWaitScene: AnyObject, Scene {
 }
 
 public struct InvitationWaitConfiguration {
+    /// 홈 화면 이동 트리거
+    public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    /// 공유 링크 (optional)
+    public var invitationLink: String?
     
+    public init(
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        invitationLink: String? = nil
+    ) {
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.invitationLink = invitationLink
+    }
 }
 
 public final class InvitationWaitSceneFactory {
@@ -29,7 +40,9 @@ public final class InvitationWaitSceneFactory {
         let interactor = InvitationWaitInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene,
+            invitationLink: configuration.invitationLink
         )
         let viewController = InvitationWaitViewController(
             interactor: interactor
