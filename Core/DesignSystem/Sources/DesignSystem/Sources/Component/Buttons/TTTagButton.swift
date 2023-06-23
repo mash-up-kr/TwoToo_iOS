@@ -27,14 +27,14 @@ public class TTTagButton: UIButton, UIComponentBased {
         self.setTitleColor(.primary, for: .normal)
 
         /// Tap 눌렀을 때 선택되었다는 상태와 backgroundColor 변경
-        self.addTapAction {
-            if self.isSelected {
-                self.isSelected = false
-                self.backgroundColor = .mainWhite
+        self.addTapAction { [weak self] in
+            if self?.isSelected != nil {
+                self?.isSelected = false
+                self?.backgroundColor = .mainWhite
             }
             else {
-                self.isSelected = true
-                self.backgroundColor = .second01
+                self?.isSelected = true
+                self?.backgroundColor = .second01
             }
         }
     }

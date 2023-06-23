@@ -40,7 +40,7 @@ final public class TTPrimaryButtonType: UIButton, UIComponentBased {
 
     @MainActor
     public func didTapButton(completion: (() -> Void)? = nil) {
-        self.addAction {
+        self.addAction { [weak self] in
             completion?()
         }
     }
