@@ -125,7 +125,7 @@ extension TTPrimaryButtonType {
             case .large, .largeLine:
                 return UIScreen.main.bounds.width - 48
             case .small:
-                return UIScreen.main.bounds.width - 198
+                return UIScreen.main.bounds.width / 2
             case .tiny:
                 return 0
             }
