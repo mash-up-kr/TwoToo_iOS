@@ -102,6 +102,10 @@ public final class TTPopup: UIView, UIComponentBased {
         self.resultView.addSubview(resultView)
         self.descriptionLabel.text = description
         self.buttonTitles = buttonTitles
+        
+        resultView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
         self.attribute()
         self.layout()
@@ -149,7 +153,8 @@ public final class TTPopup: UIView, UIComponentBased {
         }
 
         self.resultView.snp.makeConstraints { make in
-            make.width.height.equalTo(100)
+            make.height.equalTo(100)
+            make.width.equalToSuperview()
         }
     }
     

@@ -59,6 +59,19 @@ class ViewController: UIViewController {
     
     lazy var popupContentView: UIView = {
         let v = UIView()
+        v.backgroundColor = .grey200
+        return v
+    }()
+    
+    lazy var nameLabel: UILabel = {
+        let v = UILabel()
+        v.text = "내 이름"
+        return v
+    }()
+    
+    lazy var partnerLabel: UILabel = {
+        let v = UILabel()
+        v.text = "상대방 이름"
         return v
     }()
     
@@ -85,6 +98,18 @@ class ViewController: UIViewController {
         }
         
         self.view.addSubview(self.popup)
+        
+        self.popupContentView.addSubview(self.nameLabel)
+        self.popupContentView.addSubview(self.partnerLabel)
+        
+        self.nameLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(10)
+        }
+        self.partnerLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(10)
+        }
     }
 }
 
