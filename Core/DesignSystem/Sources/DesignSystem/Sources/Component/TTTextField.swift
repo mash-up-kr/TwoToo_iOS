@@ -12,7 +12,21 @@ import Util
 final public class TTTextField: UIView, UIComponentBased {
     /// TextField 최대 글자수
     var maxLength = 0
-    private var textValue = ""
+    /// return 버튼 눌렀을 때의 completion
+    /// 사용법
+    /// ```swift
+    ///    textfield.returnValueAction = { text in
+    ///    print(text) }
+    /// ```
+    
+    public var returnValueAction: ((String) -> Void)?
+    /// 값이 변했을 때 접근하는 completion
+    /// 사용법
+    /// ```swift
+    ///    textfield.didChangeTextAction = { text in
+    ///    print(text) }
+    /// ```
+    public var didChangeTextAction: ((String) -> Void)?
 
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -44,7 +58,12 @@ final public class TTTextField: UIView, UIComponentBased {
         return v
     }()
 
-    public init(title: String, placeholder: String, maxLength: Int) {
+    /// title명, placeholder, maxLength 지정
+    public init(
+        title: String,
+        placeholder: String,
+        maxLength: Int
+    ) {
         super.init(frame: .zero)
         self.titleLabel.text = title
         self.textField.placeholder = placeholder
@@ -58,14 +77,15 @@ final public class TTTextField: UIView, UIComponentBased {
     }
 
     public func attribute() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTextfieldText), name: UITextField.textDidChangeNotification, object: self.textField)
+        self.textField.addTarget(self, action: #selector(self.didChangeTextfieldText), for: .editingChanged)
+
         self.stackView.addArrangedSubviews(self.titleLabel, self.textField)
         self.addSubview(self.stackView)
     }
 
     public func layout() {
         self.stackView.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.main.bounds.size.width - 48)
+            make.edges.equalToSuperview()
         }
 
         self.textField.snp.makeConstraints { make in
@@ -73,29 +93,23 @@ final public class TTTextField: UIView, UIComponentBased {
         }
     }
 
-
-    public func fetchTextFieldValue(completion: ((String) -> Void)? = nil) {
-        completion?(textValue)
-    }
-
     @objc private func didChangeTextfieldText(_ notification: Notification) {
-        if let textField = notification.object as? UITextField {
-            if let text = textField.text {
-                /// 초과되는 텍스트 입력 못하도록 한다
-                if text.count >= self.maxLength {
-                    let index = text.index(text.startIndex, offsetBy: self.maxLength)
-                    let newString = text[text.startIndex..<index]
-                    textField.text = String(newString)
-                }
+        if let text = self.textField.text {
+            /// 초과되는 텍스트 입력 못하도록 한다
+            if text.count >= self.maxLength {
+                let index = text.index(text.startIndex, offsetBy: self.maxLength)
+                let newString = text[text.startIndex..<index]
+                self.textField.text = String(newString)
             }
+            self.didChangeTextAction?(self.textField.text ?? "")
         }
     }
 }
 
 extension TTTextField: UITextFieldDelegate {
-
+    
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textValue = textField.text ?? ""
+        self.returnValueAction?(textField.text ?? "")
         return true
     }
 }
