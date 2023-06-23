@@ -89,19 +89,19 @@ public final class TTPopup: UIView, UIComponentBased {
         return v
     }()
 
-    var buttons = [UIButton]()
+    var buttonTitles: [String] = []
 
     public init (
         title: String,
         resultView: UIView,
         description: String,
-        buttons: [UIButton]
+        buttonTitles: [String]
     ) {
         super.init(frame: .zero)
         self.titleLabel.text = title
         self.resultView.addSubview(resultView)
         self.descriptionLabel.text = description
-        self.buttons = buttons
+        self.buttonTitles = buttonTitles
 
         self.attribute()
         self.layout()
@@ -112,12 +112,15 @@ public final class TTPopup: UIView, UIComponentBased {
     }
 
     public func attribute() {
-        if self.buttons.count == 1 {
-            self.leftButton = self.buttons.first ?? UIButton()
+        if self.buttonTitles.count == 1 {
+            self.leftButton.setTitleColor(.primary, for: .normal)
             self.rightButton.isHidden = true
         }
-        self.leftButton = self.buttons.first ?? UIButton()
-        self.rightButton = self.buttons.last ?? UIButton()
+        else if self.buttonTitles.count > 2 {
+            fatalError("Up to 2 buttons can be added")
+        }
+        self.leftButton.setTitle(self.buttonTitles.first, for: .normal)
+        self.rightButton.setTitle(self.buttonTitles.last, for: .normal)
 
         self.addSubviews(
             self.dimView,
@@ -155,6 +158,14 @@ public final class TTPopup: UIView, UIComponentBased {
         
         self.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+    
+    /// 배경 눌렀을 때 액션
+    @MainActor
+    public func didTapBackground(completion: (() -> Void)? = nil) {
+        self.dimView.addTapAction {
+            completion?()
         }
     }
 
