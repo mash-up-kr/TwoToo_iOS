@@ -38,6 +38,26 @@ class ViewController: UIViewController {
         return v
     }()
     
+    lazy var popup: TTPopup = {
+        let v = TTPopup(
+            title: "Test",
+            resultView: self.popupContentView,
+            description: "테스트 입니다",
+            buttons: [self.leftButton]
+        )
+        return v
+    }()
+    
+    lazy var popupContentView: UIView = {
+        let v = UIView()
+        return v
+    }()
+    
+    lazy var leftButton: UIButton = {
+        let v = UIButton()
+        return v
+    }()
+    
     @objc func didTapShortToastTest() {
         Task { @MainActor in
             Toast.shared.makeToast("1")
@@ -59,6 +79,8 @@ class ViewController: UIViewController {
         self.stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        self.view.addSubview(self.popup)
     }
 }
 

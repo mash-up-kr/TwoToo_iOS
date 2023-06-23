@@ -10,12 +10,27 @@ import Util
 
 public final class TTPopup: UIView, UIComponentBased {
 
+    /// 팝업 표시시 딤 처리
+    lazy var dimView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .black.withAlphaComponent(0.5)
+        
+        return v
+    }()
+    
+    lazy var contentView: UIView = {
+        let v = UIView()
+        v.layer.cornerRadius = 20
+        v.backgroundColor = .mainWhite
+        
+        return v
+    }()
+    
     lazy var stackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
         v.alignment = .center
         v.spacing = 37
-        self.addSubview(v)
         v.addArrangedSubviews(self.titleLabel, self.resultView, self.descriptionLabel, self.buttonStackView)
 
         return v
@@ -104,11 +119,25 @@ public final class TTPopup: UIView, UIComponentBased {
         self.leftButton = self.buttons.first ?? UIButton()
         self.rightButton = self.buttons.last ?? UIButton()
 
-        self.layer.cornerRadius = 20
-        self.backgroundColor = .mainWhite
+        self.addSubviews(
+            self.dimView,
+            self.contentView
+        )
+        self.contentView.addSubviews(
+            self.stackView
+        )
     }
 
     public func layout() {
+        self.dimView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.contentView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(51)
+            make.centerY.equalToSuperview()
+        }
+        
         self.stackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalToSuperview().offset(-40)
@@ -118,6 +147,14 @@ public final class TTPopup: UIView, UIComponentBased {
 
         self.resultView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
+        }
+    }
+    
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        self.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 
