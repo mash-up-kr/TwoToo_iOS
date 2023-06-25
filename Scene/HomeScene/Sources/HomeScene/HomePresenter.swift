@@ -130,4 +130,8 @@ extension Home.Model.Challenge {
             title: attributedTitle
         )
     }
+    
+    func toChallengeBeforeStartDateViewModel() -> Home.ViewModel.ChallengeBeforeStartDateViewModel {
+        return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
+    }
 }
