@@ -113,4 +113,8 @@ extension Home.Model.Challenge {
     func toChallengeCreatedViewModel() -> Home.ViewModel.ChallengeCreatedViewModel {
         return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
     }
+    
+    func toChallengeWaitingViewModel() -> Home.ViewModel.ChallengeWaitingViewModel {
+        return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
+    }
 }
