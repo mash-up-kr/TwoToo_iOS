@@ -21,7 +21,7 @@ final public class TTBottomSheetViewController: FloatingPanelController, TTBotto
     private let appearence: SurfaceAppearance = {
         let v = SurfaceAppearance()
         v.cornerRadius = 20
-        v.backgroundColor = .mainPink // TODO: 종이 배경으로 변경 필요
+        v.backgroundColor = .second02
         v.borderColor = .clear
         v.borderWidth = 0
         return v
@@ -49,16 +49,16 @@ final public class TTBottomSheetViewController: FloatingPanelController, TTBotto
     
     private func setUpSurfaceView(_ surfaceView: SurfaceView) {
         surfaceView.grabberHandle.isHidden = false
-        surfaceView.grabberHandle.backgroundColor = .gray
-        surfaceView.grabberHandleSize = .init(width: 40, height: 4)
+        surfaceView.grabberHandle.backgroundColor = .grey400
+        surfaceView.grabberHandleSize = .init(width: 39, height: 5)
         surfaceView.appearance = appearence
+        // TODO: grabberHandle 위치 약간 내리기
     }
     
     private func setUpBackDropView(_ backDropView: BackdropView) {
         backdropView.dismissalTapGestureRecognizer.isEnabled = true
         backdropView.backgroundColor = .black
     }
-    
 }
 
 extension TTBottomSheetViewController: FloatingPanelControllerDelegate {

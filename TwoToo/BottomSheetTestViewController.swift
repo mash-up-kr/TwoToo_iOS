@@ -20,6 +20,7 @@ final class BottomSheetTestViewController: UIViewController {
         return v
     }()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +30,7 @@ final class BottomSheetTestViewController: UIViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(24)
             $0.centerX.equalToSuperview()
         }
-        
+
         button1.addTarget(self, action: #selector(tap1), for: .touchUpInside)
     }
     

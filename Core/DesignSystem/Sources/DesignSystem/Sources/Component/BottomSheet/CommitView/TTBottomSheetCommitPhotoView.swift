@@ -7,15 +7,26 @@
 
 import UIKit
 
+public protocol TTBottomSheetCommitPhotoViewDelegate: AnyObject {
+    func didTapPlusButton()
+}
+
 /// 인증하기 바텀 시트 내부의 사진 첨부 뷰 입니다.
-final class TTBottomSheetCommitPhotoView: UIImageView {
+public final class TTBottomSheetCommitPhotoView: UIImageView {
     
     // TODO: 사진이 있을 때와 없을 때 구분이 필요합니다.
     
+    public weak var delegate: TTBottomSheetCommitPhotoViewDelegate?
+    
     private lazy var plusButton: UIButton = {
         let v = UIButton()
-        v.setImage(.asset(.icon_more), for: .normal)
+        let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
+        v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         v.tintColor = .mainWhite
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapPlusButton()
+            print("tap!")
+        }
         return v
     }()
     
@@ -29,7 +40,7 @@ final class TTBottomSheetCommitPhotoView: UIImageView {
     
     private lazy var stackView: UIStackView = {
         let v = UIStackView()
-        v.axis = .horizontal
+        v.axis = .vertical
         v.spacing = 14
         v.distribution = .fill
         [self.plusButton, self.cameraGuideLabel].forEach {
@@ -38,7 +49,7 @@ final class TTBottomSheetCommitPhotoView: UIImageView {
         return v
     }()
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
         self.attribute()
@@ -49,13 +60,15 @@ final class TTBottomSheetCommitPhotoView: UIImageView {
     }
     
     private func layout() {
+        self.addSubview(self.stackView)
+        
         self.stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
     }
     
     private func attribute() {
-        self.backgroundColor = .mainCoral
+        self.backgroundColor = .mainPink.withAlphaComponent(0.3)
         self.layer.cornerRadius = 15
         self.contentMode = .scaleToFill
     }

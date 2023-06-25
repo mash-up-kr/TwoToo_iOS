@@ -13,28 +13,27 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         self.backScrollView
     }
     
+    private let buttonHeight: CGFloat = 57
+    
+    // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.text = "인증하기"
-        v.font = .systemFont(ofSize: 20, weight: .bold)
+        v.font = .h2
+        v.textColor = .primary
         v.textAlignment = .center
-        v.textColor = .black
-        v.backgroundColor = .brown
         return v
     }()
     
-    private lazy var commitPhotoView: UIView = {
-        let v = UIView() // 수정 필요
-        v.backgroundColor = .green
+    private lazy var commitPhotoView: TTBottomSheetCommitPhotoView = {
+        let v = TTBottomSheetCommitPhotoView(frame: .zero)
+        v.delegate = self
         return v
     }()
     
-    private lazy var commentTextField: UITextField = {
-        let v = UITextField()
-        v.placeholder = "소감을 작성해 주세요."
-        v.font = .systemFont(ofSize: 12)
-        v.textColor = .gray
-        v.backgroundColor = .yellow
+    private lazy var commentTextField: TTTextView = {
+        let v = TTTextView(placeHolder: "소감을 작성해주세요.")
+        v.customDelegate = self
         return v
     }()
     
@@ -46,26 +45,22 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         return v
     }()
     
-    private lazy var scrollStackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .vertical
-        v.spacing = 16
-        v.distribution = .fill
-        [self.titleLabel, self.commitPhotoView, self.commitButton, self.commentTextField, self.commitButton].forEach {
-            v.addArrangedSubview($0)
-        }
+    private lazy var sizeFitView: UIView = {
+        let v = UIView()
+        v.addSubviews(self.titleLabel, self.commitPhotoView, self.commentTextField, self.commitButton)
         return v
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView(maxHeight: UIScreen.main.bounds.height * 0.7)
-        v.addSubview(self.scrollStackView)
+        let v = SelfSizingScrollView(maxHeight: UIScreen.main.bounds.height * 0.8)
+        v.addSubview(self.sizeFitView)
         return v
     }()
     
     public init() {
         super.init(nibName: nil, bundle: nil)
         self.layout()
+        self.addObserverKeyboard()
     }
     
     required init?(coder: NSCoder) {
@@ -73,38 +68,88 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
     }
     
     private func layout() {
-        view.addSubview(self.backScrollView)
+        view.addSubviews(self.backScrollView)
         
         self.titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(21)
             make.centerX.equalToSuperview()
-            make.height.equalTo(50)
         }
         
         self.commitPhotoView.snp.makeConstraints { make in
-            make.height.equalTo(312)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.58)
         }
         
         self.commentTextField.snp.makeConstraints { make in
+            make.top.equalTo(self.commitPhotoView.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(85)
         }
-
+        
         self.commitButton.snp.makeConstraints { make in
-            make.height.equalTo(57)
-        }
-
-        //스택뷰
-        self.scrollStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(21)
-            make.leading.equalToSuperview().offset(24)
-            make.bottom.equalToSuperview().inset(14)
-            make.width.equalToSuperview().inset(24)
-
+            make.top.equalTo(self.commentTextField.snp.bottom).offset(29)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(self.buttonHeight)
+            make.bottom.equalToSuperview()
         }
         
-        //스크롤뷰
+        self.sizeFitView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(21)
+            make.leading.equalToSuperview().offset(24)
+            make.width.equalToSuperview().inset(24)
+            make.bottom.equalToSuperview()
+        }
+        
         self.backScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
-    
 }
+
+extension TTBottomSheetCommitViewController {
+    private func addObserverKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            UIView.animate(withDuration: 0.3) {
+                self.sizeFitView.snp.updateConstraints { make in
+                    make.bottom.equalToSuperview().inset(keyboardHeight + self.buttonHeight)
+                }
+                self.backScrollView.contentOffset.y = keyboardHeight + self.buttonHeight
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        UIView.animate(withDuration: 0.3) {
+            self.sizeFitView.snp.updateConstraints { make in
+                make.bottom.equalToSuperview().inset(14)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+}
+
+extension TTBottomSheetCommitViewController: TTTextViewDelegate {
+    public func textViewDidEndEditing(text: String) {
+        print("소감 작성 완료 \(text)")
+    }
+}
+
+extension TTBottomSheetCommitViewController: TTBottomSheetCommitPhotoViewDelegate {
+    public func didTapPlusButton() {
+        // TODO: 작동 안됨. 확인 필요
+    }
+}
+
