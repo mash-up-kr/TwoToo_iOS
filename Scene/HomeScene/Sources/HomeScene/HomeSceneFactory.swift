@@ -14,7 +14,14 @@ public protocol HomeScene: AnyObject, Scene {
 }
 
 public struct HomeConfiguration {
+    /// 히스토리 화면 이동 트리거
+    /// - Parameters:
+    ///     - 업데이트 여부 `Bool`
+    public var didTriggerRouteToHistoryScene: PassthroughSubject<Bool, Never>
     
+    public init(didTriggerRouteToHistoryScene: PassthroughSubject<Bool, Never>) {
+        self.didTriggerRouteToHistoryScene = didTriggerRouteToHistoryScene
+    }
 }
 
 public final class HomeSceneFactory {
@@ -29,7 +36,8 @@ public final class HomeSceneFactory {
         let interactor = HomeInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToHistoryScene: configuration.didTriggerRouteToHistoryScene
         )
         let viewController = HomeViewController(
             interactor: interactor

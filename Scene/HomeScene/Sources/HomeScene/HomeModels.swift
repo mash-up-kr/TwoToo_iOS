@@ -14,10 +14,16 @@ enum Home {
     
     enum Model {
 
+        /// 홈 정보
+        struct HomeInfo {
+            /// 챌린지
+            var challenge: Challenge
+        }
+        
         /// 챌린지
-        struct Challenge {
+        struct Challenge: Equatable {
             /// 챌린지 ID
-            var id: Int?
+            var id: String?
             /// 챌린지 이름
             var name: String?
             /// 챌린지 시작일
@@ -37,9 +43,9 @@ enum Home {
         }
 
         /// 유저
-        struct User {
+        struct User: Equatable {
             /// 유저 ID
-            var id: Int
+            var id: String
             /// 닉네임
             var nickname: String
             /// 인증 횟수
@@ -53,15 +59,15 @@ enum Home {
         }
 
         /// 인증
-        struct Certificate {
+        struct Certificate: Equatable {
             /// 인증 ID
-            var id: Int
+            var id: String
             /// 칭찬 문구
             var complimentComment: String?
         }
 
         /// 성장도
-        enum GrowsStatus {
+        enum GrowsStatus: Equatable {
             /// Step 1 - 씨앗
             case seed
             /// Step 2 - 새싹
@@ -75,12 +81,12 @@ enum Home {
         }
 
         /// 꽃
-        enum Flower {
+        enum Flower: Equatable {
             // ...
         }
 
         /// 챌린지 상태
-        enum Status {
+        enum Status: Equatable {
             /// 챌린지 생성전
             case created
             /// 챌린지 대기중
@@ -98,7 +104,7 @@ enum Home {
         }
 
         /// 챌진지 진행 상태
-        enum InProgressStatus {
+        enum InProgressStatus: Equatable {
             /// 둘다 인증전
             case bothUncertificated
             /// 상대방만 인증
@@ -110,7 +116,7 @@ enum Home {
         }
 
         /// 둘다 인증 상태
-        enum BothCertificatedStatus {
+        enum BothCertificatedStatus: Equatable {
             /// 확인되지 않음
             case uncomfirmed
             /// 확인됨
@@ -118,7 +124,7 @@ enum Home {
         }
 
         /// 챌린지 완료 상태
-        enum CompletedStatus {
+        enum CompletedStatus: Equatable {
             /// 확인되지 않음
             case uncomfirmed
             /// 확인됨
