@@ -58,6 +58,7 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
+        v.delegate = self
         v.addTapAction { [weak self] in
             self?.view.endEditing(true)
         }
@@ -161,5 +162,11 @@ extension TTBottomSheetPushViewController {
             }
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension TTBottomSheetPushViewController: UIScrollViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.scrollView.endEditing(true)
     }
 }

@@ -58,6 +58,7 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
+        v.delegate = self
         v.addTapAction { [weak self] in
             self?.view.endEditing(true)
         }
@@ -161,3 +162,8 @@ extension TTBottomSheetCommitViewController: TTBottomSheetCommitPhotoViewDelegat
     }
 }
 
+extension TTBottomSheetCommitViewController: UIScrollViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.scrollView.endEditing(true)
+    }
+}
