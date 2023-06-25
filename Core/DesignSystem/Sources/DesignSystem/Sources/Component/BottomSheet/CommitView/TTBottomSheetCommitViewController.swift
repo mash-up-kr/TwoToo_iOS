@@ -46,15 +46,21 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         return v
     }()
     
-    private lazy var sizeFitView: UIView = {
+    private lazy var scrollSizeFitView: UIView = {
         let v = UIView()
-        v.addSubviews(self.titleLabel, self.commitPhotoView, self.commentTextField, self.commitButton)
+        v.addSubviews(self.titleLabel,
+                      self.commitPhotoView,
+                      self.commentTextView,
+                      self.commitButton)
         return v
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView(maxHeight: UIScreen.main.bounds.height * 0.8)
-        v.addSubview(self.sizeFitView)
+        let v = SelfSizingScrollView()
+        v.addSubview(self.scrollSizeFitView)
+        v.addTapAction { [weak self] in
+            self?.view.endEditing(true)
+        }
         return v
     }()
     
@@ -69,7 +75,7 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
     }
     
     private func layout() {
-        view.addSubviews(self.backScrollView)
+        self.view.addSubviews(self.backScrollView)
         
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(21)
@@ -95,7 +101,7 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
             make.bottom.equalToSuperview()
         }
         
-        self.sizeFitView.snp.makeConstraints { make in
+        self.scrollSizeFitView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(21)
             make.leading.equalToSuperview().offset(24)
             make.width.equalToSuperview().inset(24)
@@ -109,6 +115,7 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
 }
 
 extension TTBottomSheetCommitViewController {
+    
     private func addObserverKeyboard() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -123,10 +130,10 @@ extension TTBottomSheetCommitViewController {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
             UIView.animate(withDuration: 0.3) {
-                self.sizeFitView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().inset(keyboardHeight + self.buttonHeight)
+                self.scrollSizeFitView.snp.updateConstraints { make in
+                    make.bottom.equalToSuperview().inset(keyboardHeight)
                 }
-                self.backScrollView.contentOffset.y = keyboardHeight + self.buttonHeight
+                self.backScrollView.contentOffset.y = keyboardHeight
                 self.view.layoutIfNeeded()
             }
         }
@@ -134,7 +141,7 @@ extension TTBottomSheetCommitViewController {
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         UIView.animate(withDuration: 0.3) {
-            self.sizeFitView.snp.updateConstraints { make in
+            self.scrollSizeFitView.snp.updateConstraints { make in
                 make.bottom.equalToSuperview().inset(14)
             }
             self.view.layoutIfNeeded()
