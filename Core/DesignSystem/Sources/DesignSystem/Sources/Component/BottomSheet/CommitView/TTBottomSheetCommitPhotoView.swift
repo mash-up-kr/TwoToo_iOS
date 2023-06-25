@@ -23,6 +23,7 @@ public final class TTBottomSheetCommitPhotoView: UIImageView {
         let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
         v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         v.tintColor = .mainWhite
+        // TODO: 버튼 터치 이벤트 동작 안함
         v.addTapAction { [weak self] in
             self?.delegate?.didTapPlusButton()
             print("tap!")

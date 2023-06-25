@@ -8,15 +8,11 @@
 import UIKit
 import FloatingPanel
 
-public protocol TTBottomSheetViewControllerDelegate {
-    
-}
-
 public protocol ScrollableViewController where Self: UIViewController {
     var scrollView: UIScrollView { get }
 }
 
-final public class TTBottomSheetViewController: FloatingPanelController, TTBottomSheetViewControllerDelegate {
+final public class TTBottomSheetViewController: FloatingPanelController {
     
     private let appearence: SurfaceAppearance = {
         let v = SurfaceAppearance()
@@ -29,8 +25,9 @@ final public class TTBottomSheetViewController: FloatingPanelController, TTBotto
     
     public init(contentViewController: ScrollableViewController) {
         super.init(delegate: nil)
-        set(contentViewController: contentViewController)
-        track(scrollView: contentViewController.scrollView)
+        super.set(contentViewController: contentViewController)
+        super.track(scrollView: contentViewController.scrollView)
+        
         self.setUpSurfaceView(super.surfaceView)
         self.setUpBackDropView(super.backdropView)
         self.setUpView(contentViewController: contentViewController)

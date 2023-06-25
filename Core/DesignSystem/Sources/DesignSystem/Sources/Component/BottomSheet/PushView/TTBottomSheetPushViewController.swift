@@ -41,7 +41,7 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
     private lazy var pushButton: UIButton = {
         let v = UIButton()
         v.setTitle("보내기", for: .normal)
-        v.backgroundColor = .gray
+        v.backgroundColor = .gray 
         v.tintColor = .mainWhite
         return v
     }()
@@ -107,6 +107,7 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
             make.top.equalTo(self.descriptionLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(self.buttonHeight)
+//            make.bottom.equalToSuperview() //정상 작동 안됨
         }
 
         self.scrollSizeFitView.snp.makeConstraints { make in

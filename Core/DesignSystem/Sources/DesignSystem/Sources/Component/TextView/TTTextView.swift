@@ -58,7 +58,6 @@ public final class TTTextView: UITextView {
 
 extension TTTextView: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        print("편집 시작!")
         if textView.text != nil {
             self.placeHolderLabel.text = ""
             textView.textColor = .black
