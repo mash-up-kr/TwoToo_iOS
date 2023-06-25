@@ -134,4 +134,8 @@ extension Home.Model.Challenge {
     func toChallengeBeforeStartDateViewModel() -> Home.ViewModel.ChallengeBeforeStartDateViewModel {
         return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
     }
+    
+    func toChallengeAfterStartDateViewModel() -> Home.ViewModel.ChallengeAfterStartDateViewModel {
+        return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
+    }
 }
