@@ -31,8 +31,9 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         return v
     }()
     
-    private lazy var commentTextField: TTTextView = {
-        let v = TTTextView(placeHolder: "소감을 작성해주세요.")
+    private lazy var commentTextView: TTTextView = {
+        let v = TTTextView()
+        v.configurePlaceHolder("소감을 작성해주세요.")
         v.customDelegate = self
         return v
     }()
@@ -81,14 +82,14 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
             make.height.equalToSuperview().multipliedBy(0.58)
         }
         
-        self.commentTextField.snp.makeConstraints { make in
+        self.commentTextView.snp.makeConstraints { make in
             make.top.equalTo(self.commitPhotoView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(85)
         }
         
         self.commitButton.snp.makeConstraints { make in
-            make.top.equalTo(self.commentTextField.snp.bottom).offset(29)
+            make.top.equalTo(self.commentTextView.snp.bottom).offset(29)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(self.buttonHeight)
             make.bottom.equalToSuperview()

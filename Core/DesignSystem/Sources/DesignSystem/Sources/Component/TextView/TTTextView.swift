@@ -18,21 +18,16 @@ public final class TTTextView: UITextView {
     private lazy var placeHolderLabel: UILabel = {
         let v = UILabel()
         v.font = .body1
-        v.textColor = .grey600
+        v.textColor = .grey500
+        v.numberOfLines = 0
         return v
     }()
-    
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         self.layout()
         self.attribute()
         self.delegate = self
-    }
-    
-    public convenience init(placeHolder: String) {
-        self.init()
-        self.placeHolderLabel.text = placeHolder
     }
     
     required init?(coder: NSCoder) {
@@ -53,11 +48,17 @@ public final class TTTextView: UITextView {
         self.font = .body1
         self.textColor = .black
         self.isEditable = true
+        self.layer.cornerRadius = 20
+    }
+    
+    public func configurePlaceHolder(_ placeHolder: String) {
+        self.placeHolderLabel.text = placeHolder
     }
 }
 
 extension TTTextView: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
+        print("편집 시작!")
         if textView.text != nil {
             self.placeHolderLabel.text = ""
             textView.textColor = .black
