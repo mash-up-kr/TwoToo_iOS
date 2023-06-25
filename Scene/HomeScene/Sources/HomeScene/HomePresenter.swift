@@ -117,4 +117,17 @@ extension Home.Model.Challenge {
     func toChallengeWaitingViewModel() -> Home.ViewModel.ChallengeWaitingViewModel {
         return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
     }
+    
+    func toChallengeBeforeStartViewModel() -> Home.ViewModel.ChallengeBeforeStartViewModel {
+        let partnerName = self.partnerInfo.nickname
+        let title = "\(partnerName)님이 보낸 \n챌린지를 확인해주세요"
+        let attributedTitle = NSMutableAttributedString(string: title)
+        let range = (title as NSString).range(of: partnerName)
+        attributedTitle.addAttribute(.foregroundColor, value: UIColor.mainCoral, range: range)
+        return .init(
+            myNameText: self.myInfo.nickname,
+            partnerNameText: partnerName,
+            title: attributedTitle
+        )
+    }
 }
