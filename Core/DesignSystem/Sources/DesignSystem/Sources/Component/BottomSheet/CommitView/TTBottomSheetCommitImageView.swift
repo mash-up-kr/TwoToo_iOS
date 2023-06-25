@@ -8,7 +8,7 @@
 import UIKit
 
 /// 인증하기 바텀 시트 내부의 사진 첨부 뷰 입니다.
-public final class TTBottomSheetCommitPhotoView: UIImageView {
+final class TTBottomSheetCommitPhotoView: UIImageView {
     
     // TODO: 사진이 있을 때와 없을 때 구분이 필요합니다.
     

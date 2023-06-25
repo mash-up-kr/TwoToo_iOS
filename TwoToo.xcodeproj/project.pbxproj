@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
+		A322FC152A4568B500DAB491 /* BottomSheetTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A322FC142A4568B500DAB491 /* BottomSheetTestViewController.swift */; };
 		A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */; };
 		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
 		C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E31792A2B041900FD31C8 /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A322FC142A4568B500DAB491 /* BottomSheetTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTestViewController.swift; sourceTree = "<group>"; };
 		A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviTestViewController.swift; sourceTree = "<group>"; };
 		C8396CBD2A2C3F2500A79E98 /* SceneKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SceneKit; sourceTree = "<group>"; };
 		C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateFinishScene; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				C87E31792A2B041900FD31C8 /* AppDelegate.swift */,
 				C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */,
 				A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */,
+				A322FC142A4568B500DAB491 /* BottomSheetTestViewController.swift */,
 				C87E317D2A2B041900FD31C8 /* ViewController.swift */,
 				C87E317F2A2B041900FD31C8 /* Main.storyboard */,
 				C87E31842A2B041A00FD31C8 /* LaunchScreen.storyboard */,
@@ -227,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */,
+				A322FC152A4568B500DAB491 /* BottomSheetTestViewController.swift in Sources */,
 				C87E317E2A2B041900FD31C8 /* ViewController.swift in Sources */,
 				C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */,
 				C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */,

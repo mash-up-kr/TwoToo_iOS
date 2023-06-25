@@ -29,6 +29,8 @@ final public class TTBottomSheetViewController: FloatingPanelController, TTBotto
     
     public init(contentViewController: ScrollableViewController) {
         super.init(delegate: nil)
+        set(contentViewController: contentViewController)
+        track(scrollView: contentViewController.scrollView)
         self.setUpSurfaceView(super.surfaceView)
         self.setUpBackDropView(super.backdropView)
         self.setUpView(contentViewController: contentViewController)
@@ -53,7 +55,7 @@ final public class TTBottomSheetViewController: FloatingPanelController, TTBotto
     }
     
     private func setUpBackDropView(_ backDropView: BackdropView) {
-        backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        backdropView.dismissalTapGestureRecognizer.isEnabled = true
         backdropView.backgroundColor = .black
     }
     
@@ -65,7 +67,7 @@ extension TTBottomSheetViewController: FloatingPanelControllerDelegate {
         let loc = fpc.surfaceLocation
         let minY = fpc.surfaceLocation(for: .full).y
         let maxY = fpc.surfaceLocation(for: .tip).y
-        let y = max(min(loc.y, minY), maxY)
+        let y = min(max(loc.y, minY), maxY)
         fpc.surfaceLocation = CGPoint(x: loc.x, y: y)
     }
     
