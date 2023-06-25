@@ -105,3 +105,12 @@ extension HomePresenter: HomePresentationLogic {
         
     }
 }
+
+// MARK: - Mapping Logic
+
+extension Home.Model.Challenge {
+    
+    func toChallengeCreatedViewModel() -> Home.ViewModel.ChallengeCreatedViewModel {
+        return .init(myNameText: self.myInfo.nickname, partnerNameText: self.partnerInfo.nickname)
+    }
+}
