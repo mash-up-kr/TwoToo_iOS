@@ -89,7 +89,45 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didAppear() async {
-        
+        do {
+            let homeInfo = try await self.worker.fetchHomeInfo()
+            let challenge = homeInfo.challenge
+            self.challenge = challenge
+            
+            switch challenge.status {
+                case .created:
+                    await self.presenter.presentChallengeCreated(challenge: challenge)
+                    
+                case .waiting:
+                    await self.presenter.presentChallengeWaiting(challenge: challenge)
+                    
+                case .beforeStart:
+                    await self.presenter.presentChallengeBeforeStart(challenge: challenge)
+                    
+                case .beforeStartDate:
+                    await self.presenter.presentChallengeBeforeStartDate(challenge: challenge)
+                    
+                case .afterStartDate:
+                    await self.presenter.presentChallengeAfterStartDate(challenge: challenge)
+                    
+                case let .inProgress(inProgress):
+                    await self.presenter.presentChallengeInProgress(challenge: challenge)
+                    
+                    if inProgress == .bothCertificated(.uncomfirmed) {
+                        await self.presenter.presentBothCertificationPopup()
+                    }
+                    
+                case let .completed(completed):
+                    await self.presenter.presentChallengeCompleted(challenge: challenge)
+                    
+                    if completed == .uncomfirmed {
+                        await self.presenter.presentCompletedPopup(challenge: challenge)
+                    }
+            }
+        }
+        catch {
+            await self.presenter.presentHomeError(error: error)
+        }
     }
 }
 
@@ -98,11 +136,32 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapChallengeStartButton() async {
-        
+        guard let challenge = self.challenge else {
+            return
+        }
+        switch challenge.status {
+            case .created, .afterStartDate:
+                await self.router.routeToChallengeEssentialInfoInputScene()
+                
+            default:
+                break
+        }
     }
     
     func didTapChallengeConfirmButton() async {
-        
+        guard let challenge = self.challenge else {
+            return
+        }
+        switch challenge.status {
+            case .waiting, .beforeStartDate:
+                await self.router.routeToChallengeConfirmScene(entryPoint: "view")
+                
+            case .beforeStart:
+                await self.router.routeToChallengeConfirmScene(entryPoint: "accept")
+                
+            default:
+                break
+        }
     }
 }
 
@@ -111,15 +170,27 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapChallengeCompletedPopupBackground() async {
-        
+        self.worker.challengeCompletedConfirmed = true
+        await self.presenter.dismissCompletedPopup()
     }
     
     func didTapChallengeCompletedPopupConfirmButton() async {
-        
+        self.worker.challengeCompletedConfirmed = true
+        await self.presenter.dismissCompletedPopup()
     }
     
     func didTapChallengeCompleteButton() async {
-        
+        guard let challenge = self.challenge,
+              let challengeID = challenge.id else {
+            return
+        }
+        do {
+            try await self.worker.requestChallengeComplete(challengeID: challengeID)
+            self.didTriggerRouteToHistoryScene.send(true)
+        }
+        catch {
+            await self.presenter.presentCompleteRequestError(error: error)
+        }
     }
 }
 
@@ -128,19 +199,23 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapBothCertificationPopupBackground() async {
-        
+        await self.presenter.dismissBothCertificationPopup()
     }
     
     func didTapBothCertificationPopupNoOption() async {
-        
+        await self.presenter.dismissBothCertificationPopup()
     }
     
     func didTapBothCertificationPopupYesOption() async {
-        
+        self.worker.bothCertificationConfirmed = true
+        await self.presenter.dismissBothCertificationPopup()
+        await self.router.routeToPraiseSendScene()
     }
     
     func didTapMyComplimentCommnet() async {
-        
+        if self.challenge?.myInfo.todayCert?.complimentComment?.isEmpty ?? true {
+            await self.router.routeToPraiseSendScene()
+        }
     }
 }
 
@@ -149,7 +224,9 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapMyFlower() async {
-        
+        if self.challenge?.myInfo.todayCert == nil {
+            await self.router.routeToChallengeCertificateScene()
+        }
     }
 }
 
@@ -158,7 +235,15 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapStickButton() async {
-        
+        guard let stickRemaining = self.challenge?.stickRemaining else {
+            return
+        }
+        if stickRemaining > 0 {
+            await self.router.routeToNudgeSendScene()
+        }
+        else {
+            await self.presenter.presentExceededStickCountError()
+        }
     }
 }
 
@@ -167,7 +252,7 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapChallengeInfo() async {
-        
+        await self.router.routeToChallengeHistoryScene()
     }
 }
 
@@ -176,7 +261,7 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapGuideButton() async {
-        
+        await self.router.routeToGuideScene()
     }
 }
 

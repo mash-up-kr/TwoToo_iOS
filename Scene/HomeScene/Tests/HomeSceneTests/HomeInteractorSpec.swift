@@ -428,8 +428,8 @@ final class HomeInteractorSpec: QuickSpec {
                 }
                 
                 it("확인함으로 챌린지 완료 확인 여부 업데이트를 요청한다.") {
-                    expect(worker.isBothCertificationConfirmedCalled).to(beTrue())
-                    expect(worker.lastBothCertificationConfirmed).to(beTrue())
+                    expect(worker.isChallengeCompletedConfirmedCalled).to(beTrue())
+                    expect(worker.lastChallengeCompletedConfirmed).to(beTrue())
                 }
                 
                 it("챌린지 완료 팝업을 닫는다.") {
@@ -444,8 +444,8 @@ final class HomeInteractorSpec: QuickSpec {
                 }
                 
                 it("확인함으로 챌린지 완료 확인 여부 업데이트를 요청한다.") {
-                    expect(worker.isBothCertificationConfirmedCalled).to(beTrue())
-                    expect(worker.lastBothCertificationConfirmed).to(beTrue())
+                    expect(worker.isChallengeCompletedConfirmedCalled).to(beTrue())
+                    expect(worker.lastChallengeCompletedConfirmed).to(beTrue())
                 }
                 
                 it("챌린지 완료 팝업을 닫는다.") {
@@ -454,49 +454,14 @@ final class HomeInteractorSpec: QuickSpec {
                 }
             }
             
-            context("챌린지 완료하기 버튼을 클릭하였을 때") {
+            describe("현재 챌린지 상태가 챌린지 완료이다.") {
                 beforeEach {
-                    await interactor.didTapChallengeCompleteButton()
-                }
-                
-                it("챌린지 완료 요청을 한다.") {
-                    let isRequestChallengeCompleteCalled = worker.isRequestChallengeCompleteCalled
-                    expect(isRequestChallengeCompleteCalled).to(beTrue())
-                }
-            }
-            
-            describe("챌린지 완료 요청 결과가 성공이다.") {
-                beforeEach {
-                    worker.requestChallengeCompleteResult = true
-                }
-                
-                context("챌린지 완료하기 버튼을 클릭하였을 때") {
-                    var didTriggerRouteToHistorySceneValue: Bool? = nil
-                    
-                    beforeEach {
-                        let expectation = self.expectation(description: "히스토리 화면 이동 트리거")
-
-                        interactor.didTriggerRouteToHistoryScene
-                            .sink { isUpdated in
-                                didTriggerRouteToHistorySceneValue = isUpdated
-                                expectation.fulfill()
-                            }
-                            .store(in: &cancellables)
-
-                        await interactor.didTapChallengeCompleteButton()
-
-                        await self.fulfillment(of: [expectation], timeout: 3)
-                    }
-                    
-                    it("업데이트 됨을 전달하며 히스토리 화면으로 이동한다.") {
-                        expect(didTriggerRouteToHistorySceneValue).to(beTrue())
-                    }
-                }
-            }
-            
-            describe("챌린지 완료 요청 결과가 실패이다.") {
-                beforeEach {
-                    worker.requestChallengeCompleteResult = false
+                    interactor.challenge = .init(
+                        id: "Test",
+                        status: .completed(.uncomfirmed),
+                        myInfo: .init(id: "", nickname: "Test"),
+                        partnerInfo: .init(id: "", nickname: "Test")
+                    )
                 }
                 
                 context("챌린지 완료하기 버튼을 클릭하였을 때") {
@@ -504,9 +469,55 @@ final class HomeInteractorSpec: QuickSpec {
                         await interactor.didTapChallengeCompleteButton()
                     }
                     
-                    it("챌린지 완료 요청 오류를 보여준다.") {
-                        let isPresentCompleteRequestErrorCalled = await presenter.isPresentCompleteRequestErrorCalled
-                        expect(isPresentCompleteRequestErrorCalled).to(beTrue())
+                    it("챌린지 완료 요청을 한다.") {
+                        let isRequestChallengeCompleteCalled = worker.isRequestChallengeCompleteCalled
+                        expect(isRequestChallengeCompleteCalled).to(beTrue())
+                    }
+                }
+                
+                describe("챌린지 완료 요청 결과가 성공이다.") {
+                    beforeEach {
+                        worker.requestChallengeCompleteResult = true
+                    }
+                    
+                    context("챌린지 완료하기 버튼을 클릭하였을 때") {
+                        var didTriggerRouteToHistorySceneValue: Bool? = nil
+                        
+                        beforeEach {
+                            let expectation = self.expectation(description: "히스토리 화면 이동 트리거")
+
+                            interactor.didTriggerRouteToHistoryScene
+                                .sink { isUpdated in
+                                    didTriggerRouteToHistorySceneValue = isUpdated
+                                    expectation.fulfill()
+                                }
+                                .store(in: &cancellables)
+
+                            await interactor.didTapChallengeCompleteButton()
+
+                            await self.fulfillment(of: [expectation], timeout: 3)
+                        }
+                        
+                        it("업데이트 됨을 전달하며 히스토리 화면으로 이동한다.") {
+                            expect(didTriggerRouteToHistorySceneValue).to(beTrue())
+                        }
+                    }
+                }
+                
+                describe("챌린지 완료 요청 결과가 실패이다.") {
+                    beforeEach {
+                        worker.requestChallengeCompleteResult = false
+                    }
+                    
+                    context("챌린지 완료하기 버튼을 클릭하였을 때") {
+                        beforeEach {
+                            await interactor.didTapChallengeCompleteButton()
+                        }
+                        
+                        it("챌린지 완료 요청 오류를 보여준다.") {
+                            let isPresentCompleteRequestErrorCalled = await presenter.isPresentCompleteRequestErrorCalled
+                            expect(isPresentCompleteRequestErrorCalled).to(beTrue())
+                        }
                     }
                 }
             }
@@ -781,20 +792,20 @@ class HomeWorkerMock: HomeWorkerProtocol {
     
     var challengeCompletedConfirmed: Bool {
         get {
-            self.isChallengeCompletedConfirmedCalled = true
             return self.challengeCompletedConfirmedResult ?? false
         }
         set {
+            self.isChallengeCompletedConfirmedCalled = true
             self.lastChallengeCompletedConfirmed = newValue
         }
     }
     
     var bothCertificationConfirmed: Bool {
         get {
-            self.isBothCertificationConfirmedCalled = true
             return self.bothCertificationConfirmedResult ?? false
         }
         set {
+            self.isBothCertificationConfirmedCalled = true
             self.lastBothCertificationConfirmed = newValue
         }
     }
