@@ -22,7 +22,7 @@ enum NicknameRegist {
     enum ViewModel {
         
         struct Nickname {
-            let maxLength: Int = 4
+            static let maxLength: Int = 4
         }
         
         struct Toast {
