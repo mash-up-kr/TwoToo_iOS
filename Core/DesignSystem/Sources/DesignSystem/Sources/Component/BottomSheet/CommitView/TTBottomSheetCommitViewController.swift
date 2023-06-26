@@ -158,7 +158,14 @@ extension TTBottomSheetCommitViewController: TTTextViewDelegate {
 
 extension TTBottomSheetCommitViewController: TTBottomSheetCommitPhotoViewDelegate {
     public func didTapPlusButton() {
-        // TODO: 작동 안됨. 확인 필요
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default)
+        let getPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        [takePhotoAction, getPhotoFromAlbumAction, cancelAction].forEach {
+            alertVC.addAction($0)
+        }
+        self.present(alertVC, animated: true)
     }
 }
 

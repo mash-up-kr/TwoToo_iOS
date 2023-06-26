@@ -12,7 +12,7 @@ public protocol TTBottomSheetCommitPhotoViewDelegate: AnyObject {
 }
 
 /// 인증하기 바텀 시트 내부의 사진 첨부 뷰 입니다.
-public final class TTBottomSheetCommitPhotoView: UIImageView {
+public final class TTBottomSheetCommitPhotoView: UIView {
     
     // TODO: 사진이 있을 때와 없을 때 구분이 필요합니다.
     
@@ -23,10 +23,8 @@ public final class TTBottomSheetCommitPhotoView: UIImageView {
         let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
         v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         v.tintColor = .mainWhite
-        // TODO: 버튼 터치 이벤트 동작 안함
-        v.addTapAction { [weak self] in
+        v.addAction { [weak self] in
             self?.delegate?.didTapPlusButton()
-            print("tap!")
         }
         return v
     }()
@@ -39,7 +37,7 @@ public final class TTBottomSheetCommitPhotoView: UIImageView {
         return v
     }()
     
-    private lazy var stackView: UIStackView = {
+    private lazy var descriptionStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
         v.spacing = 14
@@ -47,6 +45,12 @@ public final class TTBottomSheetCommitPhotoView: UIImageView {
         [self.plusButton, self.cameraGuideLabel].forEach {
             v.addArrangedSubview($0)
         }
+        return v
+    }()
+    
+    private lazy var photoView: UIImageView = {
+        let v = UIImageView()
+        v.backgroundColor = .mainPink.withAlphaComponent(0.3)
         return v
     }()
     
@@ -61,23 +65,25 @@ public final class TTBottomSheetCommitPhotoView: UIImageView {
     }
     
     private func layout() {
-        self.addSubview(self.stackView)
+        self.addSubviews(self.photoView, self.descriptionStackView)
         
-        self.stackView.snp.makeConstraints { make in
+        self.photoView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.descriptionStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
     }
     
     private func attribute() {
-        self.backgroundColor = .mainPink.withAlphaComponent(0.3)
         self.layer.cornerRadius = 15
         self.contentMode = .scaleToFill
     }
-    
+
     /// 사진을 촬영하거나 사진첩에세 이미지를 가져오면 업데이트 합니다.
     public func updateImage(_ photo: UIImage) {
-        self.image = photo
-        self.stackView.isHidden = true
+        self.photoView.image = photo
     }
     
 }
