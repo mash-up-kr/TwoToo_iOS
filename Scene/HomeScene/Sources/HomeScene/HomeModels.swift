@@ -351,8 +351,12 @@ enum Home {
             var title: String
             /// 메세지
             var message: String
+            /// 상대방 새싹 이미지
+            var partnerImage: UIImage
             /// 상대방 퍼센테이지 텍스트
             var partnerPercentageText: String
+            /// 내 새싹 이미지
+            var myImage: UIImage
             /// 내 퍼센테이지 텍스트
             var myPercentageText: String
             /// 옵션

@@ -280,6 +280,37 @@ extension Home.Model.Challenge {
         
         return viewModel
     }
+    
+    func toCompletedViewModel() -> Home.ViewModel.CompletedViewModel {
+        var viewModel = Home.ViewModel.CompletedViewModel(
+            title: "", message: "",
+            partnerImage: UIImage(), partnerPercentageText: "",
+            myImage: UIImage(), myPercentageText: ""
+        )
+        
+        // 메세지 매핑
+        if (self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom),
+           (self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom) {
+            viewModel.title = "축하합니다!"
+            viewModel.message = "둘다 꽃을 피웠어요!\n서로의 꽃을 확인해보세요!"
+        }
+        else {
+            viewModel.title = "수고했어요!"
+            viewModel.message = "챌린지가 끝났어요!\n서로의 달성률을 확인해보세요"
+        }
+        
+        // 퍼센테이지 매핑
+        viewModel.partnerPercentageText = self.calculatePercentageText(certCount: self.partnerInfo.certCount)
+        viewModel.myPercentageText = self.calculatePercentageText(certCount: self.myInfo.certCount)
+        
+        // 내 꽃 매핑
+        viewModel.myImage = UIImage() // TODO: 꽃 매핑 워커
+        
+        // 상대방 꽃 매핑
+        viewModel.partnerImage = UIImage() // TODO: 꽃 매핑 워커
+        
+        return viewModel
+    }
 }
 
 private extension Home.Model.Challenge {
