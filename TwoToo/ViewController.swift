@@ -38,6 +38,43 @@ class ViewController: UIViewController {
         return v
     }()
     
+    lazy var popup: TTPopup = {
+        let v = TTPopup(
+            title: "Test",
+            resultView: self.popupContentView,
+            description: "테스트 입니다",
+            buttonTitles: ["취소", "그만두기"]
+        )
+        v.didTapBackground {
+            print("배경 클릭")
+        }
+        v.didTapLeftButton {
+            print("왼쪽 버튼 클릭")
+        }
+        v.didTapRightButton {
+            print("오른쪽 버튼 클릭")
+        }
+        return v
+    }()
+    
+    lazy var popupContentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .grey200
+        return v
+    }()
+    
+    lazy var nameLabel: UILabel = {
+        let v = UILabel()
+        v.text = "내 이름"
+        return v
+    }()
+    
+    lazy var partnerLabel: UILabel = {
+        let v = UILabel()
+        v.text = "상대방 이름"
+        return v
+    }()
+    
     @objc func didTapShortToastTest() {
         Task { @MainActor in
             Toast.shared.makeToast("1")
@@ -58,6 +95,20 @@ class ViewController: UIViewController {
         self.view.addSubview(self.stackView)
         self.stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        self.view.addSubview(self.popup)
+        
+        self.popupContentView.addSubview(self.nameLabel)
+        self.popupContentView.addSubview(self.partnerLabel)
+        
+        self.nameLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(10)
+        }
+        self.partnerLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(10)
         }
     }
 }
