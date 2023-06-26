@@ -229,7 +229,62 @@ extension Home.Model.Challenge {
         return viewModel
     }
     
-    private func calculateDDayText(endDate: Date?) -> String {
+    func toChallengeCompletedViewModel() -> Home.ViewModel.ChallengeCompletedViewModel {
+        var viewModel = Home.ViewModel.ChallengeCompletedViewModel(
+            challengeInfo: .init(challengeNameText: ""),
+            progress: .init(
+                partnerNameText: "", myNameText: "",
+                partnerPercentageText: "", myPercentageText: "",
+                partnerPercentageNumber: 0, myPercentageNumber: 0
+            ),
+            order: .init(challengeOrderText: "", partenrNameText: "", myNameText: ""),
+            partnerFlower: .init(
+                image: UIImage(), isFlowerTextHidden: false,
+                flowerNameText: "", flowerDescText: "", partnerNameText: ""
+            ),
+            myFlower: .init(
+                image: UIImage(), isFlowerTextHidden: false,
+                flowerNameText: "", flowerDescText: "", myNameText: ""
+            )
+        )
+        
+        // 챌린지 정보 매핑
+        viewModel.challengeInfo.challengeNameText = self.name ?? ""
+        
+        // 프로그래스 매핑
+        viewModel.progress.partnerNameText = self.partnerInfo.nickname
+        viewModel.progress.myNameText = self.myInfo.nickname
+        viewModel.progress.partnerPercentageText = self.calculatePercentageText(certCount: self.partnerInfo.certCount)
+        viewModel.progress.myPercentageText = self.calculatePercentageText(certCount: self.myInfo.certCount)
+        viewModel.progress.partnerPercentageNumber = self.calculatePercentageNumber(certCount: self.partnerInfo.certCount)
+        viewModel.progress.myPercentageNumber = self.calculatePercentageNumber(certCount: self.myInfo.certCount)
+        
+        // 순서 매핑
+        viewModel.order.challengeOrderText = self.calculateOrderText(order: self.order)
+        viewModel.order.partenrNameText = self.partnerInfo.nickname
+        viewModel.order.myNameText = self.myInfo.nickname
+        
+        // 상대방 꽃 매핑
+        viewModel.partnerFlower.image = UIImage() // TODO: 꽃 매핑 워커
+        viewModel.partnerFlower.flowerNameText = "" // TODO: 꽃 매핑 워커
+        viewModel.partnerFlower.flowerDescText = "" // TODO: 꽃 매핑 워커
+        viewModel.partnerFlower.isFlowerTextHidden = !(self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom)
+        viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
+        
+        // 내 꽃 매핑
+        viewModel.myFlower.image = UIImage() // TODO: 꽃 매핑 워커
+        viewModel.myFlower.flowerNameText = "" // TODO: 꽃 매핑 워커
+        viewModel.myFlower.flowerDescText = "" // TODO: 꽃 매핑 워커
+        viewModel.myFlower.isFlowerTextHidden = !(self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom)
+        viewModel.myFlower.myNameText = self.myInfo.nickname
+        
+        return viewModel
+    }
+}
+
+private extension Home.Model.Challenge {
+    
+    func calculateDDayText(endDate: Date?) -> String {
         guard let endDate = endDate else {
             return ""
         }
@@ -244,7 +299,7 @@ extension Home.Model.Challenge {
         }
     }
     
-    private func calculatePercentageText(certCount: Int?) -> String {
+    func calculatePercentageText(certCount: Int?) -> String {
         guard let certCount = certCount else {
             return ""
         }
@@ -259,7 +314,7 @@ extension Home.Model.Challenge {
         }
     }
 
-    private func calculatePercentageNumber(certCount: Int?) -> Double {
+    func calculatePercentageNumber(certCount: Int?) -> Double {
         guard let certCount = certCount else {
             return 0.0
         }
@@ -273,7 +328,7 @@ extension Home.Model.Challenge {
         }
     }
     
-    private func calculateOrderText(order: Int?) -> String {
+    func calculateOrderText(order: Int?) -> String {
         if let order = order {
             return "\(order)번째 챌린지 중"
         } else {
