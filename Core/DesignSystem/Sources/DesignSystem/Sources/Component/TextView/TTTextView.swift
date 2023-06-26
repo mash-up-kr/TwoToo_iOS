@@ -30,6 +30,11 @@ public final class TTTextView: UITextView {
         self.delegate = self
     }
     
+    public convenience init(placeHolder: String) {
+        self.init()
+        self.placeHolderLabel.text = placeHolder
+    }
+     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -49,10 +54,6 @@ public final class TTTextView: UITextView {
         self.textColor = .black
         self.isEditable = true
         self.layer.cornerRadius = 20
-    }
-    
-    public func configurePlaceHolder(_ placeHolder: String) {
-        self.placeHolderLabel.text = placeHolder
     }
 }
 

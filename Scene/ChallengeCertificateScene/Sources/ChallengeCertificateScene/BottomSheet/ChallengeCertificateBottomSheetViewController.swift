@@ -1,57 +1,57 @@
 //
-//  TTBottomSheetPushViewController.swift
+//  ChallengeCertificateBottomSheetViewController.swift
 //  
 //
-//  Created by Julia on 2023/06/23.
+//  Created by Julia on 2023/06/26.
 //
 
 import UIKit
+import DesignSystem
 
-///칭찬하기, 찌르기 기능에 공통으로 사용되는 바텀시트 입니다.
-public final class TTBottomSheetPushViewController: UIViewController, ScrollableViewController {
+final class ChallengeCertificateBottomSheetViewController: UIViewController, BottomSheetViewController {
+    
+    private let buttonHeight: CGFloat = 57
     
     public var scrollView: UIScrollView {
         self.backScrollView
     }
     
-    private let buttonHeight: CGFloat = 57
-
+    // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
         let v = UILabel()
+        v.text = "인증하기"
         v.font = .h2
         v.textColor = .primary
+        v.textAlignment = .center
         return v
     }()
     
-    // TODO: 이것만 텍스트뷰 편집이 안된다 ㅠㅠ
-    private lazy var messageTextView: TTTextView = {
-        let v = TTTextView()
+    private lazy var commitPhotoView: ChallengeCertificateBottomSheetPhotoView = {
+        let v = ChallengeCertificateBottomSheetPhotoView(frame: .zero)
+        v.delegate = self
+        return v
+    }()
+    
+    private lazy var commentTextView: TTTextView = {
+        let v = TTTextView(placeHolder: "소감을 작성해주세요.")
         v.customDelegate = self
         return v
     }()
     
-    private lazy var descriptionLabel: UILabel = {
-        let v = UILabel()
-        v.font = .body1
-        v.textColor = .grey500
-        return v
-    }()
-    
     // TODO: 컴포넌트 버튼으로 변경필요
-    private lazy var pushButton: UIButton = {
+    private lazy var commitButton: UIButton = {
         let v = UIButton()
-        v.setTitle("보내기", for: .normal)
-        v.backgroundColor = .gray 
-        v.tintColor = .mainWhite
+        v.setTitle("인증 하기", for: .normal)
+        v.backgroundColor = .orange
         return v
     }()
     
     private lazy var scrollSizeFitView: UIView = {
         let v = UIView()
         v.addSubviews(self.titleLabel,
-                      self.messageTextView,
-                      self.descriptionLabel,
-                      self.pushButton)
+                      self.commitPhotoView,
+                      self.commentTextView,
+                      self.commitButton)
         return v
     }()
     
@@ -65,22 +65,14 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
         return v
     }()
     
+    // MARK: - Method
     public init() {
         super.init(nibName: nil, bundle: nil)
         self.layout()
         self.addObserverKeyboard()
     }
     
-    public convenience init(title: String,
-                          placeHolder: String,
-                          description: String?) {
-        self.init()
-        self.titleLabel.text = title
-        self.messageTextView.configurePlaceHolder(placeHolder)
-        self.descriptionLabel.text = description
-    }
-    
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -92,25 +84,25 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
             make.centerX.equalToSuperview()
         }
         
-        self.messageTextView.snp.makeConstraints { make in
+        self.commitPhotoView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.58)
+        }
+        
+        self.commentTextView.snp.makeConstraints { make in
+            make.top.equalTo(self.commitPhotoView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(85)
         }
         
-        self.descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.messageTextView.snp.bottom).offset(14)
-            make.leading.trailing.equalToSuperview()
-        }
-
-        self.pushButton.snp.makeConstraints { make in
-            // TODO:  버튼이 위 or 아래인진 디자인 나오면 수정 필요
-            make.top.equalTo(self.descriptionLabel.snp.bottom).offset(16)
+        self.commitButton.snp.makeConstraints { make in
+            make.top.equalTo(self.commentTextView.snp.bottom).offset(29)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(self.buttonHeight)
-//            make.bottom.equalToSuperview() //정상 작동 안됨
+            make.bottom.equalToSuperview()
         }
-
+        
         self.scrollSizeFitView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(21)
             make.leading.equalToSuperview().offset(24)
@@ -122,16 +114,36 @@ public final class TTBottomSheetPushViewController: UIViewController, Scrollable
             make.edges.equalToSuperview()
         }
     }
-    
 }
 
-extension TTBottomSheetPushViewController: TTTextViewDelegate {
+// MARK: - Delegate
+extension ChallengeCertificateBottomSheetViewController: TTTextViewDelegate {
     public func textViewDidEndEditing(text: String) {
-        print("칭찬 편집 완료 \(text)")
+        print("소감 작성 완료 \(text)")
     }
 }
 
-extension TTBottomSheetPushViewController {
+extension ChallengeCertificateBottomSheetViewController: ChallengeCertificateBottomSheetPhotoViewDelegate {
+    public func didTapPlusButton() {
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default)
+        let getPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        [takePhotoAction, getPhotoFromAlbumAction, cancelAction].forEach {
+            alertVC.addAction($0)
+        }
+        self.present(alertVC, animated: true)
+    }
+}
+
+extension ChallengeCertificateBottomSheetViewController: UIScrollViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.scrollView.endEditing(true)
+    }
+}
+
+// MARK: - Keyboard Setting
+extension ChallengeCertificateBottomSheetViewController {
     private func addObserverKeyboard() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -147,9 +159,9 @@ extension TTBottomSheetPushViewController {
             let keyboardHeight = keyboardFrame.cgRectValue.height
             UIView.animate(withDuration: 0.3) {
                 self.scrollSizeFitView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().inset(keyboardHeight + self.buttonHeight)
+                    make.bottom.equalToSuperview().inset(keyboardHeight)
                 }
-                self.backScrollView.contentOffset.y = keyboardHeight + self.buttonHeight
+                self.backScrollView.contentOffset.y = keyboardHeight
                 self.view.layoutIfNeeded()
             }
         }
@@ -162,11 +174,5 @@ extension TTBottomSheetPushViewController {
             }
             self.view.layoutIfNeeded()
         }
-    }
-}
-
-extension TTBottomSheetPushViewController: UIScrollViewDelegate {
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.scrollView.endEditing(true)
     }
 }

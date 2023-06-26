@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class SelfSizingScrollView: UIScrollView {
+public final class SelfSizingScrollView: UIScrollView {
     
-    override var intrinsicContentSize: CGSize {
+    public override var intrinsicContentSize: CGSize {
         CGSize(width: contentSize.width,
                height: UIScreen.main.bounds.height * 0.75)
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         invalidateIntrinsicContentSize()
     }

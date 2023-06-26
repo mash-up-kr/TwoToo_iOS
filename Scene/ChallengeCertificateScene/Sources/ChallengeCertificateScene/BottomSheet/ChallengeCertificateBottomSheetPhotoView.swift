@@ -1,22 +1,19 @@
 //
-//  TTBottomSheetCommitPhotoView.swift
+//  ChallengeCertificateBottomSheetPhotoView.swift
 //  
 //
-//  Created by Julia on 2023/06/23.
+//  Created by Julia on 2023/06/26.
 //
 
 import UIKit
 
-public protocol TTBottomSheetCommitPhotoViewDelegate: AnyObject {
+public protocol ChallengeCertificateBottomSheetPhotoViewDelegate: AnyObject {
     func didTapPlusButton()
 }
 
-/// 인증하기 바텀 시트 내부의 사진 첨부 뷰 입니다.
-public final class TTBottomSheetCommitPhotoView: UIView {
-    
-    // TODO: 사진이 있을 때와 없을 때 구분이 필요합니다.
-    
-    public weak var delegate: TTBottomSheetCommitPhotoViewDelegate?
+public final class ChallengeCertificateBottomSheetPhotoView: UIView {
+        
+    public weak var delegate: ChallengeCertificateBottomSheetPhotoViewDelegate?
     
     private lazy var plusButton: UIButton = {
         let v = UIButton()
@@ -81,7 +78,7 @@ public final class TTBottomSheetCommitPhotoView: UIView {
         self.contentMode = .scaleToFill
     }
 
-    /// 사진을 촬영하거나 사진첩에세 이미지를 가져오면 업데이트 합니다.
+    /// 사진을 촬영하거나 사진첩에서 이미지를 가져오면 업데이트 합니다.
     public func updateImage(_ photo: UIImage) {
         self.photoView.image = photo
     }

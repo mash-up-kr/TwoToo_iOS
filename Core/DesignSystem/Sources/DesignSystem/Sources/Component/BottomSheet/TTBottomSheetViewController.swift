@@ -8,7 +8,7 @@
 import UIKit
 import FloatingPanel
 
-public protocol ScrollableViewController where Self: UIViewController {
+public protocol BottomSheetViewController where Self: UIViewController {
     var scrollView: UIScrollView { get }
 }
 
@@ -23,7 +23,7 @@ final public class TTBottomSheetViewController: FloatingPanelController {
         return v
     }()
     
-    public init(contentViewController: ScrollableViewController) {
+    public init(contentViewController: BottomSheetViewController) {
         super.init(delegate: nil)
         super.set(contentViewController: contentViewController)
         super.track(scrollView: contentViewController.scrollView)
@@ -38,7 +38,7 @@ final public class TTBottomSheetViewController: FloatingPanelController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUpView(contentViewController: ScrollableViewController) {
+    private func setUpView(contentViewController: BottomSheetViewController) {
         super.set(contentViewController: contentViewController)
         super.track(scrollView: contentViewController.scrollView)
         super.layout = TouchBlockIntrinsicPanelLayout()
