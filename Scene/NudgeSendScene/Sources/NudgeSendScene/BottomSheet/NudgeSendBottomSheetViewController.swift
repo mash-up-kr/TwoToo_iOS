@@ -8,7 +8,11 @@
 import UIKit
 import DesignSystem
 
-///칭찬하기, 찌르기 기능에 공통으로 사용되는 바텀시트 입니다.
+protocol NudgeSendBottomSheetViewControllerDelegate: AnyObject {
+    func didTapPushButton()
+    func didEndEditingMessageTextView(text: String)
+}
+
 public final class NudgeSendBottomSheetViewController: UIViewController, BottomSheetViewController {
     
     public var scrollView: UIScrollView {
@@ -17,18 +21,20 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
     
     private let buttonHeight: CGFloat = 57
     
+    weak var delegate: NudgeSendBottomSheetViewControllerDelegate?
+    
     // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.font = .h2
-        v.text = "찌르기 문구 보내기 "
+        v.textAlignment = .center
+        v.text = "찌르기 문구 보내기 (5/5)"
         v.textColor = .primary
         return v
     }()
     
-    // TODO: 이것만 텍스트뷰 편집이 안된다 ㅠㅠ
     private lazy var messageTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n 최대 30자까지 입력 가능")
+        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n최대 30자까지 입력 가능")
         v.customDelegate = self
         return v
     }()
@@ -39,6 +45,9 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
         v.setTitle("보내기", for: .normal)
         v.backgroundColor = .gray
         v.tintColor = .mainWhite
+        v.addAction { [weak self] in
+            self?.delegate?.didTapPushButton()
+        }
         return v
     }()
     
@@ -61,21 +70,17 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
     }()
     
     // MARK: - Method
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+    public override func viewDidLoad() {
+        super.viewDidLoad()
         self.layout()
-        self.addObserverKeyboard()
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.attribute()
     }
     
     private func layout() {
-        self.view.addSubviews(self.backScrollView)
+        self.view.addSubview(self.backScrollView)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(21)
+            make.top.equalToSuperview().offset(30)
             make.centerX.equalToSuperview()
         }
         
@@ -87,10 +92,10 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
 
         self.pushButton.snp.makeConstraints { make in
             // TODO:  버튼이 위 or 아래인진 디자인 나오면 수정 필요
-            make.top.equalTo(self.messageTextView.snp.bottom).offset(16)
+            make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(self.buttonHeight)
-//            make.bottom.equalToSuperview() //정상 작동 안됨
+            make.bottom.equalToSuperview() //바텀에 정상적으로 붙지 않음
         }
 
         self.scrollSizeFitView.snp.makeConstraints { make in
@@ -105,52 +110,26 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
         }
     }
     
+    private func attribute() {
+        self.view.backgroundColor = .second02
+    }
+    
+    /// 찌르기 횟수를 가져와 title을 구성합니다.
+    public func configureNudgeCount(_ count: Int) {
+        self.titleLabel.text = "찌르기 문구 보내기 (\(count)/5)"
+    }
+    
 }
 
 // MARK: - Delegate
 extension NudgeSendBottomSheetViewController: TTTextViewDelegate {
     public func textViewDidEndEditing(text: String) {
-        print("찌르기 문구 입력 완료 \(text)")
+        self.delegate?.didEndEditingMessageTextView(text: text)
     }
 }
 
 extension NudgeSendBottomSheetViewController: UIScrollViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.scrollView.endEditing(true)
-    }
-}
-
-// MARK: - Keyboard Setting
-extension NudgeSendBottomSheetViewController {
-    private func addObserverKeyboard() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-        
-    }
-    
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight = keyboardFrame.cgRectValue.height
-            UIView.animate(withDuration: 0.3) {
-                self.scrollSizeFitView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().inset(keyboardHeight + self.buttonHeight)
-                }
-                self.backScrollView.contentOffset.y = keyboardHeight + self.buttonHeight
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @objc private func keyboardWillHide(_ notification: Notification) {
-        UIView.animate(withDuration: 0.3) {
-            self.scrollSizeFitView.snp.updateConstraints { make in
-                make.bottom.equalToSuperview().inset(14)
-            }
-            self.view.layoutIfNeeded()
-        }
     }
 }
