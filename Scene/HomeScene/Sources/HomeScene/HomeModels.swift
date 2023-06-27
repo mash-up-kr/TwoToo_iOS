@@ -336,13 +336,13 @@ enum Home {
         /// 둘다 인증 팝업
         struct BothCertificationViewModel {
             /// 타이틀
-            var title: String = "모두 인증 완료"
+            static let title: String = "모두 인증 완료"
             /// 메세지
-            var message: String = "서로 인증을 완료했어요! 짝꿍에게 응원 한마디를 남겨요"
+            static let message: String = "서로 인증을 완료했어요! 짝꿍에게 응원 한마디를 남겨요"
             /// 아니요
-            var noOptionText: String = "괜찮아요"
+            static let noOptionText: String = "괜찮아요"
             /// 네 옵션
-            var yesOptionText: String = "칭찬하기"
+            static let yesOptionText: String = "칭찬하기"
         }
 
         /// 완료 팝업
@@ -351,12 +351,16 @@ enum Home {
             var title: String
             /// 메세지
             var message: String
+            /// 상대방 새싹 이미지
+            var partnerImage: UIImage
             /// 상대방 퍼센테이지 텍스트
             var partnerPercentageText: String
+            /// 내 새싹 이미지
+            var myImage: UIImage
             /// 내 퍼센테이지 텍스트
             var myPercentageText: String
             /// 옵션
-            var optionText: String = "확인"
+            static let optionText: String = "확인"
         }
 
         struct Toast {
