@@ -89,7 +89,7 @@ final public class TTTextField: UIView, UIComponentBased {
         }
 
         self.textField.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.main.bounds.size.height * 0.05)
+            make.height.equalTo(UIScreen.main.bounds.size.height * 0.054)
         }
     }
     
