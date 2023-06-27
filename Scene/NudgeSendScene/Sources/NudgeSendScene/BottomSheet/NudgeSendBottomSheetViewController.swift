@@ -18,9 +18,7 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
     public var scrollView: UIScrollView {
         self.backScrollView
     }
-    
-    private let buttonHeight: CGFloat = 57
-    
+        
     weak var delegate: NudgeSendBottomSheetViewControllerDelegate?
     
     // MARK: - UIComponent
@@ -86,23 +84,24 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
         
         self.messageTextView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(85)
         }
 
         self.pushButton.snp.makeConstraints { make in
             // TODO:  버튼이 위 or 아래인진 디자인 나오면 수정 필요
             make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.buttonHeight)
-            make.bottom.equalToSuperview() //바텀에 정상적으로 붙지 않음
-        }
-
-        self.scrollSizeFitView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(21)
             make.leading.equalToSuperview().offset(24)
-            make.width.equalToSuperview().inset(24)
+            make.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(57)
             make.bottom.equalToSuperview()
+        }
+        
+        self.scrollSizeFitView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalToSuperview()
         }
         
         self.backScrollView.snp.makeConstraints { make in
@@ -118,7 +117,6 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
     public func configureNudgeCount(_ count: Int) {
         self.titleLabel.text = "찌르기 문구 보내기 (\(count)/5)"
     }
-    
 }
 
 // MARK: - Delegate

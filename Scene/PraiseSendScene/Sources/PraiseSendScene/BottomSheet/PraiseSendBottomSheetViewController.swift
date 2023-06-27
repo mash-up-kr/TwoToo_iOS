@@ -8,13 +8,18 @@
 import UIKit
 import DesignSystem
 
+protocol PraiseSendBottomSheetViewControllerDelegate: AnyObject {
+    func didTapPushButton()
+    func didEndEditingMessageTextView(text: String)
+}
+
 final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetViewController {
     
     public var scrollView: UIScrollView {
         self.backScrollView
     }
     
-    private let buttonHeight: CGFloat = 57
+    weak var delegate: PraiseSendBottomSheetViewControllerDelegate?
     
     // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
@@ -25,9 +30,8 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
         return v
     }()
     
-    // TODO: 이것만 텍스트뷰 편집이 안된다 ㅠㅠ
     private lazy var messageTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "(최대 20자)칭찬 문구를 입력해주세요. \n예) 오늘도 잘해냈어, 앞으로도 파이팅!")
+        let v = TTTextView(placeHolder: "(최대 20자)칭찬 문구를 입력해주세요.\n예) 오늘도 잘해냈어, 앞으로도 파이팅!")
         v.customDelegate = self
         return v
     }()
@@ -46,6 +50,9 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
         v.setTitle("보내기", for: .normal)
         v.backgroundColor = .gray
         v.tintColor = .mainWhite
+        v.addAction { [weak self] in
+            self?.delegate?.didTapPushButton()
+        }
         return v
     }()
     
@@ -69,43 +76,40 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
     }()
     
     // MARK: - Method
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+    public override func viewDidLoad() {
+        super.viewDidLoad()
         self.layout()
-        self.addObserverKeyboard()
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.attribute()
     }
     
     private func layout() {
         self.view.addSubviews(self.backScrollView)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(21)
+            make.top.equalToSuperview().offset(46)
             make.centerX.equalToSuperview()
         }
         
         self.messageTextView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(85)
         }
 
         self.pushButton.snp.makeConstraints { make in
             // TODO:  버튼이 위 or 아래인진 디자인 나오면 수정 필요
-            make.top.equalTo(self.messageTextView.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.buttonHeight)
-//            make.bottom.equalToSuperview() //정상 작동 안됨
+            make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(57)
+            make.bottom.equalToSuperview()
         }
 
         self.scrollSizeFitView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(21)
-            make.leading.equalToSuperview().offset(24)
-            make.width.equalToSuperview().inset(24)
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
+            make.width.equalToSuperview()
         }
         
         self.backScrollView.snp.makeConstraints { make in
@@ -113,12 +117,15 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
         }
     }
     
+    private func attribute() {
+        self.view.backgroundColor = .second02
+    }
 }
 
 // MARK: - Delegate
 extension PraiseSendBottomSheetViewController: TTTextViewDelegate {
     public func textViewDidEndEditing(text: String) {
-        print("칭찬 문구 입력 완료 \(text)")
+        self.delegate?.didEndEditingMessageTextView(text: text)
     }
 }
 
@@ -127,39 +134,3 @@ extension PraiseSendBottomSheetViewController: UIScrollViewDelegate {
         self.scrollView.endEditing(true)
     }
 }
-
-// MARK: - Keyboard Setting
-extension PraiseSendBottomSheetViewController {
-    private func addObserverKeyboard() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-        
-    }
-    
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight = keyboardFrame.cgRectValue.height
-            UIView.animate(withDuration: 0.3) {
-                self.scrollSizeFitView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().inset(keyboardHeight + self.buttonHeight)
-                }
-                self.backScrollView.contentOffset.y = keyboardHeight + self.buttonHeight
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @objc private func keyboardWillHide(_ notification: Notification) {
-        UIView.animate(withDuration: 0.3) {
-            self.scrollSizeFitView.snp.updateConstraints { make in
-                make.bottom.equalToSuperview().inset(14)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-}
-
