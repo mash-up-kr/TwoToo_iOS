@@ -9,9 +9,7 @@ import UIKit
 import DesignSystem
 
 final class ChallengeCertificateBottomSheetViewController: UIViewController, BottomSheetViewController {
-    
-    private let buttonHeight: CGFloat = 57
-    
+        
     public var scrollView: UIScrollView {
         self.backScrollView
     }
@@ -66,14 +64,10 @@ final class ChallengeCertificateBottomSheetViewController: UIViewController, Bot
     }()
     
     // MARK: - Method
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.layout()
         self.addObserverKeyboard()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func layout() {
@@ -99,7 +93,7 @@ final class ChallengeCertificateBottomSheetViewController: UIViewController, Bot
         self.commitButton.snp.makeConstraints { make in
             make.top.equalTo(self.commentTextView.snp.bottom).offset(29)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.buttonHeight)
+            make.height.equalTo(57)
             make.bottom.equalToSuperview()
         }
         
