@@ -36,11 +36,12 @@ final class ChallengeCertificateBottomSheetViewController: UIViewController, Bot
         return v
     }()
     
-    // TODO: 컴포넌트 버튼으로 변경필요
     private lazy var commitButton: UIButton = {
         let v = UIButton()
-        v.setTitle("인증 하기", for: .normal)
-        v.backgroundColor = .orange
+        v.setTitle("인증하기", for: .normal)
+        v.layer.cornerRadius = 20
+        v.backgroundColor = .grey400
+        v.setTitleColor(.white, for: .normal)
         return v
     }()
     

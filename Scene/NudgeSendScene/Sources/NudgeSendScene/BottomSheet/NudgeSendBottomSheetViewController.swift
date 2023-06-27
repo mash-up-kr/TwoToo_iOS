@@ -37,12 +37,13 @@ public final class NudgeSendBottomSheetViewController: UIViewController, BottomS
         return v
     }()
     
-    // TODO: 컴포넌트 버튼으로 변경필요
+    
     private lazy var pushButton: UIButton = {
         let v = UIButton()
         v.setTitle("보내기", for: .normal)
-        v.backgroundColor = .gray
-        v.tintColor = .mainWhite
+        v.layer.cornerRadius = 20
+        v.backgroundColor = .grey400
+        v.setTitleColor(.white, for: .normal)
         v.addAction { [weak self] in
             self?.delegate?.didTapPushButton()
         }
