@@ -92,6 +92,11 @@ final public class TTTextField: UIView, UIComponentBased {
             make.height.equalTo(UIScreen.main.bounds.size.height * 0.05)
         }
     }
+    
+    /// textField의 값을 가져오는 함수
+    public func getTextFieldValue() -> String {
+        return textField.text ?? ""
+    }
 
     @objc private func didChangeTextfieldText(_ notification: Notification) {
         if let text = self.textField.text {
