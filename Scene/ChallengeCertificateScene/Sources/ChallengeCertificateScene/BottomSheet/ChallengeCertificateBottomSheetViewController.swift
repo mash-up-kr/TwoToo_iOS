@@ -8,11 +8,38 @@
 import UIKit
 import DesignSystem
 
+// 바텀시트 뿐만 아니라 VC에서도 필요할 것 같아 일단 여기 두긴했는데, 모델에서 수정해야 될 필요가 보입니다!
+enum CommitPhotoType {
+    case takePhoto
+    case fetchPhotoFromAlbum
+}
+
+protocol ChallengeCertificateBottomSheetViewControllerDelegate: AnyObject {
+    func didTapCommitButton()
+    func didEndEditingCommentTextView(text: String)
+    func didTapCommitPhotoType(type: CommitPhotoType)
+}
+
+/// 챌린지 인증 Scene에서 띄워지는 바텀시트 화면입니다.
+///
+/// 사용 예시
+/// ```swift
+/// let vc = TTBottomSheetViewController(contentViewController: ChallengeCertificateBottomSheetViewController())
+/// self.present(vc, animated: true)
+/// ```
+///
+/// delegate 패턴을 이용해 이벤트를 상위 뷰에 전달받을 수 있습니다.
+///  1. 인증하기 버튼을 탭했을 때
+///  2. 문구 입력이 끝났을 때
+///  3. 사진 촬영 / 앨범에서 가져오기 버튼을 눌렀을 때
+
 final class ChallengeCertificateBottomSheetViewController: UIViewController, BottomSheetViewController {
         
     public var scrollView: UIScrollView {
         self.backScrollView
     }
+    
+    weak var delegate: ChallengeCertificateBottomSheetViewControllerDelegate?
     
     // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
@@ -42,6 +69,9 @@ final class ChallengeCertificateBottomSheetViewController: UIViewController, Bot
         v.layer.cornerRadius = 20
         v.backgroundColor = .grey400
         v.setTitleColor(.white, for: .normal)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapCommitButton()
+        }
         return v
     }()
     
@@ -114,17 +144,21 @@ final class ChallengeCertificateBottomSheetViewController: UIViewController, Bot
 // MARK: - Delegate
 extension ChallengeCertificateBottomSheetViewController: TTTextViewDelegate {
     public func textViewDidEndEditing(text: String) {
-        print("소감 작성 완료 \(text)")
+        self.delegate?.didEndEditingCommentTextView(text: text)
     }
 }
 
 extension ChallengeCertificateBottomSheetViewController: ChallengeCertificateBottomSheetPhotoViewDelegate {
     public func didTapPlusButton() {
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default)
-        let getPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default)
+        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default) { [weak self] _ in
+            self?.delegate?.didTapCommitPhotoType(type: .takePhoto)
+        }
+        let fetchPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { [weak self] _ in
+            self?.delegate?.didTapCommitPhotoType(type: .fetchPhotoFromAlbum)
+        }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        [takePhotoAction, getPhotoFromAlbumAction, cancelAction].forEach {
+        [takePhotoAction, fetchPhotoFromAlbumAction, cancelAction].forEach {
             alertVC.addAction($0)
         }
         self.present(alertVC, animated: true)

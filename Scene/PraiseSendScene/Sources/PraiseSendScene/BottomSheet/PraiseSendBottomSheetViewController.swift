@@ -13,6 +13,18 @@ protocol PraiseSendBottomSheetViewControllerDelegate: AnyObject {
     func didEndEditingMessageTextView(text: String)
 }
 
+/// 칭찬하기 Scene에서 띄워지는 바텀시트 화면입니다.
+///
+/// 사용 예시
+/// ```swift
+/// let vc = TTBottomSheetViewController(contentViewController: PraiseSendBottomSheetViewController())
+/// self.present(vc, animated: true)
+/// ```
+///
+/// delegate 패턴을 이용해 이벤트를 상위 뷰에 전달받을 수 있습니다.
+///  1. 보내기 버튼을 탭했을 때
+///  2. 문구 입력이 끝났을 때
+
 final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetViewController {
     
     public var scrollView: UIScrollView {

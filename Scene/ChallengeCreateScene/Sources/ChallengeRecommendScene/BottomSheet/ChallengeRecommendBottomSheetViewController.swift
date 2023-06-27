@@ -8,11 +8,28 @@
 import UIKit
 import DesignSystem
 
+/// 챌린지 추천 Scene에서 띄워지는 바텀시트 화면입니다.
+///
+/// 사용 예시
+/// ```swift
+/// let vc = TTBottomSheetViewController(contentViewController: ChallengeRecommendBottomSheetViewController())
+/// self.present(vc, animated: true)
+/// ```
+///
+/// delegate 패턴을 이용해 이벤트를 상위 뷰에 전달받을 수 있습니다.
+///  - 추천 챌린지 리스트의 태그 뷰를 선택 했을 때
+
+protocol ChallengeRecommendBottomSheetViewControllerDelegate: AnyObject {
+    func didTapTagView(title: String, isTapped: Bool)
+}
+
 final class ChallengeRecommendBottomSheetViewController: UIViewController, BottomSheetViewController {
     
     public var scrollView: UIScrollView {
         self.backScrollView
     }
+    
+    weak var delegate: ChallengeRecommendBottomSheetViewControllerDelegate?
     
     private let challengeList: [String] = [
         "💗 사랑한다고 얘기 해주기",
@@ -115,6 +132,6 @@ extension ChallengeRecommendBottomSheetViewController: UIScrollViewDelegate {
 
 extension ChallengeRecommendBottomSheetViewController: ChallengeRecommendTagViewDelegate {
     func didTapTagView(title: String, isTapped: Bool) {
-        print(title, isTapped)
+        self.delegate?.didTapTagView(title: title, isTapped: isTapped)
     }
 }
