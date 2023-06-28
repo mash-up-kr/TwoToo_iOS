@@ -110,6 +110,8 @@ public enum Assets: String {
     case icon_step3_mate
     case icon_step3_my
     case icon_waiting
+    case icon_delete
+    case icon_sleepingseed
     case onboarding_1
     case onboarding_2
     case onboarding_3
