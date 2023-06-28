@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_step1_my.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
