@@ -38,14 +38,13 @@ public final class ChallengeCertificateBottomSheetPhotoView: UIView {
         let v = UIStackView()
         v.axis = .vertical
         v.spacing = 14
-        v.distribution = .fill
         [self.plusButton, self.cameraGuideLabel].forEach {
             v.addArrangedSubview($0)
         }
         return v
     }()
     
-    private lazy var photoView: UIImageView = {
+    private lazy var photoImageView: UIImageView = {
         let v = UIImageView()
         v.backgroundColor = .mainPink.withAlphaComponent(0.3)
         return v
@@ -62,9 +61,9 @@ public final class ChallengeCertificateBottomSheetPhotoView: UIView {
     }
     
     private func layout() {
-        self.addSubviews(self.photoView, self.descriptionStackView)
+        self.addSubviews(self.photoImageView, self.descriptionStackView)
         
-        self.photoView.snp.makeConstraints { make in
+        self.photoImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -80,7 +79,7 @@ public final class ChallengeCertificateBottomSheetPhotoView: UIView {
 
     /// 사진을 촬영하거나 사진첩에서 이미지를 가져오면 업데이트 합니다.
     public func updateImage(_ photo: UIImage) {
-        self.photoView.image = photo
+        self.photoImageView.image = photo
     }
     
 }
