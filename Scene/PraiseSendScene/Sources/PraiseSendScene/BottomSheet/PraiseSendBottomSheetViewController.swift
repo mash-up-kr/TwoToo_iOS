@@ -80,7 +80,6 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
-        v.delegate = self
         v.addTapAction { [weak self] in
             self?.view.endEditing(true)
         }
@@ -110,7 +109,6 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
         }
 
         self.pushButton.snp.makeConstraints { make in
-            // TODO:  버튼이 위 or 아래인진 디자인 나오면 수정 필요
             make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
@@ -138,11 +136,5 @@ final class PraiseSendBottomSheetViewController: UIViewController, BottomSheetVi
 extension PraiseSendBottomSheetViewController: TTTextViewDelegate {
     public func textViewDidEndEditing(text: String) {
         self.delegate?.didEndEditingMessageTextView(text: text)
-    }
-}
-
-extension PraiseSendBottomSheetViewController: UIScrollViewDelegate {
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.scrollView.endEditing(true)
     }
 }
