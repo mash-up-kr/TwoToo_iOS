@@ -23,10 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-        let vc = NaviTestViewController()
-        let nav = UINavigationController(rootViewController: vc)
+//        let vc = BottomSheetTestViewController()
+//        vc.view.backgroundColor = .white
+//        let nav = UINavigationController(rootViewController: vc)
         
-        self.window?.rootViewController = nav
+//        self.window?.rootViewController = nav
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
