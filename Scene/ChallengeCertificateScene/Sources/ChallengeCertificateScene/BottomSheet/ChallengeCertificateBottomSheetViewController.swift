@@ -1,19 +1,45 @@
 //
-//  TTBottomSheetCommitViewController.swift
+//  ChallengeCertificateBottomSheetViewController.swift
 //  
 //
-//  Created by Julia on 2023/06/23.
+//  Created by Julia on 2023/06/26.
 //
 
 import UIKit
+import DesignSystem
 
-public final class TTBottomSheetCommitViewController: UIViewController, ScrollableViewController {
-    
+// 바텀시트 뿐만 아니라 VC에서도 필요할 것 같아 일단 여기 두긴했는데, 모델에서 수정해야 될 필요가 보입니다!
+enum CommitPhotoType {
+    case takePhoto
+    case fetchPhotoFromAlbum
+}
+
+protocol ChallengeCertificateBottomSheetViewControllerDelegate: AnyObject {
+    func didTapCommitButton()
+    func didEndEditingCommentTextView(text: String)
+    func didTapCommitPhotoType(type: CommitPhotoType)
+}
+
+/// 챌린지 인증 Scene에서 띄워지는 바텀시트 화면입니다.
+///
+/// 사용 예시
+/// ```swift
+/// let vc = TTBottomSheetViewController(contentViewController: ChallengeCertificateBottomSheetViewController())
+/// self.present(vc, animated: true)
+/// ```
+///
+/// delegate 패턴을 이용해 이벤트를 상위 뷰에 전달받을 수 있습니다.
+///  1. 인증하기 버튼을 탭했을 때
+///  2. 문구 입력이 끝났을 때
+///  3. 사진 촬영 / 앨범에서 가져오기 버튼을 눌렀을 때
+
+final class ChallengeCertificateBottomSheetViewController: UIViewController, BottomSheetViewController {
+        
     public var scrollView: UIScrollView {
         self.backScrollView
     }
     
-    private let buttonHeight: CGFloat = 57
+    weak var delegate: ChallengeCertificateBottomSheetViewControllerDelegate?
     
     // MARK: - UIComponent
     private lazy var titleLabel: UILabel = {
@@ -25,24 +51,27 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         return v
     }()
     
-    private lazy var commitPhotoView: TTBottomSheetCommitPhotoView = {
-        let v = TTBottomSheetCommitPhotoView(frame: .zero)
+    private lazy var commitPhotoView: ChallengeCertificateBottomSheetPhotoView = {
+        let v = ChallengeCertificateBottomSheetPhotoView(frame: .zero)
         v.delegate = self
         return v
     }()
     
     private lazy var commentTextView: TTTextView = {
-        let v = TTTextView()
-        v.configurePlaceHolder("소감을 작성해주세요.")
+        let v = TTTextView(placeHolder: "소감을 작성해주세요.")
         v.customDelegate = self
         return v
     }()
     
-    // TODO: 컴포넌트 버튼으로 변경필요
     private lazy var commitButton: UIButton = {
         let v = UIButton()
-        v.setTitle("인증 하기", for: .normal)
-        v.backgroundColor = .orange
+        v.setTitle("인증하기", for: .normal)
+        v.layer.cornerRadius = 20
+        v.backgroundColor = .grey400
+        v.setTitleColor(.white, for: .normal)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapCommitButton()
+        }
         return v
     }()
     
@@ -65,14 +94,11 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         return v
     }()
     
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+    // MARK: - Method
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.layout()
         self.addObserverKeyboard()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func layout() {
@@ -98,7 +124,7 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
         self.commitButton.snp.makeConstraints { make in
             make.top.equalTo(self.commentTextView.snp.bottom).offset(29)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.buttonHeight)
+            make.height.equalTo(57)
             make.bottom.equalToSuperview()
         }
         
@@ -115,8 +141,38 @@ public final class TTBottomSheetCommitViewController: UIViewController, Scrollab
     }
 }
 
-extension TTBottomSheetCommitViewController {
-    
+// MARK: - Delegate
+extension ChallengeCertificateBottomSheetViewController: TTTextViewDelegate {
+    public func textViewDidEndEditing(text: String) {
+        self.delegate?.didEndEditingCommentTextView(text: text)
+    }
+}
+
+extension ChallengeCertificateBottomSheetViewController: ChallengeCertificateBottomSheetPhotoViewDelegate {
+    public func didTapPlusButton() {
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default) { [weak self] _ in
+            self?.delegate?.didTapCommitPhotoType(type: .takePhoto)
+        }
+        let fetchPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { [weak self] _ in
+            self?.delegate?.didTapCommitPhotoType(type: .fetchPhotoFromAlbum)
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        [takePhotoAction, fetchPhotoFromAlbumAction, cancelAction].forEach {
+            alertVC.addAction($0)
+        }
+        self.present(alertVC, animated: true)
+    }
+}
+
+extension ChallengeCertificateBottomSheetViewController: UIScrollViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.scrollView.endEditing(true)
+    }
+}
+
+// MARK: - Keyboard Setting
+extension ChallengeCertificateBottomSheetViewController {
     private func addObserverKeyboard() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -147,30 +203,5 @@ extension TTBottomSheetCommitViewController {
             }
             self.view.layoutIfNeeded()
         }
-    }
-}
-
-extension TTBottomSheetCommitViewController: TTTextViewDelegate {
-    public func textViewDidEndEditing(text: String) {
-        print("소감 작성 완료 \(text)")
-    }
-}
-
-extension TTBottomSheetCommitViewController: TTBottomSheetCommitPhotoViewDelegate {
-    public func didTapPlusButton() {
-        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let takePhotoAction = UIAlertAction(title: "사진 촬영하기", style: .default)
-        let getPhotoFromAlbumAction = UIAlertAction(title: "앨범에서 가져오기", style: .default)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        [takePhotoAction, getPhotoFromAlbumAction, cancelAction].forEach {
-            alertVC.addAction($0)
-        }
-        self.present(alertVC, animated: true)
-    }
-}
-
-extension TTBottomSheetCommitViewController: UIScrollViewDelegate {
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.scrollView.endEditing(true)
     }
 }
