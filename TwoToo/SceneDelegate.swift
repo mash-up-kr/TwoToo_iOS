@@ -8,6 +8,7 @@
 import CoreKit
 import SceneKit
 import UIKit
+import NicknameRegistScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,7 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-        let vc = NaviTestViewController()
+        let fac = NicknameRegistSceneFactory().make(with: .init(didTriggerRouteToInvitationSendScene: .init(), didTriggerRouteToHomeScene: .init()))
+        let vc = fac.viewController
         let nav = UINavigationController(rootViewController: vc)
         
         self.window?.rootViewController = nav

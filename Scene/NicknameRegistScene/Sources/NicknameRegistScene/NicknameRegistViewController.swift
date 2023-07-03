@@ -30,33 +30,20 @@ final class NicknameRegistViewController: UIViewController {
     }()
     
     lazy var iconImageView: UIImageView = {
-        let v = UIImageView()
+        let v = UIImageView(.icon_nicknam_my)
         return v
     }()
     
-    // 이미지 밑의 초대 안내 뷰 입니다. 아 이거 만들어야 될거같은데 .... ㅜㅜ
-    lazy var introTagView: UIView = {
-        let v = UIView()
-        
-        return v
-    }
-    
-    lazy var inviteGuideView: UIView = {
-        let v = UIView()
-        v.isHidden = true
+    lazy var inviteTagView: InviteTagView = {
+        let v = InviteTagView("~~님의 초대 fdsfsdfsdsdffsd받음요")
         return v
     }()
-    
-    lazy var topIntroView: UIView = {
-        let v = UIView()
-        v.addSubviews(iconImageView, inviteGuideView)
-        return v
-    }()
-        
+
     lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.text = "투투에서 사용할\n닉네임을 입력해주세요."
         v.numberOfLines = 2
+        v.setLineSpacing(10) // TODO: - 임시
         v.font = .h1
         v.textColor = .primary
         v.textAlignment = .center
@@ -70,9 +57,13 @@ final class NicknameRegistViewController: UIViewController {
         return v
     }()
     
-    private lazy var confirmButton: TTPrimaryButton = {
-        let v = TTPrimaryButton()
-        v.title = "확인"
+    private lazy var confirmButton: UIButton = {
+        let v = UIButton()
+        v.setTitle("확인", for: .normal)
+        v.setTitleColor(.white, for: .normal)
+        v.titleLabel?.font = .h3
+        v.backgroundColor = .grey400
+        v.layer.cornerRadius = 20
         v.addAction {
             Task { [weak self] in
                 await self?.interactor.didTapConfirmButton()
@@ -99,11 +90,13 @@ final class NicknameRegistViewController: UIViewController {
     
     // MARK: - Layout
     private func setUI() {
+        self.view.backgroundColor = .second02 // TODO: - 종이질감 이미지로 변경 필요
+        
         let guide = self.view.safeAreaLayoutGuide
-        let safeAreaBottomInset = self.view.safeAreaInsets.bottom
         
         self.view.addSubviews(self.navigationBar,
-                              self.topIntroView,
+                              self.iconImageView,
+                              self.inviteTagView,
                               self.titleLabel,
                               self.nicknameTextField,
                               self.confirmButton)
@@ -111,32 +104,41 @@ final class NicknameRegistViewController: UIViewController {
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(guide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalToSuperview().offset(44)
+            make.height.equalTo(44)
+        }
+
+        self.iconImageView.snp.makeConstraints { make in
+            make.top.equalTo(self.navigationBar.snp.bottom)
+            make.width.equalTo(97)
+            make.height.equalTo(85)
+            make.centerX.equalToSuperview()
         }
         
-        self.topIntroView.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationBar.snp.bottom)
-            make.centerY.equalToSuperview()
-            make.height.equalTo(130)
+        self.inviteTagView.snp.makeConstraints { make in
+            make.top.equalTo(self.iconImageView.snp.bottom).offset(8)
+            make.height.equalTo(36)
+            make.centerX.equalToSuperview()
+
         }
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.iconImageView.snp.bottom)
-            make.centerY.equalToSuperview()
+            make.top.equalTo(self.inviteTagView.snp.bottom).offset(17)
+            make.height.equalTo(80)
+            make.centerX.equalToSuperview()
         }
-        
+
         self.nicknameTextField.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(30)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(80)
         }
-        
+
         self.confirmButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(57)
-            make.bottom.equalTo(safeAreaBottomInset)
+            make.bottom.equalTo(guide.snp.bottom)
         }
     }
 
