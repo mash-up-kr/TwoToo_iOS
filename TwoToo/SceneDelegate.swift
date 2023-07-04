@@ -8,6 +8,7 @@
 import CoreKit
 import SceneKit
 import UIKit
+import HistoryScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,11 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-//        let vc = BottomSheetTestViewController()
-//        vc.view.backgroundColor = .white
-//        let nav = UINavigationController(rootViewController: vc)
-        
-//        self.window?.rootViewController = nav
+        let vc = HistorySceneFactory().make().viewController
+        vc.view.backgroundColor = .white
+        self.window?.rootViewController = vc
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
