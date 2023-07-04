@@ -26,12 +26,11 @@ final class InviteTagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(_ title: String) {
+    convenience init() {
         self.init()
-        self.titleLabel.text = title
     }
     
-    func layout() {
+    private func layout() {
         self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints { make in
@@ -40,9 +39,13 @@ final class InviteTagView: UIView {
         }
     }
     
-    func attribute() {
+    private func attribute() {
         self.layer.cornerRadius = 10
         self.backgroundColor = .second01
+    }
+    
+    func configure(title: String) {
+        self.titleLabel.text = title
     }
     
 }

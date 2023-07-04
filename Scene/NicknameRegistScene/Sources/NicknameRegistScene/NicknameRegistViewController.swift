@@ -9,7 +9,11 @@
 import CoreKit
 import UIKit
 
-protocol NicknameRegistDisplayLogic: AnyObject {}
+protocol NicknameRegistDisplayLogic: AnyObject {
+    func displayInvitedUser(viewModel: NicknameRegist.ViewModel.Nickname)
+    func displayToast(viewModel: NicknameRegist.ViewModel.Toast)
+//    func display
+}
 
 final class NicknameRegistViewController: UIViewController {
     var interactor: NicknameRegistBusinessLogic
@@ -35,7 +39,7 @@ final class NicknameRegistViewController: UIViewController {
     }()
     
     lazy var inviteTagView: InviteTagView = {
-        let v = InviteTagView("~~님의 초대 fdsfsdfsdsdffsd받음요")
+        let v = InviteTagView()
         return v
     }()
 
@@ -43,7 +47,7 @@ final class NicknameRegistViewController: UIViewController {
         let v = UILabel()
         v.text = "투투에서 사용할\n닉네임을 입력해주세요."
         v.numberOfLines = 2
-        v.setLineSpacing(10) // TODO: - 임시
+        v.setLineSpacing(10) //임시
         v.font = .h1
         v.textColor = .primary
         v.textAlignment = .center
@@ -54,6 +58,11 @@ final class NicknameRegistViewController: UIViewController {
         let v = TTTextField(title: "닉네임",
                             placeholder: "4글자 이내 닉네임을 입력해주세요",
                             maxLength: 4)
+        v.returnValueAction = { [weak self] nickname in
+            Task {
+                await self?.interactor.didEnterNickname(text: nickname)
+            }
+        }
         return v
     }()
     
@@ -155,5 +164,14 @@ extension NicknameRegistViewController: NicknameRegistScene {
 // MARK: - Display Logic
 
 extension NicknameRegistViewController: NicknameRegistDisplayLogic {
+    func displayInvitedUser(viewModel: NicknameRegist.ViewModel.Nickname) {
+        self.iconImageView.image = .asset(.icon_nickname_mate)
+        self.inviteTagView.configure(title: viewModel.message)
+    }
     
+    func displayToast(viewModel: NicknameRegist.ViewModel.Toast) {
+        viewModel.message.unwrap { msg in
+            Toast.shared.makeToast(msg)
+        }
+    }
 }
