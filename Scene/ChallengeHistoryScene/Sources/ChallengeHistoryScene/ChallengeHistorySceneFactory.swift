@@ -21,7 +21,7 @@ public final class ChallengeHistorySceneFactory {
     
     public init() {}
     
-    public func make(with configuration: ChallengeHistoryConfiguration) -> ChallengeHistoryScene {
+    public func make() -> ChallengeHistoryScene {
         
         let presenter = ChallengeHistoryPresenter()
         let router = ChallengeHistoryRouter()

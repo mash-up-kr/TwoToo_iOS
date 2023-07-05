@@ -8,7 +8,7 @@
 import CoreKit
 import SceneKit
 import UIKit
-import HistoryScene
+import ChallengeHistoryScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-        let vc = HistorySceneFactory().make().viewController
+        let vc = ChallengeHistorySceneFactory().make().viewController
         vc.view.backgroundColor = .white
         self.window?.rootViewController = vc
     }

@@ -8,7 +8,7 @@
 import UIKit
 import Util
 
-final class HistoryCardCollectionViewCell: UICollectionViewCell {
+final class ChallengeHistoryCardViewCell: UICollectionViewCell {
     
     lazy var countLabel: UILabel = {
         let v = UILabel()
