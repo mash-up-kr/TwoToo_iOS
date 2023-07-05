@@ -17,8 +17,7 @@ class ViewController: UIViewController {
         v.distribution = .fillProportionally
         v.alignment = .center
         v.spacing = 5
-        v.addArrangedSubview(self.shortToastTest)
-        v.addArrangedSubview(self.longToastTest)
+        v.addArrangedSubview(self.tagView)
         return v
     }()
     
@@ -35,6 +34,17 @@ class ViewController: UIViewController {
         v.setTitle("토스트 테스트 (long)", for: .normal)
         v.setTitleColor(.black, for: .normal)
         v.addTarget(self, action: #selector(self.didTapLongToastTest), for: .touchUpInside)
+        return v
+    }()
+    
+    lazy var tagView: TTTagView = {
+        let v = TTTagView(title: "완료", textColor: .mainCoral, fontSize: .body2, cornerRadius: 10)
+        return v
+    }()
+    
+    
+    lazy var tag2View: TTTagView = {
+        let v = TTTagView(title: "D-24", textColor: .grey600, fontSize: .body2, cornerRadius: 4)
         return v
     }()
     
@@ -90,26 +100,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .white
-        
-        self.view.addSubview(self.stackView)
-        self.stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        self.view.backgroundColor = .mainPink
+        self.view.addSubview(self.tagView)
+        self.view.addSubview(self.tag2View)
+
+        self.tagView.snp.makeConstraints { make in
+            make.width.equalTo(42)
+            make.height.equalTo(24)
+            make.centerX.centerY.equalToSuperview()
         }
         
-        self.view.addSubview(self.popup)
-        
-        self.popupContentView.addSubview(self.nameLabel)
-        self.popupContentView.addSubview(self.partnerLabel)
-        
-        self.nameLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(10)
+        self.tag2View.snp.makeConstraints { make in
+            make.top.equalTo(self.tagView.snp.bottom).offset(20)
+            make.width.equalTo(50)
+            make.height.equalTo(30)
+            make.centerX.equalToSuperview()
         }
-        self.partnerLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(10)
-        }
+        
+            
     }
 }
 
