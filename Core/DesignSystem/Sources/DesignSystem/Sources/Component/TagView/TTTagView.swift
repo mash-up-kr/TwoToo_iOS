@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import Util
 
-public final class TTTagView: UIView {
+public final class TTTagView: UIView, UIComponentBased {
     
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -36,7 +37,7 @@ public final class TTTagView: UIView {
         self.layer.cornerRadius = cornerRadius
     }
     
-    private func layout() {
+    public func layout() {
         self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints { make in
@@ -45,6 +46,14 @@ public final class TTTagView: UIView {
             make.bottom.equalToSuperview().inset(4)
             make.trailing.equalToSuperview().inset(10)
         }
+    }
+    
+    public func attribute() {
+        
+    }
+    
+    func configureTitle(_ title: String) {
+        self.titleLabel.text = title
     }
     
 }
