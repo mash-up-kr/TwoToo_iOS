@@ -25,11 +25,7 @@ final class InviteTagView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    convenience init() {
-        self.init()
-    }
-    
+
     private func layout() {
         self.addSubview(self.titleLabel)
         
