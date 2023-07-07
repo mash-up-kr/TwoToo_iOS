@@ -7,6 +7,7 @@
 
 import CoreKit
 import SceneKit
+import MainScene
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -23,11 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
+//        self.window!.rootViewController
+        
+        
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
-//        let nav = UINavigationController(rootViewController: vc)
+        let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
-//        self.window?.rootViewController = nav
+        self.window?.rootViewController = tabBarController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

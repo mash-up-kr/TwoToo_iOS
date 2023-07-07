@@ -18,5 +18,10 @@ enum Main {
     
     enum ViewModel {
         
+        enum MainTab: Int, CaseIterable {
+            case history = 0
+            case home = 1
+            case myInfo = 2
+        }
     }
 }
