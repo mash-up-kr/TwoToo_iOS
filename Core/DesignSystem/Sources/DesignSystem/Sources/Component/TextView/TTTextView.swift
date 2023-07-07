@@ -9,6 +9,12 @@ import UIKit
 
 public protocol TTTextViewDelegate: AnyObject {
     func textViewDidEndEditing(text: String)
+    func textViewDidChange(text: String)
+}
+
+public extension TTTextViewDelegate {
+    func textViewDidEndEditing(text: String) {}
+    func textViewDidChange(text: String) {}
 }
 
 public final class TTTextView: UITextView {
@@ -53,7 +59,7 @@ public final class TTTextView: UITextView {
         self.font = .body1
         self.textColor = .black
         self.isEditable = true
-        self.layer.cornerRadius = 20
+        self.layer.cornerRadius = 10
     }
 }
 
@@ -67,5 +73,9 @@ extension TTTextView: UITextViewDelegate {
 
     public func textViewDidEndEditing(_ textView: UITextView) {
         self.customDelegate?.textViewDidEndEditing(text: textView.text)
+    }
+    
+    public func textViewDidChange(_ textView: UITextView) {
+        self.customDelegate?.textViewDidChange(text: textView.text)
     }
 }
