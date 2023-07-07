@@ -12,7 +12,7 @@ import UIKit
 protocol MainPresentationLogic {}
 
 final class MainPresenter {
-    weak var viewController: MainDisplayLogic?
+    weak var tabBarController: MainDisplayLogic?
     
 }
 
