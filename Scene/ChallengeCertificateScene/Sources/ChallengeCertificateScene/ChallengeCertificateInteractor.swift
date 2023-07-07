@@ -90,27 +90,56 @@ extension ChallengeCertificateInteractor {
 extension ChallengeCertificateInteractor {
     
     func didTapImageAdd() async {
-        
+        await self.presenter.presentImageAttachmentMethodPopup()
     }
     
     func didTapImageAttachmentMethodPopupCameraButton() async {
-        
+        do {
+            let cameraPermissionAccepted = try? await self.worker.requestCameraPermission()
+            let photosPermissionAccepted = try? await self.worker.requestPhotosPermission()
+            
+            if let cameraPermissionAccepted = cameraPermissionAccepted,
+               let photosPermissionAccepted = photosPermissionAccepted {
+                
+                if cameraPermissionAccepted, photosPermissionAccepted {
+                    await self.presenter.presentCamera()
+                }
+                else {
+                    await self.presenter.presentCameraPermissionPopup()
+                }
+            }
+        }
     }
     
     func didTapImageAttachmentMethodPopupGalleryButton() async {
-        
+        do {
+            if let permissionAccepted = try? await self.worker.requestPhotosPermission(),
+               permissionAccepted {
+                await self.presenter.presentImagePicker()
+            }
+            else {
+                await self.presenter.presentPhotosPermissionPopup()
+            }
+        }
     }
     
     func didTakePhoto(image: UIImage) async {
-        
+        await self.presenter.presentImageCropView(with: image)
     }
     
     func didSelectImagePickerImage(selectedImage: UIImage) async {
-        
+        await self.presenter.presentImageCropView(with: selectedImage)
     }
     
     func didCropImage(image: UIImage) async {
-        
+        do {
+            try await self.worker.saveImage(image: image)
+            await self.updateCertificateImage(certificateImage: image)
+            await self.presenter.presentCertificateImage(image: image)
+        }
+        catch {
+            await self.presenter.presentPhotoSaveError(error: error)
+        }
     }
 }
 
@@ -119,7 +148,7 @@ extension ChallengeCertificateInteractor {
 extension ChallengeCertificateInteractor {
     
     func didEnterCertificateComment(comment: String) async {
-        
+        await self.updateCertificateComment(certificateComment: comment)
     }
 }
 
@@ -128,15 +157,38 @@ extension ChallengeCertificateInteractor {
 extension ChallengeCertificateInteractor {
     
     func didUpdateCertificateImage() async {
-        
+        if self.certificateImage == nil || self.certificateComment.isEmpty {
+            await self.presenter.presentDisabledCertificate()
+        }
+        else {
+            await self.presenter.presentEnabledCertificate()
+        }
     }
     
     func didUpdateCertificateComment() async {
-        
+        if self.certificateImage == nil || self.certificateComment.isEmpty {
+            await self.presenter.presentDisabledCertificate()
+        }
+        else {
+            await self.presenter.presentEnabledCertificate()
+        }
     }
     
     func didTapCertificate() async {
-        
+        guard let certificateImage = self.certificateImage else {
+            return
+        }
+        do {
+            try await self.worker.requestCertificate(
+                certificateImage: certificateImage,
+                certificateComment: self.certificateComment
+            )
+            await self.presenter.presentCertificateSuccess()
+            await self.router.dismiss()
+        }
+        catch {
+            await self.presenter.presentCertificateError(error: error)
+        }
     }
 }
 

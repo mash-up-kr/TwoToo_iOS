@@ -70,6 +70,7 @@ final class ChallengeCertificateInteractorSpec: QuickSpec {
             describe("카메라 권한이 거부되었다.") {
                 beforeEach {
                     worker.requestCameraPermissionResult = .success(false)
+                    worker.requestPhotosPermissionResult = .success(true)
                 }
                 
                 context("이미지 첨부 방식 팝업의 사진 촬영하기 버튼을 클릭했을 때") {
@@ -86,6 +87,7 @@ final class ChallengeCertificateInteractorSpec: QuickSpec {
             
             describe("사진 접근 권한이 거부되었다.") {
                 beforeEach {
+                    worker.requestCameraPermissionResult = .success(true)
                     worker.requestPhotosPermissionResult = .success(false)
                 }
                 
