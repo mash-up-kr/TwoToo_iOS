@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "flower_success_mate_rose.png",
-      "idiom" : "universal"
+      "filename" : "Property 1=mate_rose.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Property 1=mate_rose@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Property 1=mate_rose@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

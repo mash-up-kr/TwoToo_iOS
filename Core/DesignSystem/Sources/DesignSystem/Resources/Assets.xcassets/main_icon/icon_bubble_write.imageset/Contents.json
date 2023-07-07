@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_bubble_write.png",
-      "idiom" : "universal"
+      "filename" : "Property 1=문구 작성하기.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Property 1=문구 작성하기@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Property 1=문구 작성하기@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

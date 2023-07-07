@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_step3_my.png",
-      "idiom" : "universal"
+      "filename" : "img_step3_my.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "img_step3_my@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "img_step3_my@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

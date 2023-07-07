@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_bee.png",
-      "idiom" : "universal"
+      "filename" : "img_bee.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "img_bee@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "img_bee@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
