@@ -18,7 +18,8 @@ final class MainTabBarController: UITabBarController {
     init(interactor: MainBusinessLogic) {
         self.interactor = interactor
         super.init(nibName: nil, bundle: nil)
-        object_setClass(self.tabBar, MainTabBar.self)
+        let tabBar = MainTabBar()
+        self.setValue(tabBar, forKey: "tabBar")
     }
     
     required init?(coder: NSCoder) {
@@ -30,8 +31,8 @@ final class MainTabBarController: UITabBarController {
     /// 메인 탭바
     ///
     /// 기본 탭바 대신 사용합니다.
-    lazy var mainTabBar: MainTabBar = {
-        let v = MainTabBar()
+    lazy var mainTabBar: MainTabBarContentView = {
+        let v = MainTabBarContentView()
         v.mainTabBarDelegate = self
         return v
     }()
@@ -50,7 +51,7 @@ final class MainTabBarController: UITabBarController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.view.bringSubviewToFront(self.mainTabBar)
+        self.setTabBarLayout()
     }
     
     // MARK: - Layout
@@ -59,6 +60,10 @@ final class MainTabBarController: UITabBarController {
         self.view.backgroundColor = .clear
         
         self.view.addSubview(self.mainTabBar)
+    }
+    
+    private func setTabBarLayout() {
+        self.view.bringSubviewToFront(self.mainTabBar)
         
         self.mainTabBar.snp.makeConstraints { make in
             make.edges.equalTo(self.tabBar)

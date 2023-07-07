@@ -13,10 +13,25 @@ protocol MainTabBarDelegate: AnyObject {
     func didSelectTab(_ tab: Main.ViewModel.MainTab)
 }
 
+final class MainTabBar: UITabBar {
+    
+    // MARK: - Layout
+    
+    private struct Appearance {
+        static let height: CGFloat = 61.0
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = Appearance.height + UIDevice.current.safeAreaBottomHeight
+        return sizeThatFits
+    }
+}
+
 /// 커스텀 탭바
 ///
 /// 탭바 디자인에 따라 구현하기 위함
-final class MainTabBar: UITabBar {
+final class MainTabBarContentView: UIView {
     weak var mainTabBarDelegate: MainTabBarDelegate?
     
     // MARK: - UI
@@ -82,16 +97,6 @@ final class MainTabBar: UITabBar {
     }
     
     // MARK: - Layout
-    
-    private struct Appearance {
-        static let height: CGFloat = 61.0
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var sizeThatFits = super.sizeThatFits(size)
-        sizeThatFits.height = Appearance.height + UIDevice.current.safeAreaBottomHeight
-        return sizeThatFits
-    }
     
     private func setUI() {
         self.addSubview(self.contentView)
