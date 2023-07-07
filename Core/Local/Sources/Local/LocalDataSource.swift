@@ -23,8 +23,9 @@ public protocol LocalDataSourceProtocol {
 
 public final class LocalDataSource: LocalDataSourceProtocol {
     
-    // MARK: - Save
+    public init() {}
     
+    // MARK: - Save
     public func save<T: Any>(value: T, key: String) {
         UserDefaults.standard.set(value, forKey: key)
     }
@@ -42,7 +43,6 @@ public final class LocalDataSource: LocalDataSourceProtocol {
     }
     
     // MARK: - Read
-    
     public func read<T: Any>(value: T, key: String) -> Any? {
         UserDefaults.standard.object(forKey: key) as? T
     }
@@ -60,7 +60,6 @@ public final class LocalDataSource: LocalDataSourceProtocol {
     }
     
     // MARK: - Remove
-    
     public func remove(key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }

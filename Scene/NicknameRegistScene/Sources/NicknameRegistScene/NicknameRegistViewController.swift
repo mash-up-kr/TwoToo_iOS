@@ -59,8 +59,8 @@ final class NicknameRegistViewController: UIViewController {
     
     lazy var nicknameTextField: TTTextField = {
         let v = TTTextField(title: "닉네임",
-                            placeholder: "4글자 이내 닉네임을 입력해주세요",
-                            maxLength: 4)
+                            placeholder: "\(NicknameRegist.ViewModel.Nickname.maxLength)글자 이내 닉네임을 입력해주세요",
+                            maxLength: NicknameRegist.ViewModel.Nickname.maxLength)
         v.returnValueAction = { nickname in
             Task {
                 await self.interactor.didEnterNickname(text: nickname)
@@ -169,7 +169,7 @@ extension NicknameRegistViewController: NicknameRegistScene {
 extension NicknameRegistViewController: NicknameRegistDisplayLogic {
     func displayInvitedUser(viewModel: NicknameRegist.ViewModel.Nickname) {
         self.iconImageView.image = .asset(.icon_nickname_mate)
-        self.inviteTagView.configure(title: viewModel.message)
+        self.inviteTagView.configure(title: viewModel.inviteMessage)
         self.inviteTagView.isHidden = false
     }
     

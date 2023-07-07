@@ -23,7 +23,7 @@ enum NicknameRegist {
         
         struct Nickname {
             static let maxLength: Int = 4
-            var message: String
+            var inviteMessage: String
         }
         
         struct Toast {

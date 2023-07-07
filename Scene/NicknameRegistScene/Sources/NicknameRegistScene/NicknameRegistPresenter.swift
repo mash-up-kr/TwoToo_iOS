@@ -34,7 +34,7 @@ extension NicknameRegistPresenter: NicknameRegistPresentationLogic {
     func presentInvitedUser(invitedUser: NicknameRegist.Model.InvitedUser) {
         let msg = "\(invitedUser)님의 짝꿍으로 초대가 되었습니다."
         self.viewController?.displayInvitedUser(viewModel: .init(
-            message: msg)
+            inviteMessage: msg)
         )
     }
     
