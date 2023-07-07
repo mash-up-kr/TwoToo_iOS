@@ -45,6 +45,14 @@ final class NicknameRegistViewController: UIViewController {
         v.isHidden = true
         return v
     }()
+    
+    lazy var topContentView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.spacing = 8
+        v.addArrangedSubviews(self.iconImageView, self.inviteTagView)
+        return v
+    }()
 
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -121,20 +129,13 @@ final class NicknameRegistViewController: UIViewController {
 
         self.iconImageView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
-            make.width.equalTo(97)
-            make.height.equalTo(85)
+            make.width.equalTo(150)
+            make.height.equalTo(130)
             make.centerX.equalToSuperview()
         }
-        
-        self.inviteTagView.snp.makeConstraints { make in
-            make.top.equalTo(self.iconImageView.snp.bottom).offset(8)
-            make.height.equalTo(36)
-            make.centerX.equalToSuperview()
-
-        }
-        
+   
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.inviteTagView.snp.bottom).offset(17)
+            make.top.equalTo(self.iconImageView.snp.bottom).offset(17)
             make.height.equalTo(80)
             make.centerX.equalToSuperview()
         }
