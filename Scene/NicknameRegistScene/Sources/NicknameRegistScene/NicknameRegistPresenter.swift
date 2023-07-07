@@ -39,11 +39,11 @@ extension NicknameRegistPresenter: NicknameRegistPresentationLogic {
     }
     
     func presentEnabledConfirmButton() {
-        
+        self.viewController?.displayConfirmButton(backgroundColor: .primary, isEnabled: true)
     }
     
     func presentDisabledConfirmButton() {
-        
+        self.viewController?.displayConfirmButton(backgroundColor: .grey400, isEnabled: false)
     }
     
     func presentNicknameError(error: Error) {

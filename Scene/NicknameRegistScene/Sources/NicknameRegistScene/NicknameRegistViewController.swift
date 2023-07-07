@@ -12,7 +12,8 @@ import UIKit
 protocol NicknameRegistDisplayLogic: AnyObject {
     func displayInvitedUser(viewModel: NicknameRegist.ViewModel.Nickname)
     func displayToast(viewModel: NicknameRegist.ViewModel.Toast)
-//    func display
+    func displayConfirmButton(backgroundColor: UIColor, isEnabled: Bool)
+    func displayDisabledConfirmButton(backgroundColor: UIColor, isEnabled: Bool)
 }
 
 final class NicknameRegistViewController: UIViewController {
@@ -38,8 +39,10 @@ final class NicknameRegistViewController: UIViewController {
         return v
     }()
     
+    /// 초대받은 사람이 닉네임 설정한 경우에만 보임
     lazy var inviteTagView: InviteTagView = {
         let v = InviteTagView()
+        v.isHidden = true
         return v
     }()
 
@@ -58,9 +61,9 @@ final class NicknameRegistViewController: UIViewController {
         let v = TTTextField(title: "닉네임",
                             placeholder: "4글자 이내 닉네임을 입력해주세요",
                             maxLength: 4)
-        v.returnValueAction = { [weak self] nickname in
+        v.returnValueAction = { nickname in
             Task {
-                await self?.interactor.didEnterNickname(text: nickname)
+                await self.interactor.didEnterNickname(text: nickname)
             }
         }
         return v
@@ -74,8 +77,8 @@ final class NicknameRegistViewController: UIViewController {
         v.backgroundColor = .grey400
         v.layer.cornerRadius = 20
         v.addAction {
-            Task { [weak self] in
-                await self?.interactor.didTapConfirmButton()
+            Task {
+                await self.interactor.didTapConfirmButton()
             }
         }
         return v
@@ -88,8 +91,8 @@ final class NicknameRegistViewController: UIViewController {
         self.setUI()
         self.setNavigation()
         
-        Task { [weak self] in
-            await self?.interactor.didLoad()
+        Task {
+            await self.interactor.didLoad()
         }
     }
     
@@ -167,6 +170,7 @@ extension NicknameRegistViewController: NicknameRegistDisplayLogic {
     func displayInvitedUser(viewModel: NicknameRegist.ViewModel.Nickname) {
         self.iconImageView.image = .asset(.icon_nickname_mate)
         self.inviteTagView.configure(title: viewModel.message)
+        self.inviteTagView.isHidden = false
     }
     
     func displayToast(viewModel: NicknameRegist.ViewModel.Toast) {
@@ -174,4 +178,15 @@ extension NicknameRegistViewController: NicknameRegistDisplayLogic {
             Toast.shared.makeToast(msg)
         }
     }
+    
+    func displayConfirmButton(backgroundColor: UIColor, isEnabled: Bool) {
+        self.confirmButton.backgroundColor = backgroundColor
+        self.confirmButton.isEnabled = isEnabled
+    }
+    
+    func displayDisabledConfirmButton(backgroundColor: UIColor, isEnabled: Bool) {
+        self.confirmButton.backgroundColor = backgroundColor
+        self.confirmButton.isEnabled = isEnabled
+    }
+    
 }
