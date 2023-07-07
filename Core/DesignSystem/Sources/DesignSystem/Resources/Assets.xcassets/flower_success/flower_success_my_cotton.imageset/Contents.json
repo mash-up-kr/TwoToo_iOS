@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "flower_success_my_cotton.png",
-      "idiom" : "universal"
+      "filename" : "Property 1=my_cotton.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Property 1=my_cotton@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Property 1=my_cotton@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

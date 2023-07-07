@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
 		A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */; };
 		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
 		C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E31792A2B041900FD31C8 /* AppDelegate.swift */; };
@@ -60,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */,
+				A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +166,7 @@
 			name = TwoToo;
 			packageProductDependencies = (
 				C8396CBF2A2C40BC00A79E98 /* SceneKit */,
+				A322FC122A455F2900DAB491 /* FloatingPanel */,
 			);
 			productName = TwoToo;
 			productReference = C87E31762A2B041900FD31C8 /* TwoToo.app */;
@@ -193,6 +196,9 @@
 				Base,
 			);
 			mainGroup = C87E316D2A2B041900FD31C8;
+			packageReferences = (
+				A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+			);
 			productRefGroup = C87E31772A2B041900FD31C8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -370,6 +376,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -398,6 +405,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -442,7 +450,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		A322FC122A455F2900DAB491 /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
+		};
 		C8396CBF2A2C40BC00A79E98 /* SceneKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SceneKit;

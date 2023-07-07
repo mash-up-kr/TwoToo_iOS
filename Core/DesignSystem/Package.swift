@@ -16,6 +16,10 @@ let package = Package(
         .package(
             url: "https://github.com/SnapKit/SnapKit",
             .upToNextMajor(from: "5.0.0")
+        ),
+        .package(
+            url: "https://github.com/scenee/FloatingPanel",
+            .upToNextMajor(from: "2.6.2")
         )
     ],
     targets: [

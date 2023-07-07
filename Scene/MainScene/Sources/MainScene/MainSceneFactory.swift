@@ -15,6 +15,7 @@ public protocol MainScene: AnyObject, Scene {
 
 public struct MainConfiguration {
     
+    public init() {}
 }
 
 public final class MainSceneFactory {
@@ -31,11 +32,11 @@ public final class MainSceneFactory {
             router: router,
             worker: worker
         )
-        let viewController = MainViewController(
+        let viewController = MainTabBarController(
             interactor: interactor
         )
-        presenter.viewController = viewController
-        router.viewController = viewController
+        presenter.tabBarController = viewController
+        router.tabBarController = viewController
         router.dataStore = interactor
         
         return viewController
