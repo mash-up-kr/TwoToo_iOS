@@ -27,18 +27,22 @@ public final class LocalDataSource: LocalDataSourceProtocol {
     
     // MARK: - Save
     public func save<T: Any>(value: T, key: String) {
+        print("UserDefault Save! \(key)")
         UserDefaults.standard.set(value, forKey: key)
     }
     
     public func save(value: String, key: String) {
+        print("UserDefault Save! \(key)")
         UserDefaults.standard.set(value, forKey: key)
     }
     
     public func save(value: Bool, key: String) {
+        print("UserDefault Save! \(key)")
         UserDefaults.standard.set(value, forKey: key)
     }
     
     public func save(value: Int, key: String) {
+        print("UserDefault Save! \(key)")
         UserDefaults.standard.set(value, forKey: key)
     }
     
@@ -61,10 +65,12 @@ public final class LocalDataSource: LocalDataSourceProtocol {
     
     // MARK: - Remove
     public func remove(key: String) {
+        print("UserDefault Remove: \(key)")
         UserDefaults.standard.removeObject(forKey: key)
     }
     
     public func removeAll() {
+        print("UserDefault RemoveAll")
         UserDefaults.standard.dictionaryRepresentation().keys.forEach { key in
             UserDefaults.standard.removeObject(forKey: key.description)
         }

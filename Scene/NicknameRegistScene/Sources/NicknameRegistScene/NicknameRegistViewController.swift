@@ -36,6 +36,7 @@ final class NicknameRegistViewController: UIViewController {
     
     lazy var iconImageView: UIImageView = {
         let v = UIImageView(.icon_nicknam_my)
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
@@ -58,7 +59,7 @@ final class NicknameRegistViewController: UIViewController {
         let v = UILabel()
         v.text = "투투에서 사용할\n닉네임을 입력해주세요."
         v.numberOfLines = 2
-        v.setLineSpacing(10) //임시
+        v.setLineSpacing(10) 
         v.font = .h1
         v.textColor = .primary
         v.textAlignment = .center
@@ -69,7 +70,7 @@ final class NicknameRegistViewController: UIViewController {
         let v = TTTextField(title: "닉네임",
                             placeholder: "\(NicknameRegist.ViewModel.Nickname.maxLength)글자 이내 닉네임을 입력해주세요",
                             maxLength: NicknameRegist.ViewModel.Nickname.maxLength)
-        v.returnValueAction = { nickname in
+        v.didChangeTextAction = { nickname in
             Task {
                 await self.interactor.didEnterNickname(text: nickname)
             }
@@ -115,8 +116,7 @@ final class NicknameRegistViewController: UIViewController {
         let guide = self.view.safeAreaLayoutGuide
         
         self.view.addSubviews(self.navigationBar,
-                              self.iconImageView,
-                              self.inviteTagView,
+                              self.topContentView,
                               self.titleLabel,
                               self.nicknameTextField,
                               self.confirmButton)
@@ -127,21 +127,19 @@ final class NicknameRegistViewController: UIViewController {
             make.height.equalTo(44)
         }
 
-        self.iconImageView.snp.makeConstraints { make in
+        self.topContentView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
-            make.width.equalTo(150)
-            make.height.equalTo(130)
             make.centerX.equalToSuperview()
         }
    
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.iconImageView.snp.bottom).offset(17)
+            make.top.equalTo(self.topContentView.snp.bottom).offset(17)
             make.height.equalTo(80)
             make.centerX.equalToSuperview()
         }
 
         self.nicknameTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(35)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(80)
@@ -213,7 +211,7 @@ extension NicknameRegistViewController: KeyboardDelegate {
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
             self.nicknameTextField.snp.updateConstraints { make in
-                make.top.equalTo(self.titleLabel.snp.bottom).offset(30)
+                make.top.equalTo(self.titleLabel.snp.bottom).offset(35)
             }
             self.confirmButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
