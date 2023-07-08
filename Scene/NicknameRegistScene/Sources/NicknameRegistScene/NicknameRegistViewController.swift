@@ -98,7 +98,7 @@ final class NicknameRegistViewController: UIViewController {
         super.viewDidLoad()
         self.setUI()
         self.setNavigation()
-        
+        self.registKeyboardDelegate()
         Task {
             await self.interactor.didLoad()
         }
@@ -154,6 +154,10 @@ final class NicknameRegistViewController: UIViewController {
             make.bottom.equalTo(guide.snp.bottom)
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 
 }
 
@@ -188,6 +192,34 @@ extension NicknameRegistViewController: NicknameRegistDisplayLogic {
     func displayDisabledConfirmButton(backgroundColor: UIColor, isEnabled: Bool) {
         self.confirmButton.backgroundColor = backgroundColor
         self.confirmButton.isEnabled = isEnabled
+    }
+    
+}
+
+// MARK: - Keyboard Setting
+extension NicknameRegistViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.nicknameTextField.snp.updateConstraints { make in
+                make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
+            }
+            self.confirmButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(keyboardFrame.height - 10)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func willHideKeyboard(duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.nicknameTextField.snp.updateConstraints { make in
+                make.top.equalTo(self.titleLabel.snp.bottom).offset(30)
+            }
+            self.confirmButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+            }
+            self.view.layoutIfNeeded()
+        }
     }
     
 }
