@@ -41,8 +41,7 @@ final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     
     // TODO: 닉네임을 설정하는 통신 필요
     func requestSetNickname(nickname: String) async throws {
-        self.invitedUserLocalWorker.invitedUser = nickname
-        self.localDataSource.save(value: nickname, key: self.localDataSourceKey)
+        
     }
     
     
