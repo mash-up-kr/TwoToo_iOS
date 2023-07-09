@@ -7,22 +7,13 @@
 
 import UIKit
 
-public protocol ChallengeCertificatePhotoViewDelegate: AnyObject {
-    func didTapPlusButton()
-}
-
 public final class ChallengeCertificatePhotoView: UIView {
-        
-    public weak var delegate: ChallengeCertificatePhotoViewDelegate?
     
     private lazy var plusButton: UIButton = {
         let v = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
         v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         v.tintColor = .mainWhite
-        v.addAction { [weak self] in
-            self?.delegate?.didTapPlusButton()
-        }
         return v
     }()
     

@@ -7,9 +7,20 @@
 //
 
 import CoreKit
+import TOCropViewController
 import UIKit
 
-protocol ChallengeCertificateDisplayLogic: AnyObject {}
+protocol ChallengeCertificateDisplayLogic: AnyObject {
+    func displayImageAttachmentMethodPopup(viewModel: ChallengeCertificate.ViewModel.ImageAttachmentMethodPopup)
+    func displayCertificateCommentField(viewModel: ChallengeCertificate.ViewModel.CertificateCommentField)
+    func displayPermissionPopup(viewModel: ChallengeCertificate.ViewModel.PermissionPopup)
+    func displayToast(viewModel: ChallengeCertificate.ViewModel.Toast)
+    func displayImagePicker(viewModel: ChallengeCertificate.ViewModel.ImagePicker)
+    func displayImageCropView(viewModel: ChallengeCertificate.ViewModel.ImageCropView)
+    func displayCamera(viewModel: ChallengeCertificate.ViewModel.Camera)
+    func displayCommitPhoto(viewModel: ChallengeCertificate.ViewModel.CommitPhoto)
+    func displayCommitButton(viewModel: ChallengeCertificate.ViewModel.CommitButton)
+}
 
 final class ChallengeCertificateViewController: UIViewController, BottomSheetViewController {
     var interactor: ChallengeCertificateBusinessLogic
@@ -29,6 +40,24 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
         self.backScrollView
     }
     
+    private lazy var imagePickerEventHandler: ImageEventHandler = {
+        let handler = ImageEventHandler { [weak self] image in
+            Task {
+                await self?.interactor.didSelectImagePickerImage(selectedImage: image)
+            }
+        }
+        return handler
+    }()
+    
+    private lazy var cameraEventHandler: ImageEventHandler = {
+        let handler = ImageEventHandler { [weak self] image in
+            Task {
+                await self?.interactor.didTakePhoto(image: image)
+            }
+        }
+        return handler
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.text = "인증하기"
@@ -40,7 +69,11 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
     
     private lazy var commitPhotoView: ChallengeCertificatePhotoView = {
         let v = ChallengeCertificatePhotoView(frame: .zero)
-        v.delegate = self
+        v.addTapAction { [weak self] in
+            Task {
+                await self?.interactor.didTapImageAdd()
+            }
+        }
         return v
     }()
     
@@ -50,10 +83,12 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
         return v
     }()
     
-    private lazy var commitButton: UIButton = {
+    private lazy var commitButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "인증하기", .large)
         v.didTapButton { [weak self] in
-            
+            Task {
+                await self?.interactor.didTapCertificate()
+            }
         }
         v.setIsEnabled(false)
         return v
@@ -133,16 +168,16 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
 // MARK: - Trigger
 
 extension ChallengeCertificateViewController: TTTextViewDelegate,
-                                              ChallengeCertificatePhotoViewDelegate,
                                               UIScrollViewDelegate,
-                                              KeyboardDelegate {
+                                              KeyboardDelegate,
+                                              UIImagePickerControllerDelegate,
+                                              UINavigationControllerDelegate,
+                                              TOCropViewControllerDelegate {
     
     func textViewDidChange(text: String) {
-        
-    }
-    
-    func didTapPlusButton() {
-        
+        Task {
+            await self.interactor.didEnterCertificateComment(comment: text)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -168,6 +203,29 @@ extension ChallengeCertificateViewController: TTTextViewDelegate,
         }
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            return
+        }
+        Task {
+            await self.interactor.didTakePhoto(image: image)
+        }
+    }
+   
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        Task {
+            await self.interactor.didCropImage(image: image)
+        }
+        cropViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - Trigger by Parent Scene
@@ -183,4 +241,111 @@ extension ChallengeCertificateViewController: ChallengeCertificateScene {
 
 extension ChallengeCertificateViewController: ChallengeCertificateDisplayLogic {
     
+    func displayImageAttachmentMethodPopup(viewModel: ChallengeCertificate.ViewModel.ImageAttachmentMethodPopup) {
+        viewModel.options.unwrap {
+            let popup = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            popup.addAction(.init(title: $0.cameraOption, style: .default, handler: { _ in
+                Task {
+                    await self.interactor.didTapImageAttachmentMethodPopupCameraButton()
+                }
+            }))
+            
+            popup.addAction(.init(title: $0.albumOption, style: .default, handler: { _ in
+                Task {
+                    await self.interactor.didTapImageAttachmentMethodPopupGalleryButton()
+                }
+            }))
+            
+            popup.addAction(.init(title: $0.cancelOption, style: .cancel))
+               
+            self.present(popup, animated: true, completion: nil)
+        }
+    }
+    
+    func displayCertificateCommentField(viewModel: ChallengeCertificate.ViewModel.CertificateCommentField) {
+        //
+    }
+    
+    func displayPermissionPopup(viewModel: ChallengeCertificate.ViewModel.PermissionPopup) {
+        viewModel.options.unwrap {
+            let popup = UIAlertController(title: $0.title, message: $0.desc, preferredStyle: .alert)
+            
+            popup.addAction(.init(title: $0.acceptOption, style: .cancel))
+            
+            self.present(popup, animated: true, completion: nil)
+        }
+    }
+    
+    func displayToast(viewModel: ChallengeCertificate.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
+    }
+    
+    func displayImagePicker(viewModel: ChallengeCertificate.ViewModel.ImagePicker) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self.imagePickerEventHandler
+        imagePicker.sourceType = .photoLibrary
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func displayImageCropView(viewModel: ChallengeCertificate.ViewModel.ImageCropView) {
+        viewModel.image.unwrap {
+            let cropViewController = TOCropViewController(croppingStyle: .default, image: $0)
+            cropViewController.aspectRatioPreset = .presetSquare
+            cropViewController.aspectRatioLockEnabled = true
+            cropViewController.resetAspectRatioEnabled = false
+            cropViewController.delegate = self
+            let navigationController = UINavigationController(rootViewController: cropViewController)
+            navigationController.modalPresentationStyle = .overCurrentContext
+            self.present(navigationController, animated: true, completion: nil)
+        }
+    }
+    
+    func displayCamera(viewModel: ChallengeCertificate.ViewModel.Camera) {
+        let cameraController = UIImagePickerController()
+        cameraController.delegate = self.cameraEventHandler
+        cameraController.sourceType = .camera
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            self.present(cameraController, animated: true)
+        }
+    }
+    
+    func displayCommitPhoto(viewModel: ChallengeCertificate.ViewModel.CommitPhoto) {
+        viewModel.image.unwrap {
+            self.commitPhotoView.updateImage($0)
+        }
+    }
+    
+    func displayCommitButton(viewModel: ChallengeCertificate.ViewModel.CommitButton) {
+        viewModel.isEnabled.unwrap {
+            self.commitButton.setIsEnabled($0)
+        }
+    }
+}
+
+// MARK: - Image Trigger
+
+typealias ImageCompletion = (UIImage) -> Void
+
+final class ImageEventHandler: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    var completion: ImageCompletion?
+    
+    init(completion: @escaping ImageCompletion) {
+        self.completion = completion
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            return
+        }
+        self.completion?(image)
+        picker.dismiss(animated: true, completion: nil)
+    }
+   
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
 }

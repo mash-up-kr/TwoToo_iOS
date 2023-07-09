@@ -21,6 +21,8 @@ public final class TTTextView: UITextView {
     
     public weak var customDelegate: TTTextViewDelegate?
     
+    private var placeHolderText: String = ""
+    
     private lazy var placeHolderLabel: UILabel = {
         let v = UILabel()
         v.font = .body1
@@ -31,6 +33,7 @@ public final class TTTextView: UITextView {
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
+        
         self.layout()
         self.attribute()
         self.delegate = self
@@ -38,6 +41,12 @@ public final class TTTextView: UITextView {
     
     public convenience init(placeHolder: String) {
         self.init()
+        
+        self.layout()
+        self.attribute()
+        self.delegate = self
+        
+        self.placeHolderText = placeHolder
         self.placeHolderLabel.text = placeHolder
     }
      
@@ -64,18 +73,20 @@ public final class TTTextView: UITextView {
 }
 
 extension TTTextView: UITextViewDelegate {
-    public func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text != nil {
-            self.placeHolderLabel.text = ""
-            textView.textColor = .black
-        }
-    }
-
+    
     public func textViewDidEndEditing(_ textView: UITextView) {
         self.customDelegate?.textViewDidEndEditing(text: textView.text)
     }
     
     public func textViewDidChange(_ textView: UITextView) {
+        if textView.text != nil && !textView.text.isEmpty {
+            self.placeHolderLabel.text = ""
+            textView.textColor = .black
+        }
+        else {
+            self.placeHolderLabel.text = self.placeHolderText
+        }
+        
         self.customDelegate?.textViewDidChange(text: textView.text)
     }
 }
