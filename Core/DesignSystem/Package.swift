@@ -26,7 +26,8 @@ let package = Package(
         .target(
             name: "DesignSystem",
             dependencies: [
-                .product(name: "SnapKit", package: "SnapKit")
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "FloatingPanel", package: "FloatingPanel")
             ],
             resources: [.process("Resources")]
         ),
