@@ -24,6 +24,13 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: - UI
+    lazy var progressBar: TTProgressBar = {
+        let v = TTProgressBar()
+        v.layer.cornerRadius = 15
+        v.configureNickname(my: "공주", partner: "왕자")
+        v.configurePercent(my: 30, partner: 70)
+        return v
+    }()
     
     // MARK: - View Lifecycle
     
@@ -35,7 +42,14 @@ final class HomeViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
+        self.view.addSubviews(self.progressBar)
         
+        self.progressBar.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(200)
+            make.leading.equalToSuperview().offset(24)
+            make.width.equalToSuperview().multipliedBy(0.55)
+            make.height.equalTo(62)
+        }
     }
 }
 
