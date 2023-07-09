@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_sleepingseed.png",
-      "idiom" : "universal"
+      "filename" : "img_sleepingseed.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "img_sleepingseed@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "img_sleepingseed@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

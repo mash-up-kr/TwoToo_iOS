@@ -115,6 +115,7 @@ public enum Assets: String {
     case onboarding_1
     case onboarding_2
     case onboarding_3
+    case icon_buds
 
     public var image: UIImage? {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)

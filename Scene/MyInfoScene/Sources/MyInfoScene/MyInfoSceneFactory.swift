@@ -15,6 +15,7 @@ public protocol MyInfoScene: AnyObject, Scene {
 
 public struct MyInfoConfiguration {
     
+    public init() {}
 }
 
 public final class MyInfoSceneFactory {

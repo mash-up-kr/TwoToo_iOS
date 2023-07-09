@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "flower_blur_camellia.png",
-      "idiom" : "universal"
+      "filename" : "image=flower_camellia_sm.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "image=flower_camellia_sm@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "image=flower_camellia_sm@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

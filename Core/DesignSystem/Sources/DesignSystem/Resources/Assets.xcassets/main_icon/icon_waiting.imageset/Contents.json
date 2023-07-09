@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_waiting.png",
-      "idiom" : "universal"
+      "filename" : "img_waiting.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "img_waiting@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "img_waiting@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
