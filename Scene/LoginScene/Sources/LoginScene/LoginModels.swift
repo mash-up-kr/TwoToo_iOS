@@ -39,5 +39,14 @@ enum Login {
         struct Toast {
             var message: String?
         }
+
+        struct Onborading {
+            var items: [Item]?
+
+            struct Item {
+                var image: UIImage
+                var text: String
+            }
+        }
     }
 }
