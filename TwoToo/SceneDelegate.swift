@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         let vc = HomeSceneFactory().make(with: .init(didTriggerRouteToHistoryScene: .init())).viewController
-        vc.view.backgroundColor = .mainCoral
+        vc.view.backgroundColor = .second02
         self.window?.rootViewController = vc
     }
 

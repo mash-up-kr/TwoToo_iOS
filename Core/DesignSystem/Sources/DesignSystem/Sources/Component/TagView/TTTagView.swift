@@ -10,7 +10,7 @@ import Util
 
 public final class TTTagView: UIView, UIComponentBased {
     
-    lazy var titleLabel: UILabel = {
+    public lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.textAlignment = .center
         return v
@@ -26,12 +26,10 @@ public final class TTTagView: UIView, UIComponentBased {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public convenience init(title: String,
-                            textColor: UIColor,
+    public convenience init(textColor: UIColor,
                             fontSize: UIFont,
                             cornerRadius: CGFloat) {
         self.init()
-        self.titleLabel.text = title
         self.titleLabel.textColor = textColor
         self.titleLabel.font = fontSize
         self.layer.cornerRadius = cornerRadius
@@ -51,9 +49,6 @@ public final class TTTagView: UIView, UIComponentBased {
     public func attribute() {
         
     }
-    
-    func configureTitle(_ title: String) {
-        self.titleLabel.text = title
-    }
+
     
 }
