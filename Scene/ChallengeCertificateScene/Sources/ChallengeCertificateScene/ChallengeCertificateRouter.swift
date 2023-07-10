@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeCertificateRoutingLogic {}
+protocol ChallengeCertificateRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class ChallengeCertificateRouter {
     weak var viewController: ChallengeCertificateViewController?
@@ -18,4 +21,7 @@ final class ChallengeCertificateRouter {
 
 extension ChallengeCertificateRouter: ChallengeCertificateRoutingLogic {
     
+    func dismiss() {
+        
+    }
 }
