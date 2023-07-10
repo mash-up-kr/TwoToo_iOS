@@ -34,10 +34,8 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
 
     lazy var onboardingPageControl: UIPageControl = {
         let v = UIPageControl()
-        v.currentPage = 0
         v.pageIndicatorTintColor = .grey400
         v.currentPageIndicatorTintColor = .grey500
-        v.numberOfPages = 3
         return v
     }()
 
@@ -143,6 +141,7 @@ extension LoginViewController: LoginDisplayLogic {
     func displayOnboarding(viewModel: Login.ViewModel.Onborading) {
         viewModel.items.unwrap {
             self.onboardingItems = $0
+            self.onboardingPageControl.numberOfPages = self.onboardingItems.count
             self.collectionView.reloadData()
         }
     }
@@ -174,7 +173,10 @@ extension LoginViewController {
 }
 
 extension LoginViewController {
-    // 스크롤뷰 되는 조건 구하기, pageControl sync
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let value = scrollView.contentOffset.x / scrollView.frame.size.width
+        self.onboardingPageControl.currentPage = Int(round(value))
+    }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let index = Int(scrollView.contentOffset.x / view.frame.size.width)
