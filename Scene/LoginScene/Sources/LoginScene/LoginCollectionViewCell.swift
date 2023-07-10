@@ -9,12 +9,12 @@ import UIKit
 import DesignSystem
 
 final class LoginCollectionViewCell: UICollectionViewCell {
-    lazy var onboardingImageView: UIImageView = {
+    private lazy var onboardingImageView: UIImageView = {
         let v = UIImageView()
         return v
     }()
 
-    lazy var onboardingLabel: UILabel = {
+    private lazy var onboardingLabel: UILabel = {
         let v = UILabel()
         v.font = .h1
         v.textColor = .primary

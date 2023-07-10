@@ -38,13 +38,13 @@ extension LoginPresenter: LoginPresentationLogic {
             .init(image: .asset(.onboarding_3)!, text: "서로 인증 하고 응원하며\n 목표를 달성해보세요 ")
         ]
 
-        viewController?.displayOnboarding(viewModel: .init(items: onboardingItems))
+        self.viewController?.displayOnboarding(viewModel: .init(items: onboardingItems))
 
     }
     
     func presentLogin() {
-        viewController?.displayAppleLogin(viewModel: .init(isHidden: false))
-        viewController?.displayKakaoLogin(viewModel: .init(isHidden: false))
+        self.viewController?.displayAppleLogin(viewModel: .init(isHidden: false))
+        self.viewController?.displayKakaoLogin(viewModel: .init(isHidden: false))
     }
     
     func presentKakaoLoginError(error: Error) {

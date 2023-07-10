@@ -16,10 +16,13 @@ protocol LoginDisplayLogic: AnyObject {
     func displayKakaoLogin(viewModel: Login.ViewModel.KakaoLogin)
 }
 
-final class LoginViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-    var interactor: LoginBusinessLogic
+final class LoginViewController: UIViewController {
+    private var interactor: LoginBusinessLogic
+    private var onboardingItems: [Login.ViewModel.Onborading.Item] = []
 
-    lazy var collectionView: UICollectionView = {
+    // MARK: - UI
+
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -29,17 +32,18 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
         v.dataSource = self
         v.register(LoginCollectionViewCell.self, forCellWithReuseIdentifier: LoginCollectionViewCell.identifier)
         v.backgroundColor = .white
+        v.decelerationRate = .fast
         return v
     }()
 
-    lazy var onboardingPageControl: UIPageControl = {
+    private lazy var onboardingPageControl: UIPageControl = {
         let v = UIPageControl()
         v.pageIndicatorTintColor = .grey400
         v.currentPageIndicatorTintColor = .grey500
         return v
     }()
 
-    lazy var kakaoLoginButton: UIButton = {
+    private lazy var kakaoLoginButton: UIButton = {
         let v = UIButton()
         v.setImage(UIImage(named: "kakaoLogin", in: .module, with: nil), for: .normal)
         v.contentHorizontalAlignment = .fill
@@ -48,8 +52,7 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
         return v
     }()
 
-    lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
-
+    private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
         if #available(iOS 13.2, *) {
             let v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
             v.cornerRadius = 17
@@ -63,7 +66,7 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
         }
     }()
 
-    lazy var buttonStackView: UIStackView = {
+    private lazy var buttonStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
         v.spacing = 16
@@ -78,8 +81,6 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI
     
     // MARK: - View Lifecycle
     
@@ -123,8 +124,6 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
             make.bottom.equalToSuperview().offset(-36)
         }
     }
-
-    var onboardingItems: [Login.ViewModel.Onborading.Item] = []
 }
 
 // MARK: - Trigger
@@ -160,7 +159,9 @@ extension LoginViewController: LoginDisplayLogic {
     }
 }
 
-extension LoginViewController {
+// MARK: - UICollectionViewDataSource
+
+extension LoginViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.onboardingItems.count
     }
@@ -172,17 +173,30 @@ extension LoginViewController {
     }
 }
 
-extension LoginViewController {
+// MARK: - UICollectionViewDelegate
+
+extension LoginViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let value = scrollView.contentOffset.x / scrollView.frame.size.width
         self.onboardingPageControl.currentPage = Int(round(value))
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let index = Int(scrollView.contentOffset.x / view.frame.size.width)
+        let index = Int(scrollView.contentOffset.x / self.view.frame.size.width)
 
         Task {
              await self.interactor.didSwipeOnboarding(index: index)
         }
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension LoginViewController: UICollectionViewDelegateFlowLayout {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let scrolledOffsetX = targetContentOffset.pointee.x + scrollView.contentInset.left
+        let cellWidth = UIScreen.main.bounds.width
+        let index = round(scrolledOffsetX / cellWidth)
+        targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
     }
 }
