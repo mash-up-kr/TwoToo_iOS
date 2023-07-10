@@ -8,9 +8,17 @@
 
 import CoreKit
 
-protocol PraiseSendBusinessLogic {}
+protocol PraiseSendBusinessLogic {
+    /// 칭찬 문구 입력
+    func didEnterPraiseComment(comment: String) async
+    /// 보내기 버튼 클릭
+    func didTapSendButton() async
+}
 
-protocol PraiseSendDataStore: AnyObject {}
+protocol PraiseSendDataStore: AnyObject {
+    /// 칭찬 문구
+    var praiseComment: String { get set }
+}
 
 final class PraiseSendInteractor: PraiseSendDataStore, PraiseSendBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
@@ -31,6 +39,11 @@ final class PraiseSendInteractor: PraiseSendDataStore, PraiseSendBusinessLogic {
     
     // MARK: - DataStore
     
+    var praiseComment: String = ""
+    
+    private func updatePraiseComment(praiseComment: String) async {
+        self.praiseComment = praiseComment
+    }
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +56,22 @@ extension PraiseSendInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (칭찬 문구 작성)
 
 extension PraiseSendInteractor {
     
+    func didEnterPraiseComment(comment: String) async {
+        
+    }
+}
+
+// MARK: Feature (칭찬하기)
+
+extension PraiseSendInteractor {
+    
+    func didTapSendButton() async {
+        
+    }
 }
 
 // MARK: - Application Business Logic

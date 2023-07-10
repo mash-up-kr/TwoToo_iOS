@@ -15,6 +15,7 @@ public protocol PraiseSendScene: AnyObject, Scene {
 
 public struct PraiseSendConfiguration {
     
+    public init() {}
 }
 
 public final class PraiseSendSceneFactory {
