@@ -61,7 +61,14 @@ extension PraiseSendInteractor {
 extension PraiseSendInteractor {
     
     func didEnterPraiseComment(comment: String) async {
-        
+        let commentLength = comment.count
+        if commentLength >= 1 && commentLength <= 20 {
+            await self.updatePraiseComment(praiseComment: comment)
+            await self.presenter.presentEnabledSend()
+        }
+        else {
+            await self.presenter.presentDisabledSend()
+        }
     }
 }
 
@@ -70,7 +77,20 @@ extension PraiseSendInteractor {
 extension PraiseSendInteractor {
     
     func didTapSendButton() async {
+        let commentLength = self.praiseComment.count
         
+        guard (commentLength >= 1 && commentLength <= 20) else {
+            return
+        }
+        
+        do {
+            try await self.worker.requestPraise(praiseComment: self.praiseComment)
+            await self.presenter.presentPraiseSuccess()
+            await self.router.dismiss()
+        }
+        catch {
+            await self.presenter.presentPraiseError(error: error)
+        }
     }
 }
 
