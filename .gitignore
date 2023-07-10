@@ -10,6 +10,8 @@
 # Icon must end with two \r
 Icon
 
+# apiKey 파일
+Constant.swift
 
 # Thumbnails
 ._*
