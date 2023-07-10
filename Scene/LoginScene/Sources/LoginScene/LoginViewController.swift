@@ -8,9 +8,12 @@
 
 import CoreKit
 import UIKit
+import AuthenticationServices
 
 protocol LoginDisplayLogic: AnyObject {
     func displayOnboarding(viewModel: Login.ViewModel.Onborading)
+    func displayAppleLogin(viewModel: Login.ViewModel.AppleLogin)
+    func displayKakaoLogin(viewModel: Login.ViewModel.KakaoLogin)
 }
 
 final class LoginViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
@@ -38,28 +41,33 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
         return v
     }()
 
-    lazy var kakaoLogin: UIButton = {
+    lazy var kakaoLoginButton: UIButton = {
         let v = UIButton()
-        v.setTitle("hello", for: .normal)
+        v.setImage(UIImage(named: "kakaoLogin", in: .module, with: nil), for: .normal)
+        v.contentHorizontalAlignment = .fill
         v.layer.cornerRadius = 20
-        v.backgroundColor = .grey400
-//        v.isHidden = true
+        v.isHidden = true
         return v
     }()
 
-    lazy var appleLogin: UIButton = {
-        let v = UIButton()
-        v.setTitle("hello", for: .normal)
-        v.layer.cornerRadius = 20
-        v.backgroundColor = .grey400
-//        v.isHidden = true
-        return v
+    lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
+
+        if #available(iOS 13.2, *) {
+            let v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
+            v.cornerRadius = 17
+            v.isHidden = true
+            return v
+        }
+        else {
+            let v = ASAuthorizationAppleIDButton(frame: .zero)
+            v.isHidden = true
+            return v
+        }
     }()
 
     lazy var buttonStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.distribution = .fillEqually
         v.spacing = 16
         return v
     }()
@@ -90,7 +98,7 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
     
     private func setUI() {
         self.view.addSubviews(self.collectionView, self.onboardingPageControl, self.buttonStackView)
-        self.buttonStackView.addArrangedSubviews(self.kakaoLogin, self.appleLogin)
+        self.buttonStackView.addArrangedSubviews(self.kakaoLoginButton, self.appleLoginButton)
 
         self.collectionView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
@@ -101,6 +109,14 @@ final class LoginViewController: UIViewController, UICollectionViewDelegate, UIC
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.buttonStackView.snp.top).offset(-29)
             make.height.equalTo(12)
+        }
+
+        self.kakaoLoginButton.snp.makeConstraints { make in
+            make.height.equalTo(57)
+        }
+
+        self.appleLoginButton.snp.makeConstraints { make in
+            make.height.equalTo(57)
         }
 
         self.buttonStackView.snp.makeConstraints { make in
@@ -130,6 +146,19 @@ extension LoginViewController: LoginDisplayLogic {
             self.collectionView.reloadData()
         }
     }
+
+
+    func displayAppleLogin(viewModel: Login.ViewModel.AppleLogin) {
+        viewModel.isHidden.unwrap { [weak self] hidden in
+            self?.appleLoginButton.isHidden = hidden
+        }
+    }
+
+    func displayKakaoLogin(viewModel: Login.ViewModel.KakaoLogin) {
+        viewModel.isHidden.unwrap { [weak self] hidden in
+            self?.kakaoLoginButton.isHidden = hidden
+        }
+    }
 }
 
 extension LoginViewController {
@@ -139,13 +168,19 @@ extension LoginViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(type: LoginCollectionViewCell.self, indexPath: indexPath)
-        cell.configure(image: onboardingItems[indexPath.row].image, text: onboardingItems[indexPath.row].text)
+        cell.configure(image: self.onboardingItems[indexPath.row].image, text: self.onboardingItems[indexPath.row].text)
         return cell
     }
 }
 
 extension LoginViewController {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    // 스크롤뷰 되는 조건 구하기, pageControl sync
 
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let index = Int(scrollView.contentOffset.x / view.frame.size.width)
+
+        Task {
+             await self.interactor.didSwipeOnboarding(index: index)
+        }
     }
 }

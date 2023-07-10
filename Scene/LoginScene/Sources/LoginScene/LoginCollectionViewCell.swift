@@ -11,7 +11,6 @@ import DesignSystem
 final class LoginCollectionViewCell: UICollectionViewCell {
     lazy var onboardingImageView: UIImageView = {
         let v = UIImageView()
-        v.image = .asset(.onboarding_1)
         return v
     }()
 
@@ -21,7 +20,6 @@ final class LoginCollectionViewCell: UICollectionViewCell {
         v.textColor = .primary
         v.numberOfLines = 0
         v.textAlignment = .center
-        v.text = "상대방에게 귀여운 찌르기로 푸시해보세요"
         return v
     }()
 

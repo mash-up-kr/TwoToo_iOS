@@ -162,7 +162,7 @@ extension LoginInteractor {
 extension LoginInteractor {
     
     func didSwipeOnboarding(index: Int) async {
-        if index == 3 {
+        if index == 2 {
             self.worker.isCheckedOnboarding = true
             await self.presenter.presentLogin()
         }

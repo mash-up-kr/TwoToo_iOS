@@ -9,6 +9,8 @@ import CoreKit
 import SceneKit
 import MainScene
 import UIKit
+import LoginScene
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -32,6 +34,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
         self.window?.rootViewController = tabBarController
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -21,13 +21,18 @@ let package = Package(
         .package(
             url: "https://github.com/Quick/Quick",
             .upToNextMajor(from: "6.0.0")
+        ),
+        .package(
+            url: "https://github.com/kakao/kakao-ios-sdk",
+            .upToNextMajor(from: "2.0.0")
         )
     ],
     targets: [
         .target(
             name: "LoginScene",
             dependencies: [
-                .product(name: "CoreKit", package: "CoreKit")
+                .product(name: "CoreKit", package: "CoreKit"),
+                .product(name: "KakaoSDK", package: "kakao-ios-sdk"),
             ],
             resources: [.process("Assets")]
         ),
