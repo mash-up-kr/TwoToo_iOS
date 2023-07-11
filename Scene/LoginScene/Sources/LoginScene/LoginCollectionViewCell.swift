@@ -46,7 +46,7 @@ final class LoginCollectionViewCell: UICollectionViewCell {
     private func setLayout() {
         self.onboardingImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(UIScreen.main.bounds.width * 1.03)
+            make.height.equalTo(UIScreen.main.bounds.width * 0.96)
         }
 
         self.onboardingLabel.snp.makeConstraints { make in
