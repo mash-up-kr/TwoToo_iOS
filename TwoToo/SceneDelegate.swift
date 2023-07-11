@@ -7,7 +7,7 @@
 
 import CoreKit
 import SceneKit
-import HomeScene
+import MainScene
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
-        let vc = HomeSceneFactory().make(with: .init(didTriggerRouteToHistoryScene: .init())).viewController
+        let vc = MainSceneFactory().make(with: .init()).viewController
         vc.view.backgroundColor = .second02
         self.window?.rootViewController = vc
     }
