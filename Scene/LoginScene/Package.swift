@@ -25,6 +25,10 @@ let package = Package(
         .package(
             url: "https://github.com/kakao/kakao-ios-sdk",
             .upToNextMajor(from: "2.0.0")
+        ),
+        .package(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            .upToNextMajor(from: "10.0.0")
         )
     ],
     targets: [
@@ -33,6 +37,7 @@ let package = Package(
             dependencies: [
                 .product(name: "CoreKit", package: "CoreKit"),
                 .product(name: "KakaoSDK", package: "kakao-ios-sdk"),
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
             ],
             resources: [.process("Assets")]
         ),
