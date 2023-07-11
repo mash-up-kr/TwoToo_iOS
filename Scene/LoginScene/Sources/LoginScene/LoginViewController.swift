@@ -12,8 +12,7 @@ import AuthenticationServices
 
 protocol LoginDisplayLogic: AnyObject {
     func displayOnboarding(viewModel: Login.ViewModel.Onborading)
-    func displayAppleLogin(viewModel: Login.ViewModel.AppleLogin)
-    func displayKakaoLogin(viewModel: Login.ViewModel.KakaoLogin)
+    func displaySocialLogin(viewModel: Login.ViewModel.SocialLogin)
 }
 
 final class LoginViewController: UIViewController {
@@ -26,13 +25,15 @@ final class LoginViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        layout.minimumLineSpacing = 0
 
         let v = UICollectionView(frame: .zero, collectionViewLayout: layout)
         v.delegate = self
         v.dataSource = self
         v.register(LoginCollectionViewCell.self, forCellWithReuseIdentifier: LoginCollectionViewCell.identifier)
         v.backgroundColor = .white
-        v.decelerationRate = .fast
+        v.isPagingEnabled = true
+        v.showsHorizontalScrollIndicator = false
         return v
     }()
 
@@ -48,7 +49,6 @@ final class LoginViewController: UIViewController {
         v.setImage(UIImage(named: "kakaoLogin", in: .module, with: nil), for: .normal)
         v.contentHorizontalAlignment = .fill
         v.layer.cornerRadius = 20
-        v.isHidden = true
         return v
     }()
 
@@ -56,12 +56,10 @@ final class LoginViewController: UIViewController {
         if #available(iOS 13.2, *) {
             let v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
             v.cornerRadius = 17
-            v.isHidden = true
             return v
         }
         else {
             let v = ASAuthorizationAppleIDButton(frame: .zero)
-            v.isHidden = true
             return v
         }
     }()
@@ -70,6 +68,7 @@ final class LoginViewController: UIViewController {
         let v = UIStackView()
         v.axis = .vertical
         v.spacing = 16
+        v.isHidden = true
         return v
     }()
     
@@ -88,6 +87,7 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.setUI()
 
+        self.title = "Test Navi"
         Task {
             await self.interactor.didLoad()
         }
@@ -100,7 +100,7 @@ final class LoginViewController: UIViewController {
         self.buttonStackView.addArrangedSubviews(self.kakaoLoginButton, self.appleLoginButton)
 
         self.collectionView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalTo(self.onboardingPageControl.snp.top).offset(-32)
         }
 
@@ -145,16 +145,9 @@ extension LoginViewController: LoginDisplayLogic {
         }
     }
 
-
-    func displayAppleLogin(viewModel: Login.ViewModel.AppleLogin) {
+    func displaySocialLogin(viewModel: Login.ViewModel.SocialLogin) {
         viewModel.isHidden.unwrap { [weak self] hidden in
-            self?.appleLoginButton.isHidden = hidden
-        }
-    }
-
-    func displayKakaoLogin(viewModel: Login.ViewModel.KakaoLogin) {
-        viewModel.isHidden.unwrap { [weak self] hidden in
-            self?.kakaoLoginButton.isHidden = hidden
+            self?.buttonStackView.isHidden = hidden
         }
     }
 }
@@ -178,6 +171,10 @@ extension LoginViewController: UICollectionViewDataSource {
 extension LoginViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let value = scrollView.contentOffset.x / scrollView.frame.size.width
+        guard !value.isNaN else {
+            return
+        }
+        
         self.onboardingPageControl.currentPage = Int(round(value))
     }
 
@@ -187,16 +184,5 @@ extension LoginViewController: UICollectionViewDelegate {
         Task {
              await self.interactor.didSwipeOnboarding(index: index)
         }
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension LoginViewController: UICollectionViewDelegateFlowLayout {
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let scrolledOffsetX = targetContentOffset.pointee.x + scrollView.contentInset.left
-        let cellWidth = UIScreen.main.bounds.width
-        let index = round(scrolledOffsetX / cellWidth)
-        targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
     }
 }

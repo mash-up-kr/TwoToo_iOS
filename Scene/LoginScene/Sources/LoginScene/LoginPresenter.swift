@@ -43,8 +43,7 @@ extension LoginPresenter: LoginPresentationLogic {
     }
     
     func presentLogin() {
-        self.viewController?.displayAppleLogin(viewModel: .init(isHidden: false))
-        self.viewController?.displayKakaoLogin(viewModel: .init(isHidden: false))
+        self.viewController?.displaySocialLogin(viewModel: .init(isHidden: false))
     }
     
     func presentKakaoLoginError(error: Error) {

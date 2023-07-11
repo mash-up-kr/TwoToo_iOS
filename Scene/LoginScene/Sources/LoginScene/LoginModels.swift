@@ -28,11 +28,7 @@ enum Login {
     
     enum ViewModel {
         
-        struct KakaoLogin {
-            var isHidden: Bool?
-        }
-        
-        struct AppleLogin {
+        struct SocialLogin {
             var isHidden: Bool?
         }
         
