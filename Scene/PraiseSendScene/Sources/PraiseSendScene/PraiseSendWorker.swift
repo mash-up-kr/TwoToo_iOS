@@ -8,6 +8,14 @@
 
 import CoreKit
 
-protocol PraiseSendWorkerProtocol {}
+protocol PraiseSendWorkerProtocol {
+    /// 칭찬하기 요청
+    func requestPraise(praiseComment: String) async throws
+}
 
-final class PraiseSendWorker: PraiseSendWorkerProtocol {}
+final class PraiseSendWorker: PraiseSendWorkerProtocol {
+    
+    func requestPraise(praiseComment: String) async throws {
+        
+    }
+}
