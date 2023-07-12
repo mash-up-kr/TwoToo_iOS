@@ -24,7 +24,7 @@ final class LoginViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         layout.minimumLineSpacing = 0
 
         let v = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -87,7 +87,6 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.setUI()
 
-        self.title = "Test Navi"
         Task {
             await self.interactor.didLoad()
         }

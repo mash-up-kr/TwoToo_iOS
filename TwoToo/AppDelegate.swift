@@ -17,8 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         KakaoSDK.initSDK(appKey: kakaoApiKey)
         Font.registerTTFont()
-        
-        FirebaseApp.configure()
+
+        // TODO: - info 파일 추가 시 주석 제거
+//        FirebaseApp.configure()
 
         return true
     }
