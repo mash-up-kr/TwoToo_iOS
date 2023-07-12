@@ -1,0 +1,95 @@
+//
+//  ChallengeBeforeStartView.swift
+//  
+//
+//  Created by Julia on 2023/07/12.
+//
+
+import UIKit
+import DesignSystem
+
+/// 챌린지 생성 전 뷰
+final class ChallengeBeforeStartView: UIView {
+    lazy var nicknameStackView: CoupleNicknameStackView = {
+        let v = CoupleNicknameStackView()
+        return v
+    }()
+    
+    lazy var titleLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .primary
+        v.font = .h1
+        v.text = "챌린지 대기중이에요"
+        v.textAlignment = .center
+        v.numberOfLines = 2
+        return v
+    }()
+    
+    lazy var descriptionLabel: UILabel = {
+        let v = UILabel()
+        v.text = "아직 챌린지 시작 전이에요!\n시작날짜에 다시 들어와주세요!"
+        v.textAlignment = .center
+        v.numberOfLines = 2
+        v.textColor = .grey600
+        v.font = .body2
+        v.setLineSpacing(22)
+        return v
+    }()
+    
+    lazy var iconImageView: UIImageView = {
+        let v = UIImageView(.icon_sleepingseed)
+        return v
+    }()
+    
+    lazy var startButton: TTPrimaryButtonType = {
+        let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
+        v.setIsEnabled(true)
+        return v
+    }()
+    
+    init(myNickname: String,
+         partnerNickname: String) {
+        super.init(frame: .zero)
+        self.layout()
+        self.iconImageView = iconImageView
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func layout() {
+        self.addSubviews(self.nicknameStackView,
+                         self.titleLabel,
+                         self.descriptionLabel,
+                         self.iconImageView,
+                         self.startButton)
+        
+        self.nicknameStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(11)
+            make.trailing.equalToSuperview().inset(26)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.4)
+        }
+        
+        self.descriptionLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.6)
+        }
+        
+        self.iconImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        self.startButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.leading.equalToSuperview().offset(99)
+            make.trailing.equalToSuperview().inset(99)
+            make.bottom.equalToSuperview().inset(50)
+        }
+    }
+}

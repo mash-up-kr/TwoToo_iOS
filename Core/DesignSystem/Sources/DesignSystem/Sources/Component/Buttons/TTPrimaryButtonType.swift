@@ -28,20 +28,30 @@ final public class TTPrimaryButtonType: UIButton, UIComponentBased {
         self.layer.cornerRadius = self.customButtonType.buttonCornerRadius ?? 0
         self.layer.borderColor = self.customButtonType.borderColor
         self.layer.borderWidth = self.customButtonType.borderWidth
-        self.titleEdgeInsets = self.customButtonType.titlePadding ?? .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     public func layout() {
         self.snp.makeConstraints { make in
             make.height.equalTo(self.customButtonType.buttonHeight)
-            make.width.equalTo(self.customButtonType.buttonWidth)
         }
     }
 
     @MainActor
     public func didTapButton(completion: (() -> Void)? = nil) {
-        self.addAction { [weak self] in
+        self.addAction {
             completion?()
+        }
+    }
+    
+    /// 버튼 활성화 여부에 따른 background, enable 설정 변경 내부 함수
+    public func setIsEnabled(_ isEnabled: Bool) {
+        if isEnabled {
+            self.backgroundColor = .primary
+            self.isEnabled = true
+        }
+        else {
+            self.backgroundColor = .grey400
+            self.isEnabled = false
         }
     }
 }
@@ -98,36 +108,12 @@ extension TTPrimaryButtonType {
             }
         }
 
-        var titlePadding: UIEdgeInsets? {
-            switch self {
-            case .large:
-                return .init(top: 18.5, left: 131, bottom: 18.5, right: 131)
-            case .largeLine:
-                return .init(top: 18.5, left: 96.5, bottom: 18.5, right: 96.5)
-            case .small:
-                return .init(top: 18.5, left: 56, bottom: 18.5, right: 56)
-            case .tiny:
-                return .init(top: 8, left: 11, bottom: 8, right: 11)
-            }
-        }
-
         var buttonCornerRadius: CGFloat? {
             switch self {
             case .large, .largeLine, .small:
                 return 20
             case .tiny:
                 return 10
-            }
-        }
-
-        var buttonWidth: CGFloat {
-            switch self {
-            case .large, .largeLine:
-                return UIScreen.main.bounds.width - 48
-            case .small:
-                return UIScreen.main.bounds.width / 2
-            case .tiny:
-                return 0
             }
         }
 

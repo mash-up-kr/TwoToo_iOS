@@ -8,7 +8,7 @@
 import UIKit
 import DesignSystem
 
-final class TopContentView: UIView {
+final class TopChallengeInfoView: UIView {
     lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.textColor = .mainCoral
