@@ -8,11 +8,21 @@
 
 import CoreKit
 import UIKit
+import DesignSystem
 
 protocol SplashDisplayLogic: AnyObject {}
 
 final class SplashViewController: UIViewController {
     var interactor: SplashBusinessLogic
+
+    private lazy var titleLabel: UILabel = {
+        let v = UILabel()
+        v.text = "Twotoo"
+        v.font = .h1
+        v.textColor = .mainPink
+
+        return v
+    }()
     
     init(interactor: SplashBusinessLogic) {
         self.interactor = interactor
@@ -35,7 +45,12 @@ final class SplashViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        
+        self.view.backgroundColor = .second02
+        self.view.addSubview(self.titleLabel)
+
+        self.titleLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 }
 
