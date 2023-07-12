@@ -1,5 +1,5 @@
 //
-//  ChallengeCertificateBottomSheetPhotoView.swift
+//  ChallengeCertificatePhotoView.swift
 //  
 //
 //  Created by Julia on 2023/06/26.
@@ -7,22 +7,13 @@
 
 import UIKit
 
-public protocol ChallengeCertificateBottomSheetPhotoViewDelegate: AnyObject {
-    func didTapPlusButton()
-}
-
-public final class ChallengeCertificateBottomSheetPhotoView: UIView {
-        
-    public weak var delegate: ChallengeCertificateBottomSheetPhotoViewDelegate?
+public final class ChallengeCertificatePhotoView: UIView {
     
     private lazy var plusButton: UIButton = {
         let v = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
         v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         v.tintColor = .mainWhite
-        v.addAction { [weak self] in
-            self?.delegate?.didTapPlusButton()
-        }
         return v
     }()
     
@@ -46,7 +37,7 @@ public final class ChallengeCertificateBottomSheetPhotoView: UIView {
     
     private lazy var photoImageView: UIImageView = {
         let v = UIImageView()
-        v.backgroundColor = .mainPink.withAlphaComponent(0.3)
+        v.backgroundColor = .mainPink
         return v
     }()
     
@@ -73,8 +64,8 @@ public final class ChallengeCertificateBottomSheetPhotoView: UIView {
     }
     
     private func attribute() {
-        self.layer.cornerRadius = 15
-        self.contentMode = .scaleToFill
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
     }
 
     /// 사진을 촬영하거나 사진첩에서 이미지를 가져오면 업데이트 합니다.

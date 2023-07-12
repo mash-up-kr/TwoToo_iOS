@@ -53,6 +53,7 @@
 		C87E31AB2A2C35F500FD31C8 /* HistoryScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HistoryScene; sourceTree = "<group>"; };
 		C87E31AC2A2C360A00FD31C8 /* MyInfoScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyInfoScene; sourceTree = "<group>"; };
 		C87E31AD2A2C373F00FD31C8 /* ChallengeCreateScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateScene; sourceTree = "<group>"; };
+		C8A338A02A5A5A6E0080E4D1 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +91,7 @@
 		C87E31782A2B041900FD31C8 /* TwoToo */ = {
 			isa = PBXGroup;
 			children = (
+				C8A338A02A5A5A6E0080E4D1 /* TwoToo.entitlements */,
 				C87E31792A2B041900FD31C8 /* AppDelegate.swift */,
 				C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */,
 				A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */,
@@ -374,10 +376,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TwoToo/TwoToo.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MRMBCYN83C;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -394,6 +399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TwoToo Develop";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -405,10 +411,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TwoToo/TwoToo.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MRMBCYN83C;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -425,6 +434,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TwoToo Develop";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

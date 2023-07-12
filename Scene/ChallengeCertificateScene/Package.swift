@@ -15,6 +15,10 @@ let package = Package(
     dependencies: [
         .package(path: "./CoreKit"),
         .package(
+            url: "https://github.com/TimOliver/TOCropViewController",
+            .upToNextMajor(from: "2.0.0")
+        ),
+        .package(
             url: "https://github.com/Quick/Nimble",
             .upToNextMajor(from: "12.0.0")
         ),
@@ -27,7 +31,8 @@ let package = Package(
         .target(
             name: "ChallengeCertificateScene",
             dependencies: [
-                .product(name: "CoreKit", package: "CoreKit")
+                .product(name: "CoreKit", package: "CoreKit"),
+                .product(name: "TOCropViewController", package: "TOCropViewController")
             ],
             resources: [.process("Assets")]
         ),

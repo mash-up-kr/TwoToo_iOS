@@ -22,6 +22,6 @@ final class ChallengeCertificateRouter {
 extension ChallengeCertificateRouter: ChallengeCertificateRoutingLogic {
     
     func dismiss() {
-        
+        self.viewController?.dismiss(animated: true)
     }
 }

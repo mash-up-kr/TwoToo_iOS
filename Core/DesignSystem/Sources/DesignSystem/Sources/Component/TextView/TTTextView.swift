@@ -9,11 +9,19 @@ import UIKit
 
 public protocol TTTextViewDelegate: AnyObject {
     func textViewDidEndEditing(text: String)
+    func textViewDidChange(text: String)
+}
+
+public extension TTTextViewDelegate {
+    func textViewDidEndEditing(text: String) {}
+    func textViewDidChange(text: String) {}
 }
 
 public final class TTTextView: UITextView {
     
     public weak var customDelegate: TTTextViewDelegate?
+    
+    private var placeHolderText: String = ""
     
     private lazy var placeHolderLabel: UILabel = {
         let v = UILabel()
@@ -25,6 +33,7 @@ public final class TTTextView: UITextView {
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
+        
         self.layout()
         self.attribute()
         self.delegate = self
@@ -32,6 +41,12 @@ public final class TTTextView: UITextView {
     
     public convenience init(placeHolder: String) {
         self.init()
+        
+        self.layout()
+        self.attribute()
+        self.delegate = self
+        
+        self.placeHolderText = placeHolder
         self.placeHolderLabel.text = placeHolder
     }
      
@@ -53,19 +68,25 @@ public final class TTTextView: UITextView {
         self.font = .body1
         self.textColor = .black
         self.isEditable = true
-        self.layer.cornerRadius = 20
+        self.layer.cornerRadius = 10
     }
 }
 
 extension TTTextView: UITextViewDelegate {
-    public func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text != nil {
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        self.customDelegate?.textViewDidEndEditing(text: textView.text)
+    }
+    
+    public func textViewDidChange(_ textView: UITextView) {
+        if textView.text != nil && !textView.text.isEmpty {
             self.placeHolderLabel.text = ""
             textView.textColor = .black
         }
-    }
-
-    public func textViewDidEndEditing(_ textView: UITextView) {
-        self.customDelegate?.textViewDidEndEditing(text: textView.text)
+        else {
+            self.placeHolderLabel.text = self.placeHolderText
+        }
+        
+        self.customDelegate?.textViewDidChange(text: textView.text)
     }
 }
