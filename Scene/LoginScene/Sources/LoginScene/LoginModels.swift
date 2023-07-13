@@ -28,16 +28,21 @@ enum Login {
     
     enum ViewModel {
         
-        struct KakaoLogin {
-            var isHidden: Bool?
-        }
-        
-        struct AppleLogin {
+        struct SocialLogin {
             var isHidden: Bool?
         }
         
         struct Toast {
             var message: String?
+        }
+
+        struct Onborading {
+            var items: [Item]?
+
+            struct Item {
+                var image: UIImage
+                var text: String
+            }
         }
     }
 }

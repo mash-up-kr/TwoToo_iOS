@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64FD3B762A5A9732003DD1FD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FD3B752A5A9732003DD1FD /* Constant.swift */; };
 		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
 		A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */; };
 		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		641E51372A5A4ED0002C8561 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
+		64FD3B752A5A9732003DD1FD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviTestViewController.swift; sourceTree = "<group>"; };
 		C8396CBD2A2C3F2500A79E98 /* SceneKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SceneKit; sourceTree = "<group>"; };
 		C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateFinishScene; sourceTree = "<group>"; };
@@ -90,7 +93,9 @@
 		C87E31782A2B041900FD31C8 /* TwoToo */ = {
 			isa = PBXGroup;
 			children = (
+				641E51372A5A4ED0002C8561 /* TwoToo.entitlements */,
 				C87E31792A2B041900FD31C8 /* AppDelegate.swift */,
+				64FD3B752A5A9732003DD1FD /* Constant.swift */,
 				C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */,
 				A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */,
 				C87E317D2A2B041900FD31C8 /* ViewController.swift */,
@@ -228,6 +233,7 @@
 			files = (
 				A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */,
 				C87E317E2A2B041900FD31C8 /* ViewController.swift in Sources */,
+				64FD3B762A5A9732003DD1FD /* Constant.swift in Sources */,
 				C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */,
 				C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */,
 			);
@@ -374,10 +380,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = TwoToo/TwoToo.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MRMBCYN83C;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -394,6 +402,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TwoToo Develop";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -405,10 +414,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = TwoToo/TwoToo.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MRMBCYN83C;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -425,6 +436,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TwoToo Develop";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
