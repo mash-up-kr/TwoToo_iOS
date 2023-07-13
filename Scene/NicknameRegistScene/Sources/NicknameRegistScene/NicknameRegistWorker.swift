@@ -20,18 +20,16 @@ protocol NicknameRegistWorkerProtocol {
 final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     
     var localDataSource: LocalDataSourceProtocol
-    var invitedUserLocalWorker: InvitedUserLocalWorker
-    
-    private let localDataSourceKey: String = "invitedUser"
-    
+    var invitedUserWorker: InvitedUserLocalWorkerProtocol
+        
     init(localDataSource: LocalDataSourceProtocol,
-         invitedUserLocalWorker: InvitedUserLocalWorker) {
+         invitedUserLocalWorker: InvitedUserLocalWorkerProtocol) {
         self.localDataSource = localDataSource
-        self.invitedUserLocalWorker = invitedUserLocalWorker
+        self.invitedUserWorker = invitedUserLocalWorker
     }
     
     var invitedUser: NicknameRegist.Model.InvitedUser? {
-        if let user: String = self.localDataSource.read(key: self.localDataSourceKey) {
+        if let user: String = self.invitedUserWorker.invitedUser {
             return NicknameRegist.Model.InvitedUser(name: user)
         } else {
             print("UserDefault에 초대 받은 유저 정보가 없습니다.")
@@ -41,7 +39,7 @@ final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     
     // TODO: 닉네임을 설정하는 통신 필요
     func requestSetNickname(nickname: String) async throws {
-        
+
     }
     
     

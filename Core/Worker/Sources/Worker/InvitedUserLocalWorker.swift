@@ -7,18 +7,26 @@
 
 import Foundation
 
-public final class InvitedUserLocalWorker {
+public protocol InvitedUserLocalWorkerProtocol {
+    var invitedUser: String? { get set }
+}
+
+public final class InvitedUserLocalWorker: InvitedUserLocalWorkerProtocol {
     
-    public init() { }
+    var localDataSource: LocalDataSourceProtocol?
     
-    var _invitedUser: String?
+    public init(localDataSource: LocalDataSourceProtocol = LocalDataSource()) {
+        self.localDataSource = localDataSource
+    }
+    
+    private let key: String = "invitedUser"
     
     public var invitedUser: String? {
         get {
-            return self._invitedUser
+            return self.localDataSource?.read(key: key)
         }
         set(user) {
-            self._invitedUser = user
+            self.localDataSource?.save(value: user, key: key)
         }
     }
 }

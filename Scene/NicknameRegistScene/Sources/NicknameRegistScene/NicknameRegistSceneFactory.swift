@@ -34,11 +34,11 @@ public final class NicknameRegistSceneFactory {
     
     public func make(with configuration: NicknameRegistConfiguration) -> NicknameRegistScene {
         let localDataSource = LocalDataSource()
-        let invitedUserWorker = InvitedUserLocalWorker()
+        let invitedUserLocalWorker = InvitedUserLocalWorker()
         let presenter = NicknameRegistPresenter()
         let router = NicknameRegistRouter()
         let worker = NicknameRegistWorker(localDataSource: localDataSource,
-                                          invitedUserLocalWorker: invitedUserWorker)
+                                          invitedUserLocalWorker: invitedUserLocalWorker)
         let interactor = NicknameRegistInteractor(
             presenter: presenter,
             router: router,
