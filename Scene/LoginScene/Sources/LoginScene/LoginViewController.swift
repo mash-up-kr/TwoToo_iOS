@@ -95,6 +95,7 @@ final class LoginViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
+        self.view.backgroundColor = .white
         self.view.addSubviews(self.collectionView, self.onboardingPageControl, self.buttonStackView)
         self.buttonStackView.addArrangedSubviews(self.kakaoLoginButton, self.appleLoginButton)
 
@@ -181,7 +182,7 @@ extension LoginViewController: UICollectionViewDelegate {
         let index = Int(scrollView.contentOffset.x / self.view.frame.size.width)
 
         Task {
-             await self.interactor.didSwipeOnboarding(index: index)
+             await self.interactor.didSwipeOnboarding(index: index + 1)
         }
     }
 }

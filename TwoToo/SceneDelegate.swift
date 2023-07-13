@@ -34,6 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
         self.window?.rootViewController = tabBarController
+    }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
