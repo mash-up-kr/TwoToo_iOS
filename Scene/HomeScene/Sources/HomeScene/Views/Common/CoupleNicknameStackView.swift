@@ -40,11 +40,6 @@ final class CoupleNicknameStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(my: String, partner: String) {
-        self.myNicknameLabel.text = my
-        self.partnerNicknameLabel.text = partner
-    }
-    
     private func layout() {
         self.heartImageView.snp.makeConstraints { make in
             make.width.height.equalTo(12)
@@ -57,5 +52,11 @@ final class CoupleNicknameStackView: UIStackView {
         self.addArrangedSubviews(self.myNicknameLabel,
                                  self.heartImageView,
                                  self.partnerNicknameLabel)
+    }
+    
+    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.OrderViewModel) {
+        // ?? = viewModel.challengeOrderText
+        self.myNicknameLabel.text = viewModel.myNameText
+        self.partnerNicknameLabel.text = viewModel.partenrNameText
     }
 }

@@ -133,17 +133,21 @@ final class TTProgressBar: UIView {
         self.backgroundColor = .mainWhite
     }
     
-    func configureNickname(my: String, partner: String) {
-        self.myNicknameLabel.text = my
-        self.partnerNicknameLabel.text = partner
+    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ProgressViewModel) {
+        self.myNicknameLabel.text = viewModel.myNameText
+        self.myPercentLabel.text = viewModel.myPercentageText
+        self.partnerNicknameLabel.text = viewModel.partnerNameText
+        self.partnerPercentLabel.text = viewModel.partnerPercentageText
+        self.configurePercent(my: viewModel.myPercentageNumber,
+                              partner: viewModel.partnerPercentageNumber)
     }
     
-    func configurePercent(my: Int, partner: Int) {
+    func configurePercent(my: Double, partner: Double) {
         self.myPercentLabel.text = "\(my)%"
         self.partnerPercentLabel.text = "\(partner)%"
         
-        let myPercent = CGFloat(my) / CGFloat(100)
-        let partnerPercent = CGFloat(partner) / CGFloat(100)
+        let myPercent: Double = my / 100
+        let partnerPercent: Double = partner / 100
 
         self.myPercentView.snp.makeConstraints { make in
             make.top.leading.bottom.equalToSuperview()
