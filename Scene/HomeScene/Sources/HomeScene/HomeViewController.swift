@@ -31,9 +31,8 @@ final class HomeViewController: UIViewController {
         return v
     }()
     
-    lazy var customContentView: ChallengeBeforeStartView = {
-        let v = ChallengeBeforeStartView(myNickname: "공쥬",
-                                 partnerNickname: "왕쟈ㅑ")
+    lazy var customContentView: ChallengeInProgressView = {
+        let v = ChallengeInProgressView()
         return v
     }()
     
@@ -50,7 +49,6 @@ final class HomeViewController: UIViewController {
         self.view.sendSubviewToBack(self.groundImageView)
     }
 
-    
     // MARK: - Layout
     private func setUI() {
         

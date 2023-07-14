@@ -131,6 +131,7 @@ final class TTProgressBar: UIView {
     
     private func attribute() {
         self.backgroundColor = .mainWhite
+        self.layer.cornerRadius = 15
     }
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ProgressViewModel) {
@@ -142,9 +143,9 @@ final class TTProgressBar: UIView {
                               partner: viewModel.partnerPercentageNumber)
     }
     
-    func configurePercent(my: Double, partner: Double) {
-        self.myPercentLabel.text = "\(my)%"
-        self.partnerPercentLabel.text = "\(partner)%"
+    private func configurePercent(my: Double, partner: Double) {
+        self.myPercentLabel.text = "\(Int(my))%"
+        self.partnerPercentLabel.text = "\(Int(partner))%"
         
         let myPercent: Double = my / 100
         let partnerPercent: Double = partner / 100
