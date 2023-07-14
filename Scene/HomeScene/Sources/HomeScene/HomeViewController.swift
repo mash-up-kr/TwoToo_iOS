@@ -31,8 +31,8 @@ final class HomeViewController: UIViewController {
         return v
     }()
     
-    lazy var customContentView: PreChallengeView = {
-        let v = PreChallengeView(myNickname: "공쥬",
+    lazy var customContentView: ChallengeBeforeStartView = {
+        let v = ChallengeBeforeStartView(myNickname: "공쥬",
                                  partnerNickname: "왕쟈ㅑ")
         return v
     }()

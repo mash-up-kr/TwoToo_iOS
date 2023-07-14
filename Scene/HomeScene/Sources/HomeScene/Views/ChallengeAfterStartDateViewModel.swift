@@ -1,5 +1,5 @@
 //
-//  ChallengeBeforeStartView.swift
+//  ChallengeAfterStartDateViewModel.swift
 //  
 //
 //  Created by Julia on 2023/07/12.
@@ -8,8 +8,8 @@
 import UIKit
 import DesignSystem
 
-/// 챌린지 시작일 전 보여질 화면입니다.
-final class ChallengeBeforeStartView: UIView {
+/// 챌린지 시작일 초과 화면
+final class ChallengeAfterStartDateViewModel: UIView {
     
     lazy var nicknameStackView: CoupleNicknameStackView = {
         let v = CoupleNicknameStackView()
@@ -20,30 +20,20 @@ final class ChallengeBeforeStartView: UIView {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h1
-        v.text = "챌린지 대기중이에요"
-        v.textAlignment = .center
+        v.text = "챌린지가 만료 됐어요\nㅠㅠ"
         v.numberOfLines = 2
-        return v
-    }()
-    
-    lazy var descriptionLabel: UILabel = {
-        let v = UILabel()
-        v.text = "아직 챌린지 시작 전이에요!\n시작날짜에 다시 들어와주세요!"
-        v.textAlignment = .center
-        v.numberOfLines = 2
-        v.textColor = .grey600
-        v.font = .body2
         v.setLineSpacing(22)
+        v.textAlignment = .center
         return v
     }()
     
     lazy var iconImageView: UIImageView = {
-        let v = UIImageView(.icon_sleepingseed)
+        let v = UIImageView(.icon_flower_seed)
         return v
     }()
     
     lazy var startButton: TTPrimaryButtonType = {
-        let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
+        let v = TTPrimaryButton.create(title: "챌린지 시작하기", .small)
         v.setIsEnabled(true)
         return v
     }()
@@ -62,7 +52,6 @@ final class ChallengeBeforeStartView: UIView {
     private func layout() {
         self.addSubviews(self.nicknameStackView,
                          self.titleLabel,
-                         self.descriptionLabel,
                          self.iconImageView,
                          self.startButton)
         
@@ -72,11 +61,6 @@ final class ChallengeBeforeStartView: UIView {
         }
         
         self.titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.4)
-        }
-        
-        self.descriptionLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().multipliedBy(0.6)
         }
