@@ -1,5 +1,5 @@
 //
-//  ChallengeAfterStartDateViewModel.swift
+//  ChallengeWaitingView.swift
 //  
 //
 //  Created by Julia on 2023/07/12.
@@ -8,8 +8,8 @@
 import UIKit
 import DesignSystem
 
-/// 챌린지 시작일 초과 화면
-final class ChallengeAfterStartDateView: UIView {
+/// 챌린지 대기 중 보여질 화면입니다.
+final class ChallengeWaitingView: UIView {
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
@@ -20,7 +20,7 @@ final class ChallengeAfterStartDateView: UIView {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h1
-        v.text = "챌린지 확인 기간이 지났어요"
+        v.text = "짝궁의 응답을\n기다리고 있습니다."
         v.numberOfLines = 2
         v.setLineSpacing(22)
         v.textAlignment = .center
@@ -28,12 +28,12 @@ final class ChallengeAfterStartDateView: UIView {
     }()
     
     lazy var iconImageView: UIImageView = {
-        let v = UIImageView(.icon_flower_seed) // TODO: - 이미지 바뀐다함 ㅠㅠ
+        let v = UIImageView(.icon_sleepingseed)
         return v
     }()
     
     lazy var startButton: TTPrimaryButtonType = {
-        let v = TTPrimaryButton.create(title: "챌린지 시작하기", .small)
+        let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
         v.setIsEnabled(true)
         return v
     }()
@@ -77,7 +77,7 @@ final class ChallengeAfterStartDateView: UIView {
         }
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeAfterStartDateViewModel) {
+    func configure(viewModel: Home.ViewModel.ChallengeWaitingViewModel) {
         self.nicknameStackView.configure(challengeOrderText: nil,
                                          myNickname: viewModel.myNameText,
                                          partnerNickname: viewModel.partnerNameText)

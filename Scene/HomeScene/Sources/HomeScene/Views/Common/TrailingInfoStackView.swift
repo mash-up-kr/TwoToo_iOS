@@ -80,9 +80,14 @@ final class TrailingInfoStackView: UIView {
     private func attribute() {
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.OrderViewModel) {
-        self.challengeCountLabel.text = viewModel.challengeOrderText
-        self.myNicknameLabel.text = viewModel.myNameText
-        self.partnerNicknameLabel.text = viewModel.partenrNameText
+    func configure(challengeOrderText: String?,
+                   myNickname: String,
+                   partnerNickname: String) {
+        if challengeOrderText == nil {
+            self.challengeCountLabel.isHidden = true
+        }
+        self.challengeCountLabel.text = challengeOrderText
+        self.myNicknameLabel.text = myNickname
+        self.partnerNicknameLabel.text = partnerNickname
     }
 }

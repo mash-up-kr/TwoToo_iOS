@@ -12,49 +12,27 @@ final class ChallengeInProgressView: UIView {
     /// 닉네임 정보, 챌린지 정보를 담은 스택뷰
     lazy var topChallengeInfoView: TopChallengeInfoView = {
         let v = TopChallengeInfoView()
-        v.configure(viewModel: .init(challengeNameText: "30분이상 운동하기",
-                                     dDayText: "D-22"))
         return v
     }()
     /// 챌린지 진행도 뷰
     lazy var progressBar: TTProgressBar = {
         let v = TTProgressBar()
-        v.configure(viewModel: .init(partnerNameText: "상대상대",
-                                     myNameText: "나요",
-                                     partnerPercentageText: "33%",
-                                     myPercentageText: "80%",
-                                     partnerPercentageNumber: 33,
-                                     myPercentageNumber: 80))
         return v
     }()
     /// 나와 상대의 닉네임 뷰
-    lazy var trailingInfoStackView: TrailingInfoStackView = {
+    lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
-        v.configure(viewModel: .init(challengeOrderText: "4번째 챌린지 진행중",
-                                     partenrNameText: "상대상대",
-                                     myNameText: "나요"))
         return v
     }()
 
     /// 내 꽃 정보 뷰
     lazy var myFlowerView: MyFlowerView = {
         let v = MyFlowerView()
-        v.configure(viewModel: .init(image: .asset(.icon_step1_my)!,
-                                     isCertificationButtonHidden: true,
-                                     cetificationGuideText: "내 씨앗을 눌러 인증 해보세요!",
-                                     isComplimentCommentHidden: false,
-                                     complimentCommentText: "안녕하세요녕하세요녕",
-                                     myNameText: "나의꽃"))
         return v
     }()
     /// 상대방 꽃 정보 뷰
     lazy var partnerFlowerView: PartnerFlowerView = {
         let v = PartnerFlowerView()
-        v.configure(viewModel: .init(image: .asset(.icon_step3_mate)!,
-                                     isCertificationCompleteHidden: true,
-                                     isComplimentCommentHidden: false,
-                                     complimentCommentText: "수고고수고수고수고수고수고수고수고수고수고수고수고수고수고",
-                                     partnerNameText: "상대방꽃"))
         return v
     }()
     /// 찌르기 버튼
@@ -77,7 +55,6 @@ final class ChallengeInProgressView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-        self.attribute()
     }
     
     required init(coder: NSCoder) {
@@ -87,7 +64,7 @@ final class ChallengeInProgressView: UIView {
     func layout() {
         self.addSubviews(self.topChallengeInfoView,
                          self.progressBar,
-                         self.trailingInfoStackView,
+                         self.nicknameStackView,
                          self.myFlowerView,
                          self.partnerFlowerView,
                          self.nudgeBeeButton,
@@ -107,7 +84,7 @@ final class ChallengeInProgressView: UIView {
            make.height.equalTo(62)
        }
         
-        self.trailingInfoStackView.snp.makeConstraints { make in
+        self.nicknameStackView.snp.makeConstraints { make in
             make.centerY.equalTo(self.progressBar.snp.centerY)
             make.leading.equalTo(self.progressBar.snp.trailing).offset(10)
             make.height.equalTo(40)
@@ -139,8 +116,14 @@ final class ChallengeInProgressView: UIView {
         
     }
     
-    func attribute() {
-        
+    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel) {
+        self.topChallengeInfoView.configure(viewModel: viewModel.challengeInfo)
+        self.progressBar.configure(viewModel: viewModel.progress)
+        self.nicknameStackView.configure(challengeOrderText: viewModel.order.challengeOrderText,
+                                         myNickname: viewModel.order.myNameText,
+                                         partnerNickname: viewModel.order.partenrNameText)
+        self.partnerFlowerView.configure(viewModel: viewModel.partnerFlower)
+        self.myFlowerView.configure(viewModel: viewModel.myFlower)
     }
     
 }

@@ -31,8 +31,8 @@ final class HomeViewController: UIViewController {
         return v
     }()
     
-    lazy var customContentView: ChallengeInProgressView = {
-        let v = ChallengeInProgressView()
+    lazy var customContentView: ChallengeBeforeStartView = {
+        let v = ChallengeBeforeStartView()
         return v
     }()
     
@@ -46,6 +46,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.view.backgroundColor = .second02
         self.view.sendSubviewToBack(self.groundImageView)
     }
 

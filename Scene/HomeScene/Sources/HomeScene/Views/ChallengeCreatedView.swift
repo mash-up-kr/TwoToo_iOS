@@ -13,7 +13,6 @@ final class ChallengeCreatedView: UIView {
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
-        v.configure(viewModel: .init(challengeOrderText: "4번째 챌린지중", partenrNameText: "파트너", myNameText: "나"))
         return v
     }()
     
@@ -76,6 +75,12 @@ final class ChallengeCreatedView: UIView {
             make.trailing.equalToSuperview().inset(99)
             make.bottom.equalToSuperview().inset(50)
         }
+    }
+    
+    func configure(viewModel: Home.ViewModel.ChallengeCreatedViewModel) {
+        self.nicknameStackView.configure(challengeOrderText: nil,
+                                         myNickname: viewModel.myNameText,
+                                         partnerNickname: viewModel.partnerNameText)
     }
     
 }

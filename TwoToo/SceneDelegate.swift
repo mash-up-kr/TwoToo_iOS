@@ -35,11 +35,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
-        
-        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
-        
+                
         self.window?.rootViewController = tabBarController
-        tabBarController.present(bottomSheetViewController, animated: true)
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
