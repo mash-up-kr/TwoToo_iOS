@@ -8,6 +8,14 @@
 
 import CoreKit
 
-protocol NudgeSendWorkerProtocol {}
+protocol NudgeSendWorkerProtocol {
+    /// 찌르기 요청
+    func requestNudge(nudgeComment: String) async throws
+}
 
-final class NudgeSendWorker: NudgeSendWorkerProtocol {}
+final class NudgeSendWorker: NudgeSendWorkerProtocol {
+    
+    func requestNudge(nudgeComment: String) async throws {
+        
+    }
+}

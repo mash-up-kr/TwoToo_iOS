@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol NudgeSendRoutingLogic {}
+protocol NudgeSendRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class NudgeSendRouter {
     weak var viewController: NudgeSendViewController?
@@ -18,4 +21,7 @@ final class NudgeSendRouter {
 
 extension NudgeSendRouter: NudgeSendRoutingLogic {
     
+    func dismiss() {
+        
+    }
 }
