@@ -12,6 +12,7 @@ final class PartnerFlowerView: UIView {
     
     lazy var speechBubbleView: SpeechBubbleView = {
         let v = SpeechBubbleView(tailPosition: .partner)
+        v.isHidden = true
         return v
     }()
     
@@ -35,6 +36,29 @@ final class PartnerFlowerView: UIView {
         v.spacing = 3
         v.addArrangedSubviews(self.finishLabel, self.heartImageView)
         v.isHidden = true
+        return v
+    }()
+    /// 꽃 이름 라벨
+    lazy var flowerNameLabel: UILabel = {
+        let v = UILabel()
+        v.font = .h3
+        v.textColor = .primary
+        return v
+    }()
+    /// 꽃말 라벨
+    lazy var flowerDescLabel: UILabel = {
+        let v = UILabel()
+        v.font = .body2
+        v.textColor = .primary
+        return v
+    }()
+    /// 꽃 이름, 꽃말 스택뷰
+    lazy var flowerInfoStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.spacing = 7
+        v.isHidden = true
+        v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
         return v
     }()
     
@@ -64,6 +88,7 @@ final class PartnerFlowerView: UIView {
         self.addSubviews(self.speechBubbleView,
                          self.finishHeartStackView,
                          self.flowerImageView,
+                         self.flowerInfoStackView,
                          self.nicknameView)
         
         self.heartImageView.snp.makeConstraints { make in
@@ -79,10 +104,16 @@ final class PartnerFlowerView: UIView {
         self.finishHeartStackView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(1.2)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
+        }
+        
+        self.flowerInfoStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(1.2)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-12)
         }
         
         self.flowerImageView.snp.makeConstraints { make in
-            make.top.equalTo(self.finishHeartStackView.snp.bottom).offset(8)
             make.centerX.equalToSuperview().multipliedBy(1.2)
         }
         
@@ -97,11 +128,19 @@ final class PartnerFlowerView: UIView {
     private func attribute() {
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.PartnerFlowerViewModel) {
+    func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.PartnerFlowerViewModel) {
         self.flowerImageView.image = viewModel.image
         self.finishHeartStackView.isHidden = viewModel.isCertificationCompleteHidden
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
         self.speechBubbleView.titleLabel.text = viewModel.complimentCommentText
+        self.nicknameView.titleLabel.text = viewModel.partnerNameText
+    }
+    
+    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.PartnerFlowerViewModel) {
+        self.flowerImageView.image = viewModel.image
+        self.flowerInfoStackView.isHidden = viewModel.isFlowerTextHidden
+        self.flowerNameLabel.text = viewModel.flowerNameText
+        self.flowerDescLabel.text = viewModel.flowerDescText
         self.nicknameView.titleLabel.text = viewModel.partnerNameText
     }
 }

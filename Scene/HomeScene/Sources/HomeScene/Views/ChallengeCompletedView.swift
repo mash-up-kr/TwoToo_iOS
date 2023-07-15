@@ -1,14 +1,15 @@
 //
-//  ChallengeProgressView.swift
+//  ChallengeFinishView.swift
 //  
 //
 //  Created by Julia on 2023/07/12.
 //
 
 import UIKit
+import DesignSystem
 
-/// 챌린지 진행중 뷰
-final class ChallengeInProgressView: UIView {
+/// 챌린지 완료 후 보여질 화면입니다.
+final class ChallengeCompletedView: UIView {
     /// 닉네임 정보, 챌린지 정보를 담은 스택뷰
     lazy var topChallengeInfoView: TopChallengeInfoView = {
         let v = TopChallengeInfoView()
@@ -35,20 +36,11 @@ final class ChallengeInProgressView: UIView {
         let v = PartnerFlowerView()
         return v
     }()
-    /// 찌르기 버튼
-    lazy var nudgeBeeButton: UIButton = {
-       let v = UIButton()
-       v.setImage(.asset(.icon_push_bee), for: .normal)
-       return v
-    }()
-    /// 찌르기 버튼 타이틀
-    lazy var nudgeTitleLabel: UILabel = {
-       let v = UILabel()
-       v.text = "콕 찌르기 (5/5)"
-       v.textColor = .primary
-       v.font = .body2
-       v.textAlignment = .center
-       return v
+    /// 챌린지 완료하기 버튼
+    lazy var confirmButton: TTPrimaryButtonType = {
+        let v = TTPrimaryButton.create(title: "챌린지 완료하기", .small)
+        v.setIsEnabled(true)
+        return v
     }()
 
     // MARK: - Method
@@ -67,8 +59,7 @@ final class ChallengeInProgressView: UIView {
                          self.nicknameStackView,
                          self.myFlowerView,
                          self.partnerFlowerView,
-                         self.nudgeBeeButton,
-                         self.nudgeTitleLabel)
+                         self.confirmButton)
                 
         self.topChallengeInfoView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
@@ -92,38 +83,33 @@ final class ChallengeInProgressView: UIView {
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
+            make.bottom.equalTo(self.confirmButton.snp.top).offset(-40)
             make.centerX.equalToSuperview().multipliedBy(0.5)
             make.width.equalToSuperview().dividedBy(2)
         }
-        
+
         self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
+            make.bottom.equalTo(self.confirmButton.snp.top).offset(-40)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.width.equalToSuperview().dividedBy(2)
         }
-                
-        self.nudgeBeeButton.snp.makeConstraints { make in
+
+        self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(57)
-            make.bottom.equalTo(self.nudgeTitleLabel.snp.top).offset(-8)
-        }
-        
-        self.nudgeTitleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(38)
+            make.bottom.equalToSuperview().inset(30)
+            make.width.equalTo(177)
         }
         
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel) {
-        self.topChallengeInfoView.configureInProgress(viewModel: viewModel.challengeInfo)
-        self.progressBar.configureInProgress(viewModel: viewModel.progress)
+    func configure(viewModel: Home.ViewModel.ChallengeCompletedViewModel) {
+        self.topChallengeInfoView.configureCompleted(viewModel: viewModel.challengeInfo)
+        self.progressBar.configureCompleted(viewModel: viewModel.progress)
         self.nicknameStackView.configure(challengeOrderText: viewModel.order.challengeOrderText,
                                          myNickname: viewModel.order.myNameText,
                                          partnerNickname: viewModel.order.partenrNameText)
-        self.partnerFlowerView.configureInProgress(viewModel: viewModel.partnerFlower)
-        self.myFlowerView.configureInProgress(viewModel: viewModel.myFlower)
+        self.partnerFlowerView.configureCompleted(viewModel: viewModel.partnerFlower)
+        self.myFlowerView.configureCompleted(viewModel: viewModel.myFlower)
     }
     
 }

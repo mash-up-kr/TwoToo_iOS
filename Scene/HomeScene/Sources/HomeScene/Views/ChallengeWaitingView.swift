@@ -71,9 +71,8 @@ final class ChallengeWaitingView: UIView {
         
         self.startButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.leading.equalToSuperview().offset(99)
-            make.trailing.equalToSuperview().inset(99)
             make.bottom.equalToSuperview().inset(50)
+            make.width.equalTo(177)
         }
     }
     

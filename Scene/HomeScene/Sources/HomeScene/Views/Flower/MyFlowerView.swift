@@ -13,6 +13,7 @@ final class MyFlowerView: UIView {
     /// 칭찬시 나타나는 말풍선
     lazy var speechBubbleView: SpeechBubbleView = {
         let v = SpeechBubbleView(tailPosition: .my)
+        v.isHidden = true
         return v
     }()
     
@@ -22,9 +23,32 @@ final class MyFlowerView: UIView {
         v.isHidden = true
         return v
     }()
+    /// 꽃 이름 라벨
+    lazy var flowerNameLabel: UILabel = {
+        let v = UILabel()
+        v.font = .h3
+        v.textColor = .primary
+        return v
+    }()
+    /// 꽃말 라벨
+    lazy var flowerDescLabel: UILabel = {
+        let v = UILabel()
+        v.font = .body2
+        v.textColor = .primary
+        return v
+    }()
+    /// 꽃 이름, 꽃말 스택뷰
+    lazy var flowerInfoStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.spacing = 7
+        v.isHidden = true
+        v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
+        return v
+    }()
     
     lazy var flowerImageView: UIImageView = {
-        let v = UIImageView(.icon_step3_my)
+        let v = UIImageView()
         return v
     }()
         
@@ -48,6 +72,7 @@ final class MyFlowerView: UIView {
     private func layout() {
         self.addSubviews(self.speechBubbleView,
                          self.induceCertificationView,
+                         self.flowerInfoStackView,
                          self.flowerImageView,
                          self.nicknameView)
         
@@ -59,10 +84,16 @@ final class MyFlowerView: UIView {
         self.induceCertificationView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
+        }
+        
+        self.flowerInfoStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-12)
         }
         
         self.flowerImageView.snp.makeConstraints { make in
-            make.top.equalTo(self.induceCertificationView.snp.bottom).offset(8)
             make.centerX.equalToSuperview().multipliedBy(0.8)
         }
         
@@ -77,12 +108,20 @@ final class MyFlowerView: UIView {
     private func attribute() {
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel) {
+    func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel) {
         self.flowerImageView.image = viewModel.image
         self.induceCertificationView.isHidden = viewModel.isCertificationButtonHidden
         self.induceCertificationView.titleLabel.text = viewModel.cetificationGuideText
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
         self.speechBubbleView.titleLabel.text = viewModel.complimentCommentText
+        self.nicknameView.titleLabel.text = viewModel.myNameText
+    }
+    
+    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.MyFlowerViewModel) {
+        self.flowerImageView.image = viewModel.image
+        self.flowerInfoStackView.isHidden = viewModel.isFlowerTextHidden
+        self.flowerNameLabel.text = viewModel.flowerNameText
+        self.flowerDescLabel.text = viewModel.flowerDescText
         self.nicknameView.titleLabel.text = viewModel.myNameText
     }
 }

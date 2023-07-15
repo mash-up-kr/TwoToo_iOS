@@ -52,9 +52,14 @@ final class TopChallengeInfoView: UIView {
         self.layer.cornerRadius = 15
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ChallengeInfoViewModel) {
+    func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ChallengeInfoViewModel) {
         self.titleLabel.text = viewModel.challengeNameText
         self.dateTagView.titleLabel.text = viewModel.dDayText
+    }
+    
+    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.ChallengeInfoViewModel) {
+        self.titleLabel.text = viewModel.challengeNameText
+        self.dateTagView.titleLabel.text = "D-0"
     }
     
 }

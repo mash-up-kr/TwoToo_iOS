@@ -28,6 +28,7 @@ final public class TTPrimaryButtonType: UIButton, UIComponentBased {
         self.layer.cornerRadius = self.customButtonType.buttonCornerRadius ?? 0
         self.layer.borderColor = self.customButtonType.borderColor
         self.layer.borderWidth = self.customButtonType.borderWidth
+        self.titleEdgeInsets = self.customButtonType.titlePadding ?? .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     public func layout() {
@@ -105,6 +106,19 @@ extension TTPrimaryButtonType {
                 return .grey400
             case .largeLine:
                 return .clear
+            }
+        }
+        
+        var titlePadding: UIEdgeInsets? {
+            switch self {
+            case .large:
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
+            case .largeLine:
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
+            case .small:
+                return .init(top: 18.5, left: 34, bottom: 18.5, right: 34)
+            case .tiny:
+                return .init(top: 8, left: 11, bottom: 8, right: 11)
             }
         }
 

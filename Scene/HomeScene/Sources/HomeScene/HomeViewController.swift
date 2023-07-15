@@ -31,8 +31,28 @@ final class HomeViewController: UIViewController {
         return v
     }()
     
-    lazy var customContentView: ChallengeBeforeStartView = {
-        let v = ChallengeBeforeStartView()
+    lazy var customContentView: ChallengeCompletedView = {
+        let v = ChallengeCompletedView()
+        v.configure(viewModel: .init(challengeInfo: .init(challengeNameText: "30분 운동하기"),
+                                     progress: .init(partnerNameText: "공쥬",
+                                                     myNameText: "왕쟈ㅑ",
+                                                     partnerPercentageText: "33%",
+                                                     myPercentageText: "44%",
+                                                     partnerPercentageNumber: 33,
+                                                     myPercentageNumber: 44),
+                                     order: .init(challengeOrderText: "3번째 챌린지 중",
+                                                  partenrNameText: "공쥬",
+                                                  myNameText: "왕쟈"),
+                                     partnerFlower: .init(image: .asset(.icon_step3_mate)!,
+                                                          isFlowerTextHidden: false,
+                                                          flowerNameText: "장미",
+                                                          flowerDescText: "장미꽃설명",
+                                                          partnerNameText: "공쥬"),
+                                     myFlower: .init(image: .asset(.icon_step3_my)!,
+                                                     isFlowerTextHidden: false,
+                                                     flowerNameText: "벚꽃",
+                                                     flowerDescText: "벚꽃설명임",
+                                                     myNameText: "왕쟈")))
         return v
     }()
     

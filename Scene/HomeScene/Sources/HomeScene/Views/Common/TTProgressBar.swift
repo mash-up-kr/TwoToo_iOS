@@ -134,7 +134,7 @@ final class TTProgressBar: UIView {
         self.layer.cornerRadius = 15
     }
     
-    func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ProgressViewModel) {
+    func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ProgressViewModel) {
         self.myNicknameLabel.text = viewModel.myNameText
         self.myPercentLabel.text = viewModel.myPercentageText
         self.partnerNicknameLabel.text = viewModel.partnerNameText
@@ -142,6 +142,16 @@ final class TTProgressBar: UIView {
         self.configurePercent(my: viewModel.myPercentageNumber,
                               partner: viewModel.partnerPercentageNumber)
     }
+    
+    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.ProgressViewModel) {
+        self.myNicknameLabel.text = viewModel.myNameText
+        self.myPercentLabel.text = viewModel.myPercentageText
+        self.partnerNicknameLabel.text = viewModel.partnerNameText
+        self.partnerPercentLabel.text = viewModel.partnerPercentageText
+        self.configurePercent(my: viewModel.myPercentageNumber,
+                              partner: viewModel.partnerPercentageNumber)
+    }
+    
     
     private func configurePercent(my: Double, partner: Double) {
         self.myPercentLabel.text = "\(Int(my))%"
