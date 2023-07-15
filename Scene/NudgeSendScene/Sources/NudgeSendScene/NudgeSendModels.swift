@@ -18,5 +18,20 @@ enum NudgeSend {
     
     enum ViewModel {
         
+        struct Title {
+            var text: String?
+        }
+        
+        struct NudgeCommentField {
+            static let maxLength = 30
+        }
+        
+        struct NudgeButton {
+            var isEnabled: Bool?
+        }
+        
+        struct Toast {
+            var message: String?
+        }
     }
 }

@@ -8,7 +8,12 @@
 import CoreKit
 import SceneKit
 import MainScene
+import NudgeSendScene
+import ChallengeCertificateScene
+import PraiseSendScene
 import UIKit
+import LoginScene
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,9 +28,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
-        let vc = MainSceneFactory().make(with: .init()).viewController
-        vc.view.backgroundColor = .grey200
-        self.window?.rootViewController = vc
+        
+//        self.window!.rootViewController
+        
+        
+//        let vc = BottomSheetTestViewController()
+//        vc.view.backgroundColor = .white
+        let tabBarController = MainSceneFactory().make(with: .init()).viewController
+        
+        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
+        
+        self.window?.rootViewController = tabBarController
+        tabBarController.present(bottomSheetViewController, animated: true)
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
