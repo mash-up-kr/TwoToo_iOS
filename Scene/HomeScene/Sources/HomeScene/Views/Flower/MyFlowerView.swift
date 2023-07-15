@@ -12,8 +12,7 @@ final class MyFlowerView: UIView {
 
     /// 칭찬시 나타나는 말풍선
     lazy var speechBubbleView: SpeechBubbleView = {
-        let v = SpeechBubbleView(title: "공쥬의 말풍선입니다ㅏㅏㅏㅏ",
-                                 tailPosition: .left)
+        let v = SpeechBubbleView(tailPosition: .my)
         v.isHidden = true
         return v
     }()
@@ -54,7 +53,9 @@ final class MyFlowerView: UIView {
                          self.nicknameView)
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-42)
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
@@ -63,18 +64,18 @@ final class MyFlowerView: UIView {
         
         self.flowerImageView.snp.makeConstraints { make in
             make.top.equalTo(self.induceCertificationView.snp.bottom).offset(8)
-            make.centerX.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(0.8)
         }
         
         self.nicknameView.snp.makeConstraints { make in
             make.top.equalTo(self.flowerImageView.snp.bottom).offset(7)
             make.height.equalTo(27)
-            make.centerX.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
         }
     }
     
     private func attribute() {
-        self.backgroundColor = .orange
     }
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel) {
