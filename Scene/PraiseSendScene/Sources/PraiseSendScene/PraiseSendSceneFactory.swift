@@ -7,10 +7,11 @@
 //
 
 import CoreKit
+import UIKit
 
 @MainActor
 public protocol PraiseSendScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct PraiseSendConfiguration {

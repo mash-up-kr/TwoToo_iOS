@@ -22,6 +22,6 @@ final class PraiseSendRouter {
 extension PraiseSendRouter: PraiseSendRoutingLogic {
     
     func dismiss() {
-        
+        self.viewController?.dismiss(animated: true)
     }
 }

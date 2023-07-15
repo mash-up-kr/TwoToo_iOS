@@ -22,6 +22,10 @@ enum PraiseSend {
             static let maxLength = 20
         }
         
+        struct PraiseButton {
+            var isEnabled: Bool?
+        }
+        
         struct Toast {
             var message: String?
         }
