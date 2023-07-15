@@ -13,6 +13,7 @@ import ChallengeCertificateScene
 import PraiseSendScene
 import InvitationSendScene
 import InvitationWaitScene
+import ChallengeRecommendScene
 import UIKit
 import LoginScene
 import KakaoSDKAuth
@@ -36,14 +37,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
-//        let tabBarController = MainSceneFactory().make(with: .init()).viewController
-//
-//        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
+        let tabBarController = MainSceneFactory().make(with: .init()).viewController
+
+        let bottomSheetViewController = ChallengeRecommendSceneFactory().make(with: .init(didTriggerSelectChallengeName: .init())).bottomSheetViewController
         
-        let vc = InvitationWaitSceneFactory().make(with: .init(didTriggerRouteToHomeScene: .init(), invitationLink: "https://test")).viewController
+//        let vc = InvitationWaitSceneFactory().make(with: .init(didTriggerRouteToHomeScene: .init(), invitationLink: "https://test")).viewController
         
-        self.window?.rootViewController = vc
-//        tabBarController.present(bottomSheetViewController, animated: true)
+        self.window?.rootViewController = tabBarController
+        tabBarController.present(bottomSheetViewController, animated: true)
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

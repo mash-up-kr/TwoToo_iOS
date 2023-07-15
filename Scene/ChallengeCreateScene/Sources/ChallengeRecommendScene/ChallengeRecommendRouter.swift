@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeRecommendRoutingLogic {}
+protocol ChallengeRecommendRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class ChallengeRecommendRouter {
     weak var viewController: ChallengeRecommendViewController?
@@ -18,4 +21,7 @@ final class ChallengeRecommendRouter {
 
 extension ChallengeRecommendRouter: ChallengeRecommendRoutingLogic {
     
+    func dismiss() {
+        self.viewController?.dismiss(animated: true)
+    }
 }
