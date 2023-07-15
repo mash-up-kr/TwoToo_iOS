@@ -9,10 +9,11 @@ import UIKit
 import DesignSystem
 
 /// 챌린지 시작일 초과 화면
-final class ChallengeAfterStartDateViewModel: UIView {
+final class ChallengeAfterStartDateView: UIView {
     
-    lazy var nicknameStackView: CoupleNicknameStackView = {
-        let v = CoupleNicknameStackView()
+    lazy var nicknameStackView: TrailingInfoStackView = {
+        let v = TrailingInfoStackView()
+        v.configure(viewModel: .init(challengeOrderText: "4번째 챌린지중", partenrNameText: "파트너", myNameText: "나"))
         return v
     }()
     
@@ -20,7 +21,7 @@ final class ChallengeAfterStartDateViewModel: UIView {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h1
-        v.text = "챌린지가 만료 됐어요\nㅠㅠ"
+        v.text = "챌린지 확인 기간이 지났어요"
         v.numberOfLines = 2
         v.setLineSpacing(22)
         v.textAlignment = .center
@@ -28,7 +29,7 @@ final class ChallengeAfterStartDateViewModel: UIView {
     }()
     
     lazy var iconImageView: UIImageView = {
-        let v = UIImageView(.icon_flower_seed)
+        let v = UIImageView(.icon_flower_seed) // TODO: - 이미지 바뀐다함 ㅠㅠ
         return v
     }()
     
@@ -38,11 +39,9 @@ final class ChallengeAfterStartDateViewModel: UIView {
         return v
     }()
     
-    init(myNickname: String,
-         partnerNickname: String) {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.layout()
-        self.iconImageView = iconImageView
     }
     
     required init?(coder: NSCoder) {
@@ -58,6 +57,7 @@ final class ChallengeAfterStartDateViewModel: UIView {
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
             make.trailing.equalToSuperview().inset(26)
+            make.height.equalTo(40)
         }
         
         self.titleLabel.snp.makeConstraints { make in

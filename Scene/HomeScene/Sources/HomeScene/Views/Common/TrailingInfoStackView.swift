@@ -45,7 +45,6 @@ final class TrailingInfoStackView: UIView {
         v.font = .body2
         v.textColor = .mainCoral
         v.textAlignment = .right
-        v.text = "4번쨰 챌린지듕"
         return v
     }()
     
