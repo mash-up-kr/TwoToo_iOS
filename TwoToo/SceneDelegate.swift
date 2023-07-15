@@ -9,6 +9,7 @@ import CoreKit
 import SceneKit
 import MainScene
 import ChallengeCertificateScene
+import PraiseSendScene
 import UIKit
 import LoginScene
 import KakaoSDKAuth
@@ -34,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        vc.view.backgroundColor = .white
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
-        let bottomSheetViewController = ChallengeCertificateSceneFactory().make(with: .init()).bottomSheetViewController
+        let bottomSheetViewController = PraiseSendSceneFactory().make(with: .init()).bottomSheetViewController
         
         self.window?.rootViewController = tabBarController
         tabBarController.present(bottomSheetViewController, animated: true)

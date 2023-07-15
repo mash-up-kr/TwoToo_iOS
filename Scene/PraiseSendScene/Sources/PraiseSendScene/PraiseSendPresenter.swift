@@ -30,18 +30,18 @@ final class PraiseSendPresenter {
 extension PraiseSendPresenter: PraiseSendPresentationLogic {
     
     func presentEnabledSend() {
-        
+        self.viewController?.displayPraiseButton(viewModel: .init(isEnabled: true))
     }
     
     func presentDisabledSend() {
-        
+        self.viewController?.displayPraiseButton(viewModel: .init(isEnabled: false))
     }
     
     func presentPraiseSuccess() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "칭찬 한마디가 등록되었습니다"))
     }
     
     func presentPraiseError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "칭찬 등록에 실패하였습니다. 다시 시도해주세요."))
     }
 }

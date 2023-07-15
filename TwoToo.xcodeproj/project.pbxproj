@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		64FD3B762A5A9732003DD1FD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FD3B752A5A9732003DD1FD /* Constant.swift */; };
 		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
 		A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */; };
 		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		641E51372A5A4ED0002C8561 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
-		64FD3B752A5A9732003DD1FD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviTestViewController.swift; sourceTree = "<group>"; };
 		C8396CBD2A2C3F2500A79E98 /* SceneKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SceneKit; sourceTree = "<group>"; };
 		C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateFinishScene; sourceTree = "<group>"; };
@@ -56,7 +54,6 @@
 		C87E31AB2A2C35F500FD31C8 /* HistoryScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HistoryScene; sourceTree = "<group>"; };
 		C87E31AC2A2C360A00FD31C8 /* MyInfoScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyInfoScene; sourceTree = "<group>"; };
 		C87E31AD2A2C373F00FD31C8 /* ChallengeCreateScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateScene; sourceTree = "<group>"; };
-		C8A338A02A5A5A6E0080E4D1 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +93,6 @@
 			children = (
 				641E51372A5A4ED0002C8561 /* TwoToo.entitlements */,
 				C87E31792A2B041900FD31C8 /* AppDelegate.swift */,
-				64FD3B752A5A9732003DD1FD /* Constant.swift */,
 				C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */,
 				A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */,
 				C87E317D2A2B041900FD31C8 /* ViewController.swift */,
@@ -234,7 +230,6 @@
 			files = (
 				A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */,
 				C87E317E2A2B041900FD31C8 /* ViewController.swift in Sources */,
-				64FD3B762A5A9732003DD1FD /* Constant.swift in Sources */,
 				C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */,
 				C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */,
 			);
