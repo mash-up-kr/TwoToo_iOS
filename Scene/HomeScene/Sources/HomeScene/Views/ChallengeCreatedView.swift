@@ -8,11 +8,12 @@
 import UIKit
 import DesignSystem
 
-/// 챌린지 생성 후 보여질 화면입니다.
+/// 챌린지 생성전 보여질 화면입니다.
 final class ChallengeCreatedView: UIView {
     
-    lazy var nicknameStackView: CoupleNicknameStackView = {
-        let v = CoupleNicknameStackView()
+    lazy var nicknameStackView: TrailingInfoStackView = {
+        let v = TrailingInfoStackView()
+        v.configure(viewModel: .init(challengeOrderText: "4번째 챌린지중", partenrNameText: "파트너", myNameText: "나"))
         return v
     }()
     
@@ -20,7 +21,7 @@ final class ChallengeCreatedView: UIView {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h1
-        v.text = "연인과 함께할 22일 챌린지를 \n시작해보세요"
+        v.text = "짝궁과 함께할 22일 챌린지를 \n시작해보세요"
         v.numberOfLines = 2
         v.setLineSpacing(22)
         v.textAlignment = .center
@@ -38,11 +39,9 @@ final class ChallengeCreatedView: UIView {
         return v
     }()
     
-    init(myNickname: String,
-         partnerNickname: String) {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.layout()
-        self.iconImageView = iconImageView
     }
     
     required init?(coder: NSCoder) {
@@ -58,6 +57,7 @@ final class ChallengeCreatedView: UIView {
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
             make.trailing.equalToSuperview().inset(26)
+            make.height.equalTo(40)
         }
         
         self.titleLabel.snp.makeConstraints { make in

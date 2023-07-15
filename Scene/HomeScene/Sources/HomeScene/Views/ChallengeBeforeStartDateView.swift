@@ -8,11 +8,12 @@
 import UIKit
 import DesignSystem
 
-/// 챌린지 시작일 전 보여질 화면입니다.
-final class ChallengeBeforeStartView: UIView {
+/// 챌린지 시작 전 보여질 화면입니다.
+final class ChallengeBeforeStartDateView: UIView {
     
-    lazy var nicknameStackView: CoupleNicknameStackView = {
-        let v = CoupleNicknameStackView()
+    lazy var nicknameStackView: TrailingInfoStackView = {
+        let v = TrailingInfoStackView()
+        v.configure(viewModel: .init(challengeOrderText: "4번째 챌린지중", partenrNameText: "파트너", myNameText: "나"))
         return v
     }()
     
@@ -29,11 +30,11 @@ final class ChallengeBeforeStartView: UIView {
     lazy var descriptionLabel: UILabel = {
         let v = UILabel()
         v.text = "아직 챌린지 시작 전이에요!\n시작날짜에 다시 들어와주세요!"
-        v.textAlignment = .center
         v.numberOfLines = 2
         v.textColor = .grey600
         v.font = .body2
-        v.setLineSpacing(22)
+        v.setLineSpacing(10)
+        v.textAlignment = .center
         return v
     }()
     
@@ -48,11 +49,9 @@ final class ChallengeBeforeStartView: UIView {
         return v
     }()
     
-    init(myNickname: String,
-         partnerNickname: String) {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.layout()
-        self.iconImageView = iconImageView
     }
     
     required init?(coder: NSCoder) {
@@ -69,16 +68,17 @@ final class ChallengeBeforeStartView: UIView {
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
             make.trailing.equalToSuperview().inset(26)
+            make.height.equalTo(40)
         }
         
         self.titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.4)
+            make.bottom.equalTo(self.descriptionLabel.snp.top).offset(-25)
         }
         
         self.descriptionLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.6)
+            make.bottom.equalTo(self.iconImageView.snp.top).offset(-10)
         }
         
         self.iconImageView.snp.makeConstraints { make in
