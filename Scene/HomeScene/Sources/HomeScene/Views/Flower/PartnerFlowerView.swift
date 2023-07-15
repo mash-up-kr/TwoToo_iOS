@@ -11,8 +11,7 @@ import DesignSystem
 final class PartnerFlowerView: UIView {
     
     lazy var speechBubbleView: SpeechBubbleView = {
-        let v = SpeechBubbleView(title: "왕자ㅏ의 말풍선입니다ㅏㅏㅏㅏ",
-                                 tailPosition: .right)
+        let v = SpeechBubbleView(tailPosition: .partner)
         return v
     }()
     
@@ -72,8 +71,9 @@ final class PartnerFlowerView: UIView {
         }
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.flowerImageView.snp.top).inset(-12)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().inset(9)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-15)
         }
         
         self.finishHeartStackView.snp.makeConstraints { make in
@@ -82,18 +82,19 @@ final class PartnerFlowerView: UIView {
         
         self.flowerImageView.snp.makeConstraints { make in
             make.top.equalTo(self.finishHeartStackView.snp.bottom).offset(8)
-            make.centerX.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(1.2)
         }
         
         self.nicknameView.snp.makeConstraints { make in
             make.top.equalTo(self.flowerImageView.snp.bottom).offset(7)
             make.height.equalTo(27)
-            make.centerX.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
         }
     }
     
     private func attribute() {
-        self.backgroundColor = .systemBlue
+//        self.backgroundColor = .systemBlue
     }
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.PartnerFlowerViewModel) {

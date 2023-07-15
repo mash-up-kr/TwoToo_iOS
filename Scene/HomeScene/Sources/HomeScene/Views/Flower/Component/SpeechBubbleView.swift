@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignSystem
 
 /// 말풍선 뷰
 ///
@@ -14,14 +15,12 @@ import UIKit
 /// - tailPosition : 말풍선 꼬리 위치 (좌 / 우)
 final class SpeechBubbleView: UIView {
     
-    private let tipWidth: CGFloat = 12.0
-    private let tipHeight: CGFloat = 8.0
     private var _backgroundColor: UIColor = .white
     private var tailCoordinate: CGFloat = 0.5
     
-    enum TailPosition {
-        case left
-        case right
+    enum TailPosition{
+        case partner
+        case my
     }
     
     let titleLabel: UILabel = {
@@ -32,58 +31,48 @@ final class SpeechBubbleView: UIView {
         return v
     }()
     
-    init(title: String,
-         tailPosition: TailPosition) {
+    lazy var tailImageView: UIImageView = {
+        let v = UIImageView()
+        v.frame = .init(x: 0, y: 0, width: 10, height: 10)
+        return v
+    }()
+    
+    init(tailPosition: TailPosition) {
         super.init(frame: .zero)
-        self.layout()
         switch tailPosition {
-        case .left:
-            self._backgroundColor = .mainLightPink
-            self.tailCoordinate = 0.3
-        case .right:
-            self._backgroundColor = .second01
-            self.tailCoordinate = 0.7
+        case .partner:
+            self._backgroundColor = UIColor.mainLightPink
+            self.tailCoordinate = 0.5
+            self.tailImageView.image = UIImage.asset(.icon_bubble_tail_partner)
+        case .my:
+            self._backgroundColor = UIColor.second01
+            self.tailCoordinate = 1.5
+            self.tailImageView.image = UIImage.asset(.icon_bubble_tail_my)
         }
-        self.titleLabel.text = title
-        self.backgroundColor = _backgroundColor
-        self.drawTip(bgColor: self._backgroundColor,
-                     tailPosition: tailCoordinate)
+        self.layout()
+        self.attribute()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private func drawTip(bgColor: UIColor, tailPosition: CGFloat) {
-        let path = CGMutablePath()
-        
-        let padding: CGFloat = 10
-        let width = self.titleLabel.intrinsicContentSize.width + (padding * 2)
-        let height = self.titleLabel.intrinsicContentSize.height + (padding * 2)
-        let tipStartX = width * tailPosition
-
-        let tipWidthCenter = tipWidth / 2.0
-        let endXWidth = tipStartX + tipWidth
-
-        path.move(to: CGPoint(x: tipStartX, y: height))
-        path.addLine(to: CGPoint(x: tipStartX + tipWidthCenter, y: height + tipHeight))
-        path.addLine(to: CGPoint(x: endXWidth, y: height))
-        path.addLine(to: CGPoint(x: 0, y: height))
-
-        let shape = CAShapeLayer()
-        shape.path = path
-        shape.fillColor = bgColor.cgColor
-        
-        self.layer.insertSublayer(shape, at: 0)
-        self.layer.masksToBounds = false
-        self.layer.cornerRadius = 8
-    }
     
     func layout() {
-        self.addSubview(self.titleLabel)
+        self.addSubviews(self.titleLabel,
+                        self.tailImageView)
         
         self.titleLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
+        print(self.tailCoordinate)
+        self.tailImageView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(10)
+            make.centerX.equalToSuperview().multipliedBy(self.tailCoordinate)
+        }
+    }
+    
+    func attribute() {
+        self.layer.cornerRadius = 8
+        self.backgroundColor = _backgroundColor
     }
 }
