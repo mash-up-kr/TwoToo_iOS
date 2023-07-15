@@ -43,7 +43,7 @@ final class NudgeSendInteractorSpec: QuickSpec {
         
         describe("찌르기 문구 작성") {
             describe("찌르기 문구가 1자 이상이다.") {
-                describe("찌르기 문구가 20자 이하이다.") {
+                describe("찌르기 문구가 30자 이하이다.") {
                     context("찌르기 문구를 입력했을 때") {
                         beforeEach {
                             await interactor.didEnterNudgeComment(comment: "12345678901234567890123456789")
@@ -81,7 +81,7 @@ final class NudgeSendInteractorSpec: QuickSpec {
         
         describe("찌르기") {
             describe("찌르기 문구가 1자 이상이다.") {
-                describe("찌르기 문구가 20자 이하이다.") {
+                describe("찌르기 문구가 30자 이하이다.") {
                     beforeEach {
                         interactor.nudgeComment = "12345678901234567890123456789"
                     }

@@ -69,7 +69,7 @@ extension NudgeSendInteractor {
 extension NudgeSendInteractor {
     
     func didLoad() async {
-        
+        await self.presenter.presentRemainingNudgeCount(remainingNudgeCount: self.remainingNudgeCount)
     }
 }
 
@@ -78,7 +78,14 @@ extension NudgeSendInteractor {
 extension NudgeSendInteractor {
     
     func didEnterNudgeComment(comment: String) async {
-        
+        let commentLength = comment.count
+        if commentLength >= 1 && commentLength <= 30 {
+            await self.updateNudgeComment(nudgeComment: comment)
+            await self.presenter.presentEnabledSend()
+        }
+        else {
+            await self.presenter.presentDisabledSend()
+        }
     }
 }
 
@@ -87,7 +94,20 @@ extension NudgeSendInteractor {
 extension NudgeSendInteractor {
     
     func didTapSendButton() async {
+        let commentLength = self.nudgeComment.count
         
+        guard (commentLength >= 1 && commentLength <= 30) else {
+            return
+        }
+        
+        do {
+            try await self.worker.requestNudge(nudgeComment: self.nudgeComment)
+            await self.presenter.presentNudgeSuccess()
+            await self.router.dismiss()
+        }
+        catch {
+            await self.presenter.presentNudgeError(error: error)
+        }
     }
 }
 
