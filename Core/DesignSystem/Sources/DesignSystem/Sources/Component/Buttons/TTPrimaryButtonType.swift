@@ -113,7 +113,7 @@ extension TTPrimaryButtonType {
         var titlePadding: UIEdgeInsets? {
             switch self {
             case .large:
-                return .init(top: 18.5, left: 131, bottom: 18.5, right: 131)
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .largeLine:
                 return .init(top: 18.5, left: 96.5, bottom: 18.5, right: 96.5)
             case .small:
