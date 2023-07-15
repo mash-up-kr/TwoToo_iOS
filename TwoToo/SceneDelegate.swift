@@ -8,6 +8,7 @@
 import CoreKit
 import SceneKit
 import MainScene
+import NudgeSendScene
 import ChallengeCertificateScene
 import PraiseSendScene
 import UIKit
@@ -35,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        vc.view.backgroundColor = .white
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
-        let bottomSheetViewController = PraiseSendSceneFactory().make(with: .init()).bottomSheetViewController
+        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
         
         self.window?.rootViewController = tabBarController
         tabBarController.present(bottomSheetViewController, animated: true)
