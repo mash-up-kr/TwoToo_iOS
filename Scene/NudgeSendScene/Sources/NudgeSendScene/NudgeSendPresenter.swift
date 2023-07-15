@@ -32,22 +32,24 @@ final class NudgeSendPresenter {
 extension NudgeSendPresenter: NudgeSendPresentationLogic {
     
     func presentRemainingNudgeCount(remainingNudgeCount: Int) {
-        
+        self.viewController?.displayTitle(viewModel: .init(
+            text: "찌르기 문구 보내기 (\(remainingNudgeCount)/5)"
+        ))
     }
     
     func presentEnabledSend() {
-        
+        self.viewController?.displayNudgeButton(viewModel: .init(isEnabled: true))
     }
     
     func presentDisabledSend() {
-        
+        self.viewController?.displayNudgeButton(viewModel: .init(isEnabled: false))
     }
     
     func presentNudgeSuccess() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "짝꿍에게 찌르기 문구가 보내졌습니다 "))
     }
     
     func presentNudgeError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "찌르기에 실패하였습니다. 다시 시도해주세요."))
     }
 }

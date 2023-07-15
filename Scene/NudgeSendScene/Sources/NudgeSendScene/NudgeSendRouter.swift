@@ -22,6 +22,6 @@ final class NudgeSendRouter {
 extension NudgeSendRouter: NudgeSendRoutingLogic {
     
     func dismiss() {
-        
+        self.viewController?.dismiss(animated: true)
     }
 }

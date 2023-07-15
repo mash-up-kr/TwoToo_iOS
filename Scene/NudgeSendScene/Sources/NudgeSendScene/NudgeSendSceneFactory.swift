@@ -11,7 +11,7 @@ import CoreKit
 
 @MainActor
 public protocol NudgeSendScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct NudgeSendConfiguration {
