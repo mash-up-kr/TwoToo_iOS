@@ -77,7 +77,8 @@ final class PartnerFlowerView: UIView {
         }
         
         self.finishHeartStackView.snp.makeConstraints { make in
-            make.top.centerX.equalToSuperview()
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(1.2)
         }
         
         self.flowerImageView.snp.makeConstraints { make in

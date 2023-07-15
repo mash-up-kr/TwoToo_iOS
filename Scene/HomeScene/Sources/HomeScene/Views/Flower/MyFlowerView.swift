@@ -13,7 +13,6 @@ final class MyFlowerView: UIView {
     /// 칭찬시 나타나는 말풍선
     lazy var speechBubbleView: SpeechBubbleView = {
         let v = SpeechBubbleView(tailPosition: .my)
-        v.isHidden = true
         return v
     }()
     
@@ -53,13 +52,13 @@ final class MyFlowerView: UIView {
                          self.nicknameView)
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-42)
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
-            make.top.centerX.equalToSuperview()
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(0.8)
         }
         
         self.flowerImageView.snp.makeConstraints { make in
@@ -80,7 +79,7 @@ final class MyFlowerView: UIView {
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel) {
         self.flowerImageView.image = viewModel.image
-        self.induceCertificationView.titleLabel.isHidden = viewModel.isCertificationButtonHidden
+        self.induceCertificationView.isHidden = viewModel.isCertificationButtonHidden
         self.induceCertificationView.titleLabel.text = viewModel.cetificationGuideText
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
         self.speechBubbleView.titleLabel.text = viewModel.complimentCommentText

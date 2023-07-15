@@ -39,21 +39,21 @@ final class ChallengeInProgressView: UIView {
     /// 내 꽃 정보 뷰
     lazy var myFlowerView: MyFlowerView = {
         let v = MyFlowerView()
-        v.configure(viewModel: .init(image: .asset(.icon_step2_my)!,
+        v.configure(viewModel: .init(image: .asset(.icon_step1_my)!,
                                      isCertificationButtonHidden: true,
-                                     cetificationGuideText: "인증하삼33",
+                                     cetificationGuideText: "내 씨앗을 눌러 인증 해보세요!",
                                      isComplimentCommentHidden: false,
-                                     complimentCommentText: "오늘도 수고염!",
+                                     complimentCommentText: "안녕하세요녕하세요녕",
                                      myNameText: "나의꽃"))
         return v
     }()
     /// 상대방 꽃 정보 뷰
     lazy var partnerFlowerView: PartnerFlowerView = {
         let v = PartnerFlowerView()
-        v.configure(viewModel: .init(image: .asset(.icon_step2_mate)!,
+        v.configure(viewModel: .init(image: .asset(.icon_step3_mate)!,
                                      isCertificationCompleteHidden: true,
                                      isComplimentCommentHidden: false,
-                                     complimentCommentText: "수고수고링gdsgdsdffdsfsdsggds",
+                                     complimentCommentText: "수고고수고수고수고수고수고수고수고수고수고수고수고수고수고",
                                      partnerNameText: "상대방꽃"))
         return v
     }()
@@ -114,16 +114,18 @@ final class ChallengeInProgressView: UIView {
             make.trailing.equalToSuperview().inset(24)
         }
         
-        self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
-            make.centerX.equalToSuperview().multipliedBy(1.4)
-        }
-        
         self.partnerFlowerView.snp.makeConstraints { make in
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
-            make.centerX.equalToSuperview().multipliedBy(0.6)
+            make.centerX.equalToSuperview().multipliedBy(0.5)
+            make.width.equalToSuperview().dividedBy(2)
         }
         
+        self.myFlowerView.snp.makeConstraints { make in
+            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
+            make.centerX.equalToSuperview().multipliedBy(1.5)
+            make.width.equalToSuperview().dividedBy(2)
+        }
+                
         self.nudgeBeeButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.height.equalTo(57)

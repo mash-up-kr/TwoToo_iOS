@@ -64,7 +64,6 @@ final class SpeechBubbleView: UIView {
         self.titleLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
-        print(self.tailCoordinate)
         self.tailImageView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(10)
             make.centerX.equalToSuperview().multipliedBy(self.tailCoordinate)

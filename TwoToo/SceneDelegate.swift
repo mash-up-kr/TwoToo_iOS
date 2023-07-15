@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         let vc = MainSceneFactory().make(with: .init()).viewController
-        vc.view.backgroundColor = .second02
+        vc.view.backgroundColor = .grey200
         self.window?.rootViewController = vc
     }
 
