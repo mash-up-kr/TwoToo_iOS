@@ -46,50 +46,68 @@ final class ChallengeCertificatePresenter {
 extension ChallengeCertificatePresenter: ChallengeCertificatePresentationLogic {
     
     func presentImageAttachmentMethodPopup() {
-        
+        self.viewController?.displayImageAttachmentMethodPopup(viewModel: .init(
+            options: (
+                ChallengeCertificate.ViewModel.ImageAttachmentMethodPopup.cameraOptionText,
+                ChallengeCertificate.ViewModel.ImageAttachmentMethodPopup.albumOptionText,
+                ChallengeCertificate.ViewModel.ImageAttachmentMethodPopup.cancelOptionText
+            )
+        ))
     }
     
     func presentCameraPermissionPopup() {
-        
+        self.viewController?.displayPermissionPopup(viewModel: .init(
+            options: (
+                "카메라 및 사진 접근 권한이 필요합니다",
+                ChallengeCertificate.ViewModel.PermissionPopup.desc,
+                ChallengeCertificate.ViewModel.PermissionPopup.acceptOption
+            )
+        ))
     }
     
     func presentPhotosPermissionPopup() {
-        
+        self.viewController?.displayPermissionPopup(viewModel: .init(
+            options: (
+                "사진 접근 권한이 필요합니다",
+                ChallengeCertificate.ViewModel.PermissionPopup.desc,
+                ChallengeCertificate.ViewModel.PermissionPopup.acceptOption
+            )
+        ))
     }
     
     func presentCamera() {
-        
+        self.viewController?.displayCamera(viewModel: .init())
     }
     
     func presentImagePicker() {
-        
+        self.viewController?.displayImagePicker(viewModel: .init())
     }
     
     func presentImageCropView(with image: ChallengeCertificate.Model.Image) {
-        
+        self.viewController?.displayImageCropView(viewModel: .init(image: image))
     }
     
     func presentPhotoSaveError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "사진 저장에 실패하였습니다."))
     }
     
     func presentCertificateImage(image: ChallengeCertificate.Model.Image) {
-        
+        self.viewController?.displayCommitPhoto(viewModel: .init(image: image))
     }
     
     func presentEnabledCertificate() {
-        
+        self.viewController?.displayCommitButton(viewModel: .init(isEnabled: true))
     }
     
     func presentDisabledCertificate() {
-        
+        self.viewController?.displayCommitButton(viewModel: .init(isEnabled: false))
     }
     
     func presentCertificateSuccess() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "오늘의 인증을 완료했습니다!"))
     }
     
     func presentCertificateError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "인증에 실패하였습니다. 다시 시도해주세요."))
     }
 }

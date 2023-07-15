@@ -8,6 +8,7 @@
 import CoreKit
 import SceneKit
 import MainScene
+import ChallengeCertificateScene
 import UIKit
 import LoginScene
 import KakaoSDKAuth
@@ -33,7 +34,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        vc.view.backgroundColor = .white
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
         
+        let bottomSheetViewController = ChallengeCertificateSceneFactory().make(with: .init()).bottomSheetViewController
+        
         self.window?.rootViewController = tabBarController
+        tabBarController.present(bottomSheetViewController, animated: true)
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

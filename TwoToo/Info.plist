@@ -32,5 +32,9 @@
 			</array>
 		</dict>
 	</dict>
+    <key>NSCameraUsageDescription</key>
+    <string>인증 사진 촬영</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>인증 사진 첨부</string>
 </dict>
 </plist>

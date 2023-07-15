@@ -7,14 +7,16 @@
 //
 
 import CoreKit
+import UIKit
 
 @MainActor
 public protocol ChallengeCertificateScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct ChallengeCertificateConfiguration {
     
+    public init() {}
 }
 
 public final class ChallengeCertificateSceneFactory {

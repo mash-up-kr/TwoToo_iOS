@@ -56,6 +56,7 @@
 		C87E31AB2A2C35F500FD31C8 /* HistoryScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HistoryScene; sourceTree = "<group>"; };
 		C87E31AC2A2C360A00FD31C8 /* MyInfoScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyInfoScene; sourceTree = "<group>"; };
 		C87E31AD2A2C373F00FD31C8 /* ChallengeCreateScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateScene; sourceTree = "<group>"; };
+		C8A338A02A5A5A6E0080E4D1 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
