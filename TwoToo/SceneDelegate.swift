@@ -8,6 +8,10 @@
 import CoreKit
 import SceneKit
 import MainScene
+import NudgeSendScene
+import ChallengeCertificateScene
+import PraiseSendScene
+import InvitationSendScene
 import UIKit
 import NicknameRegistScene
 
@@ -34,7 +38,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        vc.view.backgroundColor = .white
 //        let tabBarController = MainSceneFactory().make(with: .init()).viewController
 //
-//        self.window?.rootViewController = tabBarController
+//        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
+        
+        let vc = InvitationSendSceneFactory().make(with: .init(didTriggerRouteToInvitationWaitScene: .init())).viewController
+        
+        self.window?.rootViewController = vc
+//        tabBarController.present(bottomSheetViewController, animated: true)
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

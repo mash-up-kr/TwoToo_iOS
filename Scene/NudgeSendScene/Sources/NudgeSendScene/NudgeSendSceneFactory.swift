@@ -6,15 +6,21 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import UIKit
 import CoreKit
 
 @MainActor
 public protocol NudgeSendScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct NudgeSendConfiguration {
+    /// 남은 찌르기 횟수
+    public var remainingNudgeCount: Int
     
+    public init(remainingNudgeCount: Int) {
+        self.remainingNudgeCount = remainingNudgeCount
+    }
 }
 
 public final class NudgeSendSceneFactory {
@@ -29,7 +35,8 @@ public final class NudgeSendSceneFactory {
         let interactor = NudgeSendInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            remainingNudgeCount: configuration.remainingNudgeCount
         )
         let viewController = NudgeSendViewController(
             interactor: interactor
