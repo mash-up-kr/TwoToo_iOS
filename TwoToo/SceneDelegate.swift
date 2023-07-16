@@ -13,8 +13,7 @@ import ChallengeCertificateScene
 import PraiseSendScene
 import InvitationSendScene
 import UIKit
-import LoginScene
-import KakaoSDKAuth
+import NicknameRegistScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -30,8 +29,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-//        self.window!.rootViewController
-        
+        let fac = NicknameRegistSceneFactory().make(with: .init(didTriggerRouteToInvitationSendScene: .init(), didTriggerRouteToHomeScene: .init()))
+        let vc = fac.viewController
+        let nav = UINavigationController(rootViewController: vc)
+        self.window?.rootViewController = nav
         
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
