@@ -12,6 +12,7 @@ import NudgeSendScene
 import ChallengeCertificateScene
 import PraiseSendScene
 import InvitationSendScene
+import InvitationWaitScene
 import UIKit
 import NicknameRegistScene
 
@@ -40,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //
 //        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
         
-        let vc = InvitationSendSceneFactory().make(with: .init(didTriggerRouteToInvitationWaitScene: .init())).viewController
+        let vc = InvitationWaitSceneFactory().make(with: .init(didTriggerRouteToHomeScene: .init(), invitationLink: "https://test")).viewController
         
         self.window?.rootViewController = vc
 //        tabBarController.present(bottomSheetViewController, animated: true)

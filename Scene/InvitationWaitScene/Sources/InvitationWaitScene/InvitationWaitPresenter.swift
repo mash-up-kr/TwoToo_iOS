@@ -30,18 +30,18 @@ final class InvitationWaitPresenter {
 extension InvitationWaitPresenter: InvitationWaitPresentationLogic {
     
     func presentSharedActivity(invitationLink: String) {
-        
+        self.viewController?.displayShare(viewModel: .init(invitationLink: invitationLink))
     }
     
     func presentAcceptanceWait() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "상대방이 아직 수락을 하지 않았어요!"))
     }
     
     func presentPartnerInquiryError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "새로고침이 실패하였습니다. 다시 시도해주세요."))
     }
     
     func presentInvitationLinkError() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "공유 링크가 존재하지 않습니다. 다시 시도해주세요."))
     }
 }
