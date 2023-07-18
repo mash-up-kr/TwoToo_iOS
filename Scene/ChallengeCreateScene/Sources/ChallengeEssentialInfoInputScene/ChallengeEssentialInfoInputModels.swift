@@ -17,6 +17,25 @@ enum ChallengeEssentialInfoInput {
     }
     
     enum ViewModel {
-        
+
+        struct Name {
+            var title: String = "챌린지명"
+            var text: String
+        }
+
+        struct ChallengeCommentField {
+            static let maxLength = 20
+        }
+
+        struct NextButton {
+            var isEnabled: Bool?
+        }
+
+        struct Date {
+            var startTitle: String = "시작일"
+            var startDate: String
+            var endTitle: String = "종료일"
+            var endDate: String
+        }
     }
 }

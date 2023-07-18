@@ -14,11 +14,16 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 }
 
 public struct ChallengeEssentialInfoInputConfiguration {
-    
+
+    public var didTriggerNextButton: PassthroughSubject<[String: String], Never>
+
+    public init(didTriggerNextButton: PassthroughSubject<[String: String], Never>) {
+        self.didTriggerNextButton = didTriggerNextButton
+    }
 }
 
 public final class ChallengeEssentialInfoInputSceneFactory {
-    
+
     public init() {}
     
     public func make(with configuration: ChallengeEssentialInfoInputConfiguration) -> ChallengeEssentialInfoInputScene {
@@ -29,7 +34,8 @@ public final class ChallengeEssentialInfoInputSceneFactory {
         let interactor = ChallengeEssentialInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerNextButton: configuration.didTriggerNextButton
         )
         let viewController = ChallengeEssentialInfoInputViewController(
             interactor: interactor
