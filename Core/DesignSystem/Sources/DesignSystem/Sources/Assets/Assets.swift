@@ -119,6 +119,7 @@ public enum Assets: String {
     case icon_bubble_tail_my
     case icon_bubble_tail_partner
     case icon_check
+    case icon_cryingseed
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!
