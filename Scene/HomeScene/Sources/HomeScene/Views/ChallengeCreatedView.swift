@@ -22,7 +22,7 @@ final class ChallengeCreatedView: UIView {
         v.font = .h1
         v.text = "짝궁과 함께할 22일 챌린지를 \n시작해보세요"
         v.numberOfLines = 2
-        v.setLineSpacing(22)
+        v.setLineSpacing(11)
         v.textAlignment = .center
         return v
     }()

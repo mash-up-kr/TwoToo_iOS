@@ -33,7 +33,7 @@ final class ChallengeBeforeStartView: UIView {
     }()
     
     lazy var startButton: TTPrimaryButtonType = {
-        let v = TTPrimaryButton.create(title: "챌린지 시작하기", .small)
+        let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
         v.setIsEnabled(true)
         return v
     }()

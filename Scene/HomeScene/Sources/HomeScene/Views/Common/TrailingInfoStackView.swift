@@ -47,6 +47,13 @@ final class TrailingInfoStackView: UIView {
         v.textAlignment = .right
         return v
     }()
+
+    // 고정 너비 적용
+    public override var intrinsicContentSize: CGSize {
+        let width: CGFloat = 83
+        let height: CGFloat = 40
+        return .init(width: width, height: height)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

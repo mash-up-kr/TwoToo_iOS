@@ -25,7 +25,6 @@ final class ChallengeCompletedView: UIView {
         let v = TrailingInfoStackView()
         return v
     }()
-
     /// 내 꽃 정보 뷰
     lazy var myFlowerView: MyFlowerView = {
         let v = MyFlowerView()
@@ -83,20 +82,20 @@ final class ChallengeCompletedView: UIView {
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.confirmButton.snp.top).offset(-40)
             make.centerX.equalToSuperview().multipliedBy(0.5)
+            make.centerY.equalToSuperview().multipliedBy(1.05)
             make.width.equalToSuperview().dividedBy(2)
         }
 
         self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.confirmButton.snp.top).offset(-40)
+            make.centerY.equalToSuperview().multipliedBy(1.05)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.width.equalToSuperview().dividedBy(2)
         }
 
         self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(30)
+            make.centerY.equalToSuperview().multipliedBy(1.7)
             make.width.equalTo(177)
         }
         

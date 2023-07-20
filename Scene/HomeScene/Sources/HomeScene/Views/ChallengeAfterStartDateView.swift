@@ -28,7 +28,7 @@ final class ChallengeAfterStartDateView: UIView {
     }()
     
     lazy var iconImageView: UIImageView = {
-        let v = UIImageView(.icon_flower_seed) // TODO: - 이미지 바뀐다함 ㅠㅠ
+        let v = UIImageView(.icon_cryingseed)
         return v
     }()
     
@@ -56,12 +56,13 @@ final class ChallengeAfterStartDateView: UIView {
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
             make.trailing.equalToSuperview().inset(26)
+            make.width.equalTo(83)
             make.height.equalTo(40)
         }
         
         self.titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.6)
+            make.centerY.equalToSuperview().multipliedBy(0.7)
         }
         
         self.iconImageView.snp.makeConstraints { make in

@@ -22,7 +22,7 @@ final class ChallengeWaitingView: UIView {
         v.font = .h1
         v.text = "짝궁의 응답을\n기다리고 있습니다."
         v.numberOfLines = 2
-        v.setLineSpacing(22)
+        v.setLineSpacing(11)
         v.textAlignment = .center
         return v
     }()
