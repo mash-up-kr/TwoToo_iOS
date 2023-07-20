@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import ChallengeAdditionalInfoInputScene
 
+// 다음화면
 @MainActor
-protocol ChallengeEssentialInfoInputRoutingLogic {}
+protocol ChallengeEssentialInfoInputRoutingLogic {
+    func routeToAdditionalInfoScene()
+}
 
 final class ChallengeEssentialInfoInputRouter {
     weak var viewController: ChallengeEssentialInfoInputViewController?
@@ -17,5 +21,15 @@ final class ChallengeEssentialInfoInputRouter {
 }
 
 extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingLogic {
-    
+    func routeToAdditionalInfoScene() {
+
+        let challengeAdditionalInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init())
+
+        let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
+
+        viewController?.navigationController?.pushViewController(challengeAdditionalInfoInputViewController, animated: true)
+
+        
+
+    }
 }

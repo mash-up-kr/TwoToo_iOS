@@ -7,6 +7,7 @@
 //
 
 import CoreKit
+import Foundation
 
 protocol ChallengeEssentialInfoInputBusinessLogic {
     /// 첫 진입
@@ -15,26 +16,18 @@ protocol ChallengeEssentialInfoInputBusinessLogic {
     func didEnterChallengeNameComment(comment: String) async
     /// 챌린지 추천 버튼 클릭
     func didTapChallengeRecommendationButton() async
-    /// 시작일 데이터 피커 클릭
-    func didTapStartDatePicker() async
     /// 시작일 선택
-    func didTapStartDate(startDate: String) async
-    /// 종료일 데이터 피커 클릭
-    func didTapEndDatePicker() async
+    func didTapStartDate(startDate: Date) async
     /// 종료일 선택
-    func didTapEndDate(startDate: String) async
+    func didTapEndDate(endDate: Date) async
     /// 챌린지 이름 데이터 입력됨
     func didUpdateChallengeName() async
     /// 시작일 데이터 입력됨
     func didUpdateStartDate() async
     /// 종료일 데이터 입력됨
     func didUpdateEndDate() async
-    /// 다음 버튼 활성화
-    func didUpdateNextButton() async
     /// 다음 버튼 클릭
-    func didTapNextButton(
-        name: ChallengeEssentialInfoInput.ViewModel.Name,
-        date: ChallengeEssentialInfoInput.ViewModel.Date) async
+    func didTapNextButton() async
 }
 
 protocol ChallengeEssentialInfoInputDataStore: AnyObject {}
@@ -49,19 +42,18 @@ final class ChallengeEssentialInfoInputInteractor: ChallengeEssentialInfoInputDa
     init(
         presenter: ChallengeEssentialInfoInputPresentationLogic,
         router: ChallengeEssentialInfoInputRoutingLogic,
-        worker: ChallengeEssentialInfoInputWorkerProtocol,
-        didTriggerNextButton : PassthroughSubject<[String: String], Never>
+        worker: ChallengeEssentialInfoInputWorkerProtocol
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
-        self.didTriggerNextButton = didTriggerNextButton
     }
     
     // MARK: - DataStore
 
-    var didTriggerNextButton: PassthroughSubject<[String: String], Never>
-    
+    var nameDataSource: String?
+    var startDateDataSource: String?
+    var endDateDataSource: String?
 }
 
 // MARK: - Interactive Business Logic
@@ -78,7 +70,7 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didLoad() async {
-//        await self.presenter.
+        await self.presenter.presentDisabledNext()
     }
 }
 
@@ -86,7 +78,7 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didEnterChallengeNameComment(comment: String) async {
-
+        nameDataSource = comment
     }
 
     func didTapChallengeRecommendationButton() async {
@@ -97,20 +89,19 @@ extension ChallengeEssentialInfoInputInteractor {
 // MARK: Feature (기간 설정)
 
 extension ChallengeEssentialInfoInputInteractor {
-    func didTapStartDatePicker() async {
+    func didTapStartDate(startDate: Date) async {
+        let endDateData = startDate + (86400 * 22)
 
+        self.startDateDataSource = startDate.fullDateString(.yearMonthDay)
+        self.endDateDataSource = endDateData.fullDateString(.yearMonthDay)
     }
 
-    func didTapStartDate(startDate: String) async {
+    func didTapEndDate(endDate: Date) async {
+        let startDateData = endDate + (86400 * 22)
 
-    }
+        self.endDateDataSource = endDate.fullDateString(.yearMonthDay)
 
-    func didTapEndDatePicker() async {
-
-    }
-
-    func didTapEndDate(startDate: String) async {
-
+        self.startDateDataSource = startDateData.fullDateString(.yearMonthDay)
     }
 }
 
@@ -118,31 +109,24 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didUpdateChallengeName() async {
-
+        // 값 있는지 확인
+        // dataSource 활용
     }
 
     func didUpdateStartDate() async {
-
+        // 값 있는지 확인
     }
 
     func didUpdateEndDate() async {
-
+        // 값 있는지 확인
     }
 
     func didUpdateNextButton() async {
-
+        /// enable 되도록 해야함
     }
 
-    func didTapNextButton(
-        name: ChallengeEssentialInfoInput.ViewModel.Name,
-        date: ChallengeEssentialInfoInput.ViewModel.Date
-    ) async {
-        self.didTriggerNextButton.send(
-            [name.title : name.text, date.startTitle : date.startDate, date.endTitle : date.endDate]
-        )
-
+    func didTapNextButton() async {
         /// 다음 화면으로 이동
-
     }
 }
 

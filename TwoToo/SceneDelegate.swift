@@ -15,6 +15,7 @@ import InvitationSendScene
 import UIKit
 import LoginScene
 import KakaoSDKAuth
+import ChallengeEssentialInfoInputScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -38,10 +39,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let tabBarController = MainSceneFactory().make(with: .init()).viewController
 //
 //        let bottomSheetViewController = NudgeSendSceneFactory().make(with: .init(remainingNudgeCount: 3)).bottomSheetViewController
-        
-        let vc = InvitationSendSceneFactory().make(with: .init(didTriggerRouteToInvitationWaitScene: .init())).viewController
-        
-        self.window?.rootViewController = vc
+
+
+        let vc = ChallengeEssentialInfoInputSceneFactory().make(with: .init()).viewController
+
+        let nav = UINavigationController(rootViewController: vc)
+        self.window?.rootViewController = nav
 //        tabBarController.present(bottomSheetViewController, animated: true)
     }
 

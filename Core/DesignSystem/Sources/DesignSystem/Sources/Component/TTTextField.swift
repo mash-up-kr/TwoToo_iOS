@@ -77,7 +77,7 @@ final public class TTTextField: UIView, UIComponentBased {
     }
 
     public func attribute() {
-        self.textField.addTarget(self, action: #selector(self.didChangeTextfieldText), for: .editingChanged)
+        self.textField.addTarget(self, action: #selector(self.didChangeTextfieldText(_:)), for: .editingChanged)
 
         self.stackView.addArrangedSubviews(self.titleLabel, self.textField)
         self.addSubview(self.stackView)
@@ -98,7 +98,7 @@ final public class TTTextField: UIView, UIComponentBased {
         return textField.text ?? ""
     }
 
-    @objc private func didChangeTextfieldText(_ notification: Notification) {
+    @objc private func didChangeTextfieldText(_ textField: UITextField) {
         if let text = self.textField.text {
             /// 초과되는 텍스트 입력 못하도록 한다
             if text.count >= self.maxLength {

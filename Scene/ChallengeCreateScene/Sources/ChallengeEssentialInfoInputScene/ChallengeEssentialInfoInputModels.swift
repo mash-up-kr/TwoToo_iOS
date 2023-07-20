@@ -11,16 +11,21 @@ import UIKit
 enum ChallengeEssentialInfoInput {
     
     // MARK: Entity
-    
+
+    // Presenter -> VC 변환할떄 사용 Model -> VM 가도록
     enum Model {
-        
+        struct StartDate {
+            let date: String?
+        }
+        struct EndDate {
+            let date: String?
+        }
     }
     
     enum ViewModel {
 
         struct Name {
-            var title: String = "챌린지명"
-            var text: String
+            var text: String?
         }
 
         struct ChallengeCommentField {
@@ -32,10 +37,8 @@ enum ChallengeEssentialInfoInput {
         }
 
         struct Date {
-            var startTitle: String = "시작일"
-            var startDate: String
-            var endTitle: String = "종료일"
-            var endDate: String
+            var startDate: String?
+            var endDate: String?
         }
     }
 }

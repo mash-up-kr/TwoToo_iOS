@@ -15,13 +15,11 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 
 public struct ChallengeEssentialInfoInputConfiguration {
 
-    public var didTriggerNextButton: PassthroughSubject<[String: String], Never>
+    public init() {}
 
-    public init(didTriggerNextButton: PassthroughSubject<[String: String], Never>) {
-        self.didTriggerNextButton = didTriggerNextButton
-    }
 }
 
+// 이전화면에서 호출하는 곳
 public final class ChallengeEssentialInfoInputSceneFactory {
 
     public init() {}
@@ -34,8 +32,7 @@ public final class ChallengeEssentialInfoInputSceneFactory {
         let interactor = ChallengeEssentialInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker,
-            didTriggerNextButton: configuration.didTriggerNextButton
+            worker: worker
         )
         let viewController = ChallengeEssentialInfoInputViewController(
             interactor: interactor

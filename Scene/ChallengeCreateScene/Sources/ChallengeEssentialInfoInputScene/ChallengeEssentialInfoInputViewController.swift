@@ -11,7 +11,9 @@ import UIKit
 import DesignSystem
 
 protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
-//    func displayChallengeEssentailInfoInput()
+    func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
+    func displaySetDisableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
+    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date)
 }
 
 final class ChallengeEssentialInfoInputViewController: UIViewController {
@@ -55,6 +57,9 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.setTitle("챌린지추천 >", for: .normal)
         v.backgroundColor = .primary
         v.titleLabel?.font = .body2
+        v.layer.cornerRadius = 10
+        v.contentEdgeInsets = .init(top: 8, left: 11, bottom: 8, right: 11)
+
         return v
     }()
 
@@ -84,6 +89,8 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         let v = UIDatePicker()
         v.backgroundColor = .mainWhite
         v.datePickerMode = .date
+        v.locale = Locale(identifier: "ko_KR")
+        v.calendar.locale = Locale(identifier: "ko_KR")
         return v
     }()
 
@@ -99,6 +106,8 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         let v = UIDatePicker()
         v.backgroundColor = .mainWhite
         v.datePickerMode = .date
+        v.locale = Locale(identifier: "ko_KR")
+        v.calendar.locale = Locale(identifier: "ko_KR")
         return v
     }()
 
@@ -140,12 +149,24 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         Task {
             await self.interactor.didLoad()
         }
+
+        Task {
+            await self.interactor.didTapStartDate(startDate: startDatePicker.date)
+            await self.interactor.didTapEndDate(endDate: endDatePicker.date)
+        }
+
+        self.challengeNameTextField.didChangeTextAction = { text in
+            Task {
+                await self.interactor.didEnterChallengeNameComment(comment: text)
+            }
+        }
     }
     
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .orange
+        self.view.backgroundColor = .second02
+        self.title = "hello"
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.entireDateStackView.addArrangedSubviews(self.startDateStackView, self.endDateStackView)
@@ -200,5 +221,16 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
 // MARK: - Display Logic
 
 extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInputDisplayLogic {
-    
+    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date) {
+        self.startDatePicker.date = viewModel.startDate?.fullStringDate(.yearMonthDay) ?? Date()
+        self.endDatePicker.date = viewModel.endDate?.fullStringDate(.yearMonthDay) ?? Date()
+    }
+
+    func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
+
+    }
+
+    func displaySetDisableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
+
+    }
 }
