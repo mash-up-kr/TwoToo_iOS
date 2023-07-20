@@ -13,6 +13,7 @@ import ChallengeCertificateScene
 import PraiseSendScene
 import InvitationSendScene
 import InvitationWaitScene
+import ChallengeRecommendScene
 import UIKit
 import NicknameRegistScene
 
