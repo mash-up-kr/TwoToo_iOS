@@ -7,7 +7,15 @@
 
 import CoreKit
 import SceneKit
+import MainScene
+import NudgeSendScene
+import ChallengeCertificateScene
+import PraiseSendScene
+import InvitationSendScene
+import InvitationWaitScene
+import ChallengeRecommendScene
 import UIKit
+import NicknameRegistScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,11 +31,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
+        let fac = NicknameRegistSceneFactory().make(with: .init(didTriggerRouteToInvitationSendScene: .init(), didTriggerRouteToHomeScene: .init()))
+        let vc = fac.viewController
+        let nav = UINavigationController(rootViewController: vc)
+        self.window?.rootViewController = nav
+        
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
-//        let nav = UINavigationController(rootViewController: vc)
+        let tabBarController = MainSceneFactory().make(with: .init()).viewController
+
+        let bottomSheetViewController = ChallengeRecommendSceneFactory().make(with: .init(didTriggerSelectChallengeName: .init())).bottomSheetViewController
         
-//        self.window?.rootViewController = nav
+//        let vc = InvitationWaitSceneFactory().make(with: .init(didTriggerRouteToHomeScene: .init(), invitationLink: "https://test")).viewController
+        
+        self.window?.rootViewController = tabBarController
+        tabBarController.present(bottomSheetViewController, animated: true)
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

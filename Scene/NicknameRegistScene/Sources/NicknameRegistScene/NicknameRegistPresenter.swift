@@ -31,24 +31,26 @@ final class NicknameRegistPresenter {
 
 extension NicknameRegistPresenter: NicknameRegistPresentationLogic {
     
-    // TODO: ~~님의 짝꿍으로 초대가 되었다는 필드를 세팅해주어야함
     func presentInvitedUser(invitedUser: NicknameRegist.Model.InvitedUser) {
-        
+        let msg = "\(invitedUser.name)님의 짝꿍으로 초대가 되었습니다."
+        self.viewController?.displayInvitedUser(viewModel: .init(
+            inviteMessage: msg)
+        )
     }
     
     func presentEnabledConfirmButton() {
-        
+        self.viewController?.displayConfirmButton(backgroundColor: .primary, isEnabled: true)
     }
     
     func presentDisabledConfirmButton() {
-        
+        self.viewController?.displayConfirmButton(backgroundColor: .grey400, isEnabled: false)
     }
     
     func presentNicknameError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "닉네임을 설정하던 중 오류가 발생하였습니다"))
     }
     
     func presentMatchingError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "상대방과 매칭 요청 중 오류가 발생하였습니다"))
     }
 }

@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_bubble_not_mate.png",
-      "idiom" : "universal"
+      "filename" : "Property 1=상대방X.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Property 1=상대방X@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Property 1=상대방X@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

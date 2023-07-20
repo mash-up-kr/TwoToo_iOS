@@ -18,5 +18,16 @@ enum PraiseSend {
     
     enum ViewModel {
         
+        struct PraseCommentField {
+            static let maxLength = 20
+        }
+        
+        struct PraiseButton {
+            var isEnabled: Bool?
+        }
+        
+        struct Toast {
+            var message: String?
+        }
     }
 }

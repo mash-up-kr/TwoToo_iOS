@@ -40,8 +40,20 @@ final public class TTPrimaryButtonType: UIButton, UIComponentBased {
 
     @MainActor
     public func didTapButton(completion: (() -> Void)? = nil) {
-        self.addAction { [weak self] in
+        self.addAction {
             completion?()
+        }
+    }
+    
+    /// 버튼 활성화 여부에 따른 background, enable 설정 변경 내부 함수
+    public func setIsEnabled(_ isEnabled: Bool) {
+        if isEnabled {
+            self.backgroundColor = .primary
+            self.isEnabled = true
+        }
+        else {
+            self.backgroundColor = .grey400
+            self.isEnabled = false
         }
     }
 }
@@ -101,9 +113,9 @@ extension TTPrimaryButtonType {
         var titlePadding: UIEdgeInsets? {
             switch self {
             case .large:
-                return .init(top: 18.5, left: 131, bottom: 18.5, right: 131)
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .largeLine:
-                return .init(top: 18.5, left: 96.5, bottom: 18.5, right: 96.5)
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .small:
                 return .init(top: 18.5, left: 56, bottom: 18.5, right: 56)
             case .tiny:

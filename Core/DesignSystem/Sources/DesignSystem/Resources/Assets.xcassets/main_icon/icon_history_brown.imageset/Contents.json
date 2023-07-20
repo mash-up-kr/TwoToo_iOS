@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icon_history_brown.png",
-      "idiom" : "universal"
+      "filename" : "Property 1=brown.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Property 1=brown@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Property 1=brown@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

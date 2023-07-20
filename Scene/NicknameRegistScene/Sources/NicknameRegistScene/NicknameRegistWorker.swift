@@ -19,15 +19,29 @@ protocol NicknameRegistWorkerProtocol {
 
 final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     
-    // TODO: UD에서 초대 유저를 꺼내오는 작업 필요
+    var localDataSource: LocalDataSourceProtocol
+    var invitedUserWorker: InvitedUserLocalWorkerProtocol
+        
+    init(localDataSource: LocalDataSourceProtocol,
+         invitedUserLocalWorker: InvitedUserLocalWorkerProtocol) {
+        self.localDataSource = localDataSource
+        self.invitedUserWorker = invitedUserLocalWorker
+    }
+    
     var invitedUser: NicknameRegist.Model.InvitedUser? {
-        return nil
+        if let user: String = self.invitedUserWorker.invitedUser {
+            return NicknameRegist.Model.InvitedUser(name: user)
+        } else {
+            print("UserDefault에 초대 받은 유저 정보가 없습니다.")
+            return nil
+        }
     }
     
     // TODO: 닉네임을 설정하는 통신 필요
     func requestSetNickname(nickname: String) async throws {
-        
+
     }
+    
     
     // TODO: 초대 유저로 매칭을 요청하는 통신 필요
     func requestMatching() async throws {
