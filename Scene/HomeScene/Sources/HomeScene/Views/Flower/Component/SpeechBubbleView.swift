@@ -74,4 +74,17 @@ final class SpeechBubbleView: UIView {
         self.layer.cornerRadius = 8
         self.backgroundColor = _backgroundColor
     }
+    
+    func configure(title: String) {
+        if title.count > 10 {
+            let index = title.index(title.startIndex, offsetBy: 10)
+            let firstPart = title[..<index]
+            let secondPart = title[index...]
+            let newTitle = "\(firstPart)\n\(secondPart)"
+            self.titleLabel.text = newTitle
+        } else {
+            self.titleLabel.text = title
+        }
+    }
+
 }

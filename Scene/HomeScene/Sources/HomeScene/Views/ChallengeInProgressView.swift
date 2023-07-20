@@ -35,6 +35,11 @@ final class ChallengeInProgressView: UIView {
         let v = PartnerFlowerView()
         return v
     }()
+    /// 나와 상대 꽃 사이의 하트 이미지
+    lazy var heartImage: UIImageView = {
+        let v = UIImageView(image: .asset(.icon_heart))
+        return v
+    }()
     /// 찌르기 버튼
     lazy var nudgeBeeButton: UIButton = {
        let v = UIButton()
@@ -67,6 +72,7 @@ final class ChallengeInProgressView: UIView {
                          self.nicknameStackView,
                          self.myFlowerView,
                          self.partnerFlowerView,
+                         self.heartImage,
                          self.nudgeBeeButton,
                          self.nudgeTitleLabel)
                 
@@ -92,15 +98,20 @@ final class ChallengeInProgressView: UIView {
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
+            make.bottom.equalToSuperview().multipliedBy(0.8)
             make.centerX.equalToSuperview().multipliedBy(0.5)
             make.width.equalToSuperview().dividedBy(2)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-22)
+            make.bottom.equalToSuperview().multipliedBy(0.8)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.width.equalToSuperview().dividedBy(2)
+        }
+        
+        self.heartImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(self.myFlowerView.snp.centerY).multipliedBy(1.1)
         }
                 
         self.nudgeBeeButton.snp.makeConstraints { make in
@@ -124,6 +135,8 @@ final class ChallengeInProgressView: UIView {
                                          partnerNickname: viewModel.order.partenrNameText)
         self.partnerFlowerView.configureInProgress(viewModel: viewModel.partnerFlower)
         self.myFlowerView.configureInProgress(viewModel: viewModel.myFlower)
+//        viewMode.isHeartHidden
+        self.nudgeTitleLabel.text = viewModel.stickText
     }
     
 }

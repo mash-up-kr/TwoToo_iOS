@@ -33,6 +33,7 @@ final class PartnerFlowerView: UIView {
     lazy var finishHeartStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
+        v.alignment = .center
         v.spacing = 3
         v.addArrangedSubviews(self.finishLabel, self.heartImageView)
         v.isHidden = true
@@ -58,12 +59,13 @@ final class PartnerFlowerView: UIView {
         v.axis = .vertical
         v.spacing = 7
         v.isHidden = true
+        v.alignment = .center
         v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
         return v
     }()
     
     lazy var flowerImageView: UIImageView = {
-        let v = UIImageView(.icon_step3_mate)
+        let v = UIImageView()
         return v
     }()
     
@@ -96,15 +98,14 @@ final class PartnerFlowerView: UIView {
         }
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(30)
-            make.trailing.equalToSuperview().inset(9)
-            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-15)
+            make.top.equalToSuperview()
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-20)
         }
         
         self.finishHeartStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview().multipliedBy(1.2)
-            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-10)
         }
         
         self.flowerInfoStackView.snp.makeConstraints { make in
@@ -132,7 +133,7 @@ final class PartnerFlowerView: UIView {
         self.flowerImageView.image = viewModel.image
         self.finishHeartStackView.isHidden = viewModel.isCertificationCompleteHidden
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
-        self.speechBubbleView.titleLabel.text = viewModel.complimentCommentText
+        self.speechBubbleView.configure(title: viewModel.complimentCommentText)
         self.nicknameView.titleLabel.text = viewModel.partnerNameText
     }
     

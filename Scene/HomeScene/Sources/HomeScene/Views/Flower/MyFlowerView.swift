@@ -43,6 +43,7 @@ final class MyFlowerView: UIView {
         v.axis = .vertical
         v.spacing = 7
         v.isHidden = true
+        v.alignment = .center
         v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
         return v
     }()
@@ -77,12 +78,12 @@ final class MyFlowerView: UIView {
                          self.nicknameView)
         
         self.speechBubbleView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-42)
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
         }
@@ -113,7 +114,7 @@ final class MyFlowerView: UIView {
         self.induceCertificationView.isHidden = viewModel.isCertificationButtonHidden
         self.induceCertificationView.titleLabel.text = viewModel.cetificationGuideText
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
-        self.speechBubbleView.titleLabel.text = viewModel.complimentCommentText
+        self.speechBubbleView.configure(title: viewModel.complimentCommentText)
         self.nicknameView.titleLabel.text = viewModel.myNameText
     }
     
