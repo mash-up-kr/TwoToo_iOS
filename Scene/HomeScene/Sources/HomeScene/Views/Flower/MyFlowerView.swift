@@ -9,20 +9,26 @@ import UIKit
 import DesignSystem
 
 final class MyFlowerView: UIView {
-
+    // MARK: - 챌린지 진행 중 : 꽃 이미지 위에 배치한 컴포넌트
     /// 칭찬시 나타나는 말풍선
     lazy var speechBubbleView: SpeechBubbleView = {
         let v = SpeechBubbleView(tailPosition: .my)
         v.isHidden = true
         return v
     }()
-    
     /// 꽃 상위에 보여질 인증 유도 스택 뷰
     lazy var induceCertificationView: InduceCertificationView = {
         let v = InduceCertificationView()
         v.isHidden = true
         return v
     }()
+    /// 인증 완료 후 칭찬 문구 없을 때 이미지 뷰
+    lazy var emptySpeechBubbleImageView: UIImageView = {
+        let v = UIImageView(.icon_bubble_write)
+        v.isHidden = true
+        return v
+    }()
+    // MARK: - 챌린지 완료 : 꽃 이미지 위에 배치한 컴포넌트
     /// 꽃 이름 라벨
     lazy var flowerNameLabel: UILabel = {
         let v = UILabel()
@@ -37,7 +43,7 @@ final class MyFlowerView: UIView {
         v.textColor = .primary
         return v
     }()
-    /// 꽃 이름, 꽃말 스택뷰
+    /// 챌린지 완료뷰 - 꽃 이름, 꽃말 스택뷰
     lazy var flowerInfoStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -47,19 +53,19 @@ final class MyFlowerView: UIView {
         v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
         return v
     }()
-    
+    // MARK: - 공통 컴포넌트
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
         return v
     }()
-        
+    
     lazy var nicknameView: TTTagView = {
         let v = TTTagView(textColor: .mainCoral,
                           fontSize: .body2,
                           cornerRadius: 15)
         return v
     }()
-
+    // MARK: - Method
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
@@ -74,13 +80,18 @@ final class MyFlowerView: UIView {
         self.addSubviews(self.speechBubbleView,
                          self.induceCertificationView,
                          self.flowerInfoStackView,
+                         self.emptySpeechBubbleImageView,
                          self.flowerImageView,
                          self.nicknameView)
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-42)
+        }
+        
+        self.emptySpeechBubbleImageView.snp.makeConstraints { make in
+            make.centerX.equalTo(self.flowerImageView.snp.centerX)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-32)
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
@@ -114,8 +125,17 @@ final class MyFlowerView: UIView {
         self.induceCertificationView.isHidden = viewModel.isCertificationButtonHidden
         self.induceCertificationView.titleLabel.text = viewModel.cetificationGuideText
         self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
-        self.speechBubbleView.configure(title: viewModel.complimentCommentText)
+        self.emptySpeechBubbleImageView.isHidden = viewModel.isComplimentCommentHidden
         self.nicknameView.titleLabel.text = viewModel.myNameText
+        // 칭찬문구 O
+        if !viewModel.complimentCommentText.isEmpty {
+            self.speechBubbleView.configure(title: viewModel.complimentCommentText)
+            self.speechBubbleView.isHidden = false
+            self.emptySpeechBubbleImageView.isHidden = true
+        } else { // 칭찬문구 X
+            self.emptySpeechBubbleImageView.isHidden = false
+            self.speechBubbleView.isHidden = true
+        }
     }
     
     func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.MyFlowerViewModel) {
