@@ -5,7 +5,6 @@
 //  Created by 박건우 on 2023/06/04.
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
-
 import CoreKit
 import UIKit
 
@@ -24,57 +23,20 @@ final class HistoryViewController: UIViewController {
     }
     
     // MARK: - UI
-    lazy var navigationBar: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: nil, leftButtonImage: .asset(.icon_back), rightButtonImage: .asset(.icon_more))
+    lazy var navigationBar: TTNavigationBar = {
+        let v = TTNavigationBar(title: "우리의 정원", rightButtonImage: .asset(.icon_info))
+        return v
+    }()
+    
+    lazy var gardenCollectionView: UICollectionView = {
+        let layout = generateCollectionViewLayout()
+        let v = UICollectionView(frame: .zero,
+                                 collectionViewLayout: layout)
+        v.registerCell(HistoryCollectionViewCell.self)
+        v.showsVerticalScrollIndicator = false
         v.delegate = self
-        return v
-    }()
-    
-    lazy var stateTagView: UIView = {
-        let v = UIView()
-        return v
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let v = UILabel()
-        v.text = "30분이상 운동하기"
-        v.font = .h2
-        v.textColor = .primary
-        return v
-    }()
-    
-    lazy var certificationFailureLabel = {
-        let v = UILabel()
-        v.textColor = .grey500
-        v.numberOfLines = 2
-        v.setLineSpacing(10) // TODO: - 임시
-        return v
-    }()
-    
-    // TODO: - 공주 왕자 진행도 뷰 커스텀 한걸로 변경 필요
-    lazy var progressBarView: UIView = {
-        let v = UIView()
-        return v
-    }()
-    
-    lazy var myNicknameTagView: UIView = {
-        let v = UIView()
-        return v
-    }()
-    
-    lazy var parterNicknameTagView: UIView = {
-        let v = UIView()
-        return v
-    }()
-    
-    lazy var lineView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .white
-        return v
-    }()
-
-    lazy var certificationCollectionView = {
-        let v = UICollectionView()
+        v.dataSource = self
+        v.backgroundColor = .clear
         return v
     }()
     
@@ -83,11 +45,14 @@ final class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.view.backgroundColor = .second02
     }
     
     // MARK: - Layout
     
     private func setUI() {
+        self.view.addSubviews(self.navigationBar, self.gardenCollectionView)
+        
         let guide = self.view.safeAreaLayoutGuide
         
         self.navigationBar.snp.makeConstraints { make in
@@ -96,58 +61,36 @@ final class HistoryViewController: UIViewController {
             make.height.equalTo(44)
         }
         
-        self.stateTagView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
+        self.gardenCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(self.navigationBar.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(24)
-            make.width.equalTo(43)
-            make.height.equalTo(24)
-        }
-        
-        self.titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.stateTagView.snp.trailing).offset(11)
-            make.centerY.equalTo(self.stateTagView)
-        }
-        
-        self.certificationFailureLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(13)
-            make.leading.equalToSuperview().offset(24)
-        }
-        
-        self.progressBarView.snp.makeConstraints { make in
-            make.top.equalTo(self.certificationFailureLabel.snp.bottom).offset(12)
-            make.leading.equalToSuperview().offset(24)
-            make.width.equalTo(203)
-            make.height.equalTo(62)
-        }
-        
-        self.myNicknameTagView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
-            make.centerX.equalToSuperview().multipliedBy(0.25)
-            make.width.equalTo(42)
-            make.height.equalTo(21)
-        }
-        
-        self.parterNicknameTagView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
-            make.centerX.equalToSuperview().multipliedBy(0.75)
-            make.width.equalTo(42)
-            make.height.equalTo(21)
-        }
-        
-        self.lineView.snp.makeConstraints { make in
-            make.top.equalTo(self.myNicknameTagView.snp.bottom).offset(19)
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(1)
-        }
-        
-        self.certificationCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(self.lineView.snp.bottom) // TODO: - 셀간의 간격을 17이다...
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().inset(24)
             make.bottom.equalTo(guide.snp.bottom)
+            make.trailing.equalToSuperview().inset(24)
         }
+    }
+    
+    private func generateCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+        let horizontalPadding: CGFloat = 48
+        let itemSpacing: CGFloat = 13
+        let itemEstimatedWidth: CGFloat = 157
+        let itemEstimatedHeight: CGFloat = 216
         
+        let cellWidth: CGFloat = (UIScreen.main.bounds.width - horizontalPadding - itemSpacing) / 2
+        let cellHeight = (cellWidth * itemEstimatedHeight) / itemEstimatedWidth
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(cellWidth), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(cellHeight)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(itemSpacing)
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = itemSpacing
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
 }
 
@@ -165,14 +108,26 @@ extension HistoryViewController: HistoryDisplayLogic {
     
 }
 
-// MARK: - Navigation Delegate
-extension HistoryViewController: TTNavigationDetailBarDelegate {
-    func didTapDetailLeftButton() {
-        //
+// MARK: - CollectionView
+extension HistoryViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
     }
     
-    func didTapDetailRightButton() {
-        //
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueCell(type: HistoryCollectionViewCell.self, indexPath: indexPath)
+        cell.configure() // TODO: - 수정 예정
+        return cell
     }
     
+}
+
+extension HistoryViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.layer.borderColor = UIColor.mainPink.cgColor
+            cell.layer.borderWidth = 3
+            // TODO: - 푸쉬코드
+        }
+    }
 }
