@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Worker
 
 enum FlowerSelect {
     
@@ -17,6 +18,22 @@ enum FlowerSelect {
     }
     
     enum ViewModel {
-        
+
+        struct createChallengeButton {
+            var isHidden: Bool?
+        }
+
+
+        struct Toast {
+            var message: String?
+        }
+
+        struct FlowerSelect {
+            var isSelected: Bool?
+        }
+
+        struct Flower {
+            var flowers: [FlowerMappingWorker]?
+        }
     }
 }
