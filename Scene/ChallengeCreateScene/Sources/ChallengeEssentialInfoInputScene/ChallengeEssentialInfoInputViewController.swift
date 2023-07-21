@@ -12,7 +12,6 @@ import DesignSystem
 
 protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
-    func displaySetDisableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
     func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date)
 }
 
@@ -91,6 +90,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
+        v.addTarget(self, action: #selector(didTapDate), for: .valueChanged)
         return v
     }()
 
@@ -108,6 +108,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
+        v.addTarget(self, action: #selector(didTapDate), for: .valueChanged)
         return v
     }()
 
@@ -149,16 +150,24 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         Task {
             await self.interactor.didLoad()
         }
-
-        Task {
-            await self.interactor.didTapStartDate(startDate: startDatePicker.date)
-            await self.interactor.didTapEndDate(endDate: endDatePicker.date)
-        }
-
+        
         self.challengeNameTextField.didChangeTextAction = { text in
             Task {
                 await self.interactor.didEnterChallengeNameComment(comment: text)
             }
+        }
+        
+        self.challengeNameTextField.returnValueAction = { text in
+            Task {
+                await self.interactor.didEnterChallengeNameComment(comment: text)
+            }
+        }
+    }
+    
+    @objc private func didTapDate(_ sender: UIDatePicker) {
+        Task {
+            await self.interactor.didTapStartDate(startDate: startDatePicker.date)
+            await self.interactor.didTapEndDate(endDate: endDatePicker.date)
         }
     }
     
@@ -196,6 +205,14 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
             make.bottom.equalTo(self.entireDateStackView.snp.top).offset(-43)
         }
+        
+        self.startDateStackView.snp.makeConstraints { make in
+            make.width.equalTo(UIScreen.main.bounds.width * 0.27)
+        }
+        
+        self.endDateStackView.snp.makeConstraints { make in
+            make.width.equalTo(UIScreen.main.bounds.width * 0.27)
+        }
 
         self.entireDateStackView.snp.makeConstraints { make in
             make.leading.equalTo(self.challengeRecommendButton.snp.leading)
@@ -222,15 +239,19 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
 
 extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInputDisplayLogic {
     func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date) {
-        self.startDatePicker.date = viewModel.startDate?.fullStringDate(.yearMonthDay) ?? Date()
-        self.endDatePicker.date = viewModel.endDate?.fullStringDate(.yearMonthDay) ?? Date()
+        
+        viewModel.startDate.unwrap { [weak self] startDate in
+            self?.endDatePicker.date = startDate.fullStringDate(.yearMonthDay)
+        }
+        
+        viewModel.endDate.unwrap { [weak self] endDate in
+            self?.startDatePicker.date = endDate.fullStringDate(.yearMonthDay)
+        }
     }
 
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
-
-    }
-
-    func displaySetDisableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
-
+        viewModel.isEnabled.unwrap { enable in
+            self.nextButton.setIsEnabled(enable)
+        }
     }
 }

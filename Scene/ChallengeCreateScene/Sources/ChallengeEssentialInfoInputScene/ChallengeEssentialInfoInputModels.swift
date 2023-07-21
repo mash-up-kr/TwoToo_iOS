@@ -12,13 +12,19 @@ enum ChallengeEssentialInfoInput {
     
     // MARK: Entity
 
-    // Presenter -> VC 변환할떄 사용 Model -> VM 가도록
     enum Model {
-        struct StartDate {
-            let date: String?
-        }
-        struct EndDate {
-            let date: String?
+        struct Info {
+            
+            struct StartDate {
+                let date: Date?
+            }
+            struct EndDate {
+                let date: Date?
+            }
+            
+            struct NextButton {
+                var isEnabled: Bool?
+            }
         }
     }
     

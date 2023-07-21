@@ -21,11 +21,13 @@ protocol ChallengeEssentialInfoInputBusinessLogic {
     /// 종료일 선택
     func didTapEndDate(endDate: Date) async
     /// 챌린지 이름 데이터 입력됨
-    func didUpdateChallengeName() async
+    func didUpdateChallengeName() async -> Bool
     /// 시작일 데이터 입력됨
-    func didUpdateStartDate() async
+    func didUpdateStartDate() async -> Bool
     /// 종료일 데이터 입력됨
-    func didUpdateEndDate() async
+    func didUpdateEndDate() async -> Bool
+    // 다음 버튼 enable
+    func didUpdateNextButton() async
     /// 다음 버튼 클릭
     func didTapNextButton() async
 }
@@ -70,7 +72,7 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didLoad() async {
-        await self.presenter.presentDisabledNext()
+        await self.presenter.presentEnabled(nextButton: .init(isEnabled: false))
     }
 }
 
@@ -94,35 +96,55 @@ extension ChallengeEssentialInfoInputInteractor {
 
         self.startDateDataSource = startDate.fullDateString(.yearMonthDay)
         self.endDateDataSource = endDateData.fullDateString(.yearMonthDay)
+        
+        
+        await self.presenter.presentCalendar(startDate: .init(date: startDate), endDate: .init(date: endDateData))
     }
 
     func didTapEndDate(endDate: Date) async {
         let startDateData = endDate + (86400 * 22)
 
         self.endDateDataSource = endDate.fullDateString(.yearMonthDay)
-
         self.startDateDataSource = startDateData.fullDateString(.yearMonthDay)
+        
+        await self.presenter.presentCalendar(startDate: .init(date: startDateData), endDate: .init(date: endDate))
     }
 }
 
 // MARK: Feature (페이지 이동)
 
 extension ChallengeEssentialInfoInputInteractor {
-    func didUpdateChallengeName() async {
-        // 값 있는지 확인
-        // dataSource 활용
+    func didUpdateChallengeName() async -> Bool{
+        if ((nameDataSource?.isEmpty) != nil) {
+            return false
+        }
+        return true
     }
 
-    func didUpdateStartDate() async {
-        // 값 있는지 확인
+    func didUpdateStartDate() async -> Bool {
+        if ((startDateDataSource?.isEmpty) != nil) {
+            return false
+        }
+        return true
     }
 
-    func didUpdateEndDate() async {
-        // 값 있는지 확인
+    func didUpdateEndDate() async -> Bool {
+        if ((endDateDataSource?.isEmpty) != nil) {
+            return false
+        }
+        return true
     }
 
     func didUpdateNextButton() async {
-        /// enable 되도록 해야함
+        let isChallengeNameEmpty = await didUpdateChallengeName()
+        let isEndDateEmpty = await didUpdateEndDate()
+        let isStartDateEmpty = await didUpdateStartDate()
+        
+        if isChallengeNameEmpty || isEndDateEmpty || isStartDateEmpty == false {
+
+            await self.presenter.presentEnabled(nextButton: .init(isEnabled: false))
+        }
+        await self.presenter.presentEnabled(nextButton: .init(isEnabled: true))
     }
 
     func didTapNextButton() async {
