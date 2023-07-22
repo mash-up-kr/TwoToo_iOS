@@ -116,10 +116,17 @@ public enum Assets: String {
     case onboarding_2
     case onboarding_3
     case icon_buds
+    case icon_bubble_tail_my
+    case icon_bubble_tail_partner
+    case icon_check
+    case icon_cryingseed
+    case icon_blossome
+    case icon_congratulation
+    case icon_all_verified
     case history_card
 
-    public var image: UIImage? {
-        return .init(named: self.rawValue, in: Bundle.module, with: nil)
+    public var image: UIImage {
+        return .init(named: self.rawValue, in: Bundle.module, with: nil)!
     }
     
 }
