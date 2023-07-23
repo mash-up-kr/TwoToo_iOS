@@ -33,9 +33,9 @@ final class TrailingInfoStackView: UIView {
         let v = UIStackView()
         v.axis = .horizontal
         v.spacing = 7
-        v.addArrangedSubviews(self.myNicknameLabel,
+        v.addArrangedSubviews(self.partnerNicknameLabel,
                               self.heartImageView,
-                              self.partnerNicknameLabel)
+                              self.myNicknameLabel)
         return v
     }()
     

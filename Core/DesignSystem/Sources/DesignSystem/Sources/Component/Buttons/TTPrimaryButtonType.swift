@@ -116,7 +116,7 @@ extension TTPrimaryButtonType {
             case .largeLine:
                 return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .small:
-                return .init(top: 18.5, left: 34, bottom: 18.5, right: 34)
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .tiny:
                 return .init(top: 8, left: 11, bottom: 8, right: 11)
             }
