@@ -19,7 +19,6 @@ public struct ChallengeEssentialInfoInputConfiguration {
 
 }
 
-// 이전화면에서 호출하는 곳
 public final class ChallengeEssentialInfoInputSceneFactory {
 
     public init() {}

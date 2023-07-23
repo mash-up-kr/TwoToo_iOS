@@ -13,6 +13,7 @@ enum ChallengeEssentialInfoInput {
     // MARK: Entity
 
     enum Model {
+
         struct Info {
             
             struct StartDate {
@@ -42,9 +43,9 @@ enum ChallengeEssentialInfoInput {
             var isEnabled: Bool?
         }
 
-        struct Date {
-            var startDate: String?
-            var endDate: String?
+        struct ChallengeDate {
+            var startDate: Date?
+            var endDate: Date?
         }
     }
 }

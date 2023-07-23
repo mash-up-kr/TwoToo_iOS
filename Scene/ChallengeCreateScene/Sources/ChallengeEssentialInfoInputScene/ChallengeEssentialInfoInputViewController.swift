@@ -12,12 +12,14 @@ import DesignSystem
 
 protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
-    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date)
+    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.ChallengeDate)
 }
 
 final class ChallengeEssentialInfoInputViewController: UIViewController {
     var interactor: ChallengeEssentialInfoInputBusinessLogic
 
+    // MARK: - UI
+    
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -90,7 +92,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
-        v.addTarget(self, action: #selector(didTapDate), for: .valueChanged)
+        v.addTarget(self, action: #selector(didTapStartDate), for: .valueChanged)
         return v
     }()
 
@@ -108,7 +110,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
-        v.addTarget(self, action: #selector(didTapDate), for: .valueChanged)
+        v.addTarget(self, action: #selector(didTapEndDate), for: .valueChanged)
         return v
     }()
 
@@ -138,9 +140,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI
-    
+
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -164,9 +164,14 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         }
     }
     
-    @objc private func didTapDate(_ sender: UIDatePicker) {
+    @objc private func didTapStartDate(_ sender: UIDatePicker) {
         Task {
             await self.interactor.didTapStartDate(startDate: startDatePicker.date)
+        }
+    }
+
+    @objc private func didTapEndDate(_ sender: UIDatePicker) {
+        Task {
             await self.interactor.didTapEndDate(endDate: endDatePicker.date)
         }
     }
@@ -175,7 +180,6 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .second02
-        self.title = "hello"
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.entireDateStackView.addArrangedSubviews(self.startDateStackView, self.endDateStackView)
@@ -209,7 +213,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.startDateStackView.snp.makeConstraints { make in
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
-        
+
         self.endDateStackView.snp.makeConstraints { make in
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
@@ -238,14 +242,14 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
 // MARK: - Display Logic
 
 extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInputDisplayLogic {
-    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.Date) {
+    func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.ChallengeDate) {
         
         viewModel.startDate.unwrap { [weak self] startDate in
-            self?.endDatePicker.date = startDate.fullStringDate(.yearMonthDay)
+            self?.startDatePicker.date = startDate
         }
         
         viewModel.endDate.unwrap { [weak self] endDate in
-            self?.startDatePicker.date = endDate.fullStringDate(.yearMonthDay)
+            self?.endDatePicker.date = endDate
         }
     }
 

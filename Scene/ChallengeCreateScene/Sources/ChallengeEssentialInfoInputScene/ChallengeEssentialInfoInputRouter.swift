@@ -27,7 +27,7 @@ extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingL
 
         let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
 
-        viewController?.navigationController?.pushViewController(challengeAdditionalInfoInputViewController, animated: true)
+        self.viewController?.navigationController?.pushViewController(challengeAdditionalInfoInputViewController, animated: true)
 
         
 

@@ -80,9 +80,11 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didEnterChallengeNameComment(comment: String) async {
-        nameDataSource = comment
+        self.nameDataSource = comment
+        await self.didUpdateNextButton()
     }
 
+    // TODO: - 챌린지 버튼 탭 후 화면전환
     func didTapChallengeRecommendationButton() async {
 
     }
@@ -96,16 +98,17 @@ extension ChallengeEssentialInfoInputInteractor {
 
         self.startDateDataSource = startDate.fullDateString(.yearMonthDay)
         self.endDateDataSource = endDateData.fullDateString(.yearMonthDay)
-        
-        
+        await self.didUpdateNextButton()
+
         await self.presenter.presentCalendar(startDate: .init(date: startDate), endDate: .init(date: endDateData))
     }
 
     func didTapEndDate(endDate: Date) async {
-        let startDateData = endDate + (86400 * 22)
+        let startDateData = endDate - (86400 * 22)
 
-        self.endDateDataSource = endDate.fullDateString(.yearMonthDay)
-        self.startDateDataSource = startDateData.fullDateString(.yearMonthDay)
+        self.endDateDataSource = startDateData.fullDateString(.yearMonthDay)
+        self.startDateDataSource = endDate.fullDateString(.yearMonthDay)
+        await self.didUpdateNextButton()
         
         await self.presenter.presentCalendar(startDate: .init(date: startDateData), endDate: .init(date: endDate))
     }
@@ -115,40 +118,56 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didUpdateChallengeName() async -> Bool{
-        if ((nameDataSource?.isEmpty) != nil) {
-            return false
+        guard let nameData = self.nameDataSource else {
+            return true
         }
-        return true
+
+        if nameData.isEmpty {
+            return true
+        }
+
+        return false
     }
 
     func didUpdateStartDate() async -> Bool {
-        if ((startDateDataSource?.isEmpty) != nil) {
-            return false
+        guard let startDateData = self.startDateDataSource else {
+            return true
         }
-        return true
+
+        if startDateData.isEmpty {
+            return true
+        }
+
+        return false
     }
 
     func didUpdateEndDate() async -> Bool {
-        if ((endDateDataSource?.isEmpty) != nil) {
-            return false
+        guard let endDateData = self.endDateDataSource else {
+            return true
         }
-        return true
+
+        if endDateData.isEmpty {
+            return true
+        }
+
+        return false
     }
 
     func didUpdateNextButton() async {
-        let isChallengeNameEmpty = await didUpdateChallengeName()
-        let isEndDateEmpty = await didUpdateEndDate()
-        let isStartDateEmpty = await didUpdateStartDate()
-        
-        if isChallengeNameEmpty || isEndDateEmpty || isStartDateEmpty == false {
+        let isChallengeNameEmpty = await self.didUpdateChallengeName()
+        let isEndDateEmpty = await self.didUpdateEndDate()
+        let isStartDateEmpty = await self.didUpdateStartDate()
 
+        if isChallengeNameEmpty || isEndDateEmpty || isStartDateEmpty {
             await self.presenter.presentEnabled(nextButton: .init(isEnabled: false))
+        } else {
+            await self.presenter.presentEnabled(nextButton: .init(isEnabled: true))
         }
-        await self.presenter.presentEnabled(nextButton: .init(isEnabled: true))
     }
 
+    // TODO: - 다음 버튼 탭 후 화면 전환
     func didTapNextButton() async {
-        /// 다음 화면으로 이동
+
     }
 }
 
