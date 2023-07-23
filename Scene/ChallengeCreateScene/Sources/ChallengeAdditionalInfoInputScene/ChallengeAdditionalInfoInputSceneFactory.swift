@@ -14,7 +14,7 @@ public protocol ChallengeAdditionalInfoInputScene: AnyObject, Scene {
 }
 
 public struct ChallengeAdditionalInfoInputConfiguration {
-    
+    public init() {}
 }
 
 public final class ChallengeAdditionalInfoInputSceneFactory {

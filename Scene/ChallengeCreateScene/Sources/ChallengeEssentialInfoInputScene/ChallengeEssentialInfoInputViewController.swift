@@ -13,7 +13,7 @@ protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {}
 
 final class ChallengeEssentialInfoInputViewController: UIViewController {
     var interactor: ChallengeEssentialInfoInputBusinessLogic
-    
+
     init(interactor: ChallengeEssentialInfoInputBusinessLogic) {
         self.interactor = interactor
         super.init(nibName: nil, bundle: nil)
@@ -35,7 +35,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        
+
     }
 }
 
