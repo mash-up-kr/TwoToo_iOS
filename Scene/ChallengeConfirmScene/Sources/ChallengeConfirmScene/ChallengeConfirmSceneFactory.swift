@@ -18,8 +18,22 @@ public struct ChallengeConfirmConfiguration {
 }
 
 public final class ChallengeConfirmSceneFactory {
-    
-    public init() {}
+    let challengeName: String?
+    let challengeStartDate: String?
+    let challengeEndDate: String?
+    let challegneRule: String?
+
+    public init(
+        challengeName: String?,
+        challengeStartDate: String?,
+        challengeEndDate: String?,
+        challengeRule: String?
+    ) {
+        self.challengeName = challengeName
+        self.challengeStartDate = challengeStartDate
+        self.challengeEndDate = challengeEndDate
+        self.challegneRule = challengeRule
+    }
     
     public func make(with configuration: ChallengeConfirmConfiguration) -> ChallengeConfirmScene {
         

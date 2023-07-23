@@ -8,7 +8,12 @@
 
 import CoreKit
 
-protocol ChallengeConfirmBusinessLogic {}
+protocol ChallengeConfirmBusinessLogic {
+    /// 첫 진입
+    func didAppear() async
+    /// 다음 버튼 클릭
+    func didTapNextButton() async
+}
 
 protocol ChallengeConfirmDataStore: AnyObject {}
 
@@ -43,10 +48,31 @@ extension ChallengeConfirmInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (진입)
 
 extension ChallengeConfirmInteractor {
-    
+    func didAppear() async {
+        do {
+            let chanllengeConfirmStatus = try await self.worker.fetchChallengeConfirmInfo()
+
+            switch chanllengeConfirmStatus {
+            case .create:
+                await self.presenter.presentChallengeConfirmView(status: .create)
+            case .confirm:
+                await self.presenter.presentChallengeConfirmView(status: .confirm)
+            case .accept:
+                await self.presenter.presentChallengeConfirmView(status: .accept)
+            }
+        }
+        catch  {
+            await self.presenter.presentChallengeConfirmViewError(error: error)
+        }
+    }
+
+    // TODO: - 다음 버튼 눌렀을 떄 화면전환 구현 필요
+    func didTapNextButton() async {
+
+    }
 }
 
 // MARK: - Application Business Logic

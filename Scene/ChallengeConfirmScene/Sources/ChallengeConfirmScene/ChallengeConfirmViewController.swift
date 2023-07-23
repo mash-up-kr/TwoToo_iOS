@@ -9,7 +9,11 @@
 import CoreKit
 import UIKit
 
-protocol ChallengeConfirmDisplayLogic: AnyObject {}
+protocol ChallengeConfirmDisplayLogic: AnyObject {
+    func displayCreateView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
+    func displayConfirmView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
+    func displayAcceptView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
+}
 
 final class ChallengeConfirmViewController: UIViewController {
     var interactor: ChallengeConfirmBusinessLogic
@@ -63,7 +67,6 @@ final class ChallengeConfirmViewController: UIViewController {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h3
-        v.text = "하루 운동 30분 이상 하기"
         return v
     }()
 
@@ -71,7 +74,6 @@ final class ChallengeConfirmViewController: UIViewController {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h4
-        v.text = "23/05/01 ~ 23/05/22"
         return v
     }()
 
@@ -80,8 +82,6 @@ final class ChallengeConfirmViewController: UIViewController {
         v.textColor = .grey600
         v.font = .body2
         v.numberOfLines = 0
-        v.text = "운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기"
-        v.font = .systemFont(ofSize: 15)
         return v
     }()
 
@@ -107,6 +107,7 @@ final class ChallengeConfirmViewController: UIViewController {
 
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
+        v.setIsEnabled(true)
         return v
     }()
 
@@ -124,6 +125,10 @@ final class ChallengeConfirmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+
+        Task {
+            await self.interactor.didAppear()
+        }
     }
     
     // MARK: - Layout
@@ -204,5 +209,28 @@ extension ChallengeConfirmViewController: ChallengeConfirmScene {
 // MARK: - Display Logic
 
 extension ChallengeConfirmViewController: ChallengeConfirmDisplayLogic {
-    
+    func displayCreateView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
+        self.challengeTitleLabel.text = info.title
+        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeRuleLabel.text = info.rule
+    }
+
+    func displayConfirmView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
+        self.challengeTitleLabel.text = info.title
+        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeRuleLabel.text = info.rule
+
+        self.headerStackView.isHidden = true
+        self.nextButton.isHidden = true
+        self.title = "챌린지 정보"
+    }
+
+    func displayAcceptView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
+        self.challengeTitleLabel.text = info.title
+        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeRuleLabel.text = info.rule
+
+        self.title = ""
+        self.processLabel.isHidden = true
+    }
 }

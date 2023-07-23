@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeConfirmRoutingLogic {}
+protocol ChallengeConfirmRoutingLogic {
+    /// 닫기
+    func dismiss()
+}
 
 final class ChallengeConfirmRouter {
     weak var viewController: ChallengeConfirmViewController?
@@ -17,5 +20,7 @@ final class ChallengeConfirmRouter {
 }
 
 extension ChallengeConfirmRouter: ChallengeConfirmRoutingLogic {
-    
+    func dismiss() {
+        self.viewController?.dismiss(animated: true)
+    }
 }

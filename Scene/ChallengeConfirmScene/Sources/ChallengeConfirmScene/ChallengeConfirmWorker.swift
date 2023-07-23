@@ -8,6 +8,13 @@
 
 import CoreKit
 
-protocol ChallengeConfirmWorkerProtocol {}
+protocol ChallengeConfirmWorkerProtocol {
+    func fetchChallengeConfirmInfo() async throws -> ChallengeConfirm.Model.ConfirmStatus
+}
 
-final class ChallengeConfirmWorker: ChallengeConfirmWorkerProtocol {}
+final class ChallengeConfirmWorker: ChallengeConfirmWorkerProtocol {
+
+    func fetchChallengeConfirmInfo() async throws -> ChallengeConfirm.Model.ConfirmStatus {
+        return .confirm
+    }
+}
