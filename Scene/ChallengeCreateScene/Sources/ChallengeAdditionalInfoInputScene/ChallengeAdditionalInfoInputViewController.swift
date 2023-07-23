@@ -11,13 +11,14 @@ import UIKit
 
 protocol ChallengeAdditionalInfoInputDisplayLogic: AnyObject {}
 
-final class ChallengeAdditionalInfoInputViewController: UIViewController, UITextViewDelegate {
+final class ChallengeAdditionalInfoInputViewController: UIViewController {
     var interactor: ChallengeAdditionalInfoInputBusinessLogic
+
+    // MARK: - UI
 
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-
         return v
     }()
 
@@ -27,7 +28,6 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController, UIText
         v.font = .preferredFont(forTextStyle: .title2)
         v.textColor = .primary
         v.font = .h1
-
         return v
     }()
 
@@ -37,7 +37,6 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController, UIText
         v.font = .preferredFont(forTextStyle: .title2)
         v.font = .h1
         v.textColor = .primary
-
         return v
     }()
 
@@ -47,20 +46,17 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController, UIText
         v.font = .preferredFont(forTextStyle: .body)
         v.textColor = .grey600
         v.font = .body2
-
         return v
     }()
 
-    private lazy var challengeRuleTextView: UITextView = {
-        let v = UITextView()
-        v.backgroundColor = .white
-        v.delegate = self
+    private lazy var challengeRuleTextView: TTTextView = {
+        let v = TTTextView(placeHolder: "구체적인 챌린지 룰, 벌칙 등을 입력해주세요", maxCount: 200)
+        v.contentInset = .init(top: 21, left: 20, bottom: 0, right: 20)
+        v.backgroundColor = .mainWhite
+        v.customDelegate = self
         v.layer.cornerRadius = 10
-        v.text = "구체적인 챌린지 룰, 벌칙등을 입력해주세요"
         v.textColor = .grey500
         v.font = .body1
-        v.textContainerInset = .init(top: 21, left: 20, bottom: 0, right: 20)
-
         return v
     }()
 
@@ -78,8 +74,6 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController, UIText
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI
     
     // MARK: - View Lifecycle
     
@@ -123,6 +117,20 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController, UIText
 
 // MARK: - Trigger
 
+extension ChallengeAdditionalInfoInputViewController: TTTextViewDelegate {
+    func textViewDidChange(text: String) {
+        Task {
+            await self.interactor.didEnterChallengeAdditionalInfo(commet: text)
+        }
+    }
+
+    func textViewDidEndEditing(text: String) {
+        Task {
+            await self.interactor.didEnterChallengeAdditionalInfo(commet: text)
+        }
+    }
+}
+
 // MARK: - Trigger by Parent Scene
 
 extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInputScene {
@@ -132,44 +140,5 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 // MARK: - Display Logic
 
 extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInputDisplayLogic {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        challengeRuleTextView.text = nil
-        challengeRuleTextView.textColor = .lightGray
-    }
 
-    func textViewDidEndEditing(_ textView: UITextView) {
-       if challengeRuleTextView.text.isEmpty {
-           challengeRuleTextView.text = "구체적인 챌린지 룰, 벌칙등을 입력해주세요"
-           challengeRuleTextView.textColor = UIColor.lightGray
-       }
-
-        if challengeRuleTextView.text.count > 100 {
-        // 글자수 제한에 걸리면 마지막 글자를 삭제함.
-            challengeRuleTextView.text.removeLast()
-        }
-   }
-
-    /// 최대 길이 제한
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        // 이전 글자 - 선택된 글자 + 새로운 글자(대체될 글자)
-        let newLength = challengeRuleTextView.text.count - range.length + text.count
-        let maxCount = 100
-        // 글자수가 초과 된 경우 or 초과되지 않은 경우
-        if newLength > maxCount {
-            let overflow = newLength - maxCount //초과된 글자수
-            if text.count < overflow {
-                return true
-            }
-            let index = text.index(text.endIndex, offsetBy: -overflow)
-            let newText = text[..<index]
-            guard let startPosition = textView.position(from: textView.beginningOfDocument, offset: range.location) else { return false }
-            guard let endPosition = textView.position(from: textView.beginningOfDocument, offset: NSMaxRange(range)) else { return false }
-            guard let textRange = textView.textRange(from: startPosition, to: endPosition) else { return false }
-
-            textView.replace(textRange, withText: String(newText))
-
-            return false
-        }
-        return true
-    }
 }

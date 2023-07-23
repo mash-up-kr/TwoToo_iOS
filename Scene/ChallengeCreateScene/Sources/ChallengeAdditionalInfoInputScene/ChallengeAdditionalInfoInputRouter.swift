@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeAdditionalInfoInputRoutingLogic {}
+protocol ChallengeAdditionalInfoInputRoutingLogic {
+    /// 뒤로 간다
+    func dismiss()
+}
 
 final class ChallengeAdditionalInfoInputRouter {
     weak var viewController: ChallengeAdditionalInfoInputViewController?
@@ -17,5 +20,8 @@ final class ChallengeAdditionalInfoInputRouter {
 }
 
 extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutingLogic {
-    
+
+    func dismiss() {
+        self.viewController?.dismiss(animated: true)
+    }
 }
