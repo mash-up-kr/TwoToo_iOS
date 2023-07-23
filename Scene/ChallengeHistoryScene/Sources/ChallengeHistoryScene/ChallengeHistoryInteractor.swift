@@ -73,7 +73,7 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didLoad() async {
-        
+        await self.presenter.presentChallenge(challenge: self.challenge)
     }
 }
 
@@ -82,7 +82,7 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didTapCertificate() async {
-        
+        await self.router.routeToChallengeCertificateScene()
     }
 }
 
@@ -91,7 +91,21 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didSelectCertificate(certificateID: String) async {
+        let myCertificate = self.challenge.myInfo.certificates
+            .filter {
+                $0.id == certificateID
+            }.first
+        let partnerCertificate = self.challenge.partnerInfo.certificates
+            .filter {
+                $0.id == certificateID
+            }.first
         
+        if let myCertificate = myCertificate {
+            await self.router.routeToChallengeHistoryDetailScene(certificate: myCertificate)
+        }
+        else if let partnerCertificate = partnerCertificate {
+            await self.router.routeToChallengeHistoryDetailScene(certificate: partnerCertificate)
+        }
     }
 }
 
@@ -100,23 +114,30 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didTapOptionButton() async {
-        
+        await self.presenter.presentOptionPopup()
     }
     
     func didTapOptionPopupQuitButton() async {
-        
+        await self.presenter.presentQuitPopup()
     }
     
     func didTapQuitPopupCancelButton() async {
-        
+        await self.presenter.dismissQuitPopup()
     }
     
     func didTapQuitPopupBackground() async {
-        
+        await self.presenter.dismissQuitPopup()
     }
     
     func didTapQuitPopupQuitButton() async {
-        
+        do {
+            try await self.worker.requestChallengeQuit(challengeID: self.challenge.id)
+            await self.presenter.presentChallengeQuitSuccess()
+            await self.router.dismiss()
+        }
+        catch {
+            await self.presenter.presentChallengeQuitError(error: error)
+        }
     }
 }
 
@@ -125,7 +146,7 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didTapBackButton() async {
-        
+        await self.router.dismiss()
     }
 }
 

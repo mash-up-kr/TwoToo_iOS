@@ -78,7 +78,7 @@ final class ChallengeHistoryInteractorSpec: QuickSpec {
                     let isRouteToChallengeHistoryDetailSceneCalled = await router.isRouteToChallengeHistoryDetailSceneCalled
                     let lastCertificate = await router.lastCertificate
                     expect(isRouteToChallengeHistoryDetailSceneCalled).to(beTrue())
-                    expect(lastCertificate).to(equal(.init(id: "2", certificateImageUrl: "", certificateComment: "", certificateTime: Date())))
+                    expect(lastCertificate?.id).to(equal("2"))
                 }
             }
         }
