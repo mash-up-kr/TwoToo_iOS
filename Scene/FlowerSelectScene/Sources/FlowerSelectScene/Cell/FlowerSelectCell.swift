@@ -6,18 +6,17 @@
 //
 
 import UIKit
+import DesignSystem
 
 final class FlowerSelectCell: UICollectionViewCell {
     private lazy var stackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-
         return v
     }()
 
     private lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
-
         return v
     }()
 
@@ -25,22 +24,23 @@ final class FlowerSelectCell: UICollectionViewCell {
         let v = UILabel()
         v.text = "장미"
         v.textAlignment = .center
-        v.font = .systemFont(ofSize: 24)
-
+        v.font = .h2
+        v.textColor = .primary
         return v
     }()
 
     private lazy var descriptionLabel: UILabel = {
         let v = UILabel()
         v.text = "행복한 사랑을 이루어 봐요"
-        v.font = .systemFont(ofSize: 15)
-
+        v.font = .body2
+        v.textColor = .primary
+        v.textAlignment = .center
         return v
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.contentView.backgroundColor = .mainWhite
         self.setLayout()
     }
 
@@ -56,6 +56,7 @@ final class FlowerSelectCell: UICollectionViewCell {
 
     private func setLayout() {
         self.contentView.addSubview(stackView)
+        self.contentView.layer.cornerRadius = 15
 
         self.stackView.addArrangedSubviews(
             self.flowerImageView,
@@ -83,7 +84,7 @@ final class FlowerSelectCell: UICollectionViewCell {
         }
 
         self.flowerImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(64)
+            make.width.height.equalTo(68)
         }
     }
 }

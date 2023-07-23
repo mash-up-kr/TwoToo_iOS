@@ -51,6 +51,7 @@ final class FlowerSelectViewController: UIViewController {
         v.delegate = self
         v.dataSource = self
         v.collectionViewLayout = makeLayout()
+        v.backgroundColor = .second02
         return v
     }()
 
@@ -60,14 +61,15 @@ final class FlowerSelectViewController: UIViewController {
                     heightDimension: .fractionalWidth(1/2)
                 )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 2)
+//        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13)
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalWidth(1/2)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+//        group.interItemSpacing = .fixed(13)
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 10
+        section.interGroupSpacing = 15
         return UICollectionViewCompositionalLayout(section: section)
     }
     
@@ -93,7 +95,7 @@ final class FlowerSelectViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .second02
 
         self.headerStackView.addArrangedSubviews(self.headerLabel, self.captionLabel)
         self.view.addSubviews(self.headerStackView, self.flowerCollectionView, self.challengeButton)

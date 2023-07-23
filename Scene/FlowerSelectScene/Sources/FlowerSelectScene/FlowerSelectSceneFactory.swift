@@ -20,8 +20,8 @@ public struct FlowerSelectConfiguration {
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
 
     public init(
-    var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
-    var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
+    didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     ) {
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
