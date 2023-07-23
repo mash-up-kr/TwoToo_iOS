@@ -17,7 +17,6 @@ class ViewController: UIViewController {
         v.distribution = .fillProportionally
         v.alignment = .center
         v.spacing = 5
-        v.addArrangedSubview(self.tagView)
         return v
     }()
     
@@ -36,18 +35,7 @@ class ViewController: UIViewController {
         v.addTarget(self, action: #selector(self.didTapLongToastTest), for: .touchUpInside)
         return v
     }()
-    
-    lazy var tagView: TTTagView = {
-        let v = TTTagView(title: "완료", textColor: .mainCoral, fontSize: .body2, cornerRadius: 10)
-        return v
-    }()
-    
-    
-    lazy var tag2View: TTTagView = {
-        let v = TTTagView(title: "D-24", textColor: .grey600, fontSize: .body2, cornerRadius: 4)
-        return v
-    }()
-    
+
     lazy var popup: TTPopup = {
         let v = TTPopup(
             title: "Test",
@@ -100,24 +88,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .mainPink
-        self.view.addSubview(self.tagView)
-        self.view.addSubview(self.tag2View)
-
-        self.tagView.snp.makeConstraints { make in
-            make.width.equalTo(42)
-            make.height.equalTo(24)
-            make.centerX.centerY.equalToSuperview()
-        }
-        
-        self.tag2View.snp.makeConstraints { make in
-            make.top.equalTo(self.tagView.snp.bottom).offset(20)
-            make.width.equalTo(50)
-            make.height.equalTo(30)
-            make.centerX.equalToSuperview()
-        }
-        
-            
+//        self.view.backgroundColor = .mainPink
+//        self.view.addSubview(self.tagView)
+//        self.view.addSubview(self.tag2View)
+//
+//        self.tagView.snp.makeConstraints { make in
+//            make.width.equalTo(42)
+//            make.height.equalTo(24)
+//            make.centerX.centerY.equalToSuperview()
+//        }
+//        
+//        self.tag2View.snp.makeConstraints { make in
+//            make.top.equalTo(self.tagView.snp.bottom).offset(20)
+//            make.width.equalTo(50)
+//            make.height.equalTo(30)
+//            make.centerX.equalToSuperview()
+//        }
+//        
+//            
     }
 }
 

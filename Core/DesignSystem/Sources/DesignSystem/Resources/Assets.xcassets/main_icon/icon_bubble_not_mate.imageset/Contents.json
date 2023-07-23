@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=상대방X.png",
+      "filename" : "icon_bubble_not_mate 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=상대방X@2x.png",
+      "filename" : "icon_bubble_not_mate@2x 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=상대방X@3x.png",
+      "filename" : "icon_bubble_not_mate@3x 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

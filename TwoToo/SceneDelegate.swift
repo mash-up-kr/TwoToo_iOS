@@ -39,13 +39,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let vc = BottomSheetTestViewController()
 //        vc.view.backgroundColor = .white
         let tabBarController = MainSceneFactory().make(with: .init()).viewController
-
-        let bottomSheetViewController = ChallengeRecommendSceneFactory().make(with: .init(didTriggerSelectChallengeName: .init())).bottomSheetViewController
-        
-//        let vc = InvitationWaitSceneFactory().make(with: .init(didTriggerRouteToHomeScene: .init(), invitationLink: "https://test")).viewController
-        
+                
         self.window?.rootViewController = tabBarController
-        tabBarController.present(bottomSheetViewController, animated: true)
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
