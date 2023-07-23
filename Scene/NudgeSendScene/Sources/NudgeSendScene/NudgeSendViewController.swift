@@ -43,7 +43,7 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     }()
     
     private lazy var messageTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n최대 30자까지 입력 가능")
+        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n최대 30자까지 입력 가능", maxCount: 30)
         v.customDelegate = self
         return v
     }()

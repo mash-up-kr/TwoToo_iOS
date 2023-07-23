@@ -22,6 +22,7 @@ public final class TTTextView: UITextView {
     public weak var customDelegate: TTTextViewDelegate?
     
     private var placeHolderText: String = ""
+    private var maxCount: Int = 0
     
     private lazy var placeHolderLabel: UILabel = {
         let v = UILabel()
@@ -39,7 +40,7 @@ public final class TTTextView: UITextView {
         self.delegate = self
     }
     
-    public convenience init(placeHolder: String) {
+    public convenience init(placeHolder: String, maxCount: Int) {
         self.init()
         
         self.layout()
@@ -48,6 +49,7 @@ public final class TTTextView: UITextView {
         
         self.placeHolderText = placeHolder
         self.placeHolderLabel.text = placeHolder
+        self.maxCount = maxCount
     }
      
     required init?(coder: NSCoder) {
@@ -86,7 +88,34 @@ extension TTTextView: UITextViewDelegate {
         else {
             self.placeHolderLabel.text = self.placeHolderText
         }
-        
+
+        if self.text.count > self.maxCount {
+        // 글자수 제한에 걸리면 마지막 글자를 삭제함.
+            self.text.removeLast()
+        }
+
         self.customDelegate?.textViewDidChange(text: textView.text)
     }
+
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newLength = self.text.count - range.length + text.count
+        let maxCount = self.maxCount
+         
+         if newLength > maxCount {
+             let overflow = newLength - maxCount
+             if text.count < overflow {
+                 return true
+             }
+             let index = text.index(text.endIndex, offsetBy: -overflow)
+             let newText = text[..<index]
+             guard let startPosition = textView.position(from: textView.beginningOfDocument, offset: range.location) else { return false }
+             guard let endPosition = textView.position(from: textView.beginningOfDocument, offset: NSMaxRange(range)) else { return false }
+             guard let textRange = textView.textRange(from: startPosition, to: endPosition) else { return false }
+
+             textView.replace(textRange, withText: String(newText))
+
+             return false
+         }
+         return true
+     }
 }

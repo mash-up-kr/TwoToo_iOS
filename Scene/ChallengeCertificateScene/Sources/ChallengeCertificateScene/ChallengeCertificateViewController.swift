@@ -78,7 +78,7 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
     }()
     
     private lazy var commentTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "소감을 작성해주세요.")
+        let v = TTTextView(placeHolder: "소감을 작성해주세요.", maxCount: 100)
         v.customDelegate = self
         return v
     }()
