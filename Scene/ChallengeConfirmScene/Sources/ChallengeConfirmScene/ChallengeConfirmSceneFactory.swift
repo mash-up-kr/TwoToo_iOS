@@ -14,7 +14,7 @@ public protocol ChallengeConfirmScene: AnyObject, Scene {
 }
 
 public struct ChallengeConfirmConfiguration {
-    
+    public init() {}
 }
 
 public final class ChallengeConfirmSceneFactory {
