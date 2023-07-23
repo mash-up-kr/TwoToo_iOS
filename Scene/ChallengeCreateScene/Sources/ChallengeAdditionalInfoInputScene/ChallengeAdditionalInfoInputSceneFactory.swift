@@ -14,14 +14,14 @@ public protocol ChallengeAdditionalInfoInputScene: AnyObject, Scene {
 }
 
 public struct ChallengeAdditionalInfoInputConfiguration {
-    let challengeName: String?
-    let challengeStartDate: String?
-    let challengeEndDate: String?
+    let challengeName: String
+    let challengeStartDate: String
+    let challengeEndDate: String
 
     public init(
-        challengeName: String?,
-        challengeStartDate: String?,
-        challengeEndDate: String?
+        challengeName: String,
+        challengeStartDate: String,
+        challengeEndDate: String
     ) {
         self.challengeName = challengeName
         self.challengeStartDate = challengeStartDate

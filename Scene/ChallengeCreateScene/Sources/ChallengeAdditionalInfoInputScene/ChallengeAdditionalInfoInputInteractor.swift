@@ -35,6 +35,8 @@ final class ChallengeAdditionalInfoInputInteractor: ChallengeAdditionalInfoInput
     }
     
     // MARK: - DataStore
+
+    /// 챌린지 추가 입력(규칙 등)  문구
     var additionalInfoDataSource: String?
 }
 
