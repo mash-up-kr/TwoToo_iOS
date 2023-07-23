@@ -42,7 +42,7 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
     }()
     
     private lazy var messageTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "(최대 20자)칭찬 문구를 입력해주세요.\n예) 오늘도 잘해냈어, 앞으로도 파이팅!")
+        let v = TTTextView(placeHolder: "(최대 20자)칭찬 문구를 입력해주세요.\n예) 오늘도 잘해냈어, 앞으로도 파이팅!", maxCount: 20)
         v.customDelegate = self
         return v
     }()
