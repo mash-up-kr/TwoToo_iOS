@@ -15,6 +15,8 @@ protocol FlowerSelectDisplayLogic: AnyObject {}
 final class FlowerSelectViewController: UIViewController {
     var interactor: FlowerSelectBusinessLogic
 
+    // MARK: - UI
+    
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -50,26 +52,30 @@ final class FlowerSelectViewController: UIViewController {
         v.registerCell(FlowerSelectCell.self)
         v.delegate = self
         v.dataSource = self
-        v.collectionViewLayout = makeLayout()
+        v.collectionViewLayout = createCollectionViewlayout()
         v.backgroundColor = .second02
+        v.showsVerticalScrollIndicator = false
         return v
     }()
 
-    private func makeLayout() -> UICollectionViewLayout {
+    private func createCollectionViewlayout() -> UICollectionViewLayout {
+        let itemSpacing: CGFloat = 13
+        let horizontalPadding: CGFloat = 48
+        let cellWidth: CGFloat = (UIScreen.main.bounds.width - horizontalPadding - itemSpacing) / 2
         let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1/2),
-                    heightDimension: .fractionalWidth(1/2)
-                )
+            widthDimension: .absolute(cellWidth),
+            heightDimension: .absolute(cellWidth)
+        )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13)
+
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalWidth(1/2)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//        group.interItemSpacing = .fixed(13)
+        group.interItemSpacing = .fixed(13)
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 15
+        section.interGroupSpacing = 13
         return UICollectionViewCompositionalLayout(section: section)
     }
     
@@ -82,14 +88,11 @@ final class FlowerSelectViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
-    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.title = "hello"
     }
     
     // MARK: - Layout
@@ -110,7 +113,7 @@ final class FlowerSelectViewController: UIViewController {
         self.flowerCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-100)
         }
 
         self.challengeButton.snp.makeConstraints { make in

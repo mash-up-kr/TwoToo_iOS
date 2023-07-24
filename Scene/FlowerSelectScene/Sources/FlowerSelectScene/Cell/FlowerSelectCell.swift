@@ -12,6 +12,7 @@ final class FlowerSelectCell: UICollectionViewCell {
     private lazy var stackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
+        v.spacing = 7
         return v
     }()
 
@@ -55,36 +56,25 @@ final class FlowerSelectCell: UICollectionViewCell {
     }
 
     private func setLayout() {
-        self.contentView.addSubview(stackView)
+        self.contentView.addSubviews(self.stackView, self.flowerImageView)
         self.contentView.layer.cornerRadius = 15
 
         self.stackView.addArrangedSubviews(
-            self.flowerImageView,
             self.titleLabel,
             self.descriptionLabel
         )
 
-        self.stackView.setCustomSpacing(7, after: self.flowerImageView)
-        self.stackView.setCustomSpacing(7, after: self.titleLabel)
-
-        self.stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
-        self.titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(7)
-            make.trailing.equalToSuperview().offset(-7)
-            make.height.equalTo(self.descriptionLabel.snp.width).multipliedBy(0.3)
-        }
-
-        self.descriptionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(7)
-            make.trailing.equalToSuperview().offset(-7)
-            make.height.equalTo(self.descriptionLabel.snp.width).multipliedBy(0.1)
-        }
-
         self.flowerImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(68)
+            make.leading.equalToSuperview().offset(44.5)
+            make.trailing.equalToSuperview().offset(-44.5)
+            make.top.equalToSuperview().offset(16)
+            make.bottom.equalTo(self.stackView.snp.top).offset(-7)
+        }
+        
+        self.stackView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(7)
+            make.trailing.equalToSuperview().offset(-7)
+            make.bottom.equalToSuperview().offset(-19)
         }
     }
 }
