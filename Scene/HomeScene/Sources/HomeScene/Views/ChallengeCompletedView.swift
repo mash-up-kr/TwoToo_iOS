@@ -83,19 +83,19 @@ final class ChallengeCompletedView: UIView {
         
         self.partnerFlowerView.snp.makeConstraints { make in
             make.centerX.equalToSuperview().multipliedBy(0.5)
-            make.centerY.equalToSuperview().multipliedBy(1.05)
+            make.bottom.equalToSuperview().multipliedBy(0.8)
             make.width.equalToSuperview().dividedBy(2)
         }
 
         self.myFlowerView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview().multipliedBy(1.05)
+            make.bottom.equalToSuperview().multipliedBy(0.8)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.width.equalToSuperview().dividedBy(2)
         }
 
         self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(1.7)
+            make.bottom.equalToSuperview().inset(50)
             make.width.equalTo(177)
         }
         
