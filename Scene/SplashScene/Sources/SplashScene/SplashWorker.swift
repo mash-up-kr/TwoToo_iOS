@@ -17,6 +17,6 @@ final class SplashWorker: SplashWorkerProtocol {
     
     // TODO: 유저 상태에 따른 랜딩 플로우를 참고하여 작업 필요
     func fetchUserState() async throws -> Splash.Model.UserState {
-        return .login
+        return .invitationWait
     }
 }
