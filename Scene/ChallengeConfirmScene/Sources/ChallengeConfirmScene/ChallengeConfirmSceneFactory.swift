@@ -18,15 +18,15 @@ public struct ChallengeConfirmConfiguration {
 }
 
 public final class ChallengeConfirmSceneFactory {
-    let challengeName: String?
-    let challengeStartDate: String?
-    let challengeEndDate: String?
+    let challengeName: String
+    let challengeStartDate: String
+    let challengeEndDate: String
     let challegneRule: String?
 
     public init(
-        challengeName: String?,
-        challengeStartDate: String?,
-        challengeEndDate: String?,
+        challengeName: String,
+        challengeStartDate: String,
+        challengeEndDate: String,
         challengeRule: String?
     ) {
         self.challengeName = challengeName
