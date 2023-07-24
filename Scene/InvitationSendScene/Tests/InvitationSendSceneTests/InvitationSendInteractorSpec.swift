@@ -22,7 +22,7 @@ final class InvitationSendInteractorSpec: QuickSpec {
                 presenter: presenter,
                 router: router,
                 worker: worker,
-                didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>()
+                didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>()
             )
             
             cancellables = []

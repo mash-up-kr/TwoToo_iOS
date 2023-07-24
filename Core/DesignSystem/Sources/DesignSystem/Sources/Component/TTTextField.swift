@@ -70,6 +70,7 @@ final public class TTTextField: UIView, UIComponentBased {
         self.maxLength = maxLength
         self.attribute()
         self.layout()
+        self.textField.delegate = self
     }
 
     required init?(coder: NSCoder) {

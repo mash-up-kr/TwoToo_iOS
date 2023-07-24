@@ -25,7 +25,7 @@ protocol LoginDataStore: AnyObject {
     /// 초대장 전송 화면 이동 트리거
     var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never> { get }
     /// 대기 화면 이동 트리거
-    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never> { get }
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never> { get }
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
 }
@@ -43,7 +43,7 @@ final class LoginInteractor: LoginDataStore, LoginBusinessLogic {
         worker: LoginWorkerProtocol,
         didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>,
         didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
-        didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     ) {
         self.presenter = presenter
@@ -61,7 +61,7 @@ final class LoginInteractor: LoginDataStore, LoginBusinessLogic {
     
     var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
     
-    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
     
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
 }
@@ -106,7 +106,7 @@ extension LoginInteractor {
                         self.didTriggerRouteToInvitationSendScene.send(())
                         
                     case .invitationWait:
-                        self.didTriggerRouteToInvitationWaitScene.send(())
+                        self.didTriggerRouteToInvitationWaitScene.send(nil)
                         
                     case .home:
                         self.didTriggerRouteToHomeScene.send(())
@@ -122,7 +122,7 @@ extension LoginInteractor {
                         self.didTriggerRouteToInvitationSendScene.send(())
                         
                     case .invitationWait:
-                        self.didTriggerRouteToInvitationWaitScene.send(())
+                        self.didTriggerRouteToInvitationWaitScene.send(nil)
                         
                     case .home:
                         self.didTriggerRouteToHomeScene.send(())
@@ -145,7 +145,7 @@ extension LoginInteractor {
                     self.didTriggerRouteToInvitationSendScene.send(())
                     
                 case .invitationWait:
-                    self.didTriggerRouteToInvitationWaitScene.send(())
+                    self.didTriggerRouteToInvitationWaitScene.send(nil)
                     
                 case .home:
                     self.didTriggerRouteToHomeScene.send(())

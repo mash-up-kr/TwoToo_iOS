@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=brown-1.png",
+      "filename" : "icon_home_brown 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=brown@2x-1.png",
+      "filename" : "icon_home_brown@2x 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=brown@3x-1.png",
+      "filename" : "icon_home_brown@3x 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

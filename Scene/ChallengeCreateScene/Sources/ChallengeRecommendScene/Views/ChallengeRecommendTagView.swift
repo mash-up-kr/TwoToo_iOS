@@ -43,9 +43,9 @@ final class ChallengeRecommendTagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(title: String) {
-        self.titleLabel.text = title
-        self.tagTitle = title
+    func configure(model: ChallengeRecommend.ViewModel.Challenges.Challenge) {
+        self.titleLabel.text = "\(model.title.icon) \(model.title.challengeName)"
+        self.tagTitle = model.title.challengeName
     }
     
     private func layout() {

@@ -8,9 +8,17 @@
 
 import CoreKit
 
-protocol ChallengeRecommendBusinessLogic {}
+protocol ChallengeRecommendBusinessLogic {
+    /// 첫 진입
+    func didLoad() async
+    /// 추천 챌린지 선택
+    func didSelectRecommendChallenge(challengeName: String) async
+}
 
-protocol ChallengeRecommendDataStore: AnyObject {}
+protocol ChallengeRecommendDataStore: AnyObject {
+    /// 챌린지 이름 선택 트리거
+    var didTriggerSelectChallengeName: PassthroughSubject<String, Never> { get }
+}
 
 final class ChallengeRecommendInteractor: ChallengeRecommendDataStore, ChallengeRecommendBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
@@ -22,15 +30,18 @@ final class ChallengeRecommendInteractor: ChallengeRecommendDataStore, Challenge
     init(
         presenter: ChallengeRecommendPresentationLogic,
         router: ChallengeRecommendRoutingLogic,
-        worker: ChallengeRecommendWorkerProtocol
+        worker: ChallengeRecommendWorkerProtocol,
+        didTriggerSelectChallengeName: PassthroughSubject<String, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.didTriggerSelectChallengeName = didTriggerSelectChallengeName
     }
     
     // MARK: - DataStore
     
+    var didTriggerSelectChallengeName: PassthroughSubject<String, Never>
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +54,23 @@ extension ChallengeRecommendInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (진입)
 
 extension ChallengeRecommendInteractor {
     
+    func didLoad() async {
+        await self.presenter.presentRecommendChallenges()
+    }
+}
+
+// MARK: Feature (추천 챌린지 선택)
+
+extension ChallengeRecommendInteractor {
+    
+    func didSelectRecommendChallenge(challengeName: String) async {
+        self.didTriggerSelectChallengeName.send(challengeName)
+        await self.router.dismiss()
+    }
 }
 
 // MARK: - Application Business Logic

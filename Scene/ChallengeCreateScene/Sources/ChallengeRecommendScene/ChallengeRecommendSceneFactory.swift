@@ -7,14 +7,20 @@
 //
 
 import CoreKit
+import UIKit
 
 @MainActor
 public protocol ChallengeRecommendScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct ChallengeRecommendConfiguration {
+    /// 챌린지 이름 선택 트리거
+    public var didTriggerSelectChallengeName: PassthroughSubject<String, Never>
     
+    public init(didTriggerSelectChallengeName: PassthroughSubject<String, Never>) {
+        self.didTriggerSelectChallengeName = didTriggerSelectChallengeName
+    }
 }
 
 public final class ChallengeRecommendSceneFactory {
@@ -29,7 +35,8 @@ public final class ChallengeRecommendSceneFactory {
         let interactor = ChallengeRecommendInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerSelectChallengeName: configuration.didTriggerSelectChallengeName
         )
         let viewController = ChallengeRecommendViewController(
             interactor: interactor

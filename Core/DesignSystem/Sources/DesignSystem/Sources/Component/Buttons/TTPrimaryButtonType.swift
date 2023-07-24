@@ -34,7 +34,6 @@ final public class TTPrimaryButtonType: UIButton, UIComponentBased {
     public func layout() {
         self.snp.makeConstraints { make in
             make.height.equalTo(self.customButtonType.buttonHeight)
-            make.width.equalTo(self.customButtonType.buttonWidth)
         }
     }
 
@@ -109,15 +108,15 @@ extension TTPrimaryButtonType {
                 return .clear
             }
         }
-
+        
         var titlePadding: UIEdgeInsets? {
             switch self {
             case .large:
                 return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .largeLine:
-                return .init(top: 18.5, left: 96.5, bottom: 18.5, right: 96.5)
+                return .init(top: 18.5, left: 0, bottom: 18.5, right: 0)
             case .small:
-                return .init(top: 18.5, left: 56, bottom: 18.5, right: 56)
+                return .init(top: 18.5, left: 34, bottom: 18.5, right: 34)
             case .tiny:
                 return .init(top: 8, left: 11, bottom: 8, right: 11)
             }
@@ -129,17 +128,6 @@ extension TTPrimaryButtonType {
                 return 20
             case .tiny:
                 return 10
-            }
-        }
-
-        var buttonWidth: CGFloat {
-            switch self {
-            case .large, .largeLine:
-                return UIScreen.main.bounds.width - 48
-            case .small:
-                return UIScreen.main.bounds.width / 2
-            case .tiny:
-                return 0
             }
         }
 
