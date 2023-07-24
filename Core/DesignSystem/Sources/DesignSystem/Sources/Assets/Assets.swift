@@ -123,6 +123,10 @@ public enum Assets: String {
     case icon_blossome
     case icon_congratulation
     case icon_all_verified
+    case history_fail
+    case history_certificate
+    case history_line
+    case history_waiting
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

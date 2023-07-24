@@ -19,7 +19,7 @@ public final class TTTagView: UIView, UIComponentBased {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-        self.backgroundColor = .white
+        self.attribute()
     }
     
     required init?(coder: NSCoder) {
@@ -28,26 +28,25 @@ public final class TTTagView: UIView, UIComponentBased {
     
     public convenience init(textColor: UIColor,
                             fontSize: UIFont,
-                            cornerRadius: CGFloat) {
+                            cornerRadius: CGFloat,
+                            edgeInsets: UIEdgeInsets = .init(top: 4, left: 10, bottom: 4, right: 10)) {
         self.init()
         self.titleLabel.textColor = textColor
         self.titleLabel.font = fontSize
         self.layer.cornerRadius = cornerRadius
+        self.bounds.inset(by: edgeInsets)
     }
     
     public func layout() {
         self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
-            make.leading.equalToSuperview().offset(10)
-            make.bottom.equalToSuperview().inset(4)
-            make.trailing.equalToSuperview().inset(10)
+            make.centerX.centerY.equalToSuperview()
         }
     }
     
     public func attribute() {
-        
+        self.backgroundColor = .white
     }
 
     
