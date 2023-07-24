@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 protocol ChallengeAdditionalInfoInputRoutingLogic {
     /// 뒤로 간다
-    func dismiss()
+    func pop()
     /// 챌린지 확인 화면으로 이동한다.
     func routeToChallengeConfirmScene()
 }
@@ -23,8 +23,8 @@ final class ChallengeAdditionalInfoInputRouter {
 
 extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutingLogic {
 
-    func dismiss() {
-        self.viewController?.dismiss(animated: true)
+    func pop() {
+        self.viewController?.navigationController?.popViewController(animated: true)
     }
     
     func routeToChallengeConfirmScene() {
