@@ -8,9 +8,14 @@
 import CoreKit
 import UIKit
 
-protocol HistoryDisplayLogic: AnyObject {}
+protocol HistoryDisplayLogic: AnyObject {
+    func displayChallengeList(viewModel: History.ViewModel.CellInfoList)
+    func displayChallengeEmptyView()
+    func displayToast(viewModel: History.ViewModel.Toast)
+}
 
-final class HistoryViewController: UIViewController {
+final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UICollectionViewDataSource {
+
     var interactor: HistoryBusinessLogic
     
     init(interactor: HistoryBusinessLogic) {
@@ -24,11 +29,19 @@ final class HistoryViewController: UIViewController {
     
     // MARK: - UI
     lazy var navigationBar: TTNavigationBar = {
-        let v = TTNavigationBar(title: "우리의 정원", rightButtonImage: .asset(.icon_info))
+        let v = TTNavigationBar(title: "우리의 정원",
+                                rightButtonImage: .asset(.icon_info))
+        v.delegate = self
         return v
     }()
     
-    lazy var gardenCollectionView: UICollectionView = {
+    func didTapRightButton() {
+        Task {
+            await self.interactor.didTapManualButton()
+        }
+    }
+    
+    lazy var historyCollectionView: UICollectionView = {
         let layout = generateCollectionViewLayout()
         let v = UICollectionView(frame: .zero,
                                  collectionViewLayout: layout)
@@ -40,18 +53,30 @@ final class HistoryViewController: UIViewController {
         return v
     }()
     
+    // TODO: - Empty뷰 디자인 없음
+    lazy var historyEmptyView: UIView = {
+        let v = UIView()
+        v.isHidden = true
+        return v
+    }()
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.view.backgroundColor = .second02
+        self.setupAttribute()
+        Task {
+            await self.interactor.didLoad()
+        }
     }
     
     // MARK: - Layout
     
     private func setUI() {
-        self.view.addSubviews(self.navigationBar, self.gardenCollectionView)
+        self.view.addSubviews(self.navigationBar,
+                              self.historyCollectionView,
+                              self.historyEmptyView)
         
         let guide = self.view.safeAreaLayoutGuide
         
@@ -61,14 +86,81 @@ final class HistoryViewController: UIViewController {
             make.height.equalTo(44)
         }
         
-        self.gardenCollectionView.snp.makeConstraints { make in
+        self.historyCollectionView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(24)
             make.bottom.equalTo(guide.snp.bottom)
             make.trailing.equalToSuperview().inset(24)
         }
+        
+        self.historyEmptyView.snp.makeConstraints { make in
+            make.top.equalTo(guide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
+    private func setupAttribute() {
+        self.view.backgroundColor = .second02 // TODO: - will change
+    }
+        
+    // MARK: - CollectionView DataSource
+    var cellInfoList: History.ViewModel.CellInfoList = []
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.cellInfoList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueCell(type: HistoryCollectionViewCell.self, indexPath: indexPath)
+        let viewModel = self.cellInfoList[indexPath.row]
+        cell.configure(viewModel: viewModel)
+        return cell
+    }
+}
+
+// MARK: - Trigger
+
+// MARK: - Trigger by Parent Scene
+
+extension HistoryViewController: HistoryScene {
+    
+}
+
+// MARK: - Display Logic
+
+extension HistoryViewController: HistoryDisplayLogic {
+    func displayChallengeList(viewModel: History.ViewModel.CellInfoList) {
+        self.cellInfoList = viewModel
+        self.historyCollectionView.reloadData()
+    }
+    
+    func displayChallengeEmptyView() {
+        self.navigationBar.isHidden = true
+        self.historyCollectionView.isHidden = true
+        self.historyEmptyView.isHidden = false
+    }
+    
+    func displayToast(viewModel: History.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
+    }
+}
+
+extension HistoryViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.layer.borderColor = UIColor.mainPink.cgColor
+            cell.layer.borderWidth = 3
+            cell.layer.cornerRadius = 20
+            Task {
+                await self.interactor.didTapChallengeHistory(index: indexPath.row)
+            }
+        }
+    }
+}
+
+extension HistoryViewController {
     private func generateCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         let horizontalPadding: CGFloat = 48
         let itemSpacing: CGFloat = 13
@@ -92,42 +184,5 @@ final class HistoryViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
-}
 
-// MARK: - Trigger
-
-// MARK: - Trigger by Parent Scene
-
-extension HistoryViewController: HistoryScene {
-    
-}
-
-// MARK: - Display Logic
-
-extension HistoryViewController: HistoryDisplayLogic {
-    
-}
-
-// MARK: - CollectionView
-extension HistoryViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(type: HistoryCollectionViewCell.self, indexPath: indexPath)
-        cell.configure() // TODO: - 수정 예정
-        return cell
-    }
-    
-}
-
-extension HistoryViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.layer.borderColor = UIColor.mainPink.cgColor
-            cell.layer.borderWidth = 3
-            // TODO: - 푸쉬코드
-        }
-    }
 }

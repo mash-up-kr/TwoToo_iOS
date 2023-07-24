@@ -21,6 +21,8 @@ public extension String {
             switch type {
             case .yearMonthDay, .hourMinute:
                 return "yyyy-MM-dd'T'HH:mm:ss"
+            case .shortYearMonthDay:
+                return "yy/MM/dd"
             }
         }
 
