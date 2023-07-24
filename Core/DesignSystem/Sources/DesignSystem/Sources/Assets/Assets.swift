@@ -38,7 +38,7 @@ public enum Assets: String {
     case flower_small_tulip
     case flower_small_delphinium
     case flower_small_cotton
-    case flower_small_sunflower_small
+    case flower_small_sunflower
     case flower_small_fig
     case flower_small_chrysanthemum
     case flower_success_mate_bling_camellia
@@ -123,6 +123,8 @@ public enum Assets: String {
     case icon_blossome
     case icon_congratulation
     case icon_all_verified
+    case app_icon
+    case app_logo
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

@@ -16,33 +16,61 @@ import InvitationWaitScene
 import ChallengeRecommendScene
 import UIKit
 import NicknameRegistScene
+import SplashScene
+import LoginScene
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    /// 로그인 화면 이동 트리거
+    let didTriggerRouteToLoginScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 닉네임 설정 화면 이동 트리거
+    let didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 초대장 전송 화면 이동 트리거
+    let didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 대기 화면 이동 트리거
+    let didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never> = .init()
+    
+    /// 홈 화면 이동 트리거
+    let didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> = .init()
+    
+    var cancellables: Set<AnyCancellable> = []
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        self.bindTrigger() // 트리거를 바인딩합니다.
         
         self.window = UIWindow(windowScene: windowScene)
         self.window!.makeKeyAndVisible()
         
-        let fac = NicknameRegistSceneFactory().make(with: .init(didTriggerRouteToInvitationSendScene: .init(), didTriggerRouteToHomeScene: .init()))
-        let vc = fac.viewController
+        let splashScene = SplashSceneFactory().make(with: .init(
+            didTriggerRouteToLoginScene: self.didTriggerRouteToLoginScene,
+            didTriggerRouteToNickNameScene: self.didTriggerRouteToNickNameScene,
+            didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+            didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene,
+            didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+        ))
+        let vc = splashScene.viewController
         let nav = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = nav
-        
-//        let vc = BottomSheetTestViewController()
-//        vc.view.backgroundColor = .white
-        let tabBarController = MainSceneFactory().make(with: .init()).viewController
-                
-        self.window?.rootViewController = tabBarController
+    }
+    
+    
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+//        if let url = URLContexts.first?.url {
+//            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//                _ = AuthController.handleOpenUrl(url: url)
+//            }
+//        }
     }
 
+>>>>>>> develop
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -71,6 +99,73 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    private func bindTrigger() {
+        
+        self.didTriggerRouteToLoginScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let loginScene = LoginSceneFactory().make(with: .init(
+                    didTriggerRouteToNickNameScene: self.didTriggerRouteToNickNameScene,
+                    didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+                    didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene,
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+                ))
+                let vc = loginScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToNickNameScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let nicknameRegistScene = NicknameRegistSceneFactory().make(with: .init(
+                    didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+                ))
+                let vc = nicknameRegistScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToInvitationSendScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let invitationSendScene = InvitationSendSceneFactory().make(with: .init(
+                    didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene
+                ))
+                let vc = invitationSendScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToInvitationWaitScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let invitationWaitScene = InvitationWaitSceneFactory().make(with: .init(
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene,
+                    invitationLink: $0
+                ))
+                let vc = invitationWaitScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToHomeScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let mainScene = MainSceneFactory().make(with: .init())
+                let tc = mainScene.viewController
+                self.window?.rootViewController = tc
+            }
+            .store(in: &self.cancellables)
+    }
 }
 

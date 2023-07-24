@@ -40,6 +40,27 @@ final public class FlowerMappingWorker {
     public init(flowerType: Flower) {
         self.flowerType = flowerType
     }
+    
+    public func getSmallImage() -> UIImage {
+        switch flowerType {
+        case .rose:
+            return .asset(.flower_small_rose)!
+        case .tulip:
+            return .asset(.flower_small_tulip)!
+        case .cotton:
+            return .asset(.flower_small_cotton)!
+        case .fig:
+            return .asset(.flower_small_fig)!
+        case .chrysanthemum:
+            return .asset(.flower_small_chrysanthemum)!
+        case .sunflower:
+            return .asset(.flower_small_sunflower)!
+        case .camellia:
+            return .asset(.flower_small_camellia)!
+        case .delphinium:
+            return .asset(.flower_small_delphinium)!
+        }
+    }
 
     public func getRegularImage() -> UIImage {
         switch flowerType {

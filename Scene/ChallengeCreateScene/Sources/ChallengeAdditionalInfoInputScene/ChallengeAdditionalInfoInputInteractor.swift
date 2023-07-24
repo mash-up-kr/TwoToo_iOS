@@ -8,7 +8,12 @@
 
 import CoreKit
 
-protocol ChallengeAdditionalInfoInputBusinessLogic {}
+protocol ChallengeAdditionalInfoInputBusinessLogic {
+    /// 챌린지 추가 정보 입력
+    func didEnterChallengeAdditionalInfo(commet: String) async
+    /// 다음 버튼 클릭
+    func didTapNextButton() async
+}
 
 protocol ChallengeAdditionalInfoInputDataStore: AnyObject {}
 
@@ -30,7 +35,9 @@ final class ChallengeAdditionalInfoInputInteractor: ChallengeAdditionalInfoInput
     }
     
     // MARK: - DataStore
-    
+
+    /// 챌린지 추가 입력(규칙 등)  문구
+    var additionalInfoDataSource: String?
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +50,22 @@ extension ChallengeAdditionalInfoInputInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (챌린지 추가정보 설정)
 
 extension ChallengeAdditionalInfoInputInteractor {
-    
+    func didEnterChallengeAdditionalInfo(commet: String) async {
+        self.additionalInfoDataSource = commet
+    }
+}
+
+// MARK: Feature (페이지 이동)
+
+extension ChallengeAdditionalInfoInputInteractor {
+
+    // TODO: - 화면 이동 시 구현
+    func didTapNextButton() async {
+
+    }
 }
 
 // MARK: - Application Business Logic

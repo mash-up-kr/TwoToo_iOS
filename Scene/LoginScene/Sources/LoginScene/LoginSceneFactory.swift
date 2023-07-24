@@ -19,14 +19,14 @@ public struct LoginConfiguration {
     /// 초대장 전송 화면 이동 트리거
     public var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
     /// 대기 화면 이동 트리거
-    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>
+    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
     /// 홈 화면 이동 트리거
     public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
 
     public init(
         didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>,
         didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
-        didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     ) {
         self.didTriggerRouteToNickNameScene = didTriggerRouteToNickNameScene
