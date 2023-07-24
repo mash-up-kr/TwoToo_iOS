@@ -8,6 +8,14 @@
 
 import CoreKit
 
-protocol ChallengeHistoryWorkerProtocol {}
+protocol ChallengeHistoryWorkerProtocol {
+    /// 챌린지 그만두기 요청을 한다.
+    func requestChallengeQuit(challengeID: String) async throws
+}
 
-final class ChallengeHistoryWorker: ChallengeHistoryWorkerProtocol {}
+final class ChallengeHistoryWorker: ChallengeHistoryWorkerProtocol {
+    
+    func requestChallengeQuit(challengeID: String) async throws {
+        
+    }
+}
