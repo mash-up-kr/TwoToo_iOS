@@ -13,6 +13,7 @@ import AuthenticationServices
 protocol LoginDisplayLogic: AnyObject {
     func displayOnboarding(viewModel: Login.ViewModel.Onborading)
     func displaySocialLogin(viewModel: Login.ViewModel.SocialLogin)
+    func displayToast(viewModel: Login.ViewModel.Toast)
 }
 
 final class LoginViewController: UIViewController {
@@ -54,19 +55,29 @@ final class LoginViewController: UIViewController {
         v.setImage(UIImage(named: "kakaoLogin", in: .module, with: nil), for: .normal)
         v.contentHorizontalAlignment = .fill
         v.layer.cornerRadius = 20
+        v.addAction { [weak self] in
+            Task {
+                await self?.interactor.didTapKakaoLoginButton()
+            }
+        }
         return v
     }()
 
     private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
+        var v: ASAuthorizationAppleIDButton
         if #available(iOS 13.2, *) {
-            let v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
+            v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
             v.cornerRadius = 17
-            return v
         }
         else {
-            let v = ASAuthorizationAppleIDButton(frame: .zero)
-            return v
+            v = ASAuthorizationAppleIDButton(frame: .zero)
         }
+        v.addAction { [weak self] in
+            Task {
+                await self?.interactor.didTapAppleLoginButton()
+            }
+        }
+        return v
     }()
 
     private lazy var buttonStackView: UIStackView = {
@@ -160,6 +171,12 @@ extension LoginViewController: LoginDisplayLogic {
     func displaySocialLogin(viewModel: Login.ViewModel.SocialLogin) {
         viewModel.isHidden.unwrap { [weak self] hidden in
             self?.buttonStackView.isHidden = hidden
+        }
+    }
+    
+    func displayToast(viewModel: Login.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
         }
     }
 }
