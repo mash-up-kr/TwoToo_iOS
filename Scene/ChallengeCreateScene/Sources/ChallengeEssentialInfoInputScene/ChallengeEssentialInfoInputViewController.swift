@@ -244,12 +244,12 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
 extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInputDisplayLogic {
     func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.ChallengeDate) {
         
-        viewModel.startDate.unwrap { [weak self] startDate in
-            self?.startDatePicker.date = startDate
+        viewModel.startDate.unwrap { startDate in
+            self.startDatePicker.date = startDate
         }
         
-        viewModel.endDate.unwrap { [weak self] endDate in
-            self?.endDatePicker.date = endDate
+        viewModel.endDate.unwrap { endDate in
+            self.endDatePicker.date = endDate
         }
     }
 
