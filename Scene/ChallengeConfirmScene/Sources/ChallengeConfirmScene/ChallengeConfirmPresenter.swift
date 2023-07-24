@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 protocol ChallengeConfirmPresentationLogic {
     /// 챌린지 확인 화면을 보여준다.
-    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus)
+    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus, model: ChallengeConfirm.Model.ChallengeInfo)
     /// 챌린지 확인 에러 화면을 보여준다.
     func presentChallengeConfirmViewError(error: Error)
 }
@@ -25,14 +25,14 @@ final class ChallengeConfirmPresenter {
 
 extension ChallengeConfirmPresenter: ChallengeConfirmPresentationLogic {
 
-    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus) {
+    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus, model: ChallengeConfirm.Model.ChallengeInfo) {
         switch status {
         case .create:
-            self.viewController?.displayCreateView(info: .init(title: "하루 운동 30분 이상 하기", startDate: "23/05/01", endDate: "23/05/22", rule: "운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기운동사진으로 인증하기\n실패하는 사람은 뷔폐 쏘기운동사진으로 인증하기"))
+            self.viewController?.displayCreateView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
         case .confirm:
-            self.viewController?.displayConfirmView(info: .init(title: "하루 운동 30분 이상 하기", startDate: "23/05/01", endDate: "23/05/22", rule: "운동사진으로 인증하기\n실패하는 사람은 뷔폐 "))
+            self.viewController?.displayConfirmView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
         case .accept:
-            self.viewController?.displayAcceptView(info: .init(title: "하루 운동 30분 이상 하기", startDate: "23/05/01", endDate: "23/05/22"))
+            self.viewController?.displayAcceptView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
         }
     }
 

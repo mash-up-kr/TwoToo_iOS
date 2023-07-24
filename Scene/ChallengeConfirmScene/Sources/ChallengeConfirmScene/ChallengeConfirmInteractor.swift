@@ -54,14 +54,21 @@ extension ChallengeConfirmInteractor {
     func didAppear() async {
         do {
             let chanllengeConfirmStatus = try await self.worker.fetchChallengeConfirmInfo()
-
+            let challegneInfo = try await self.worker.fetchChallengeInfo()
+            
             switch chanllengeConfirmStatus {
             case .create:
-                await self.presenter.presentChallengeConfirmView(status: .create)
+                await self.presenter.presentChallengeConfirmView(
+                    status: .create,
+                    model: challegneInfo)
             case .confirm:
-                await self.presenter.presentChallengeConfirmView(status: .confirm)
+                await self.presenter.presentChallengeConfirmView(
+                    status: .confirm,
+                    model: challegneInfo)
             case .accept:
-                await self.presenter.presentChallengeConfirmView(status: .accept)
+                await self.presenter.presentChallengeConfirmView(
+                    status: .accept,
+                    model: challegneInfo)
             }
         }
         catch  {
