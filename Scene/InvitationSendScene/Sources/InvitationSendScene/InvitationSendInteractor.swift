@@ -15,7 +15,7 @@ protocol InvitationSendBusinessLogic {
 
 protocol InvitationSendDataStore: AnyObject {
     /// 대기 화면 이동 트리거
-    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never> { get }
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never> { get }
 }
 
 final class InvitationSendInteractor: InvitationSendDataStore, InvitationSendBusinessLogic {
@@ -29,7 +29,7 @@ final class InvitationSendInteractor: InvitationSendDataStore, InvitationSendBus
         presenter: InvitationSendPresentationLogic,
         router: InvitationSendRoutingLogic,
         worker: InvitationSendWorkerProtocol,
-        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
     ) {
         self.presenter = presenter
         self.router = router
@@ -39,7 +39,7 @@ final class InvitationSendInteractor: InvitationSendDataStore, InvitationSendBus
     
     // MARK: - DataStore
     
-    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
 }
 
 // MARK: - Interactive Business Logic

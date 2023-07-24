@@ -19,8 +19,10 @@ public extension String {
     func fullStringDate(_ type: DateFormatType = .yearMonthDay) -> Date {
         var formatString: String {
             switch type {
-            case .yearMonthDay, .hourMinute:
+            case .hourMinute:
                 return "yyyy-MM-dd'T'HH:mm:ss"
+            case .yearMonthDay:
+                return "yyyy/MM/dd"
             }
         }
 

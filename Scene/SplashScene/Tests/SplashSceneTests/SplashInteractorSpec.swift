@@ -25,7 +25,7 @@ final class SplashInteractorSpec: QuickSpec {
                 didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>(),
                 didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>(),
                 didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>(),
-                didTriggerRouteToInvitationWaitScene: PassthroughSubject<Void, Never>(),
+                didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>(),
                 didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>()
             )
             
