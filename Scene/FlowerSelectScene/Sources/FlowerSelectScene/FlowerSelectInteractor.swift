@@ -22,6 +22,8 @@ protocol FlowerSelectDataStore: AnyObject {
     var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never> { get }
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
+    /// 진입점 트리거
+    var didEnterFlowerSelectScene: String { get }
 }
 
 final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessLogic {
@@ -37,13 +39,15 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
         router: FlowerSelectRoutingLogic,
         worker: FlowerSelectWorkerProtocol,
         didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
-        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        didEnterFlowerSelectScene: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.didEnterFlowerSelectScene = didEnterFlowerSelectScene
     }
     
     // MARK: - DataStore
@@ -51,6 +55,13 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
     var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>
 
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    
+    var didEnterFlowerSelectScene: String
+    
+    enum FlowerSelectStatus: String {
+        case create = "create"
+        case accept = "accept"
+    }
 }
 
 // MARK: - Interactive Business Logic
@@ -67,7 +78,18 @@ extension FlowerSelectInteractor {
 
 extension FlowerSelectInteractor {
     func didLoad() async {
-
+        let status = FlowerSelectStatus(rawValue: self.didEnterFlowerSelectScene)
+        switch status {
+        case .create:
+            await self.presenter.presentCreateScene(model: .init(isHidden: true, title: .create))
+            await self.presenter.presentFlowers()
+        case .accept:
+            await self.presenter.presentAceeptScene(model: .init(isHidden: true, title: .accpet))
+            await self.presenter.presentFlowers()
+        case .none:
+            await self.presenter.presentCreateScene(model: .init(isHidden: true, title: .create))
+            await self.presenter.presentFlowers()
+        }
     }
 }
 
@@ -83,11 +105,6 @@ extension FlowerSelectInteractor {
     func didTapButton() async {
 
     }
-}
-
-// MARK: Feature (꽃선택)
-extension FlowerSelectInteractor {
-
 }
 
 // MARK: - Application Business Logic

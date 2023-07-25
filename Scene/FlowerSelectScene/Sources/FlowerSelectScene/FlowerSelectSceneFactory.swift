@@ -18,13 +18,17 @@ public struct FlowerSelectConfiguration {
     var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+        
+    var didEnterFlowerSelectScene: String
 
     public init(
     didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
-    didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+    didEnterFlowerSelectScene: String
     ) {
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.didEnterFlowerSelectScene = didEnterFlowerSelectScene
     }
 }
 
@@ -42,7 +46,8 @@ public final class FlowerSelectSceneFactory {
             router: router,
             worker: worker,
             didTriggerChallengeCreateScene: configuration.didTriggerChallengeCreateScene,
-            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene
+            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene,
+            didEnterFlowerSelectScene: configuration.didEnterFlowerSelectScene
         )
         let viewController = FlowerSelectViewController(
             interactor: interactor

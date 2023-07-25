@@ -7,6 +7,7 @@
 
 import UIKit
 import DesignSystem
+import Worker
 
 final class FlowerSelectCell: UICollectionViewCell {
     private lazy var stackView: UIStackView = {
@@ -49,10 +50,11 @@ final class FlowerSelectCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(image: String, title: String, description: String) {
-        self.flowerImageView.image = UIImage(systemName: image)
-        self.titleLabel.text = title
-        self.descriptionLabel.text = description
+    func configure(item: FlowerMappingWorker?) {
+        guard let item else { return }
+        self.flowerImageView.image = item.getBlurImage()
+        self.titleLabel.text = item.getName()
+        self.descriptionLabel.text = item.getDesc()
     }
 
     private func setLayout() {

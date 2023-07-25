@@ -10,10 +10,26 @@ import CoreKit
 import UIKit
 import DesignSystem
 
-protocol FlowerSelectDisplayLogic: AnyObject {}
+protocol FlowerSelectDisplayLogic: AnyObject {
+    /// 꽃 리스트를 보여준다.
+    func displayFlowerSelectView(viewModel: FlowerSelect.ViewModel.Flower)
+    /// 챌린지 수락 버전 버튼을 보여준다.
+    func displayAccpetView(viewModel: FlowerSelect.ViewModel.createChallengeButton)
+    /// 챌린지 생성 버전 버튼을 보여준다.
+    func displayCrateView(viewModel: FlowerSelect.ViewModel.createChallengeButton)
+    /// 꽃을 선택한 화면을 보여준다.
+    func displayFlowerSelect(viewModel: FlowerSelect.ViewModel.FlowerSelect)
+    /// 챌린지 생성 실패 토스트를 보여준다.
+    func displayCreateChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast)
+    /// 챌린지 시작 실패 토스트를 보여준다.
+    func displayStartChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast)
+    /// 챌린지 시작 성공 토스트를 보여준다.
+    func displayStartChallengeSuccessToast(viewModel: FlowerSelect.ViewModel.Toast)
+}
 
 final class FlowerSelectViewController: UIViewController {
     var interactor: FlowerSelectBusinessLogic
+    private var flowerItems: FlowerSelect.ViewModel.Flower = .init()
 
     // MARK: - UI
     
@@ -55,6 +71,7 @@ final class FlowerSelectViewController: UIViewController {
         v.collectionViewLayout = createCollectionViewlayout()
         v.backgroundColor = .second02
         v.showsVerticalScrollIndicator = false
+        v.register(TTFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TTFooterView")
         return v
     }()
 
@@ -93,6 +110,10 @@ final class FlowerSelectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        
+        Task {
+            await self.interactor.didLoad()
+        }
     }
     
     // MARK: - Layout
@@ -113,7 +134,7 @@ final class FlowerSelectViewController: UIViewController {
         self.flowerCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-100)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
 
         self.challengeButton.snp.makeConstraints { make in
@@ -135,19 +156,77 @@ extension FlowerSelectViewController: FlowerSelectScene {
 // MARK: - Display Logic
 
 extension FlowerSelectViewController: FlowerSelectDisplayLogic {
+    func displayAccpetView(viewModel: FlowerSelect.ViewModel.createChallengeButton) {
+        self.challengeButton.isHidden = false
+        self.challengeButton.setTitle(viewModel.title, for: .normal)
+    }
     
+    func displayCrateView(viewModel: FlowerSelect.ViewModel.createChallengeButton) {
+        self.challengeButton.isHidden = false
+        self.challengeButton.setTitle(viewModel.title, for: .normal)
+    }
+    
+    func displayFlowerSelectView(viewModel: FlowerSelect.ViewModel.Flower) {
+        flowerItems = viewModel
+        self.flowerCollectionView.reloadData()
+    }
+    
+    func displayFlowerSelect(viewModel: FlowerSelect.ViewModel.FlowerSelect) {
+        
+    }
+    
+    func displayCreateChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast) {
+        
+    }
+    
+    func displayStartChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast) {
+        
+    }
+    
+    func displayStartChallengeSuccessToast(viewModel: FlowerSelect.ViewModel.Toast) {
+        
+    }
 }
 
 extension FlowerSelectViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return self.flowerItems.flowers?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(type: FlowerSelectCell.self, indexPath: indexPath)
-
-//        cell.configure(image: arr[indexPath.row].image, title: arr[indexPath.row].titlle, description: arr[indexPath.row].decs)
+        cell.configure(item: self.flowerItems.flowers?[indexPath.row])
 
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let v = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TTFooterView", for: indexPath)
+        return v
+    }
+}
+
+class TTFooterView: UICollectionReusableView {
+    let v = UIView()
+    
+    init() {
+        super.init(frame: .zero)
+        dd()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    func dd() {
+        self.addSubview(v)
+        
+        v.backgroundColor = .red
+        v.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
 }
