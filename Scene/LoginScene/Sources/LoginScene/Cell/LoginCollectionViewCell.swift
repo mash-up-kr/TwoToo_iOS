@@ -39,7 +39,6 @@ final class LoginCollectionViewCell: UICollectionViewCell {
     }
 
     private func setUI() {
-        self.backgroundColor = .white
         self.contentView.addSubviews(self.onboardingImageView, self.onboardingLabel)
     }
 

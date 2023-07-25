@@ -6,6 +6,7 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import CoreKit
 import UIKit
 
 @MainActor
@@ -50,59 +51,71 @@ final class HomePresenter {
 extension HomePresenter: HomePresentationLogic {
     
     func presentChallengeCreated(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeCreatedViewModel(
+            viewModel: challenge.toChallengeCreatedViewModel()
+        )
     }
     
     func presentChallengeWaiting(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeWaitingViewModel(
+            viewModel: challenge.toChallengeWaitingViewModel()
+        )
     }
     
     func presentChallengeBeforeStart(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeBeforeStartViewModel(
+            viewModel: challenge.toChallengeBeforeStartViewModel()
+        )
     }
     
     func presentChallengeBeforeStartDate(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeBeforeStartDateViewModel(
+            viewModel: challenge.toChallengeBeforeStartDateViewModel()
+        )
     }
     
     func presentChallengeAfterStartDate(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeAfterStartDateViewModel(
+            viewModel: challenge.toChallengeAfterStartDateViewModel()
+        )
     }
     
     func presentChallengeInProgress(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeInProgressViewModel(
+            viewModel: challenge.toChallengeInProgressViewModel()
+        )
     }
     
     func presentBothCertificationPopup() {
-        
+        self.viewController?.displayBothCertificationViewModel(viewModel: .init(show: (.asset(.icon_all_verified)!)))
     }
     
     func dismissBothCertificationPopup() {
-        
+        self.viewController?.displayBothCertificationViewModel(viewModel: .init(dismiss: ()))
     }
     
     func presentChallengeCompleted(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayChallengeCompletedViewModel(viewModel: challenge.toChallengeCompletedViewModel())
     }
     
     func presentCompletedPopup(challenge: Home.Model.Challenge) {
-        
+        self.viewController?.displayCompletedViewModel(viewModel: challenge.toCompletedViewModel())
     }
     
     func dismissCompletedPopup() {
-        
+        self.viewController?.displayCompletedViewModel(viewModel: .init(dismiss: ()))
     }
     
     func presentHomeError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "홈 조회 오류가 발생하였습니다. 앱을 재시동해주세요."))
     }
     
     func presentCompleteRequestError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "통신 중 오류가 발생하였습니다. 다시 시도해주세요."))
     }
     
     func presentExceededStickCountError() {
-        
+        self.viewController?.displayToast(viewModel: .init(message: "오늘의 콕 찌르기가 다 소진되었어요 ㅠㅜ"))
     }
 }
 
@@ -177,12 +190,20 @@ extension Home.Model.Challenge {
         viewModel.order.myNameText = self.myInfo.nickname
         
         // 상대방 꽃 매핑
-        viewModel.partnerFlower.image = UIImage() // TODO: 꽃 매핑 워커
+        var partnerFlowerMapper: FlowerMappingWorker?
+        if let partnerFlower = self.partnerInfo.flower {
+            partnerFlowerMapper = FlowerMappingWorker(flowerType: partnerFlower)
+        }
+        viewModel.partnerFlower.image = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
         viewModel.partnerFlower.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
         
         // 내 꽃 매핑
-        viewModel.myFlower.image = UIImage() // TODO: 꽃 매핑 워커
+        var myFlowerMapper: FlowerMappingWorker?
+        if let myFlower = self.myInfo.flower {
+            myFlowerMapper = FlowerMappingWorker(flowerType: myFlower)
+        }
+        viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
         viewModel.myFlower.cetificationGuideText = "내 씨앗을 눌러 인증 해보세요!"
         viewModel.myFlower.complimentCommentText = self.myInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
@@ -214,7 +235,7 @@ extension Home.Model.Challenge {
                         
                     case .bothCertificated(_):
                         viewModel.myFlower.isCertificationButtonHidden = true
-                        viewModel.partnerFlower.isCertificationCompleteHidden = false
+                        viewModel.partnerFlower.isCertificationCompleteHidden = true
                         viewModel.myFlower.isComplimentCommentHidden = false
                         viewModel.partnerFlower.isComplimentCommentHidden = false
                         viewModel.isHeartHidden = false
@@ -265,16 +286,24 @@ extension Home.Model.Challenge {
         viewModel.order.myNameText = self.myInfo.nickname
         
         // 상대방 꽃 매핑
-        viewModel.partnerFlower.image = UIImage() // TODO: 꽃 매핑 워커
-        viewModel.partnerFlower.flowerNameText = "" // TODO: 꽃 매핑 워커
-        viewModel.partnerFlower.flowerDescText = "" // TODO: 꽃 매핑 워커
+        var partnerFlowerMapper: FlowerMappingWorker?
+        if let partnerFlower = self.partnerInfo.flower {
+            partnerFlowerMapper = FlowerMappingWorker(flowerType: partnerFlower)
+        }
+        viewModel.partnerFlower.image = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
+        viewModel.partnerFlower.flowerNameText = partnerFlowerMapper?.getName() ?? ""
+        viewModel.partnerFlower.flowerDescText = partnerFlowerMapper?.getDesc() ?? ""
         viewModel.partnerFlower.isFlowerTextHidden = !(self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom)
         viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
         
         // 내 꽃 매핑
-        viewModel.myFlower.image = UIImage() // TODO: 꽃 매핑 워커
-        viewModel.myFlower.flowerNameText = "" // TODO: 꽃 매핑 워커
-        viewModel.myFlower.flowerDescText = "" // TODO: 꽃 매핑 워커
+        var myFlowerMapper: FlowerMappingWorker?
+        if let myFlower = self.myInfo.flower {
+            myFlowerMapper = FlowerMappingWorker(flowerType: myFlower)
+        }
+        viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
+        viewModel.myFlower.flowerNameText = myFlowerMapper?.getName() ?? ""
+        viewModel.myFlower.flowerDescText = myFlowerMapper?.getDesc() ?? ""
         viewModel.myFlower.isFlowerTextHidden = !(self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom)
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
@@ -282,34 +311,24 @@ extension Home.Model.Challenge {
     }
     
     func toCompletedViewModel() -> Home.ViewModel.CompletedViewModel {
-        var viewModel = Home.ViewModel.CompletedViewModel(
-            title: "", message: "",
-            partnerImage: UIImage(), partnerPercentageText: "",
-            myImage: UIImage(), myPercentageText: ""
-        )
+        var title: String
+        var message: String
+        var image: UIImage
         
         // 메세지 매핑
         if (self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom),
            (self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom) {
-            viewModel.title = "축하합니다!"
-            viewModel.message = "둘다 꽃을 피웠어요!\n서로의 꽃을 확인해보세요!"
+            title = "축하합니다!"
+            message = "둘다 꽃을 피웠어요!\n서로의 꽃을 확인해보세요!"
+            image = .asset(.icon_blossome)!
         }
         else {
-            viewModel.title = "수고했어요!"
-            viewModel.message = "챌린지가 끝났어요!\n서로의 달성률을 확인해보세요"
+            title = "수고했어요!"
+            message = "챌린지가 끝났어요!\n서로의 달성률을 확인해보세요"
+            image = .asset(.icon_congratulation)!
         }
         
-        // 퍼센테이지 매핑
-        viewModel.partnerPercentageText = self.calculatePercentageText(certCount: self.partnerInfo.certCount)
-        viewModel.myPercentageText = self.calculatePercentageText(certCount: self.myInfo.certCount)
-        
-        // 내 꽃 매핑
-        viewModel.myImage = UIImage() // TODO: 꽃 매핑 워커
-        
-        // 상대방 꽃 매핑
-        viewModel.partnerImage = UIImage() // TODO: 꽃 매핑 워커
-        
-        return viewModel
+        return .init(show: (title, message, image))
     }
 }
 
