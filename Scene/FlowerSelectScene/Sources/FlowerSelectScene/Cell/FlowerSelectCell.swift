@@ -69,14 +69,21 @@ final class FlowerSelectCell: UICollectionViewCell {
         self.flowerImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(44.5)
             make.trailing.equalToSuperview().offset(-44.5)
+            make.height.equalToSuperview().multipliedBy(0.43)
             make.top.equalToSuperview().offset(16)
             make.bottom.equalTo(self.stackView.snp.top).offset(-7)
         }
         
         self.stackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(7)
-            make.trailing.equalToSuperview().offset(-7)
-            make.bottom.equalToSuperview().offset(-19)
+            make.centerX.equalToSuperview()
+        }
+
+        self.titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+        }
+
+        self.descriptionLabel.snp.makeConstraints { make in
+            make.height.equalTo(15)
         }
     }
 }

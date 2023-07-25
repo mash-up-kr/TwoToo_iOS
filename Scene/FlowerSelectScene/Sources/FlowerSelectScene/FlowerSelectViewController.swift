@@ -71,7 +71,6 @@ final class FlowerSelectViewController: UIViewController {
         v.collectionViewLayout = createCollectionViewlayout()
         v.backgroundColor = .second02
         v.showsVerticalScrollIndicator = false
-        v.register(TTFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TTFooterView")
         return v
     }()
 
@@ -93,6 +92,11 @@ final class FlowerSelectViewController: UIViewController {
         group.interItemSpacing = .fixed(13)
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 13
+
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(100)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+        ]
+
         return UICollectionViewCompositionalLayout(section: section)
     }
     
@@ -196,37 +200,6 @@ extension FlowerSelectViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(type: FlowerSelectCell.self, indexPath: indexPath)
         cell.configure(item: self.flowerItems.flowers?[indexPath.row])
-
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        let v = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TTFooterView", for: indexPath)
-        return v
-    }
-}
-
-class TTFooterView: UICollectionReusableView {
-    let v = UIView()
-    
-    init() {
-        super.init(frame: .zero)
-        dd()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    func dd() {
-        self.addSubview(v)
-        
-        v.backgroundColor = .red
-        v.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
 }
