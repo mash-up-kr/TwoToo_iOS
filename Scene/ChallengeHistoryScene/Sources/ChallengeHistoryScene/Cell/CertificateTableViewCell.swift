@@ -1,5 +1,5 @@
 //
-//  CertificationTableViewCell.swift
+//  CertificateTableViewCell.swift
 //  
 //
 //  Created by Julia on 2023/07/24.
@@ -8,7 +8,7 @@
 import UIKit
 import Util
 
-final class CertificationTableViewCell: UITableViewCell {
+final class CertificateTableViewCell: UITableViewCell {
 
     // MARK: - my component
     let myTimeLabel: UILabel = {
@@ -75,8 +75,11 @@ final class CertificationTableViewCell: UITableViewCell {
     }
     
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
-        // TODO: - 인증실패 상태를 어떤걸로 구분할건지? id or image여부 ?
-       
+        self.dateLabel.text = viewModel.dateText
+        self.myImageView.kf.setImage(with: viewModel.my.photoURL)
+        self.myTimeLabel.text = viewModel.my.timeText
+        self.partnerImageView.kf.setImage(with: viewModel.partner.photoURL)
+        self.partnerTimeLabel.text = viewModel.partner.timeText
     }
     
     func layout() {
@@ -103,13 +106,14 @@ final class CertificationTableViewCell: UITableViewCell {
         
         self.myImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(17)
-            make.leading.equalToSuperview()
             make.bottom.equalToSuperview().inset(17)
             make.width.height.equalTo(127)
         }
         
         self.dateView.snp.makeConstraints { make in
             make.width.height.equalTo(45)
+            make.leading.equalTo(self.partnerImageView.snp.trailing).offset(13)
+            make.trailing.equalTo(self.myImageView.snp.leading).offset(-13)
             make.centerX.centerY.equalToSuperview()
         }
         
@@ -121,7 +125,6 @@ final class CertificationTableViewCell: UITableViewCell {
         
         self.partnerImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(17)
-            make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(17)
             make.width.height.equalTo(127)
         }

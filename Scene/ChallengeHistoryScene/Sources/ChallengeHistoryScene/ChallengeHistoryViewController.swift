@@ -82,12 +82,12 @@ final class ChallengeHistoryViewController: UIViewController {
         return v
     }()
     
-    private lazy var certificationTableView: UITableView = {
+    private lazy var certificateTableView: UITableView = {
         let v = UITableView()
         v.rowHeight = 161
         v.dataSource = self
         v.delegate = self
-        v.registerCell(CertificationTableViewCell.self)
+        v.registerCell(CertificateTableViewCell.self)
         v.backgroundColor = .clear
         v.separatorStyle = .none
         v.showsVerticalScrollIndicator = false
@@ -113,7 +113,7 @@ final class ChallengeHistoryViewController: UIViewController {
                               self.myNicknameTagView,
                               self.partnerNicknameTagView,
                               self.underLineView,
-                              self.certificationTableView)
+                              self.certificateTableView)
         
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -161,7 +161,7 @@ final class ChallengeHistoryViewController: UIViewController {
             make.height.equalTo(1)
         }
         
-        self.certificationTableView.snp.makeConstraints { make in
+        self.certificateTableView.snp.makeConstraints { make in
             make.top.equalTo(self.underLineView.snp.bottom)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
@@ -177,7 +177,7 @@ extension ChallengeHistoryViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(type: CertificationTableViewCell.self, indexPath: indexPath)
+        let cell = tableView.dequeueCell(type: CertificateTableViewCell.self, indexPath: indexPath)
         return cell
     }
     
