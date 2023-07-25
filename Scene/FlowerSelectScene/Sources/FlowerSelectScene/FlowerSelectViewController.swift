@@ -94,7 +94,7 @@ final class FlowerSelectViewController: UIViewController {
         section.interGroupSpacing = 13
 
         section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(100)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(110)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
         ]
 
         return UICollectionViewCompositionalLayout(section: section)

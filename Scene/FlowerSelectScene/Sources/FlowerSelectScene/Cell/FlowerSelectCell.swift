@@ -60,6 +60,9 @@ final class FlowerSelectCell: UICollectionViewCell {
     private func setLayout() {
         self.contentView.addSubviews(self.stackView, self.flowerImageView)
         self.contentView.layer.cornerRadius = 15
+//        self.layer.cornerRadius = 15
+//        self.layer.borderColor = .mainPink
+//        self.layer.borderWidth = 3
 
         self.stackView.addArrangedSubviews(
             self.titleLabel,
