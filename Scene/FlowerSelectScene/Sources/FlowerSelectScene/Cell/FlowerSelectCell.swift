@@ -56,13 +56,24 @@ final class FlowerSelectCell: UICollectionViewCell {
         self.titleLabel.text = item.getName()
         self.descriptionLabel.text = item.getDesc()
     }
+    
+    func configure(isEnabled: Bool) {
+        if isEnabled {
+            self.layer.cornerRadius = 15
+            self.layer.borderColor = .mainPink
+            self.layer.borderWidth = 3
+        }
+        else {
+            self.layer.cornerRadius = 0
+            self.layer.borderColor = .mainWhite
+            self.layer.borderWidth = 0
+        }
+    }
 
     private func setLayout() {
         self.contentView.addSubviews(self.stackView, self.flowerImageView)
         self.contentView.layer.cornerRadius = 15
-//        self.layer.cornerRadius = 15
-//        self.layer.borderColor = .mainPink
-//        self.layer.borderWidth = 3
+
 
         self.stackView.addArrangedSubviews(
             self.titleLabel,

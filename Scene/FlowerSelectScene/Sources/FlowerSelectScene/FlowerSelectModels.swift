@@ -24,8 +24,12 @@ enum FlowerSelect {
             }
         }
         
+        struct FlowerSelect {
+            var indexPath: Int?
+        }
+        
         struct Flower {
-            var flowers: [FlowerMappingWorker]
+            var flowers: [FlowerMappingWorker]?
         }
     }
     
@@ -41,20 +45,11 @@ enum FlowerSelect {
         }
 
         struct FlowerSelect {
-            var isSelected: Bool?
+            var indexPath: Int?
         }
 
         struct Flower {
             var flowers: [FlowerMappingWorker]?
-        }
-        
-        struct FlowerInfo {
-            /// 꽃 이미지
-            var image: UIImage
-            /// 꽃 타이틀
-            var title: String
-            /// 꽃 설명
-            var description: String
         }
     }
 }

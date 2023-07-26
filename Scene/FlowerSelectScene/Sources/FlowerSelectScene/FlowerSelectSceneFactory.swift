@@ -20,15 +20,32 @@ public struct FlowerSelectConfiguration {
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
         
     var didEnterFlowerSelectScene: String
+    
+    /// 챌린지명
+    let challengeName: String
+    /// 챌린지 시작일
+    let challengeStartDate: String
+    /// 챌린지 종료일
+    let challengeEndDate: String
+    /// 챌린지 규칙
+    let challengeRule: String?
 
     public init(
     didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
     didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-    didEnterFlowerSelectScene: String
+    didEnterFlowerSelectScene: String,
+    challengeName: String,
+    challengeStartDate: String,
+    challengeEndDate: String,
+    challengeRule: String?
     ) {
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
         self.didEnterFlowerSelectScene = didEnterFlowerSelectScene
+        self.challengeName = challengeName
+        self.challengeStartDate = challengeStartDate
+        self.challengeEndDate = challengeEndDate
+        self.challengeRule = challengeRule
     }
 }
 

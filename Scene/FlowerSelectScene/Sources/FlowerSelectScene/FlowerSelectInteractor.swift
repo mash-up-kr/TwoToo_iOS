@@ -12,7 +12,7 @@ protocol FlowerSelectBusinessLogic {
     /// 첫진입
     func didLoad() async
     /// 꽃 선택
-    func didTapFlower() async
+    func didTapFlower(flowerIndex: Int?) async
     /// 챌린지 버튼 클릭
     func didTapButton() async
 }
@@ -95,8 +95,8 @@ extension FlowerSelectInteractor {
 
 // MARK: Feature (꽃선택)
 extension FlowerSelectInteractor {
-    func didTapFlower() async {
-
+    func didTapFlower(flowerIndex: Int?) async {
+        await self.presenter.selectFlower(model: .init(indexPath: flowerIndex))
     }
 }
 

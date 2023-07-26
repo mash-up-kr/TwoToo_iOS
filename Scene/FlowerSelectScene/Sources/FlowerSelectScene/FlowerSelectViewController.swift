@@ -30,7 +30,8 @@ protocol FlowerSelectDisplayLogic: AnyObject {
 final class FlowerSelectViewController: UIViewController {
     var interactor: FlowerSelectBusinessLogic
     private var flowerItems: FlowerSelect.ViewModel.Flower = .init()
-
+    private var selectedFlower: FlowerSelect.ViewModel.FlowerSelect = .init()
+    
     // MARK: - UI
     
     private lazy var headerStackView: UIStackView = {
@@ -60,6 +61,7 @@ final class FlowerSelectViewController: UIViewController {
 
     private lazy var challengeButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 보내기", .large)
+        v.setIsEnabled(true)
         return v
     }()
 
@@ -151,6 +153,27 @@ final class FlowerSelectViewController: UIViewController {
 
 // MARK: - Trigger
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+
+extension FlowerSelectViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.flowerItems.flowers?.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueCell(type: FlowerSelectCell.self, indexPath: indexPath)
+        cell.configure(item: self.flowerItems.flowers?[indexPath.row])
+        cell.configure(isEnabled: indexPath.item == self.selectedFlower.indexPath)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        Task {
+            await self.interactor.didTapFlower(flowerIndex: self.selectedFlower.indexPath == indexPath.item ? nil : indexPath.row)
+        }
+    }
+}
+
 // MARK: - Trigger by Parent Scene
 
 extension FlowerSelectViewController: FlowerSelectScene {
@@ -161,12 +184,12 @@ extension FlowerSelectViewController: FlowerSelectScene {
 
 extension FlowerSelectViewController: FlowerSelectDisplayLogic {
     func displayAccpetView(viewModel: FlowerSelect.ViewModel.createChallengeButton) {
-        self.challengeButton.isHidden = false
+        self.challengeButton.isHidden = viewModel.isHidden
         self.challengeButton.setTitle(viewModel.title, for: .normal)
     }
     
     func displayCrateView(viewModel: FlowerSelect.ViewModel.createChallengeButton) {
-        self.challengeButton.isHidden = false
+        self.challengeButton.isHidden = viewModel.isHidden
         self.challengeButton.setTitle(viewModel.title, for: .normal)
     }
     
@@ -176,30 +199,26 @@ extension FlowerSelectViewController: FlowerSelectDisplayLogic {
     }
     
     func displayFlowerSelect(viewModel: FlowerSelect.ViewModel.FlowerSelect) {
-        
+        self.challengeButton.isHidden = viewModel.indexPath == nil
+        self.selectedFlower = viewModel
+        self.flowerCollectionView.reloadData()
     }
     
     func displayCreateChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast) {
-        
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
     
     func displayStartChallengeFailToast(viewModel: FlowerSelect.ViewModel.Toast) {
-        
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
     
     func displayStartChallengeSuccessToast(viewModel: FlowerSelect.ViewModel.Toast) {
-        
-    }
-}
-
-extension FlowerSelectViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.flowerItems.flowers?.count ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(type: FlowerSelectCell.self, indexPath: indexPath)
-        cell.configure(item: self.flowerItems.flowers?[indexPath.row])
-        return cell
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
 }

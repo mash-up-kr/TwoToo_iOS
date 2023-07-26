@@ -18,7 +18,7 @@ protocol FlowerSelectPresentationLogic {
     /// 꽃 리스트를 보여준다.
     func presentFlowers()
     /// 꽃 선택을 한다.
-    func selectFlower()
+    func selectFlower(model: FlowerSelect.Model.FlowerSelect)
     /// 챌린지 생성 오류를 보여준다.
     func presentCreateChallengeError(error: Error)
     /// 챌린지 시작 오류를 보여준다.
@@ -51,8 +51,8 @@ extension FlowerSelectPresenter: FlowerSelectPresentationLogic {
         self.viewController?.displayFlowerSelectView(viewModel: .init(flowers: worker))
     }
     
-    func selectFlower() {
-
+    func selectFlower(model: FlowerSelect.Model.FlowerSelect) {
+        self.viewController?.displayFlowerSelect(viewModel: .init(indexPath: model.indexPath))
     }
 
     func presentCreateChallengeError(error: Error) {
@@ -60,8 +60,6 @@ extension FlowerSelectPresenter: FlowerSelectPresentationLogic {
     }
 
     func presentStartChallengeError(error: Error) {
-
+        
     }
-
-    
 }
