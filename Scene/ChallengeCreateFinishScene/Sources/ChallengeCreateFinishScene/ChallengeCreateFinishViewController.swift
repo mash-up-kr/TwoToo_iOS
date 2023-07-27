@@ -71,12 +71,14 @@ final class ChallengeCreateFinishViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
+        /// 이전의 모든 페이지 제거
+        self.navigationController?.popToRootViewController(animated: true)
+        
         self.view.backgroundColor = .second02
         self.view.addSubviews(self.titleLabel, self.captionLabel, self.mainImageView, self.backgroundImage, self.confirmButton)
 
         self.titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(179)
             make.bottom.equalTo(self.captionLabel.snp.top).offset(-20)
         }
 
@@ -88,17 +90,25 @@ final class ChallengeCreateFinishViewController: UIViewController {
         self.mainImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(self.backgroundImage.snp.top).offset(-24)
+            make.leading.trailing.equalToSuperview().inset(74)
+            make.width.equalTo(self.mainImageView.snp.height)
         }
 
         self.backgroundImage.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(UIScreen.main.bounds.width * 0.56)
+            make.height.equalTo(UIScreen.main.bounds.height * 0.26)
         }
 
         self.confirmButton.snp.makeConstraints { make in
             make.leading.equalTo(self.backgroundImage.snp.leading).offset(24)
             make.trailing.equalTo(self.backgroundImage.snp.trailing).offset(-24)
             make.bottom.equalTo(self.backgroundImage.snp.bottom).offset(-54)
+        }
+        
+        self.confirmButton.didTapButton {
+            Task {
+                await self.interactor.didTapConfimrButton()
+            } 
         }
     }
 }
