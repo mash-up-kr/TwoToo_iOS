@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Date {
-    func fullDateString(_ type: DateFormatType) -> String {
+    func dateToString(_ type: DateFormatType) -> String {
         Formatter.shared.dateFormat = type.displayName
         guard let dateString = Formatter.shared.string(for: self) else { return "" }
         return dateString
