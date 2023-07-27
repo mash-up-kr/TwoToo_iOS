@@ -32,7 +32,6 @@ public final class TTPopup: UIView, UIComponentBased {
         v.alignment = .center
         v.spacing = 37
         v.addArrangedSubviews(self.titleLabel, self.resultView, self.descriptionLabel, self.buttonStackView)
-
         return v
     }()
 
@@ -58,7 +57,6 @@ public final class TTPopup: UIView, UIComponentBased {
     /// 팝업 상태에 따라 보여주는 UIView
     lazy var resultView: UIView = {
         let v = UIView()
-
         return v
     }()
 
@@ -68,8 +66,6 @@ public final class TTPopup: UIView, UIComponentBased {
         v.numberOfLines = 0
         v.textAlignment = .center
         v.textColor = .grey500
-        v.setLineSpacing(15.0)
-
         return v
     }()
 
@@ -89,7 +85,7 @@ public final class TTPopup: UIView, UIComponentBased {
         return v
     }()
 
-    var buttonTitles: [String] = []
+    private var buttonTitles: [String] = []
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -107,12 +103,16 @@ public final class TTPopup: UIView, UIComponentBased {
                           buttonTitles: [String]) {
         self.titleLabel.text = title
         self.resultView.addSubview(resultView)
+        resultView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
         self.descriptionLabel.text = description
+        self.descriptionLabel.setLineSpacing(8)
         self.buttonTitles = buttonTitles
-        
+        self.configureButtons(titles: buttonTitles)
     }
-
-    public func attribute() {
+    
+    private func configureButtons(titles: [String]) {
         if self.buttonTitles.count == 1 {
             self.leftButton.setTitleColor(.primary, for: .normal)
             self.rightButton.isHidden = true
@@ -120,19 +120,21 @@ public final class TTPopup: UIView, UIComponentBased {
         else if self.buttonTitles.count > 2 {
             fatalError("Up to 2 buttons can be added")
         }
-        self.leftButton.setTitle(self.buttonTitles.first, for: .normal)
-        self.rightButton.setTitle(self.buttonTitles.last, for: .normal)
+        
+        self.leftButton.setTitle(titles.first, for: .normal)
+        self.rightButton.setTitle(titles.last, for: .normal)
+    }
 
+    public func layout() {
         self.addSubviews(
             self.dimView,
             self.contentView
         )
+        
         self.contentView.addSubviews(
             self.stackView
         )
-    }
-
-    public func layout() {
+        
         self.dimView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -153,6 +155,10 @@ public final class TTPopup: UIView, UIComponentBased {
             make.height.equalTo(100)
             make.width.equalToSuperview()
         }
+    }
+    
+    public func attribute() {
+     
     }
     
     public override func didMoveToSuperview() {
