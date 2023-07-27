@@ -156,19 +156,20 @@ final class ChallengeConfirmViewController: UIViewController {
             make.leading.equalToSuperview().offset(66)
             make.trailing.equalToSuperview().offset(-66)
             make.bottom.equalTo(self.challengeTitleView.snp.top)
+            make.height.equalTo(UIScreen.main.bounds.height * 0.30)
         }
 
         self.challenageTitleStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(36)
             make.leading.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-23)
-            make.bottom.equalTo(self.challengeRuleLabel.snp.top).offset(-20)
+            
         }
 
         self.challengeRuleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.challenageTitleStackView.snp.bottom).offset(20)
             make.leading.equalTo(self.challenageTitleStackView.snp.leading)
             make.trailing.equalTo(self.challenageTitleStackView.snp.trailing)
-            make.bottom.equalToSuperview().offset(-20)
         }
 
         self.challengeTitleView.snp.makeConstraints { make in
