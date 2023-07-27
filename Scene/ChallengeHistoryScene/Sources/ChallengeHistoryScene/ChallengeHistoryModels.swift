@@ -109,7 +109,7 @@ enum ChallengeHistory {
             /// 유저 ID
             var user: UserType
             /// 인증 사진
-            var photoURL: URL
+            var photoURL: URL?
             /// 인증 시간
             var timeText: String
         }

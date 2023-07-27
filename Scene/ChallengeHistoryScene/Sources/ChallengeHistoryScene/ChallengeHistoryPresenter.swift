@@ -56,7 +56,8 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
     }
     
     func presentChallengeQuitSuccess() {
-        // TODO: - 챌린지 그만두면 홈으로 가나 ? 라우팅..
+        // TODO: - 챌린지 그만두기 후 토스트 메세지?
+//        self.viewController?.displayToast(message: "")
     }
     
     func presentChallengeQuitError(error: Error) {
@@ -66,7 +67,7 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
 
 extension ChallengeHistoryPresenter {
     /// Model -> ViewModel
-    func map(model: ChallengeHistory.Model.Challenge)
+    private func map(model: ChallengeHistory.Model.Challenge)
     -> ChallengeHistory.ViewModel.Challenge {
         return .init(id: model.id,
                      name: model.name,
@@ -75,45 +76,49 @@ extension ChallengeHistoryPresenter {
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
-                     cellInfo: self.makeCellInfoList(id: model.id,
+                     cellInfo: self.makeCellInfoList(startToEndDateList: self.makeStartToEndDateList(start: model.startDate,
+                                                                                                     end: model.endDate),
                                                      myList: model.myInfo.certificates,
                                                      partnerList: model.partnerInfo.certificates))
     }
     /// cell 뷰모델 리스트 생성
-    func makeCellInfoList(id: String,
+    private func makeCellInfoList(startToEndDateList: [Date],
                           myList: ChallengeHistory.Model.CertificateList,
                           partnerList: ChallengeHistory.Model.CertificateList)
     -> ChallengeHistory.ViewModel.CellInfoList {
         var cellInfoList: ChallengeHistory.ViewModel.CellInfoList = []
-        // TODO: - 인증 날짜가 없으면 해당 배열엔 nil을 넣는다..?
-        // O X
-        // O O
-        // X O
-        for (my, partner) in zip(myList, partnerList) { // zip은 짧은 거 기준으로 나와서 짤리는 에러 발생
-            guard let myPhotoURL = URL(string: my.certificateImageUrl),
-                  let partenrPhotoURL = URL(string: partner.certificateImageUrl)
-            else {
-                print("ERROR: my(\(my.certificateImageUrl)), partner(\(partner.certificateImageUrl)) ImageURL not found ")
-                return []
-            }
-            // TODO: - 인증 날짜로 정렬해야한다....
-            let info = ChallengeHistory.ViewModel.CellInfo(dateText: my.certificateTime.fullDateString(.monthDay),
-                                                           isToday: self.isToday(certificateDate: my.certificateTime),
-                                                           my: .init(certificateID: my.id,
-                                                                     user: .user,
-                                                                     photoURL: myPhotoURL,
-                                                                     timeText: my.certificateTime.fullDateString(.hourMinute)),
-                                                           partner: .init(certificateID: partner.id,
-                                                                          user: .partner,
-                                                                          photoURL: partenrPhotoURL,
-                                                                          timeText: partner.certificateTime.fullDateString(.hourMinute)))
-            cellInfoList.append(info)
+        startToEndDateList.forEach { day in
+            let dateText = day.dateToString(.monthDay)
+            let my = self.isUserCertificateInfo(pivDateText: dateText, userType: .user, certificateList: myList)
+            let partner = self.isUserCertificateInfo(pivDateText: dateText, userType: .partner, certificateList: partnerList)
+            let cellInfo = ChallengeHistory.ViewModel.CellInfo(dateText: dateText,
+                                                               isToday: self.isToday(day),
+                                                               my: my,
+                                                               partner: partner)
+            
+            cellInfoList.append(cellInfo)
         }
+        
         return cellInfoList
     }
     
+    /// 해당 일자에 유저의 인증 정보가 있는지 체크 후 매핑
+    private func isUserCertificateInfo(pivDateText: String,
+                                       userType: ChallengeHistory.ViewModel.UserType,
+                                       certificateList: ChallengeHistory.Model.CertificateList)
+    -> ChallengeHistory.ViewModel.CertificatePhotoViewModel? {
+        if let info = certificateList
+            .filter({ $0.certificateTime.dateToString(.monthDay) == pivDateText }).first {
+            return .init(certificateID: info.id,
+                         user: userType,
+                         photoURL: URL(string: info.certificateImageUrl),
+                         timeText: info.certificateTime.dateToString(.hourMinute))
+        }
+        return nil
+    }
+    
     /// 시작일부터 종료일까지 디데이 계산
-    func makedDayText(start: Date, end: Date) -> String {
+    private func makedDayText(start: Date, end: Date) -> String {
         if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day, diffDay > 0 {
             return "D-\(diffDay)"
         } else {
@@ -121,20 +126,17 @@ extension ChallengeHistoryPresenter {
         }
     }
     
-    /// 시작일부터 종료일까지 날짜 배열 리턴
-    func makeStartToEndDateText(start: Date, end: Date) -> [String] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M/d"
-
+    /// 시작일부터 종료일까지 날짜 배열 리턴, 최신순 정렬
+    private func makeStartToEndDateList(start: Date, end: Date) -> [Date] {
         return sequence(first: start, next: { Calendar.current.date(byAdding: .day, value: 1, to: $0) })
             .prefix(while: { $0 <= end })
-            .map { dateFormatter.string(from: $0) }
+            .reversed()
     }
     
     /// 오늘인지 판별
-    func isToday(certificateDate: Date) -> Bool {
+    private func isToday(_ date: Date) -> Bool {
         let today = Date()
-        return Calendar.current.isDate(today, inSameDayAs: certificateDate)
+        return Calendar.current.isDate(today, inSameDayAs: date)
     }
     
 }
