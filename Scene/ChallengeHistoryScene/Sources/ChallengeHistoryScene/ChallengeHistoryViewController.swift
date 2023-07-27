@@ -59,7 +59,6 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = UILabel()
         v.textColor = .grey500
         v.font = .body1
-        v.setLineSpacing(8) // TODO: - 안먹음..
         v.numberOfLines = 2
         v.lineBreakMode = .byTruncatingTail
         return v
@@ -89,6 +88,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = UITableView()
         v.rowHeight = 161
         v.dataSource = self
+        v.delegate = self
         v.registerCell(CertificateTableViewCell.self)
         v.backgroundColor = .clear
         v.separatorStyle = .none
@@ -214,6 +214,15 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let cell = tableView.dequeueCell(type: CertificateTableViewCell.self, indexPath: indexPath)
         cell.configure(viewModel: self.certificateList[indexPath.row])
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ChallengeHistoryViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? CertificateTableViewCell {
+            
+        }
     }
 }
 
