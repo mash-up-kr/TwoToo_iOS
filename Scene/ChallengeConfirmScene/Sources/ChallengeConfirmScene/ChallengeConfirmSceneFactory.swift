@@ -14,10 +14,6 @@ public protocol ChallengeConfirmScene: AnyObject, Scene {
 }
 
 public struct ChallengeConfirmConfiguration {
-    public init() {}
-}
-
-public final class ChallengeConfirmSceneFactory {
     /// 챌린지명
     let challengeName: String
     /// 챌린지 시작일
@@ -42,6 +38,11 @@ public final class ChallengeConfirmSceneFactory {
         self.challegneRule = challengeRule
         self.didEnterStatus = didEnterStatus
     }
+}
+
+public final class ChallengeConfirmSceneFactory {
+
+    public init() {}
     
     public func make(with configuration: ChallengeConfirmConfiguration) -> ChallengeConfirmScene {
         
@@ -52,11 +53,11 @@ public final class ChallengeConfirmSceneFactory {
             presenter: presenter,
             router: router,
             worker: worker,
-            challengeName: challengeName,
-            challengeStartDate: challengeStartDate,
-            challengeEndDate: challengeEndDate,
-            challengeRule: challegneRule,
-            didEnterStatus: didEnterStatus
+            challengeName: configuration.challengeName,
+            challengeStartDate: configuration.challengeStartDate,
+            challengeEndDate: configuration.challengeEndDate,
+            challengeRule: configuration.challegneRule,
+            didEnterStatus: configuration.didEnterStatus
         )
         let viewController = ChallengeConfirmViewController(
             interactor: interactor
