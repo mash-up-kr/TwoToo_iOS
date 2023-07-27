@@ -56,8 +56,8 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
     }
     
     func presentChallengeQuitSuccess() {
-        // TODO: - 챌린지 그만두기 후 토스트 메세지?
-//        self.viewController?.displayToast(message: "")
+        self.viewController?.dismissQuitPopup()
+        self.viewController?.displayToast(message: "기존 챌린지를 삭제했어요. 새로운 챌린지를 도전하세요!")
     }
     
     func presentChallengeQuitError(error: Error) {

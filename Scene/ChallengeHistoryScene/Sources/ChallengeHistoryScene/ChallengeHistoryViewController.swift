@@ -242,6 +242,7 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
         self.dDayTagView.titleLabel.text = viewModel.dDayText
         self.titleLabel.text = viewModel.name
         self.additionalInfoLabel.text = viewModel.additionalInfo
+        self.additionalInfoLabel.setLineSpacing(8)
         self.myNicknameTagView.titleLabel.text = viewModel.myNickname
         self.partnerNicknameTagView.titleLabel.text = viewModel.partnerNickname
         self.certificateList = viewModel.cellInfo
@@ -256,7 +257,9 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
             }
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
-            self.dismiss(animated: true)
+            Task {
+                await self.interactor.didTapQuitPopupCancelButton()
+            }
         }
         alertVC.addAction(action)
         alertVC.addAction(cancel)
@@ -264,7 +267,7 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     }
     
     func dismissQuitPopup() {
-        self.dismiss(animated: true)
+        self.popupView.isHidden = true
     }
     
     func displayToast(message: String) {
