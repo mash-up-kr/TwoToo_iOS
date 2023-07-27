@@ -76,7 +76,6 @@ final class CertificateTableViewCell: UITableViewCell {
     }
     
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
-        print("Cell!!!!", viewModel)
         self.dateLabel.text = viewModel.dateText
         // 유저 인증 O
         if let myInfo = viewModel.my {

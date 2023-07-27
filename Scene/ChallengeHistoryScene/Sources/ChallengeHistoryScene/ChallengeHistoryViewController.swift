@@ -20,6 +20,7 @@ protocol ChallengeHistoryDisplayLogic: AnyObject {
 }
 
 final class ChallengeHistoryViewController: UIViewController, UITableViewDataSource {
+
     var interactor: ChallengeHistoryBusinessLogic
     
     init(interactor: ChallengeHistoryBusinessLogic) {
@@ -32,10 +33,11 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     }
     
     // MARK: - UI
-    private let navigationBar: TTNavigationDetailBar = {
+    private lazy var navigationBar: TTNavigationDetailBar = {
         let v = TTNavigationDetailBar(title: nil,
                                       leftButtonImage: .asset(.icon_back),
                                       rightButtonImage: .asset(.icon_more))
+        v.delegate = self
         return v
     }()
     
@@ -202,11 +204,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     }
     // MARK: - UITableViewDataSource
     
-    var certificateList: ChallengeHistory.ViewModel.CellInfoList = [] {
-        didSet {
-            print(certificateList)
-        }
-    }
+    var certificateList: ChallengeHistory.ViewModel.CellInfoList = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.certificateList.count
@@ -236,6 +234,8 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
                                  resultView: UIImageView(image: viewModel.iconImage),
                                  description: viewModel.description,
                                  buttonTitles: viewModel.buttonTitles)
+        // TODO: - 이미지 중간으로 위치 시키기
+        self.popupView.isHidden = false
     }
     
     func displayChallenge(viewModel: ChallengeHistory.ViewModel.Challenge) {
@@ -249,10 +249,16 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     }
 
     func displayOptionPopup(title: String) {
-        let alertVC = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: { _ in
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: title, style: .default) { [weak self] _ in
+            Task {
+                await self?.interactor.didTapOptionPopupQuitButton()
+            }
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
             self.dismiss(animated: true)
-        })
+        }
+        alertVC.addAction(action)
         alertVC.addAction(cancel)
         self.present(alertVC, animated: true)
     }
@@ -263,6 +269,21 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     
     func displayToast(message: String) {
         Toast.shared.makeToast(message)
+    }
+    
+}
+
+extension ChallengeHistoryViewController: TTNavigationDetailBarDelegate {
+    func didTapDetailLeftButton() {
+        Task {
+            await self.interactor.didTapBackButton()
+        }
+    }
+    
+    func didTapDetailRightButton() {
+        Task {
+            await self.interactor.didTapOptionButton()
+        }
     }
     
 }
