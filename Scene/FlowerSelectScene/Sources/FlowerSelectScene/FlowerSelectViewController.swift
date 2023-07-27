@@ -62,6 +62,11 @@ final class FlowerSelectViewController: UIViewController {
     private lazy var challengeButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 보내기", .large)
         v.setIsEnabled(true)
+        v.didTapButton { [weak self] in
+            Task {
+                await self?.interactor.didTapButton()
+            }
+        }
         return v
     }()
 
@@ -116,7 +121,7 @@ final class FlowerSelectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        
+
         Task {
             await self.interactor.didLoad()
         }

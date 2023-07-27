@@ -19,10 +19,12 @@ protocol FlowerSelectPresentationLogic {
     func presentFlowers()
     /// 꽃 선택을 한다.
     func selectFlower(model: FlowerSelect.Model.FlowerSelect)
-    /// 챌린지 생성 오류를 보여준다.
+    /// 챌린지 생성 실패 오류를 보여준다.
     func presentCreateChallengeError(error: Error)
-    /// 챌린지 시작 오류를 보여준다.
+    /// 챌린지 시작 실패 오류를 보여준다.
     func presentStartChallengeError(error: Error)
+    /// 챌린지 시작 성공 토스를 보여준다.
+    func presentStartChallengeSuccess(text: String)
 }
 
 final class FlowerSelectPresenter {
@@ -56,10 +58,14 @@ extension FlowerSelectPresenter: FlowerSelectPresentationLogic {
     }
 
     func presentCreateChallengeError(error: Error) {
-
+        self.viewController?.displayCreateChallengeFailToast(viewModel: .init(message: error.localizedDescription))
     }
 
     func presentStartChallengeError(error: Error) {
-        
+        self.viewController?.displayStartChallengeFailToast(viewModel: .init(message: error.localizedDescription))
+    }
+
+    func presentStartChallengeSuccess(text: String) {
+        self.viewController?.displayStartChallengeSuccessToast(viewModel: .init(message: text))
     }
 }
