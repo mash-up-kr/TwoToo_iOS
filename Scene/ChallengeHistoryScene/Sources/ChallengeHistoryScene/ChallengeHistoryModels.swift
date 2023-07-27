@@ -79,19 +79,21 @@ enum ChallengeHistory {
             var cellInfo: CellInfoList
         }
         
-        /// 테이블 뷰 셀 리스트
+        /// 챌린지 테이블 셀 리스트
         typealias CellInfoList = [CellInfo]
-        /// 테이블 뷰 셀 정보
+        /// 챌린지 테이블 뷰 셀 정보
         struct CellInfo {
             /// 인증 날짜
             var dateText: String
+            /// 오늘인지 여부
+            var isToday: Bool
             /// 유저 인증 정보
-            var my: CertificatePhotoViewModel
+            var my: CertificatePhotoViewModel?
             /// 상대방 인증 정보
-            var partner: CertificatePhotoViewModel
+            var partner: CertificatePhotoViewModel?
         }
         
-        /// 테이블 뷰 셀 인증 사진 리스트
+        /// 챌린지 테이블 셀 인증 사진 리스트
         typealias CertificateList = [CertificatePhotoViewModel]
         
         /// 유저 타입
@@ -110,6 +112,18 @@ enum ChallengeHistory {
             var photoURL: URL
             /// 인증 시간
             var timeText: String
+        }
+    
+        /// 그만두기 팝업
+        struct QuitPopup {
+            /// 타이틀
+            var title: String
+            /// 그만두기 아이콘
+            var iconImage: UIImage
+            /// 설명
+            var description: String
+            /// 하단의 왼쪽, 오른쪽 버튼 타이틀
+            var buttonTitles: [String]
         }
         
         struct Toast {

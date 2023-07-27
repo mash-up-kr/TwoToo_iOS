@@ -8,10 +8,18 @@
 
 import CoreKit
 import UIKit
+import DesignSystem
+import Util
 
-protocol ChallengeHistoryDisplayLogic: AnyObject {}
+protocol ChallengeHistoryDisplayLogic: AnyObject {
+    func displayChallenge(viewModel: ChallengeHistory.ViewModel.Challenge)
+    func displayOptionPopup(title: String)
+    func displayQuitPopup(viewModel: ChallengeHistory.ViewModel.QuitPopup)
+    func dismissQuitPopup()
+    func displayToast(message: String)
+}
 
-final class ChallengeHistoryViewController: UIViewController {
+final class ChallengeHistoryViewController: UIViewController, UITableViewDataSource {
     var interactor: ChallengeHistoryBusinessLogic
     
     init(interactor: ChallengeHistoryBusinessLogic) {
@@ -35,7 +43,6 @@ final class ChallengeHistoryViewController: UIViewController {
         let v = TTTagView(textColor: .grey500,
                           fontSize: .body1,
                           cornerRadius: 4)
-        v.titleLabel.text = "D-24"
         return v
     }()
     
@@ -43,7 +50,6 @@ final class ChallengeHistoryViewController: UIViewController {
         let v = UILabel()
         v.textColor = .primary
         v.font = .h2
-        v.text = "30분 게임하기"
         return v
     }()
     
@@ -51,28 +57,23 @@ final class ChallengeHistoryViewController: UIViewController {
         let v = UILabel()
         v.textColor = .grey500
         v.font = .body1
+        v.setLineSpacing(8) // TODO: - 안먹음..
         v.numberOfLines = 2
         v.lineBreakMode = .byTruncatingTail
-        v.text = "운동사진으로 인증하기\n실패하는 사람은 뷔페 쏘기"
-        v.setLineSpacing(5)
         return v
     }()
     
     private let myNicknameTagView: TTTagView = {
         let v = TTTagView(textColor: .mainCoral,
                           fontSize: .body2,
-                          cornerRadius: 15,
-                          edgeInsets: UIEdgeInsets(top: 3, left: 10, bottom: 3, right: 10))
-        v.titleLabel.text = "나나"
+                          cornerRadius: 15)
         return v
     }()
     
     private let partnerNicknameTagView: TTTagView = {
         let v = TTTagView(textColor: .primary,
                           fontSize: .body2,
-                          cornerRadius: 15,
-                          edgeInsets: UIEdgeInsets(top: 3, left: 10, bottom: 3, right: 10))
-        v.titleLabel.text = "상대"
+                          cornerRadius: 15)
         return v
     }()
     
@@ -86,11 +87,31 @@ final class ChallengeHistoryViewController: UIViewController {
         let v = UITableView()
         v.rowHeight = 161
         v.dataSource = self
-        v.delegate = self
         v.registerCell(CertificateTableViewCell.self)
         v.backgroundColor = .clear
         v.separatorStyle = .none
         v.showsVerticalScrollIndicator = false
+        return v
+    }()
+    
+    lazy var popupView: TTPopup = {
+        let v = TTPopup()
+        v.isHidden = true
+        v.didTapLeftButton {
+            Task {
+                await self.interactor.didTapQuitPopupCancelButton()
+            }
+        }
+        v.didTapRightButton {
+            Task {
+                await self.interactor.didTapQuitPopupQuitButton()
+            }
+        }
+        v.didTapBackground {
+            Task {
+                await self.interactor.didTapQuitPopupBackground()
+            }
+        }
         return v
     }()
     
@@ -101,6 +122,10 @@ final class ChallengeHistoryViewController: UIViewController {
         self.setUI()
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .second02
+        
+        Task {
+            await self.interactor.didLoad()
+        }
     }
     
     // MARK: - Layout
@@ -113,7 +138,10 @@ final class ChallengeHistoryViewController: UIViewController {
                               self.myNicknameTagView,
                               self.partnerNicknameTagView,
                               self.underLineView,
-                              self.certificateTableView)
+                              self.certificateTableView,
+                              self.popupView)
+        
+        self.view.bringSubviewToFront(self.popupView)
         
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -143,14 +171,12 @@ final class ChallengeHistoryViewController: UIViewController {
         self.partnerNicknameTagView.snp.makeConstraints { make in
             make.top.equalTo(self.additionalInfoLabel.snp.bottom).offset(40)
             make.centerX.equalToSuperview().multipliedBy(0.5)
-            make.width.equalTo(42)
             make.height.equalTo(28)
         }
         
         self.myNicknameTagView.snp.makeConstraints { make in
             make.top.equalTo(self.additionalInfoLabel.snp.bottom).offset(40)
             make.centerX.equalToSuperview().multipliedBy(1.5)
-            make.width.equalTo(42)
             make.height.equalTo(28)
         }
             
@@ -168,19 +194,29 @@ final class ChallengeHistoryViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
                 
+        self.popupView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.width.equalTo(273)
+            make.height.equalTo(349)
+        }
     }
-}
-
-extension ChallengeHistoryViewController: UITableViewDataSource, UITableViewDelegate {
+    // MARK: - UITableViewDataSource
+    
+    var certificateList: ChallengeHistory.ViewModel.CellInfoList = [] {
+        didSet {
+            print(certificateList)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.certificateList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(type: CertificateTableViewCell.self, indexPath: indexPath)
+        cell.configure(viewModel: self.certificateList[indexPath.row])
         return cell
     }
-    
 }
 
 // MARK: - Trigger
@@ -194,5 +230,39 @@ extension ChallengeHistoryViewController: ChallengeHistoryScene {
 // MARK: - Display Logic
 
 extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
+
+    func displayQuitPopup(viewModel: ChallengeHistory.ViewModel.QuitPopup) {
+        self.popupView.configure(title: viewModel.title,
+                                 resultView: UIImageView(image: viewModel.iconImage),
+                                 description: viewModel.description,
+                                 buttonTitles: viewModel.buttonTitles)
+    }
+    
+    func displayChallenge(viewModel: ChallengeHistory.ViewModel.Challenge) {
+        self.dDayTagView.titleLabel.text = viewModel.dDayText
+        self.titleLabel.text = viewModel.name
+        self.additionalInfoLabel.text = viewModel.additionalInfo
+        self.myNicknameTagView.titleLabel.text = viewModel.myNickname
+        self.partnerNicknameTagView.titleLabel.text = viewModel.partnerNickname
+        self.certificateList = viewModel.cellInfo
+        self.certificateTableView.reloadData()
+    }
+
+    func displayOptionPopup(title: String) {
+        let alertVC = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: { _ in
+            self.dismiss(animated: true)
+        })
+        alertVC.addAction(cancel)
+        self.present(alertVC, animated: true)
+    }
+    
+    func dismissQuitPopup() {
+        self.dismiss(animated: true)
+    }
+    
+    func displayToast(message: String) {
+        Toast.shared.makeToast(message)
+    }
     
 }

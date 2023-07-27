@@ -19,8 +19,9 @@ final class CertificateTableViewCell: UITableViewCell {
     }()
     
     lazy var myImageView: UIImageView = {
-        let v = UIImageView(image: .asset(.history_fail))
+        let v = UIImageView()
         v.layer.cornerRadius = 10
+        v.layer.masksToBounds = true
         return v
     }()
     
@@ -57,9 +58,9 @@ final class CertificateTableViewCell: UITableViewCell {
     }()
     
     lazy var partnerImageView: UIImageView = {
-        let v = UIImageView(image: .asset(.history_waiting))
+        let v = UIImageView()
         v.layer.cornerRadius = 10
-        v.addSubview(self.partnerTimeLabel)
+        v.layer.masksToBounds = true
         return v
     }()
 
@@ -75,11 +76,22 @@ final class CertificateTableViewCell: UITableViewCell {
     }
     
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
+        print("Cell!!!!", viewModel)
         self.dateLabel.text = viewModel.dateText
-        self.myImageView.kf.setImage(with: viewModel.my.photoURL)
-        self.myTimeLabel.text = viewModel.my.timeText
-        self.partnerImageView.kf.setImage(with: viewModel.partner.photoURL)
-        self.partnerTimeLabel.text = viewModel.partner.timeText
+        // 유저 인증 O
+        if let myInfo = viewModel.my {
+            self.myImageView.kf.setImage(with: myInfo.photoURL)
+            self.myTimeLabel.text = myInfo.timeText
+        } else  { // 유저 인증 X, 오늘인지 판단
+            self.myImageView.image = viewModel.isToday ? .asset(.history_certificate) : .asset(.history_fail)
+        }
+        // 파트너 인증 O
+        if let partnerInfo = viewModel.partner {
+            self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
+            self.partnerTimeLabel.text = partnerInfo.timeText
+        } else { // 파트너 인증 X, 오늘인지 판단
+            self.partnerImageView.image = viewModel.isToday ? .asset(.history_waiting) : .asset(.history_fail)
+        }
     }
     
     func layout() {
