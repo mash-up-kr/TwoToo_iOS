@@ -23,7 +23,9 @@ protocol FlowerSelectDataStore: AnyObject {
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
     /// 진입점 트리거
-    var didEnterFlowerSelectScene: String { get }
+    var enterSceneStatus: String { get }
+    /// 선택된 꽃
+    var selectedFlower: String { get }
 }
 
 final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessLogic {
@@ -40,14 +42,16 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
         worker: FlowerSelectWorkerProtocol,
         didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-        didEnterFlowerSelectScene: String
+        didEnterFlowerSelectScene: String,
+        selectedFlower: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
-        self.didEnterFlowerSelectScene = didEnterFlowerSelectScene
+        self.enterSceneStatus = didEnterFlowerSelectScene
+        self.selectedFlower = selectedFlower
     }
     
     // MARK: - DataStore
@@ -56,9 +60,11 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
 
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     
-    var didEnterFlowerSelectScene: String
+    var enterSceneStatus: String
+
+    var selectedFlower: String
     
-    enum FlowerSelectStatus: String {
+    enum EnterSceneStatus: String {
         case create = "create"
         case accept = "accept"
     }
@@ -78,7 +84,10 @@ extension FlowerSelectInteractor {
 
 extension FlowerSelectInteractor {
     func didLoad() async {
-        let status = FlowerSelectStatus(rawValue: self.didEnterFlowerSelectScene)
+        let status = EnterSceneStatus(rawValue: self.enterSceneStatus)
+
+        enterSceneStatus = status?.rawValue ?? "create"
+
         switch status {
         case .create:
             await self.presenter.presentCreateScene(model: .init(isHidden: true, title: .create))
@@ -96,6 +105,11 @@ extension FlowerSelectInteractor {
 // MARK: Feature (꽃선택)
 extension FlowerSelectInteractor {
     func didTapFlower(flowerIndex: Int?) async {
+
+        guard let flower = Flower(rawValue: flowerIndex ?? 0) else { return }
+
+        selectedFlower = flower.name
+
         await self.presenter.selectFlower(model: .init(indexPath: flowerIndex))
     }
 }

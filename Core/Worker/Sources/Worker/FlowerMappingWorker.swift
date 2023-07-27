@@ -8,7 +8,7 @@
 import UIKit
 import DesignSystem
 
-public enum Flower: Equatable, CaseIterable {
+public enum Flower: Int, Equatable, CaseIterable {
     case rose
     case tulip
     case cotton
@@ -17,6 +17,19 @@ public enum Flower: Equatable, CaseIterable {
     case sunflower
     case camellia
     case delphinium
+
+    public var name: String {
+        switch self {
+        case .rose: return "rose"
+        case .tulip: return "tulip"
+        case .cotton: return "cotton"
+        case .fig: return "fig"
+        case .chrysanthemum: return "chrysanthemum"
+        case .sunflower: return "sunflower"
+        case .camellia: return "camellia"
+        case .delphinium: return "delphinium"
+        }
+    }
 }
 
 public enum GrowsStatus: Equatable {

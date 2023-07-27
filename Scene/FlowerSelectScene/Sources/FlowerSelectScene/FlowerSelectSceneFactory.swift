@@ -18,8 +18,10 @@ public struct FlowerSelectConfiguration {
     var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
-        
-    var didEnterFlowerSelectScene: String
+    /// 진입점 상태
+    var enterSceneStatus: String
+    /// 선택된 꽃
+    var selectedFlower: String
     
     /// 챌린지명
     let challengeName: String
@@ -33,19 +35,21 @@ public struct FlowerSelectConfiguration {
     public init(
     didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
     didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-    didEnterFlowerSelectScene: String,
+    enterSceneStatus: String,
     challengeName: String,
     challengeStartDate: String,
     challengeEndDate: String,
-    challengeRule: String?
+    challengeRule: String?,
+    selectedFlower: String
     ) {
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
-        self.didEnterFlowerSelectScene = didEnterFlowerSelectScene
+        self.enterSceneStatus = enterSceneStatus
         self.challengeName = challengeName
         self.challengeStartDate = challengeStartDate
         self.challengeEndDate = challengeEndDate
         self.challengeRule = challengeRule
+        self.selectedFlower = selectedFlower
     }
 }
 
@@ -64,7 +68,8 @@ public final class FlowerSelectSceneFactory {
             worker: worker,
             didTriggerChallengeCreateScene: configuration.didTriggerChallengeCreateScene,
             didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene,
-            didEnterFlowerSelectScene: configuration.didEnterFlowerSelectScene
+            didEnterFlowerSelectScene: configuration.enterSceneStatus,
+            selectedFlower: configuration.selectedFlower
         )
         let viewController = FlowerSelectViewController(
             interactor: interactor
