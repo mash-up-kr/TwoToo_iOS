@@ -48,6 +48,11 @@ final class ChallengeCreateFinishViewController: UIViewController {
         let v = TTPrimaryButton.create(title: "확인", .large)
         v.setTitle("확인", for: .normal)
         v.setIsEnabled(true)
+        v.didTapButton { [weak self] in
+            Task {
+                await self?.interactor.didTapConfimrButton()
+            }
+        }
         return v
     }()
     
@@ -103,12 +108,6 @@ final class ChallengeCreateFinishViewController: UIViewController {
             make.leading.equalTo(self.backgroundImage.snp.leading).offset(24)
             make.trailing.equalTo(self.backgroundImage.snp.trailing).offset(-24)
             make.bottom.equalTo(self.backgroundImage.snp.bottom).offset(-54)
-        }
-        
-        self.confirmButton.didTapButton {
-            Task {
-                await self.interactor.didTapConfimrButton()
-            } 
         }
     }
 }
