@@ -28,20 +28,21 @@ public final class TTTagView: UIView, UIComponentBased {
     
     public convenience init(textColor: UIColor,
                             fontSize: UIFont,
-                            cornerRadius: CGFloat,
-                            edgeInsets: UIEdgeInsets = .init(top: 4, left: 10, bottom: 4, right: 10)) {
+                            cornerRadius: CGFloat) {
         self.init()
         self.titleLabel.textColor = textColor
         self.titleLabel.font = fontSize
         self.layer.cornerRadius = cornerRadius
-        self.bounds.inset(by: edgeInsets)
     }
     
     public func layout() {
         self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().offset(-3)
         }
     }
     

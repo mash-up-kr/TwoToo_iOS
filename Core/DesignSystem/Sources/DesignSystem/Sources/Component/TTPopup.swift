@@ -91,28 +91,25 @@ public final class TTPopup: UIView, UIComponentBased {
 
     var buttonTitles: [String] = []
 
-    public init (
-        title: String,
-        resultView: UIView,
-        description: String,
-        buttonTitles: [String]
-    ) {
+    override init(frame: CGRect) {
         super.init(frame: .zero)
-        self.titleLabel.text = title
-        self.resultView.addSubview(resultView)
-        self.descriptionLabel.text = description
-        self.buttonTitles = buttonTitles
-        
-        resultView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
         self.attribute()
         self.layout()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func configure(title: String,
+                          resultView: UIView,
+                          description: String,
+                          buttonTitles: [String]) {
+        self.titleLabel.text = title
+        self.resultView.addSubview(resultView)
+        self.descriptionLabel.text = description
+        self.buttonTitles = buttonTitles
+        
     }
 
     public func attribute() {
