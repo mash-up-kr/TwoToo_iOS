@@ -212,13 +212,13 @@ extension ChallengeConfirmViewController: ChallengeConfirmScene {
 extension ChallengeConfirmViewController: ChallengeConfirmDisplayLogic {
     func displayCreateView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
         self.challengeTitleLabel.text = info.title
-        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeDateLabel.text = info.date
         self.challengeRuleLabel.text = info.rule
     }
 
     func displayConfirmView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
         self.challengeTitleLabel.text = info.title
-        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeDateLabel.text = info.date
         self.challengeRuleLabel.text = info.rule
 
         self.headerStackView.isHidden = true
@@ -228,7 +228,7 @@ extension ChallengeConfirmViewController: ChallengeConfirmDisplayLogic {
 
     func displayAcceptView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
         self.challengeTitleLabel.text = info.title
-        self.challengeDateLabel.text = info.startDate + " ~ " + info.endDate
+        self.challengeDateLabel.text = info.date
         self.challengeRuleLabel.text = info.rule
 
         self.title = ""

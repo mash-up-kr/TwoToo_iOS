@@ -38,10 +38,8 @@ enum ChallengeConfirm {
         struct ChallengeInfo {
             /// 챌린지명
             var title: String
-            /// 챌린지 시작일
-            var startDate: String
-            /// 챌린지 마감일
-            var endDate: String
+            /// 챌린지 시작일, 마감일
+            var date: String
             /// 챌린지 규칙
             var rule: String?
         }

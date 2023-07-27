@@ -26,13 +26,16 @@ final class ChallengeConfirmPresenter {
 extension ChallengeConfirmPresenter: ChallengeConfirmPresentationLogic {
 
     func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus, model: ChallengeConfirm.Model.ChallengeInfo) {
+        
+        let date = model.startDate + " ~ " + model.endDate
+        
         switch status {
         case .create:
-            self.viewController?.displayCreateView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
+            self.viewController?.displayCreateView(info: .init(title: model.title, date: date, rule: model.rule))
         case .confirm:
-            self.viewController?.displayConfirmView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
+            self.viewController?.displayConfirmView(info: .init(title: model.title, date: date, rule: model.rule))
         case .accept:
-            self.viewController?.displayAcceptView(info: .init(title: model.title, startDate: model.startDate, endDate: model.endDate, rule: model.rule))
+            self.viewController?.displayAcceptView(info: .init(title: model.title, date: date, rule: model.rule))
         }
     }
 
