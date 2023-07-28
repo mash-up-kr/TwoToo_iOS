@@ -8,19 +8,24 @@
 import UIKit
 import Util
 
+protocol CertificateTableViewCellDelegate: AnyObject {
+    func didTapUserCell(id: String, willCertificate: Bool)
+    func didTapPartnerCell(id: String)
+}
+
 final class CertificateTableViewCell: UITableViewCell {
     
-    /// 챌린지 인증 ID
-    var certificateID: String = "" {
-        didSet {
-            print("챌린지 id", certificateID)
-        }
-    }
+    /// 내 챌린지 인증 ID
+    var myCertificateID: String = ""
+    /// 파트너 챌린지 인증 ID
+    var partnerCertificateID: String = ""
     
     /// 유저가 인증해야 될 상태인 경우
     /// - 오늘 O
     /// - 유저 인증 X
     var willCertificate: Bool = false
+    
+    weak var delegate: CertificateTableViewCellDelegate?
 
     // MARK: - my component
     let myTimeLabel: UILabel = {
@@ -34,6 +39,12 @@ final class CertificateTableViewCell: UITableViewCell {
         let v = UIImageView()
         v.layer.cornerRadius = 10
         v.layer.masksToBounds = true
+        v.addTapAction { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didTapUserCell(id: self.myCertificateID,
+                                          willCertificate: self.willCertificate)
+        }
+        v.isUserInteractionEnabled = true
         return v
     }()
     
@@ -43,7 +54,6 @@ final class CertificateTableViewCell: UITableViewCell {
         v.font = .body2
         v.textColor = .mainCoral
         v.textAlignment = .center
-        v.text = "7/24"
         return v
     }()
     
@@ -73,6 +83,11 @@ final class CertificateTableViewCell: UITableViewCell {
         let v = UIImageView()
         v.layer.cornerRadius = 10
         v.layer.masksToBounds = true
+        v.addTapAction { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didTapPartnerCell(id: self.partnerCertificateID)
+        }
+        v.isUserInteractionEnabled = true
         return v
     }()
 
@@ -93,22 +108,21 @@ final class CertificateTableViewCell: UITableViewCell {
         if let myInfo = viewModel.my {
             self.myImageView.kf.setImage(with: myInfo.photoURL)
             self.myTimeLabel.text = myInfo.timeText
-            self.certificateID = myInfo.certificateID
+            self.myCertificateID = myInfo.certificateID
         } else  { // 유저 인증 X, 오늘인지 판단
-            if viewModel.isToday {
-                self.willCertificate = true
-                self.myImageView.image = .asset(.history_certificate)
-            } else {
-                self.myImageView.image = .asset(.history_fail)
-            }
+            self.myImageView.image = viewModel.isToday ? .asset(.history_certificate) : .asset(.history_fail)
         }
         // 파트너 인증 O
         if let partnerInfo = viewModel.partner {
             self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
             self.partnerTimeLabel.text = partnerInfo.timeText
-            self.certificateID = partnerInfo.certificateID
+            self.partnerCertificateID = partnerInfo.certificateID
         } else { // 파트너 인증 X, 오늘인지 판단
             self.partnerImageView.image = viewModel.isToday ? .asset(.history_waiting) : .asset(.history_fail)
+        }
+        // 유저 이미지 인증하기 상태
+        if viewModel.isToday && self.myCertificateID.isEmpty {
+            self.willCertificate = true
         }
     }
     

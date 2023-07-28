@@ -19,7 +19,7 @@ protocol ChallengeHistoryDisplayLogic: AnyObject {
     func displayToast(message: String)
 }
 
-final class ChallengeHistoryViewController: UIViewController, UITableViewDataSource {
+final class ChallengeHistoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var interactor: ChallengeHistoryBusinessLogic
     
@@ -203,7 +203,6 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         }
     }
     // MARK: - UITableViewDataSource
-    
     var certificateList: ChallengeHistory.ViewModel.CellInfoList = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -213,15 +212,30 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(type: CertificateTableViewCell.self, indexPath: indexPath)
         cell.configure(viewModel: self.certificateList[indexPath.row])
+        cell.delegate = self
         return cell
     }
 }
 
-// MARK: - UITableViewDelegate
-extension ChallengeHistoryViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? CertificateTableViewCell {
-            
+// MARK: - TableView Cell Delegate
+extension ChallengeHistoryViewController: CertificateTableViewCellDelegate {
+    func didTapUserCell(id: String, willCertificate: Bool) {
+        if willCertificate {
+            Task {
+                await self.interactor.didTapCertificate()
+            }
+        } else if !id.isEmpty {
+            Task {
+                await self.interactor.didSelectCertificate(certificateID: id)
+            }
+        }
+    }
+    
+    func didTapPartnerCell(id: String) {
+        if !id.isEmpty {
+            Task {
+                await self.interactor.didSelectCertificate(certificateID: id)
+            }
         }
     }
 }
@@ -243,7 +257,6 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
                                  resultView: UIImageView(image: viewModel.iconImage),
                                  description: viewModel.description,
                                  buttonTitles: viewModel.buttonTitles)
-        // TODO: - 이미지 중간으로 위치 시키기
         self.popupView.isHidden = false
     }
     
