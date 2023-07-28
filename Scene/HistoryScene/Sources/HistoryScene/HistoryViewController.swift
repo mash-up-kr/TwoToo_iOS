@@ -65,7 +65,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.setupAttribute()
+        self.setAttribute()
         Task {
             await self.interactor.didLoad()
         }
@@ -99,7 +99,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         }
     }
     
-    private func setupAttribute() {
+    private func setAttribute() {
         self.view.backgroundColor = .second02 // TODO: - will change
     }
         

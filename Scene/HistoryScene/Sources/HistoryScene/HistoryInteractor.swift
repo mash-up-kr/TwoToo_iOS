@@ -55,7 +55,7 @@ extension HistoryInteractor {
 extension HistoryInteractor {
     func didLoad() async {
         do {
-            let challengeList = try await self.fetchHistory()
+            // TODO: - 워커에서 데이터 받아 challengeList에 저장하기
             if challengeList.isEmpty {
                 await self.presenter.presentEmpty()
             } else {
@@ -87,27 +87,4 @@ extension HistoryInteractor {
 // MARK: UseCase ()
 
 extension HistoryInteractor {
-    func fetchHistory() async throws -> History.Model.ChallengeList {
-        do {
-            // TODO: - worker에서 데이터 가져오기
-            // 더미 데이터 넣음
-            let currentDate = Date()
-            let startDate = currentDate
-            let calendar = Calendar.current
-            let endDate = calendar.date(byAdding: .day, value: 7, to: currentDate)!
-            return [.init(id: "132",
-                          order: 2,
-                          name: "30분 게임하기",
-                          startDate: startDate,
-                          endDate: endDate,
-                          myInfo: .init(id: "123",
-                                        nickname: "나ㅏ",
-                                        flower: .camellia,
-                                        certificates: [.init(id: "ㄴㄹㅇ", certificateImageUrl: "ㄴㅇㄹ", certificateComment: "ㅍㅇㅌ", certificateTime: startDate)]),
-                          partnerInfo: .init(id: "sdfdsf", nickname: "왕쟈", flower: .chrysanthemum,
-                                             certificates: [.init(id: "dfsf", certificateImageUrl: "fsdsdf", certificateComment: "dfsdf", certificateTime: endDate)]))]
-        } catch {
-            throw error
-        }
-    }
 }
