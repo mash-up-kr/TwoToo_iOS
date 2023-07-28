@@ -9,10 +9,14 @@
 import CoreKit
 import UIKit
 
-protocol MyInfoDisplayLogic: AnyObject {}
+protocol MyInfoDisplayLogic: AnyObject {
+    func displayMyInfo(viewModel: MyInfo.ViewModel.MyInfo)
+}
 
 final class MyInfoViewController: UIViewController {
     var interactor: MyInfoBusinessLogic
+    
+    var myInfoItems: [MyInfo.ViewModel.MyInfo.Item] = []
     
     // MARK: - UI
     
@@ -77,6 +81,10 @@ final class MyInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        
+        Task {
+            await self.interactor.didLoad()
+        }
     }
     
     // MARK: - Layout
@@ -138,19 +146,26 @@ extension MyInfoViewController: MyInfoScene {
     
 }
 
+
 // MARK: - Display Logic
 
 extension MyInfoViewController: MyInfoDisplayLogic {
-    
+    func displayMyInfo(viewModel: MyInfo.ViewModel.MyInfo) {
+        viewModel.items.unwrap { [weak self] in
+            self?.myInfoItems = $0
+            self?.tableView.reloadData()
+        }
+    }
 }
 
 extension MyInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return self.myInfoItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(type: MyInfoTableViewCell.self, indexPath: indexPath)
+        cell.configure(text: self.myInfoItems[indexPath.row].title)
         return cell
     }
 }

@@ -42,7 +42,7 @@ extension MainRouter: MainRoutingLogic {
         
         let historyScene = HistorySceneFactory().make(with: .init())
         let homeScene = HomeSceneFactory().make(with: .init(didTriggerRouteToHistoryScene: dataStore.didTriggerRouteToHistoryScene))
-        let myInfoScene = MyInfoSceneFactory().make(with: .init())
+        let myInfoScene = MyInfoSceneFactory().make(with: .init(didTriggerAppear: .init()))
         
         self.historyScene = historyScene
         self.homeScene = homeScene

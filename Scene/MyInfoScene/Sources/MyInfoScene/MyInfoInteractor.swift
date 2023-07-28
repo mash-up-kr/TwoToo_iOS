@@ -8,11 +8,28 @@
 
 import CoreKit
 
-protocol MyInfoBusinessLogic {}
+protocol MyInfoBusinessLogic {
+    /// 첫 진입
+    func didLoad() async
+    /// 설명서 버튼 클릭
+    func didTapInstructionButton() async
+    /// 공지사항 클릭
+    func didTapAnnouncement() async
+    /// 이용 가이드 클릭
+    func didTapUserGuide() async
+    /// 투투에 문의하기 클릭
+    func didTapInquery() async
+    /// 만든이들 클릭
+    func didTapCreators() async
+}
 
-protocol MyInfoDataStore: AnyObject {}
+protocol MyInfoDataStore: AnyObject {
+    /// 화면 진입 트리거
+       var didTriggerAppear: PassthroughSubject<Void, Never> { get }
+}
 
 final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
+    
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: MyInfoPresentationLogic
@@ -22,15 +39,19 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
     init(
         presenter: MyInfoPresentationLogic,
         router: MyInfoRoutingLogic,
-        worker: MyInfoWorkerProtocol
+        worker: MyInfoWorkerProtocol,
+        didTriggerAppear: PassthroughSubject<Void, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.didTriggerAppear = didTriggerAppear
     }
     
     // MARK: - DataStore
     
+    /// 화면 진입 트리거
+    var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
 }
 
 // MARK: - Interactive Business Logic
@@ -39,14 +60,55 @@ extension MyInfoInteractor {
     
     /// 외부 액션 옵저빙
     func observe() {
-        
+        self.didTriggerAppear
+            .sink { [weak self] in
+                guard let self = self else { return }
+                
+                Task {
+                    await self.didLoad()
+                }
+            }
+            .store(in: &self.cancellables)
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (첫 진입)
 
 extension MyInfoInteractor {
+    func didLoad() async {
+        do {
+            let mypageInfo = try await self.worker.fetchMypageInfo()
+            
+            await self.presenter.presentMyInfo(model: .init(myNickname: mypageInfo.myNickname, partnerNickname: mypageInfo.partnerNickname, challengeTotalCount: mypageInfo.challengeTotalCount))
+        }
+        catch  {
+            await self.presenter.presentMyInfoError(error: error)
+        }
+    }
+}
+
+// MARK: Feature (페이지 이동)
+
+extension MyInfoInteractor {
+    func didTapInstructionButton() async {
+        
+    }
     
+    func didTapAnnouncement() async {
+        
+    }
+    
+    func didTapUserGuide() async {
+        
+    }
+    
+    func didTapInquery() async {
+    
+    }
+    
+    func didTapCreators() async {
+        
+    }
 }
 
 // MARK: - Application Business Logic

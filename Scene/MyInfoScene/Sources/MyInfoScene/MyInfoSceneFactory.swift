@@ -15,7 +15,11 @@ public protocol MyInfoScene: AnyObject, Scene {
 
 public struct MyInfoConfiguration {
     
-    public init() {}
+    var didTriggerAppear: PassthroughSubject<Void, Never>
+    
+    public init(didTriggerAppear: PassthroughSubject<Void, Never>) {
+        self.didTriggerAppear = didTriggerAppear
+    }
 }
 
 public final class MyInfoSceneFactory {
@@ -30,7 +34,8 @@ public final class MyInfoSceneFactory {
         let interactor = MyInfoInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerAppear: configuration.didTriggerAppear
         )
         let viewController = MyInfoViewController(
             interactor: interactor
