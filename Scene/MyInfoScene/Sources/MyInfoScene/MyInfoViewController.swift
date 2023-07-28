@@ -82,6 +82,7 @@ final class MyInfoViewController: UIViewController {
         v.registerCell(MyInfoTableViewCell.self)
         v.backgroundColor = .second02
         v.dataSource = self
+        v.delegate = self
         v.separatorStyle = .none
         v.isScrollEnabled = false
         return v
@@ -197,7 +198,9 @@ extension MyInfoViewController: MyInfoDisplayLogic {
     }
 }
 
-extension MyInfoViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource & UITableViewDelegate
+
+extension MyInfoViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.myInfoLists.count
     }
@@ -206,5 +209,12 @@ extension MyInfoViewController: UITableViewDataSource {
         let cell = tableView.dequeueCell(type: MyInfoTableViewCell.self, indexPath: indexPath)
         cell.configure(text: self.myInfoLists[indexPath.row].title)
         return cell
+    }
+
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Task {
+            await self.interactor.didTapLists(index: indexPath.row)
+        }
     }
 }

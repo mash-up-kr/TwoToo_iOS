@@ -21,6 +21,8 @@ protocol MyInfoBusinessLogic {
     func didTapInquery() async
     /// 만든이들을 클릭
     func didTapCreators() async
+
+    func didTapLists(index: Int) async
 }
 
 protocol MyInfoDataStore: AnyObject {
@@ -52,6 +54,23 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
     
     /// 화면 진입 트리거
     var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
+
+
+    enum Lists: Int {
+        case announcement
+        case userGuide
+        case inquery
+        case creators
+
+        var title: String {
+            switch self {
+            case .announcement: return "announcement"
+            case .userGuide: return "userGuide"
+            case .inquery: return "inquery"
+            case .creators: return "crators"
+            }
+        }
+    }
 }
 
 // MARK: - Interactive Business Logic
@@ -75,6 +94,7 @@ extension MyInfoInteractor {
 // MARK: Feature (첫 진입)
 
 extension MyInfoInteractor {
+
     func didLoad() async {
         do {
             let mypageInfo = try await self.worker.fetchMypageInfo()
@@ -92,6 +112,14 @@ extension MyInfoInteractor {
 extension MyInfoInteractor {
     func didTapGuideButton() async {
         await self.router.routeToGuideScene()
+    }
+
+    func didTapLists(index: Int) {
+//        let lists = Lists.announcement.
+//
+//        switch lists?.title {
+
+
     }
 
     func didTapAnnouncement() async {
