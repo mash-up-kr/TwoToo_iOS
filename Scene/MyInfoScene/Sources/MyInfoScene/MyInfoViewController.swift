@@ -10,18 +10,20 @@ import CoreKit
 import UIKit
 
 protocol MyInfoDisplayLogic: AnyObject {
-    func displayMyInfo(viewModel: MyInfo.ViewModel.MyInfo)
+    func displayLists(viewModel: MyInfo.ViewModel.Lists)
+    func displayMyInfo(viewModel: MyInfo.ViewModel.Data)
 }
 
 final class MyInfoViewController: UIViewController {
     var interactor: MyInfoBusinessLogic
     
-    var myInfoItems: [MyInfo.ViewModel.MyInfo.Item] = []
+    private var myInfoLists: [MyInfo.ViewModel.Lists.Item] = []
     
     // MARK: - UI
     
     private lazy var navigationBar: TTNavigationBar = {
         let v = TTNavigationBar(title: "마이페이지", rightButtonImage: .asset(.icon_info))
+        v.delegate = self
         return v
     }()
     
@@ -30,12 +32,31 @@ final class MyInfoViewController: UIViewController {
         v.image = .asset(.icon_nicknam_my)
         return v
     }()
+
+    private lazy var nameStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .horizontal
+        v.spacing = 9
+        return v
+    }()
     
-    private lazy var coupleLabel: UILabel = {
+    private lazy var myNicknameLabel: UILabel = {
         let v = UILabel()
-        v.text = "공주 ❤️ 왕자"
         v.textColor = .mainCoral
         v.font = .body3
+        return v
+    }()
+
+    private lazy var partnerNicknameLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .mainCoral
+        v.font = .body3
+        return v
+    }()
+
+    private lazy var heartImageView: UIImageView = {
+        let v = UIImageView()
+        v.image = .asset(.icon_heart)
         return v
     }()
     
@@ -43,13 +64,11 @@ final class MyInfoViewController: UIViewController {
         let v = UILabel()
         v.textColor = .mainCoral
         v.font = .body3
-        v.text = "1번째 꽃 피우는중"
         return v
     }()
     
     private lazy var myNameTagView: TTTagView = {
         let v = TTTagView(textColor: .primary, fontSize: .body2, cornerRadius: 15)
-        v.titleLabel.text = "공주"
         return v
     }()
     
@@ -64,6 +83,7 @@ final class MyInfoViewController: UIViewController {
         v.backgroundColor = .second02
         v.dataSource = self
         v.separatorStyle = .none
+        v.isScrollEnabled = false
         return v
     }()
     
@@ -91,12 +111,12 @@ final class MyInfoViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .second02
-        
+
+        self.nameStackView.addArrangedSubviews(self.myNicknameLabel, self.heartImageView, self.partnerNicknameLabel)
         self.view.addSubviews(
             self.navigationBar, self.mainImageView,
-            self.coupleLabel, self.challengeCountLabel,
-            self.myNameTagView, self.separator,
-            self.tableView
+            self.nameStackView, self.challengeCountLabel,
+            self.myNameTagView, self.separator, self.tableView
         )
         
         self.navigationBar.snp.makeConstraints { make in
@@ -111,13 +131,17 @@ final class MyInfoViewController: UIViewController {
             make.height.equalTo(UIScreen.main.bounds.height * 0.158)
         }
         
-        self.coupleLabel.snp.makeConstraints { make in
+        self.nameStackView.snp.makeConstraints { make in
             make.top.equalTo(self.mainImageView.snp.bottom).offset(19)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
         }
+
+        self.heartImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(10)
+        }
         
         self.challengeCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.coupleLabel.snp.bottom).offset(10)
+            make.top.equalTo(self.myNicknameLabel.snp.bottom).offset(10)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
         }
         
@@ -140,6 +164,14 @@ final class MyInfoViewController: UIViewController {
 
 // MARK: - Trigger
 
+extension MyInfoViewController: TTNavigationBarDelegate {
+    func didTapRightButton() {
+        Task {
+            await self.interactor.didTapGuideButton()
+        }
+    }
+}
+
 // MARK: - Trigger by Parent Scene
 
 extension MyInfoViewController: MyInfoScene {
@@ -150,22 +182,29 @@ extension MyInfoViewController: MyInfoScene {
 // MARK: - Display Logic
 
 extension MyInfoViewController: MyInfoDisplayLogic {
-    func displayMyInfo(viewModel: MyInfo.ViewModel.MyInfo) {
+    func displayLists(viewModel: MyInfo.ViewModel.Lists) {
         viewModel.items.unwrap { [weak self] in
-            self?.myInfoItems = $0
+            self?.myInfoLists = $0
             self?.tableView.reloadData()
         }
+    }
+
+    func displayMyInfo(viewModel: MyInfo.ViewModel.Data) {
+        self.challengeCountLabel.text = viewModel.challengeTotalCount
+        self.myNicknameLabel.text = viewModel.myNickname
+        self.partnerNicknameLabel.text = viewModel.partnerNickname
+        self.myNameTagView.titleLabel.text = viewModel.myNickname
     }
 }
 
 extension MyInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.myInfoItems.count
+        return self.myInfoLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(type: MyInfoTableViewCell.self, indexPath: indexPath)
-        cell.configure(text: self.myInfoItems[indexPath.row].title)
+        cell.configure(text: self.myInfoLists[indexPath.row].title)
         return cell
     }
 }

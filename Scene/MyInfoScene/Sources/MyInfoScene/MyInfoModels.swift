@@ -13,7 +13,7 @@ enum MyInfo {
     // MARK: Entity
     
     enum Model {
-        struct MyInfo {
+        struct Data {
             var myNickname: String
             var partnerNickname: String
             var challengeTotalCount: String?
@@ -21,18 +21,18 @@ enum MyInfo {
     }
     
     enum ViewModel {
-        struct MyInfo {
+        struct Lists {
             var items: [Item]?
             
             struct Item {
                 var title: String
             }
-            
-            struct Data {
-                var myNickname: String
-                var partnerNickname: String
-                var challengeTotalCount: String?
-            }
+        }
+
+        struct Data {
+            var myNickname: String
+            var partnerNickname: String
+            var challengeTotalCount: String?
         }
     }
 }

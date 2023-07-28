@@ -12,14 +12,14 @@ protocol MyInfoBusinessLogic {
     /// 첫 진입
     func didLoad() async
     /// 설명서 버튼 클릭
-    func didTapInstructionButton() async
-    /// 공지사항 클릭
+    func didTapGuideButton() async
+    /// 공지사항을 클릭
     func didTapAnnouncement() async
-    /// 이용 가이드 클릭
+    /// 이용 가이드를 클릭
     func didTapUserGuide() async
-    /// 투투에 문의하기 클릭
+    /// 문의하기를 클릭
     func didTapInquery() async
-    /// 만든이들 클릭
+    /// 만든이들을 클릭
     func didTapCreators() async
 }
 
@@ -29,7 +29,7 @@ protocol MyInfoDataStore: AnyObject {
 }
 
 final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
-    
+
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: MyInfoPresentationLogic
@@ -90,24 +90,24 @@ extension MyInfoInteractor {
 // MARK: Feature (페이지 이동)
 
 extension MyInfoInteractor {
-    func didTapInstructionButton() async {
-        
+    func didTapGuideButton() async {
+        await self.router.routeToGuideScene()
     }
-    
+
     func didTapAnnouncement() async {
-        
+        await self.router.routeToAnnouncementScene()
     }
-    
+
     func didTapUserGuide() async {
-        
+        await self.router.routeToUserGuideScene()
     }
-    
+
     func didTapInquery() async {
-    
+        await self.router.routeToInqueryScene()
     }
-    
+
     func didTapCreators() async {
-        
+        await self.router.routeToCreatorsScene()
     }
 }
 
