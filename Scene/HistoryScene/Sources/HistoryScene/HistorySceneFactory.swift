@@ -15,7 +15,9 @@ public protocol HistoryScene: AnyObject, Scene {
 
 public struct HistoryConfiguration {
     
-    public init() {}
+    public init() {
+        
+    }
 }
 
 public final class HistorySceneFactory {
