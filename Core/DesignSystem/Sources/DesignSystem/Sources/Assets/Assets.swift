@@ -123,6 +123,8 @@ public enum Assets: String {
     case icon_blossome
     case icon_congratulation
     case icon_all_verified
+    case app_icon
+    case app_logo
     case history_card
 
     public var image: UIImage {
