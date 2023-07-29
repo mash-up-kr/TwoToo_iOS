@@ -8,8 +8,14 @@
 import UIKit
 import DesignSystem
 
+protocol ChallengeWaitingViewDelegate: AnyObject {
+    func didTapChallengeWaitingConfirmButton()
+}
+
 /// 챌린지 대기 중 보여질 화면입니다.
 final class ChallengeWaitingView: UIView {
+    
+    weak var delegate: ChallengeWaitingViewDelegate?
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
@@ -32,9 +38,12 @@ final class ChallengeWaitingView: UIView {
         return v
     }()
     
-    lazy var startButton: TTPrimaryButtonType = {
+    lazy var confirmButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
         v.setIsEnabled(true)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapChallengeWaitingConfirmButton()
+        }
         return v
     }()
     
@@ -51,7 +60,7 @@ final class ChallengeWaitingView: UIView {
         self.addSubviews(self.nicknameStackView,
                          self.titleLabel,
                          self.iconImageView,
-                         self.startButton)
+                         self.confirmButton)
         
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
@@ -69,7 +78,7 @@ final class ChallengeWaitingView: UIView {
             make.centerY.equalToSuperview()
         }
         
-        self.startButton.snp.makeConstraints { make in
+        self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(50)
             make.width.equalTo(177)

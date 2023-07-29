@@ -8,7 +8,15 @@
 import UIKit
 import DesignSystem
 
+protocol MyFlowerViewDelegate: AnyObject {
+    func didTapCertificateView()
+    func didTapEmptySpeechBubbleView()
+}
+
 final class MyFlowerView: UIView {
+    
+    weak var delegate: MyFlowerViewDelegate?
+    
     // MARK: - 챌린지 진행 중 : 꽃 이미지 위에 배치한 컴포넌트
     /// 칭찬시 나타나는 말풍선
     lazy var speechBubbleView: SpeechBubbleView = {
@@ -20,12 +28,18 @@ final class MyFlowerView: UIView {
     lazy var induceCertificationView: InduceCertificationView = {
         let v = InduceCertificationView()
         v.isHidden = true
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapCertificateView()
+        }
         return v
     }()
     /// 인증 완료 후 칭찬 문구 없을 때 이미지 뷰
     lazy var emptySpeechBubbleImageView: UIImageView = {
         let v = UIImageView(.icon_bubble_write)
         v.isHidden = true
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapEmptySpeechBubbleView()
+        }
         return v
     }()
     // MARK: - 챌린지 완료 : 꽃 이미지 위에 배치한 컴포넌트
@@ -56,6 +70,9 @@ final class MyFlowerView: UIView {
     // MARK: - 공통 컴포넌트
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapCertificateView()
+        }
         return v
     }()
     

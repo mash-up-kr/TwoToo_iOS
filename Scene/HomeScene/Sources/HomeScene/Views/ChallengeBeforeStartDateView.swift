@@ -8,8 +8,14 @@
 import UIKit
 import DesignSystem
 
+protocol ChallengeBeforeStartDateViewDelegate: AnyObject {
+    func didTapChallengeBeforeStartDateViewConfirmButton()
+}
+
 /// 챌린지 시작일 전 보여질 화면입니다.
 final class ChallengeBeforeStartDateView: UIView {
+    
+    weak var delegate: ChallengeBeforeStartDateViewDelegate?
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
@@ -42,9 +48,12 @@ final class ChallengeBeforeStartDateView: UIView {
         return v
     }()
     
-    lazy var startButton: TTPrimaryButtonType = {
+    lazy var confirmButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 확인하기", .small)
         v.setIsEnabled(true)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapChallengeBeforeStartDateViewConfirmButton()
+        }
         return v
     }()
     
@@ -62,7 +71,7 @@ final class ChallengeBeforeStartDateView: UIView {
                          self.titleLabel,
                          self.descriptionLabel,
                          self.iconImageView,
-                         self.startButton)
+                         self.confirmButton)
         
         self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(11)
@@ -85,7 +94,7 @@ final class ChallengeBeforeStartDateView: UIView {
             make.centerY.equalToSuperview()
         }
         
-        self.startButton.snp.makeConstraints { make in
+        self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(50)
             make.width.equalTo(177)

@@ -40,48 +40,56 @@ final class HomeViewController: UIViewController {
     lazy var navigationBar: TTNavigationBar = {
         let v = TTNavigationBar(title: "TwoToo",
                                 rightButtonImage: .asset(.icon_info))
+        v.delegate = self
         return v
     }()
     
     lazy var createdView: ChallengeCreatedView = {
         let v = ChallengeCreatedView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var waitingView: ChallengeWaitingView = {
         let v = ChallengeWaitingView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var beforeStartView: ChallengeBeforeStartView = {
         let v = ChallengeBeforeStartView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var beforeStartDateView: ChallengeBeforeStartDateView = {
         let v = ChallengeBeforeStartDateView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var afterStartDateView: ChallengeAfterStartDateView = {
         let v = ChallengeAfterStartDateView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var inProgressView: ChallengeInProgressView = {
         let v = ChallengeInProgressView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
     lazy var completedView: ChallengeCompletedView = {
         let v = ChallengeCompletedView()
         v.isHidden = true
+        v.delegate = self
         return v
     }()
     
@@ -375,5 +383,85 @@ extension HomeViewController: HomeDisplayLogic {
         self.afterStartDateView.isHidden = true
         self.inProgressView.isHidden = true
         self.completedView.isHidden = true
+    }
+}
+
+// MARK: - Delegate
+extension HomeViewController: ChallengeCreatedViewDelegate{
+    func didTapChallengeCreatedStartButton() {
+        Task {
+            await self.interactor.didTapChallengeStartButton()
+        }
+    }
+}
+
+extension HomeViewController: ChallengeWaitingViewDelegate{
+    func didTapChallengeWaitingConfirmButton() {
+        Task {
+            await self.interactor.didTapChallengeConfirmButton()
+        }
+    }
+}
+
+extension HomeViewController: ChallengeBeforeStartViewDelegate{
+    func didTapChallengeBeforeStartConfirmButton() {
+        Task {
+            await self.interactor.didTapChallengeConfirmButton()
+        }
+    }
+}
+
+extension HomeViewController: ChallengeBeforeStartDateViewDelegate{
+    func didTapChallengeBeforeStartDateViewConfirmButton() {
+        Task {
+            await self.interactor.didTapChallengeConfirmButton()
+        }
+    }
+}
+extension HomeViewController: ChallengeAfterStartDateViewDelegate{
+    func didTapChallengeAfterStartDateStartButton() {
+        Task {
+            await self.interactor.didTapChallengeStartButton()
+        }
+    }
+}
+extension HomeViewController: ChallengeInProgressViewDelegate{
+    func didTapChallengeInfo() {
+        Task {
+            await self.interactor.didTapChallengeInfo()
+        }
+    }
+    
+    func didTapMyFlowerEmptySpeechBubbleView() {
+        Task {
+            await self.interactor.didTapMyComplimentCommnet()
+        }
+    }
+    
+    func didTapCertificateButton() {
+        Task {
+            await self.interactor.didTapMyFlower()
+        }
+    }
+    
+    func didTapStickButton() {
+        Task {
+            await self.interactor.didTapStickButton()
+        }
+    }
+}
+extension HomeViewController: ChallengeCompletedViewDelegate{
+    func didTapChallengeCompletedFinishButton() {
+        Task {
+            await self.interactor.didTapChallengeCompleteButton()
+        }
+    }
+}
+
+extension HomeViewController: TTNavigationBarDelegate {
+    func didTapRightButton() {
+        Task {
+            await self.interactor.didTapGuideButton()
+        }
     }
 }

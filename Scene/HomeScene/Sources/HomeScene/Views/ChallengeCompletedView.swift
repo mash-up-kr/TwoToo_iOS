@@ -8,8 +8,15 @@
 import UIKit
 import DesignSystem
 
+protocol ChallengeCompletedViewDelegate: AnyObject {
+    func didTapChallengeCompletedFinishButton()
+}
+
 /// 챌린지 완료 후 보여질 화면입니다.
 final class ChallengeCompletedView: UIView {
+    
+    weak var delegate: ChallengeCompletedViewDelegate?
+
     /// 닉네임 정보, 챌린지 정보를 담은 스택뷰
     lazy var topChallengeInfoView: TopChallengeInfoView = {
         let v = TopChallengeInfoView()
@@ -39,6 +46,9 @@ final class ChallengeCompletedView: UIView {
     lazy var confirmButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 완료하기", .small)
         v.setIsEnabled(true)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapChallengeCompletedFinishButton()
+        }
         return v
     }()
 

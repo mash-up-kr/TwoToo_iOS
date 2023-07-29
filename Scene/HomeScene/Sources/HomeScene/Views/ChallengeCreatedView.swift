@@ -8,8 +8,14 @@
 import UIKit
 import DesignSystem
 
+protocol ChallengeCreatedViewDelegate: AnyObject {
+    func didTapChallengeCreatedStartButton()
+}
+
 /// 챌린지 생성전 보여질 화면입니다.
 final class ChallengeCreatedView: UIView {
+    
+    weak var delegate: ChallengeCreatedViewDelegate?
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
@@ -35,6 +41,9 @@ final class ChallengeCreatedView: UIView {
     lazy var startButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 시작하기", .small)
         v.setIsEnabled(true)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapChallengeCreatedStartButton()
+        }
         return v
     }()
     

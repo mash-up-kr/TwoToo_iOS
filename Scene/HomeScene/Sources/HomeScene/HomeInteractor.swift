@@ -36,7 +36,7 @@ protocol HomeBusinessLogic {
     func didTapStickButton() async
     /// 챌린지 정보 클릭
     func didTapChallengeInfo() async
-    /// 설명서 버튼 클릭하
+    /// 설명서 버튼 클릭
     func didTapGuideButton() async
 }
 
