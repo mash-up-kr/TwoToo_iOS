@@ -20,11 +20,26 @@ protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
     func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name)
 }
 
-final class ChallengeEssentialInfoInputViewController: UIViewController {
+final class ChallengeEssentialInfoInputViewController: UIViewController, TTNavigationDetailBarDelegate {
+    func didTapDetailLeftButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func didTapDetailRightButton() {
+
+    }
+
     var interactor: ChallengeEssentialInfoInputBusinessLogic
 
     // MARK: - UI
-    
+
+    private lazy var navigationbar: TTNavigationDetailBar = {
+        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        v.delegate = self
+        v.delegate?.didTapDetailLeftButton()
+        return v
+    }()
+
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -194,13 +209,27 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.startDateStackView.addArrangedSubviews(self.startDateLabel, self.startDatePicker)
         self.endDateStackView.addArrangedSubviews(self.endDateLabel, self.endDatePicker)
 
-        self.view.addSubviews(self.headerStackView, self.challengeNameTextField, self.challengeRecommendButton, self.startDateStackView, self.endDateStackView, self.nextButton)
+        self.view.addSubviews(
+            self.navigationbar,
+            self.headerStackView,
+            self.challengeNameTextField,
+            self.challengeRecommendButton,
+            self.startDateStackView,
+            self.endDateStackView,
+            self.nextButton
+        )
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
 
+        self.navigationbar.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+
         self.headerStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(2)
+            make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(24)
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
             make.bottom.equalTo(self.challengeNameTextField.snp.top).offset(-19)

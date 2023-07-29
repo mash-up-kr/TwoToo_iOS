@@ -54,8 +54,7 @@ final class ChallengeEssentialInfoInputInteractor: ChallengeEssentialInfoInputDa
     init(
         presenter: ChallengeEssentialInfoInputPresentationLogic,
         router: ChallengeEssentialInfoInputRoutingLogic,
-        worker: ChallengeEssentialInfoInputWorkerProtocol,
-        didTriggerSelectChallengeName: PassthroughSubject<String, Never>
+        worker: ChallengeEssentialInfoInputWorkerProtocol
     ) {
         self.presenter = presenter
         self.router = router
