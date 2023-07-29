@@ -16,6 +16,13 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
 
     // MARK: - UI
 
+    private lazy var navigationbar: TTNavigationDetailBar = {
+        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        v.delegate = self
+        v.delegate?.didTapDetailLeftButton()
+        return v
+    }()
+
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -63,6 +70,11 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.setIsEnabled(true)
+        v.addAction {
+            Task {
+                await self.interactor.didTapNextButton()
+            }
+        }
         return v
     }()
 
@@ -88,13 +100,19 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
         self.view.backgroundColor = .second02
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
-        self.view.addSubviews(self.headerStackView, self.challengeRuleTextView, self.nextButton)
+        self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeRuleTextView, self.nextButton)
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
 
+        self.navigationbar.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+
         self.headerStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(2)
+            make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(24)
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
             make.bottom.equalTo(self.challengeRuleTextView.snp.top).offset(-42)
@@ -117,7 +135,7 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
 
 // MARK: - Trigger
 
-extension ChallengeAdditionalInfoInputViewController: TTTextViewDelegate {
+extension ChallengeAdditionalInfoInputViewController: TTTextViewDelegate, TTNavigationDetailBarDelegate {
     func textViewDidChange(text: String) {
         Task {
             await self.interactor.didEnterChallengeAdditionalInfo(commet: text)
@@ -128,6 +146,14 @@ extension ChallengeAdditionalInfoInputViewController: TTTextViewDelegate {
         Task {
             await self.interactor.didEnterChallengeAdditionalInfo(commet: text)
         }
+    }
+
+    func didTapDetailLeftButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func didTapDetailRightButton() {
+
     }
 }
 
