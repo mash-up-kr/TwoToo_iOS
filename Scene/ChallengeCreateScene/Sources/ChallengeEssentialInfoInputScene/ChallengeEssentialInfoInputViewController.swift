@@ -73,13 +73,6 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         return v
     }()
 
-    private lazy var entireDateStackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .horizontal
-        v.spacing = 36
-        return v
-    }()
-
     private lazy var startDateStackView: UIStackView = {
         let v = UIStackView()
         v.spacing = 8
@@ -196,11 +189,10 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.view.backgroundColor = .second02
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
-        self.entireDateStackView.addArrangedSubviews(self.startDateStackView, self.endDateStackView)
         self.startDateStackView.addArrangedSubviews(self.startDateLabel, self.startDatePicker)
         self.endDateStackView.addArrangedSubviews(self.endDateLabel, self.endDatePicker)
 
-        self.view.addSubviews(self.headerStackView, self.challengeNameTextField, self.challengeRecommendButton, self.entireDateStackView, self.nextButton)
+        self.view.addSubviews(self.headerStackView, self.challengeNameTextField, self.challengeRecommendButton, self.startDateStackView, self.endDateStackView, self.nextButton)
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
@@ -221,20 +213,18 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 
         self.challengeRecommendButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
-            make.bottom.equalTo(self.entireDateStackView.snp.top).offset(-43)
         }
         
         self.startDateStackView.snp.makeConstraints { make in
+            make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(43)
+            make.leading.equalTo(self.challengeRecommendButton.snp.leading)
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
 
         self.endDateStackView.snp.makeConstraints { make in
+            make.leading.equalTo(self.startDateStackView.snp.trailing).offset(36)
+            make.top.equalTo(self.startDateStackView.snp.top)
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
-        }
-
-        self.entireDateStackView.snp.makeConstraints { make in
-            make.leading.equalTo(self.challengeRecommendButton.snp.leading)
-            make.trailing.equalToSuperview().offset(-109)
         }
 
         self.nextButton.snp.makeConstraints { make in
