@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ChallengeConfirmScene
 
 @MainActor
 protocol ChallengeAdditionalInfoInputRoutingLogic {
@@ -28,6 +29,17 @@ extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutin
     }
     
     func routeToChallengeConfirmScene() {
-        
+
+        guard let challengeName = self.dataStore?.nameDataSource,
+              let challengeStartDate = self.dataStore?.startDateDataSource,
+              let challengeEndDate = self.dataStore?.endDateDataSource,
+              let didEnterStatus = self.dataStore?.didEnterStatus
+        else { return }
+
+        let challengeConfirmScene = ChallengeConfirmSceneFactory().make(with: .init(challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.additionalInfoDataSource, didEnterStatus: didEnterStatus))
+
+        let challengeConfirmViewController = challengeConfirmScene.viewController
+
+        self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
 }
