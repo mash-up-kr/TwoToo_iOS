@@ -97,7 +97,7 @@ public class NetworkManager {
         self.reachability?.connection ?? .unavailable != .unavailable
     }
     
-    private let configuration: NetworkConfiguration
+    private var configuration: NetworkConfiguration
     
     private var reachability: Reachability? = nil
     
@@ -129,6 +129,11 @@ public class NetworkManager {
         catch {
             print(error.localizedDescription)
         }
+    }
+    
+    /// 기본 정보를 변경합니다
+    public func updateConfiguration(_ configuration: NetworkConfiguration) {
+        self.configuration = configuration
     }
     
     /// 주어진 정보를 바탕으로 API 요청을 수행하고 결과를 Decodable 형태로 반환
@@ -168,11 +173,18 @@ public class NetworkManager {
         var headers = self.configuration.headers
         additionalHeaders?.forEach { headers.add($0) }
         
+        print("--------------- Network Start ---------------")
+        print(path)
+        print(method.rawValue)
+        print(parameters ?? [:])
+        print(additionalHeaders ?? [:])
+        
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(
                 self.configuration.baseURL + path,
                 method: method,
                 parameters: parameters,
+                encoding: JSONEncoding.default,
                 headers: headers,
                 requestModifier: {
                     $0.timeoutInterval = self.configuration.maxWaitTime
@@ -181,6 +193,10 @@ public class NetworkManager {
             .responseData { response in
                 switch(response.result) {
                     case let .success(data):
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            print(json)
+                        }
+                        print("--------------- Network End ---------------")
                         do {
                             let decodedData = try JSONDecoder().decode(T.self, from: data)
                             continuation.resume(returning: decodedData)

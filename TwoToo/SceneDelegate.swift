@@ -18,6 +18,7 @@ import UIKit
 import NicknameRegistScene
 import SplashScene
 import LoginScene
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -61,11 +62,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-//        if let url = URLContexts.first?.url {
-//            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                _ = AuthController.handleOpenUrl(url: url)
-//            }
-//        }
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -110,6 +111,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let vc = loginScene.viewController
                 let nav = UINavigationController(rootViewController: vc)
                 nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = nav
             }
             .store(in: &self.cancellables)
@@ -124,6 +126,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let vc = nicknameRegistScene.viewController
                 let nav = UINavigationController(rootViewController: vc)
                 nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = nav
             }
             .store(in: &self.cancellables)
@@ -137,6 +140,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let vc = invitationSendScene.viewController
                 let nav = UINavigationController(rootViewController: vc)
                 nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = nav
             }
             .store(in: &self.cancellables)
@@ -151,6 +155,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let vc = invitationWaitScene.viewController
                 let nav = UINavigationController(rootViewController: vc)
                 nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = nav
             }
             .store(in: &self.cancellables)
@@ -160,6 +165,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .sink {
                 let mainScene = MainSceneFactory().make(with: .init())
                 let tc = mainScene.viewController
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = tc
             }
             .store(in: &self.cancellables)

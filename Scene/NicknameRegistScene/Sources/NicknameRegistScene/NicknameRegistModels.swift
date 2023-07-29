@@ -15,6 +15,7 @@ enum NicknameRegist {
     enum Model {
         
         struct InvitedUser {
+            var no: Int
             var name: String
         }
     }

@@ -114,55 +114,78 @@ final class NicknameRegistInteractorSpec: QuickSpec {
                     interactor.nickname = "Test"
                 }
                 
+                context("확인 버튼을 눌렀을 때") {
+                    beforeEach {
+                        await interactor.didTapConfirmButton()
+                    }
+                    
+                    it("입력된 닉네임으로 닉네임 설정 요청을 한다.") {
+                        expect(worker.lastNickname).to(equal("Test"))
+                        expect(worker.isRequestSetNicknameAndMatchingCalled).to(beTrue())
+                    }
+                }
+                
                 describe("초대 유저가 존재하지 않는다") {
                     beforeEach {
-                        worker.invitedUserResult = nil
+                        worker.requestSetNicknameAndMatchingResult = .success(false)
                     }
                     
                     context("확인 버튼을 눌렀을 때") {
-                        beforeEach {
-                            await interactor.didTapConfirmButton()
-                        }
+                        var didTriggerRouteToInvitationSendSceneValue: Void? = nil
                         
-                        it("입력된 닉네임으로 닉네임 설정 요청을 한다.") {
-                            expect(worker.lastNickname).to(equal("Test"))
-                            expect(worker.isRequestSetNicknameCalled).to(beTrue())
+                        beforeEach {
+                            let expectation = self.expectation(description: "초대장 전송 화면 이동 트리거")
+
+                            interactor.didTriggerRouteToInvitationSendScene
+                                .sink { _ in
+                                    didTriggerRouteToInvitationSendSceneValue = ()
+                                    expectation.fulfill()
+                                }
+                                .store(in: &cancellables)
+
+                            await interactor.didTapConfirmButton()
+
+                            await self.fulfillment(of: [expectation], timeout: 3)
+                        }
+
+                        it("초대장 전송 화면으로 이동한다.") {
+                            expect(didTriggerRouteToInvitationSendSceneValue).to(beVoid())
                         }
                     }
+                }
+                
+                describe("초대 유저가 존재한다.") {
+                    beforeEach {
+                        worker.requestSetNicknameAndMatchingResult = .success(true)
+                    }
                     
-                    describe("닉네임 설정 요청 결과가 성공이다.") {
+                    context("확인 버튼을 눌렀을 때") {
+                        var didTriggerRouteToHomeSceneValue: Void? = nil
+
                         beforeEach {
-                            worker.requestSetNicknameResult = true
+                            let expectation = self.expectation(description: "홈 화면 이동 트리거")
+
+                            interactor.didTriggerRouteToHomeScene
+                                .sink { _ in
+                                    didTriggerRouteToHomeSceneValue = ()
+                                    expectation.fulfill()
+                                }
+                                .store(in: &cancellables)
+
+                            await interactor.didTapConfirmButton()
+
+                            await self.fulfillment(of: [expectation], timeout: 3)
                         }
-                        
-                        context("확인 버튼을 눌렀을 때") {
-                            var didTriggerRouteToInvitationSendSceneValue: Void? = nil
-                            
-                            beforeEach {
-                                let expectation = self.expectation(description: "초대장 전송 화면 이동 트리거")
 
-                                interactor.didTriggerRouteToInvitationSendScene
-                                    .sink { _ in
-                                        didTriggerRouteToInvitationSendSceneValue = ()
-                                        expectation.fulfill()
-                                    }
-                                    .store(in: &cancellables)
-
-                                await interactor.didTapConfirmButton()
-
-                                await self.fulfillment(of: [expectation], timeout: 3)
-                            }
-
-                            it("초대장 전송 화면으로 이동한다.") {
-                                expect(didTriggerRouteToInvitationSendSceneValue).to(beVoid())
-                            }
+                        it("홈 화면으로 이동한다.") {
+                            expect(didTriggerRouteToHomeSceneValue).to(beVoid())
                         }
                     }
                 }
                 
                 describe("닉네임 설정 요청 결과가 실패이다.") {
                     beforeEach {
-                        worker.requestSetNicknameResult = false
+                        worker.requestSetNicknameAndMatchingResult = .failure(NSError(domain: "Test", code: -1))
                     }
                     
                     context("확인 버튼을 눌렀을 때") {
@@ -173,74 +196,6 @@ final class NicknameRegistInteractorSpec: QuickSpec {
                         it("닉네임 설정 오류를 보여준다.") {
                             let isPresentNicknameErrorCalled = await presenter.isPresentNicknameErrorCalled
                             expect(isPresentNicknameErrorCalled).to(beTrue())
-                        }
-                    }
-                }
-                
-                describe("초대 유저가 존재한다.") {
-                    beforeEach {
-                        worker.invitedUserResult = .init(name: "TestUser")
-                    }
-                    
-                    describe("닉네임 설정 요청 결과가 성공이다.") {
-                        beforeEach {
-                            worker.requestSetNicknameResult = true
-                        }
-                        
-                        context("확인 버튼을 눌렀을 때") {
-                            beforeEach {
-                                await interactor.didTapConfirmButton()
-                            }
-                            
-                            it("매칭 요청을 한다.") {
-                                expect(worker.isRequestMatchingCalled).to(beTrue())
-                            }
-                        }
-                        
-                        describe("매칭 요청 결과가 성공이다.") {
-                            beforeEach {
-                                worker.requestMatchingResult = true
-                            }
-                            
-                            context("확인 버튼을 눌렀을 때") {
-                                var didTriggerRouteToHomeSceneValue: Void? = nil
-
-                                beforeEach {
-                                    let expectation = self.expectation(description: "홈 화면 이동 트리거")
-
-                                    interactor.didTriggerRouteToHomeScene
-                                        .sink { _ in
-                                            didTriggerRouteToHomeSceneValue = ()
-                                            expectation.fulfill()
-                                        }
-                                        .store(in: &cancellables)
-
-                                    await interactor.didTapConfirmButton()
-
-                                    await self.fulfillment(of: [expectation], timeout: 3)
-                                }
-
-                                it("홈 화면으로 이동한다.") {
-                                    expect(didTriggerRouteToHomeSceneValue).to(beVoid())
-                                }
-                            }
-                        }
-                        
-                        describe("매칭 요청 결과가 실패이다.") {
-                            beforeEach {
-                                worker.requestMatchingResult = false
-                            }
-                            
-                            context("확인 버튼을 눌렀을 때") {
-                                beforeEach {
-                                    await interactor.didTapConfirmButton()
-                                }
-                                
-                                it("매칭 오류를 보여준다.") {
-                                    let isPresentMatchingErrorCalled = await presenter.isPresentMatchingErrorCalled
-                                    expect(isPresentMatchingErrorCalled).to(beTrue())
-                                }
-                            }
                         }
                     }
                 }
@@ -289,34 +244,31 @@ class NicknameRegistPresenterMock: NicknameRegistPresentationLogic {
 class NicknameRegistWorkerMock: NicknameRegistWorkerProtocol {
     
     var isInvitedUserCalled = false
-    var isRequestSetNicknameCalled = false
-    var isRequestMatchingCalled = false
+    var isRequestSetNicknameAndMatchingCalled = false
     
     var lastNickname: String?
     
     var invitedUserResult: NicknameRegist.Model.InvitedUser?
-    var requestSetNicknameResult: Bool?
-    var requestMatchingResult: Bool?
+    var requestSetNicknameAndMatchingResult: Result<Bool, Error>?
     
     var invitedUser: NicknameRegist.Model.InvitedUser? {
         self.isInvitedUserCalled = true
         return self.invitedUserResult
     }
     
-    func requestSetNickname(nickname: String) async throws {
-        self.isRequestSetNicknameCalled = true
+    func requestSetNicknameAndMatching(nickname: String) async throws -> Bool {
+        self.isRequestSetNicknameAndMatchingCalled = true
         self.lastNickname = nickname
         
-        if let result = self.requestSetNicknameResult, !result {
-            throw NSError(domain: "Test", code: 999)
-        }
-    }
-    
-    func requestMatching() async throws {
-        self.isRequestMatchingCalled = true
-        
-        if let result = self.requestMatchingResult, !result {
-            throw NSError(domain: "Test", code: 999)
+        switch self.requestSetNicknameAndMatchingResult {
+            case .success(let isMatching):
+                return isMatching
+                
+            case .failure(let error):
+                throw error
+                
+            case .none:
+                throw NSError(domain: "Test", code: 999)
         }
     }
 }

@@ -99,27 +99,17 @@ extension NicknameRegistInteractor {
 extension NicknameRegistInteractor {
     
     func didTapConfirmButton() async {
-        
         do {
-            try await self.worker.requestSetNickname(nickname: self.nickname)
+            let isMatching = try await self.worker.requestSetNicknameAndMatching(nickname: self.nickname)
+            if isMatching {
+                self.didTriggerRouteToHomeScene.send(())
+            }
+            else {
+                self.didTriggerRouteToInvitationSendScene.send(())
+            }
         }
         catch {
             await self.presenter.presentNicknameError(error: error)
-        }
-        
-        // 초대하는사람
-        if self.worker.invitedUser == nil {
-            self.didTriggerRouteToInvitationSendScene.send(())
-            return
-        }
-        
-        // 초대받는사람
-        do {
-            try await self.worker.requestMatching()
-            self.didTriggerRouteToHomeScene.send(())
-        }
-        catch {
-            await self.presenter.presentMatchingError(error: error)
         }
     }
 }

@@ -23,6 +23,8 @@ public extension String {
                 return "yyyy-MM-dd'T'HH:mm:ss"
             case .yearMonthDay:
                 return "yyyy/MM/dd"
+            case .shortYearMonthDay:
+                return "yy/MM/dd"
             }
         }
 

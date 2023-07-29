@@ -42,9 +42,20 @@ public final class LoginSceneFactory {
     
     public func make(with configuration: LoginConfiguration) -> LoginScene {
         
+        let localDataSource = LocalDataSource()
+        let onboardLocalWorker = OnboardingLocalWorker(localDataSource: localDataSource)
+        let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let authNetworkWorker = AuthNetworkWorker()
+        
         let presenter = LoginPresenter()
         let router = LoginRouter()
-        let worker = LoginWorker()
+        let worker = LoginWorker(
+            onboardLocalWorker: onboardLocalWorker,
+            invitationLocalWorker: invitationLocalWorker,
+            meLocalWorker: meLocalWorker,
+            authNetworkWorker: authNetworkWorker
+        )
         let interactor = LoginInteractor(
             presenter: presenter,
             router: router,
