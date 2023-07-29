@@ -59,7 +59,7 @@ extension HomeRouter: HomeRoutingLogic {
             return
         }
         let challengeCertificateScene = ChallengeCertificateSceneFactory().make(
-            with: .init(challengeID: "1")
+            with: .init(challengeID: dataStore.challenge?.id ?? "")
         )
         self.viewController?.present(challengeCertificateScene.bottomSheetViewController, animated: true)
     }
