@@ -73,6 +73,7 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didLoad() async {
+        print(">>>>> 챌린지", self.challenge)
         await self.presenter.presentChallenge(challenge: self.challenge)
     }
 }
@@ -101,10 +102,12 @@ extension ChallengeHistoryInteractor {
             }.first
         
         if let myCertificate = myCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(certificate: myCertificate)
+            await self.router.routeToChallengeHistoryDetailScene(title: self.challenge.name,
+                                                                 certificate: myCertificate)
         }
         else if let partnerCertificate = partnerCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(certificate: partnerCertificate)
+            await self.router.routeToChallengeHistoryDetailScene(title: self.challenge.name,
+                                                                 certificate: partnerCertificate)
         }
     }
 }

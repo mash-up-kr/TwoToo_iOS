@@ -251,15 +251,13 @@ extension HomeViewController: HomeDisplayLogic {
                 }
                 
                 let popupView = TTPopup()
-                popupView.configure(
-                    title: Home.ViewModel.BothCertificationViewModel.title,
-                    resultView: popupContentView,
-                    description: Home.ViewModel.BothCertificationViewModel.message,
-                    buttonTitles: [
-                        Home.ViewModel.BothCertificationViewModel.noOptionText,
-                        Home.ViewModel.BothCertificationViewModel.yesOptionText
-                    ]
-                )
+                popupView.configure(title: Home.ViewModel.BothCertificationViewModel.title,
+                                    resultView: popupContentView,
+                                    description: Home.ViewModel.BothCertificationViewModel.message,
+                                    buttonTitles: [
+                                        Home.ViewModel.BothCertificationViewModel.noOptionText,
+                                        Home.ViewModel.BothCertificationViewModel.yesOptionText
+                                    ])
                 
                 popupView.didTapLeftButton {
                     Task {
@@ -306,14 +304,10 @@ extension HomeViewController: HomeDisplayLogic {
                 }
                 
                 let popupView = TTPopup()
-                popupView.configure(
-                    title: $0.title,
-                    resultView: popupContentView,
-                    description: $0.message,
-                    buttonTitles: [
-                        Home.ViewModel.CompletedViewModel.optionText
-                    ]
-                )
+                popupView.configure(title: $0.title,
+                                     resultView: popupContentView,
+                                     description: $0.message,
+                                     buttonTitles: [Home.ViewModel.CompletedViewModel.optionText])
                 
                 popupView.didTapLeftButton {
                     Task {

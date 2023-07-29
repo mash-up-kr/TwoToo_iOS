@@ -8,11 +8,20 @@
 
 import CoreKit
 
-protocol ChallengeHistoryDetailBusinessLogic {}
+protocol ChallengeHistoryDetailBusinessLogic {
+    /// 첫 진입
+    func didLoad() async
+    /// 닫기 버튼 클릭
+    func didTapCloseButton() async
+}
 
-protocol ChallengeHistoryDetailDataStore: AnyObject {}
+protocol ChallengeHistoryDetailDataStore: AnyObject {
+    /// 챌린지 인증 정보
+    var detail: ChallengeHistoryDetail.Model.ChallengeDetail { get }
+}
 
 final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {
+    
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: ChallengeHistoryDetailPresentationLogic
@@ -22,15 +31,17 @@ final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, C
     init(
         presenter: ChallengeHistoryDetailPresentationLogic,
         router: ChallengeHistoryDetailRoutingLogic,
-        worker: ChallengeHistoryDetailWorkerProtocol
+        worker: ChallengeHistoryDetailWorkerProtocol,
+        detail: ChallengeHistoryDetail.Model.ChallengeDetail
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.detail = detail
     }
     
     // MARK: - DataStore
-    
+    var detail: ChallengeHistoryDetail.Model.ChallengeDetail
 }
 
 // MARK: - Interactive Business Logic
@@ -43,11 +54,26 @@ extension ChallengeHistoryDetailInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (진입)
 
 extension ChallengeHistoryDetailInteractor {
+
+    func didLoad() async {
+        await self.presenter.presentChallengeDetail(detail: self.detail)
+    }
     
 }
+
+// MARK: Feature (닫기)
+
+extension ChallengeHistoryDetailInteractor {
+
+    func didTapCloseButton() async {
+        await self.router.dismiss()
+    }
+    
+}
+
 
 // MARK: - Application Business Logic
 

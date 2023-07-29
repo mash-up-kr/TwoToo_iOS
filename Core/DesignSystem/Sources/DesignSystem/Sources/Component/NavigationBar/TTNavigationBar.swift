@@ -23,7 +23,7 @@ public final class TTNavigationBar: UIView {
     
     // MARK: - UIComponent
     
-    private lazy var titleLabel: UILabel = {
+    public lazy var titleLabel: UILabel = {
         let v = UILabel()
         v.font = .h1
         v.textColor = .mainPink
@@ -52,7 +52,7 @@ public final class TTNavigationBar: UIView {
     ///  ```swift
     /// TTNavigationBar(title: "마이페이지", rightButtonImage: .asset(.icon_info))
     ///  ```
-    public convenience init(title: String,
+    public convenience init(title: String?,
                             rightButtonImage: UIImage?) {
         self.init()
         self.titleLabel.text = title
