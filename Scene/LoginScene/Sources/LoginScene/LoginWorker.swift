@@ -78,9 +78,12 @@ final class LoginWorker: LoginWorkerProtocol {
         let authResponse = try await self.authNetworkWorker.requestAuthorize(
             socialId: socialId,
             loginType: loginType,
-            deviceToken: "Test"
+            deviceToken: self.meLocalWorker.deviceToken ?? "Test"
         )
         self.meLocalWorker.token = authResponse.accessToken
+        self.meLocalWorker.nickname = authResponse.nickname
+        self.meLocalWorker.userNo = authResponse.userNo
+        self.meLocalWorker.partnerNo = authResponse.partnerNo
         switch authResponse.loginType {
             case "NEED_NICKNAME":
                 return .nickname

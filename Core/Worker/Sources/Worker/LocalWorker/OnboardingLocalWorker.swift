@@ -26,6 +26,9 @@ public final class OnboardingLocalWorker: OnboardingLocalWorkerProtocol {
             return self.localDataSource?.read(key: self.key)
         }
         set {
+            guard let newValue = newValue else {
+                return
+            }
             self.localDataSource?.save(value: newValue, key: self.key)
         }
     }

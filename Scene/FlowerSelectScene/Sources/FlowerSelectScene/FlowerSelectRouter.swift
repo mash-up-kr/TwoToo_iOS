@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol FlowerSelectRoutingLogic {}
+protocol FlowerSelectRoutingLogic {
+    /// 뒤로가기 버튼 클릭
+    func pop()
+}
 
 final class FlowerSelectRouter {
     weak var viewController: FlowerSelectViewController?
@@ -17,5 +20,7 @@ final class FlowerSelectRouter {
 }
 
 extension FlowerSelectRouter: FlowerSelectRoutingLogic {
-    
+    func pop() {
+        
+    }
 }
