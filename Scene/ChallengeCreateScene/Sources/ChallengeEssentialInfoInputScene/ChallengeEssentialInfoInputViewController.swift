@@ -20,14 +20,7 @@ protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
     func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name)
 }
 
-final class ChallengeEssentialInfoInputViewController: UIViewController, TTNavigationDetailBarDelegate {
-    func didTapDetailLeftButton() {
-        self.navigationController?.popViewController(animated: true)
-    }
-
-    func didTapDetailRightButton() {
-
-    }
+final class ChallengeEssentialInfoInputViewController: UIViewController {
 
     var interactor: ChallengeEssentialInfoInputBusinessLogic
 
@@ -267,6 +260,16 @@ final class ChallengeEssentialInfoInputViewController: UIViewController, TTNavig
 }
 
 // MARK: - Trigger
+
+extension ChallengeEssentialInfoInputViewController: TTNavigationDetailBarDelegate {
+    func didTapDetailLeftButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func didTapDetailRightButton() {
+
+    }
+}
 
 // MARK: - Trigger by Parent Scene
 
