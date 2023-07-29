@@ -122,7 +122,6 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .second02
         
         Task {
@@ -289,7 +288,9 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     }
     
     func dismissQuitPopup() {
-        self.popupView.isHidden = true
+        Task {
+            await self.interactor.didTapQuitPopupBackground()
+        }
     }
     
     func displayToast(message: String) {
