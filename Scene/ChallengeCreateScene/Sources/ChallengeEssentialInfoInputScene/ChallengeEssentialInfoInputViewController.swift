@@ -162,6 +162,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registKeyboardDelegate()
 
         Task {
             await self.interactor.didLoad()
@@ -299,6 +300,30 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
     func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name) {
         viewModel.text.unwrap {
             self.challengeNameTextField.setTextFieldValue(text: $0)
+        }
+    }
+}
+
+// MARK: - Keyboard Setting
+
+extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.nextButton.snp.makeConstraints { make in
+                make.bottom.equalToSuperview().offset(-330)
+            }
+
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    func willHideKeyboard(duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.nextButton.snp.makeConstraints { make in
+                make.bottom.equalToSuperview().offset(-54)
+            }
+
+            self.view.layoutIfNeeded()
         }
     }
 }

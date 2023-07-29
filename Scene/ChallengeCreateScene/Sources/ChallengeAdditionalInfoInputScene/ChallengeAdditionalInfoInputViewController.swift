@@ -91,6 +91,7 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registKeyboardDelegate()
     }
     
     // MARK: - Layout
@@ -114,20 +115,19 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
             make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(24)
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
-            make.bottom.equalTo(self.challengeRuleTextView.snp.top).offset(-42)
         }
 
         self.challengeRuleTextView.snp.makeConstraints { make in
+            make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.lessThanOrEqualTo(self.nextButton.snp.top).offset(-100)
             make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
         }
 
         self.nextButton.snp.makeConstraints { make in
+            make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(100)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
         }
     }
 }
@@ -166,4 +166,36 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 
 extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInputDisplayLogic {
 
+}
+
+// MARK: - Keyboard Setting
+
+extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.challengeRuleTextView.snp.updateConstraints { make in
+                make.top.equalTo(self.headerStackView.snp.bottom).offset(10)
+            }
+
+            self.nextButton.snp.makeConstraints { make in
+                make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(10)
+            }
+
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    func willHideKeyboard(duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.challengeRuleTextView.snp.updateConstraints { make in
+                make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
+            }
+
+            self.nextButton.snp.makeConstraints { make in
+                make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(100)
+            }
+
+            self.view.layoutIfNeeded()
+        }
+    }
 }
