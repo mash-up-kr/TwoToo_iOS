@@ -250,7 +250,8 @@ extension HomeViewController: HomeDisplayLogic {
                     make.edges.equalToSuperview()
                 }
                 
-                let popupView = TTPopup(
+                let popupView = TTPopup()
+                popupView.configure(
                     title: Home.ViewModel.BothCertificationViewModel.title,
                     resultView: popupContentView,
                     description: Home.ViewModel.BothCertificationViewModel.message,
@@ -304,7 +305,8 @@ extension HomeViewController: HomeDisplayLogic {
                     make.edges.equalToSuperview()
                 }
                 
-                let popupView = TTPopup(
+                let popupView = TTPopup()
+                popupView.configure(
                     title: $0.title,
                     resultView: popupContentView,
                     description: $0.message,

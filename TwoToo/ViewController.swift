@@ -36,24 +36,6 @@ class ViewController: UIViewController {
         return v
     }()
 
-    lazy var popup: TTPopup = {
-        let v = TTPopup(
-            title: "Test",
-            resultView: self.popupContentView,
-            description: "테스트 입니다",
-            buttonTitles: ["취소", "그만두기"]
-        )
-        v.didTapBackground {
-            print("배경 클릭")
-        }
-        v.didTapLeftButton {
-            print("왼쪽 버튼 클릭")
-        }
-        v.didTapRightButton {
-            print("오른쪽 버튼 클릭")
-        }
-        return v
-    }()
     
     lazy var popupContentView: UIView = {
         let v = UIView()

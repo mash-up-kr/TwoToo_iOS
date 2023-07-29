@@ -47,8 +47,8 @@ private extension HistoryPresenter {
     func map(model: History.Model.ChallengeList) -> History.ViewModel.CellInfoList {
         var viewModel: History.ViewModel.CellInfoList = []
         model.forEach {
-            let start: String = $0.startDate.fullDateString(.shortYearMonthDay)
-            let end: String = $0.endDate.fullDateString(.shortYearMonthDay)
+            let start: String = $0.startDate.dateToString(.shortYearMonthDay)
+            let end: String = $0.endDate.dateToString(.shortYearMonthDay)
             let dateText: String = start + " ~ " + end
             let partnerFlower = FlowerMappingWorker(flowerType: $0.partnerInfo.flower).getSmallImage()
             let myFlower = FlowerMappingWorker(flowerType: $0.myInfo.flower).getSmallImage()
