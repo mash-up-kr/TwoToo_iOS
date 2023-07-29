@@ -20,6 +20,7 @@ import SplashScene
 import LoginScene
 import KakaoSDKAuth
 import Firebase
+import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
