@@ -27,13 +27,19 @@ protocol FlowerSelectDisplayLogic: AnyObject {
     func displayStartChallengeSuccessToast(viewModel: FlowerSelect.ViewModel.Toast)
 }
 
-final class FlowerSelectViewController: UIViewController {
+final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarDelegate {
     var interactor: FlowerSelectBusinessLogic
     private var flowerItems: FlowerSelect.ViewModel.Flower = .init()
     private var selectedFlower: FlowerSelect.ViewModel.FlowerSelect = .init()
     
     // MARK: - UI
-    
+
+    private lazy var navigationbar: TTNavigationDetailBar = {
+        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        v.delegate = self
+        return v
+    }()
+
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -126,17 +132,33 @@ final class FlowerSelectViewController: UIViewController {
             await self.interactor.didLoad()
         }
     }
-    
+
+    func didTapDetailLeftButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func didTapDetailRightButton() {
+
+    }
+
+
     // MARK: - Layout
     
     private func setUI() {
         self.view.backgroundColor = .second02
 
         self.headerStackView.addArrangedSubviews(self.headerLabel, self.captionLabel)
-        self.view.addSubviews(self.headerStackView, self.flowerCollectionView, self.challengeButton)
+        self.view.addSubviews(self.navigationbar,
+            self.headerStackView, self.flowerCollectionView, self.challengeButton)
+
+        self.navigationbar.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
 
         self.headerStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(2)
+            make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(22)
             make.trailing.equalToSuperview().offset(-18)
             make.bottom.equalTo(self.flowerCollectionView.snp.top).offset(-25)

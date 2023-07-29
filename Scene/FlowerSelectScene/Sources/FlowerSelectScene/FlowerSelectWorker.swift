@@ -8,6 +8,33 @@
 
 import CoreKit
 
-protocol FlowerSelectWorkerProtocol {}
+protocol FlowerSelectWorkerProtocol {
+    func requestChallengeCreate(name: String, description: String, user2Flower: String, startDate: String) async throws
+}
 
-final class FlowerSelectWorker: FlowerSelectWorkerProtocol {}
+final class FlowerSelectWorker: FlowerSelectWorkerProtocol {
+
+    var challengeCrateNetworkWorker: ChallengeCreateNetworkWorkerProtocol
+
+    init(
+        challengeCrateNetworkWorker: ChallengeCreateNetworkWorkerProtocol
+    ) {
+        self.challengeCrateNetworkWorker = challengeCrateNetworkWorker
+    }
+
+    func requestChallengeCreate(
+        name: String,
+        description: String,
+        user2Flower: String,
+        startDate: String
+    ) async throws {
+        let challengeCrateResponse = try await self.challengeCrateNetworkWorker.requestChallengeRegist(
+            name: name,
+            description: description,
+            user2Flower: user2Flower,
+            startDate: startDate
+        )
+
+        print(challengeCrateResponse)
+    }
+}

@@ -55,15 +55,21 @@ public final class FlowerSelectSceneFactory {
     public func make(with configuration: FlowerSelectConfiguration) -> FlowerSelectScene {
         
         let presenter = FlowerSelectPresenter()
+        let challengeCreateWorker = FlowerSelectNetworkWorker()
+
         let router = FlowerSelectRouter()
-        let worker = FlowerSelectWorker()
+        let worker = FlowerSelectWorker(challengeCrateNetworkWorker: challengeCreateWorker)
         let interactor = FlowerSelectInteractor(
             presenter: presenter,
             router: router,
             worker: worker,
             didTriggerChallengeCreateScene: configuration.didTriggerChallengeCreateScene,
             didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene,
-            enterSceneStatus: configuration.enterSceneStatus
+            enterSceneStatus: configuration.enterSceneStatus,
+            nameDataSource: configuration.challengeName,
+            startDateDataSource: configuration.challengeStartDate,
+            endDateDataSource: configuration.challengeEndDate,
+            additionalInfoDataSource: configuration.challengeRule
         )
         let viewController = FlowerSelectViewController(
             interactor: interactor
