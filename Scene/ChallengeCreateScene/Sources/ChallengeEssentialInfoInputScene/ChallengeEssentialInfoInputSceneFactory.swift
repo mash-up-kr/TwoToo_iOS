@@ -15,13 +15,7 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 
 public struct ChallengeEssentialInfoInputConfiguration {
 
-    var didTriggerSelectChallengeName: PassthroughSubject<String, Never>
-
-    public init(
-        didTriggerSelectChallengeName: PassthroughSubject<String, Never>
-    ) {
-        self.didTriggerSelectChallengeName = didTriggerSelectChallengeName
-    }
+    public init() {}
 }
 
 public final class ChallengeEssentialInfoInputSceneFactory {
