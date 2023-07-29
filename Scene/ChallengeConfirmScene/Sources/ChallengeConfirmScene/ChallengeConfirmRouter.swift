@@ -39,6 +39,7 @@ extension ChallengeConfirmRouter: ChallengeConfirmRoutingLogic {
 
         let flowerSelectViewController = flowerSelectScene.viewController
 
+        flowerSelectViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(flowerSelectViewController, animated: true)
     }
 }

@@ -76,9 +76,6 @@ final class ChallengeCreateFinishViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        /// 이전의 모든 페이지 제거
-        self.navigationController?.popToRootViewController(animated: true)
-        
         self.view.backgroundColor = .second02
         self.view.addSubviews(self.titleLabel, self.captionLabel, self.mainImageView, self.backgroundImage, self.confirmButton)
 

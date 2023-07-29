@@ -40,6 +40,7 @@ extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutin
 
         let challengeConfirmViewController = challengeConfirmScene.viewController
 
+        challengeConfirmViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
 }
