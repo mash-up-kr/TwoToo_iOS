@@ -30,9 +30,20 @@ public final class HomeSceneFactory {
     
     public func make(with configuration: HomeConfiguration) -> HomeScene {
         
+        let localDataSource = LocalDataSource()
+        let homeLocalWorker = HomeLocalWorker(localDataSource: localDataSource)
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let homeNetworkWorker = HomeNetworkWorker()
+        let challengeFinishWorker = ChallengeFinishWorker()
+        
         let presenter = HomePresenter()
         let router = HomeRouter()
-        let worker = HomeWorker()
+        let worker = HomeWorker(
+            homeLocalWorker: homeLocalWorker,
+            meLocalWorker: meLocalWorker,
+            homeNetworkWorker: homeNetworkWorker,
+            challengeFinishWorker: challengeFinishWorker
+        )
         let interactor = HomeInteractor(
             presenter: presenter,
             router: router,

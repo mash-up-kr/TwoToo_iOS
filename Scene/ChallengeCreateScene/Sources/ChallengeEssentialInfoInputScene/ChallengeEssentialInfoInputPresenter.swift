@@ -15,6 +15,8 @@ protocol ChallengeEssentialInfoInputPresentationLogic {
     func presentCalendar(startDate: ChallengeEssentialInfoInput.Model.Info.StartDate, endDate: ChallengeEssentialInfoInput.Model.Info.EndDate)
     /// 다음 버튼 활성화하여 보여준다.
     func presentEnabled(nextButton: ChallengeEssentialInfoInput.Model.Info.NextButton)
+    /// 챌린지 이름을 보여준다.
+    func presentChallengeName(model: ChallengeEssentialInfoInput.Model.Info.Name)
 }
 
 final class ChallengeEssentialInfoInputPresenter {
@@ -33,5 +35,9 @@ extension ChallengeEssentialInfoInputPresenter: ChallengeEssentialInfoInputPrese
     func presentEnabled(nextButton: ChallengeEssentialInfoInput.Model.Info.NextButton) {
 
         self.viewController?.displaySetEnableNextButton(viewModel: .init(isEnabled: nextButton.isEnabled))
+    }
+
+    func presentChallengeName(model: ChallengeEssentialInfoInput.Model.Info.Name) {
+        self.viewController?.displayChallengeName(viewModel: .init(text: model.text))
     }
 }

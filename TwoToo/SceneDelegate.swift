@@ -19,6 +19,8 @@ import NicknameRegistScene
 import SplashScene
 import LoginScene
 import KakaoSDKAuth
+import Firebase
+import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -44,6 +46,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        if let userActivity = connectionOptions.userActivities.first {
+            self.scene(scene, continue: userActivity)
+        } else {
+            self.scene(scene, openURLContexts: connectionOptions.urlContexts)
+        }
+        
         self.bindTrigger() // 트리거를 바인딩합니다.
         
         self.window = UIWindow(windowScene: windowScene)
@@ -59,6 +67,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let vc = splashScene.viewController
         let nav = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = nav
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        if let incomingURL = userActivity.webpageURL {
+            let handled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
+                if (dynamicLink != nil) && !(error != nil) {
+                    self.handleDynamicLink(dynamicLink)
+                }
+            }
+            print(handled)
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -169,6 +188,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.window?.rootViewController = tc
             }
             .store(in: &self.cancellables)
+    }
+    
+    private func handleDynamicLink(_ dynamicLink: DynamicLink?) {
+        guard let dynamicLink = dynamicLink, let deepLink = dynamicLink.url else {
+            return
+        }
+        
+        let localDataSource = LocalDataSource()
+        let invitedUserLocalWorker = InvitedUserLocalWorker(localDataSource: localDataSource)
+        
+        let queryItems = URLComponents(url: deepLink, resolvingAgainstBaseURL: true)?.queryItems
+        let path = deepLink.path
+        
+        // 매칭
+        if path == "/invite" {
+            if let userNo = queryItems?.filter({ item in item.name == "userNo" }).first?.value {
+                invitedUserLocalWorker.invitedUserNo = Int(userNo)
+            }
+            if let nickname = queryItems?.filter({ item in item.name == "nickname" }).first?.value {
+                invitedUserLocalWorker.invitedUser = nickname
+            }
+        }
     }
 }
 

@@ -9,6 +9,7 @@ import Foundation
 
 public protocol InvitationLocalWorkerProtocol {
     var isInvitationSend: Bool? { get set }
+    var invitationLink: String? { get set }
 }
 
 public final class InvitationLocalWorker: InvitationLocalWorkerProtocol {
@@ -19,17 +20,30 @@ public final class InvitationLocalWorker: InvitationLocalWorkerProtocol {
         self.localDataSource = localDataSource
     }
     
-    private let key: String = "isInvitationSend"
+    private let isInvitationSendKey: String = "isInvitationSend"
+    private let isInvitationLinkKey: String = "invitationLink"
     
     public var isInvitationSend: Bool? {
         get {
-            return self.localDataSource?.read(key: self.key)
+            return self.localDataSource?.read(key: self.isInvitationSendKey)
         }
         set {
             guard let newValue = newValue else {
                 return
             }
-            self.localDataSource?.save(value: newValue, key: self.key)
+            self.localDataSource?.save(value: newValue, key: self.isInvitationSendKey)
+        }
+    }
+    
+    public var invitationLink: String? {
+        get {
+            return self.localDataSource?.read(key: self.isInvitationLinkKey)
+        }
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            self.localDataSource?.save(value: newValue, key: self.isInvitationLinkKey)
         }
     }
 }

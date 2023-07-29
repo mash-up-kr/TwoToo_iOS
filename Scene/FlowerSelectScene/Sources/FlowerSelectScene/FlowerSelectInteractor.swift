@@ -42,16 +42,14 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
         worker: FlowerSelectWorkerProtocol,
         didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-        didEnterFlowerSelectScene: String,
-        selectedFlower: String
+        enterSceneStatus: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
-        self.enterSceneStatus = didEnterFlowerSelectScene
-        self.selectedFlower = selectedFlower
+        self.enterSceneStatus = enterSceneStatus
     }
     
     // MARK: - DataStore
@@ -62,7 +60,7 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
     
     var enterSceneStatus: String
 
-    var selectedFlower: String
+    var selectedFlower: String = ""
     
     enum EnterSceneStatus: String {
         case create = "create"

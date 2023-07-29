@@ -8,6 +8,14 @@
 
 import CoreKit
 
-protocol MyInfoWorkerProtocol {}
+protocol MyInfoWorkerProtocol {
+    /// 마이페이지 조회
+    func fetchMypageInfo() async throws -> MyInfo.Model.Data
+}
 
-final class MyInfoWorker: MyInfoWorkerProtocol {}
+final class MyInfoWorker: MyInfoWorkerProtocol {
+    // TODO: - API 요청 후 연동
+    func fetchMypageInfo() async throws -> MyInfo.Model.Data {
+        return  .init(myNickname: "왕", partnerNickname: "여왕", challengeTotalCount: "3")
+    }
+}

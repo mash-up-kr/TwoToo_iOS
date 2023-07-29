@@ -34,9 +34,22 @@ public final class InvitationWaitSceneFactory {
     
     public func make(with configuration: InvitationWaitConfiguration) -> InvitationWaitScene {
         
+        let localDataSource = LocalDataSource()
+        let invitedUserLocalWorker = InvitedUserLocalWorker(localDataSource: localDataSource)
+        let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let partnerNetworkWorker = PartnerNetworkWorker()
+        let nicknameNetworkWorker = NicknameNetworkWorker()
+        
         let presenter = InvitationWaitPresenter()
         let router = InvitationWaitRouter()
-        let worker = InvitationWaitWorker()
+        let worker = InvitationWaitWorker(
+            invitedUserLocalWorker: invitedUserLocalWorker,
+            invitationLocalWorker: invitationLocalWorker,
+            meLocalWorker: meLocalWorker,
+            partnerNetworkWorker: partnerNetworkWorker,
+            nicknameNetworkWorker: nicknameNetworkWorker
+        )
         let interactor = InvitationWaitInteractor(
             presenter: presenter,
             router: router,

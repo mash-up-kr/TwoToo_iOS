@@ -39,11 +39,11 @@ public enum GrowsStatus: Equatable {
     case sprout
     /// Step 3 - 어린 봉우리
     case bud
-    /// Step 3 - 봉우리
+    /// Step 4 - 봉우리
     case peak
-    /// Step 4 - 꽃
+    /// Step 5 - 꽃
     case flower
-    /// Step 5 - 만개한 꽃
+    /// Step 6 - 만개한 꽃
     case bloom
 }
 
