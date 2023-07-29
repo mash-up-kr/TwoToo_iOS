@@ -10,6 +10,7 @@ import Foundation
 public enum DateFormatType: String {
     case shortYearMonthDay = "yy/MM/dd"
     case yearMonthDay = "YYYY/MM/dd"
+    case monthDay = "MM/dd"
     case hourMinute = "HH:mm"
 
     var displayName: String {
