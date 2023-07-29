@@ -35,6 +35,12 @@ protocol ChallengeEssentialInfoInputBusinessLogic {
 protocol ChallengeEssentialInfoInputDataStore: AnyObject {
     /// 챌린지 이름 선택 트리거
     var didTriggerSelectChallengeName: PassthroughSubject<String, Never> { get }
+    /// 챌린지명
+    var nameDataSource: String? { get }
+    /// 챌린지 시작일
+    var startDateDataSource: String? { get }
+    /// 챌린지 마감일
+    var endDateDataSource: String? { get }
 }
 
 final class ChallengeEssentialInfoInputInteractor: ChallengeEssentialInfoInputDataStore, ChallengeEssentialInfoInputBusinessLogic {

@@ -26,8 +26,15 @@ final class ChallengeEssentialInfoInputRouter {
 
 extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingLogic {
     func routeToAdditionalInfoScene() {
+        guard let challengeName = self.dataStore?.nameDataSource,
+              let challengeStartDate = self.dataStore?.startDateDataSource,
+              let challengeEndDate = self.dataStore?.endDateDataSource else { return }
 
-        let challengeAdditionalInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init(didTriggerSelectChallengeName: .init()))
+        let challengeAdditionalInfoInputScene = ChallengeAdditionalInfoInputSceneFactory().make(
+            with: .init(challengeName: challengeName,
+                        challengeStartDate: challengeStartDate,
+                        challengeEndDate: challengeEndDate)
+        )
 
         let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
 
