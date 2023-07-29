@@ -25,6 +25,10 @@ public extension String {
                 return "yyyy/MM/dd"
             case .shortYearMonthDay:
                 return "yy/MM/dd"
+            case .monthDay:
+                return "MM/dd"
+            case .hangleYearMonthDay:
+                return "yyyy년 MM월 dd일"
             }
         }
 

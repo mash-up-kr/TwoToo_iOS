@@ -14,9 +14,51 @@ enum ChallengeHistoryDetail {
     
     enum Model {
         
+        /// 챌린지 상세 정보
+        struct ChallengeDetail: Equatable {
+            /// 인증 ID
+            var id: String
+            /// 챌린지 이름
+            var challengeName: String
+            /// 유저 닉네임
+            var myNickname: String
+            /// 인증 사진
+            var certificateImageUrl: String
+            /// 인증 소감
+            var certificateComment: String?
+            /// 입력 시간
+            var certificateTime: Date
+            /// 상대방 닉네임
+            var partnerNickname: String
+            /// 칭찬 문구
+            var complicateComment: String?
+        }
+ 
     }
     
     enum ViewModel {
+        /// 인증
+        struct Challenge {
+            /// 챌린지 이름
+            var challengeName: String
+            /// 인증 날짜
+            var certificationDateText: String
+            /// (유저 닉네임)의 기록
+            var navigationTitle: String
+            /// 인증 사진
+            var certificationImageURL: URL?
+            /// 인증 소감
+            var certificationComment: String?
+            /// 인증 시간
+            var certificationTimeText: String
+        }
         
+        /// 칭찬
+        struct Compliment {
+            /// (상대방 닉네임)이 보낸 칭찬
+            var complimentTitle: String
+            /// 칭찬 문구
+            var complimentComment: String?
+        }
     }
 }

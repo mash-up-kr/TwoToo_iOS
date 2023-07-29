@@ -96,8 +96,8 @@ extension ChallengeEssentialInfoInputInteractor {
     func didTapStartDate(startDate: Date) async {
         let endDateData = startDate + (86400 * 22)
 
-        self.startDateDataSource = startDate.fullDateString(.yearMonthDay)
-        self.endDateDataSource = endDateData.fullDateString(.yearMonthDay)
+        self.startDateDataSource = startDate.dateToString(.yearMonthDay)
+        self.endDateDataSource = endDateData.dateToString(.yearMonthDay)
         await self.didUpdateNextButton()
 
         await self.presenter.presentCalendar(startDate: .init(date: startDate), endDate: .init(date: endDateData))
@@ -106,8 +106,8 @@ extension ChallengeEssentialInfoInputInteractor {
     func didTapEndDate(endDate: Date) async {
         let startDateData = endDate - (86400 * 22)
 
-        self.endDateDataSource = startDateData.fullDateString(.yearMonthDay)
-        self.startDateDataSource = endDate.fullDateString(.yearMonthDay)
+        self.endDateDataSource = startDateData.dateToString(.yearMonthDay)
+        self.startDateDataSource = endDate.dateToString(.yearMonthDay)
         await self.didUpdateNextButton()
         
         await self.presenter.presentCalendar(startDate: .init(date: startDateData), endDate: .init(date: endDate))
