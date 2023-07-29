@@ -30,8 +30,7 @@ public final class ChallengeEssentialInfoInputSceneFactory {
         let interactor = ChallengeEssentialInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker,
-            didTriggerSelectChallengeName: configuration.didTriggerSelectChallengeName
+            worker: worker
         )
         let viewController = ChallengeEssentialInfoInputViewController(
             interactor: interactor
