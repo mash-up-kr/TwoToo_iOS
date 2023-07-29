@@ -38,6 +38,7 @@ extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingL
 
         let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
 
+        challengeAdditionalInfoInputViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeAdditionalInfoInputViewController, animated: true)
     }
     

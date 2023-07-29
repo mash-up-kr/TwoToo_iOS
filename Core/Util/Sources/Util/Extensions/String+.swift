@@ -27,6 +27,8 @@ public extension String {
                 return "yy/MM/dd"
             case .monthDay:
                 return "MM/dd"
+            case .iso:
+                return "yyyy-MM-dd'T'HH:mm:ss.SSZ"
             case .hangleYearMonthDay:
                 return "yyyy년 MM월 dd일"
             }

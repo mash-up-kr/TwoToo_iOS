@@ -21,6 +21,6 @@ final class ChallengeCreateFinishRouter {
 
 extension ChallengeCreateFinishRouter: ChallengeCreateFinishRoutingLogic {
     func dismiss() {
-        self.viewController?.navigationController?.popViewController(animated: true)
+        self.viewController?.navigationController?.popToRootViewController(animated: true)
     }
 }

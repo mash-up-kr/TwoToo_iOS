@@ -29,7 +29,6 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     private lazy var navigationbar: TTNavigationDetailBar = {
         let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
         v.delegate = self
-        v.delegate?.didTapDetailLeftButton()
         return v
     }()
 

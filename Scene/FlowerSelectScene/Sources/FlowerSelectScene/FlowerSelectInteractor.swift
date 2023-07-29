@@ -22,7 +22,16 @@ protocol FlowerSelectDataStore: AnyObject {
     var didTriggerChallengeCreateScene: PassthroughSubject<Void, Never> { get }
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
-    /// 진입점 트리거
+    /// 챌린지명
+    var nameDataSource: String? { get }
+    /// 챌린지 시작일
+    var startDateDataSource: String? { get }
+    /// 챌린지 마감일
+    var endDateDataSource: String? { get }
+    /// 챌린지 규칙
+    var additionalInfoDataSource: String? { get }
+
+    /// 진입점 상태
     var enterSceneStatus: String { get }
     /// 선택된 꽃
     var selectedFlower: String { get }
@@ -42,7 +51,11 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
         worker: FlowerSelectWorkerProtocol,
         didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-        enterSceneStatus: String
+        enterSceneStatus: String,
+        nameDataSource: String?,
+        startDateDataSource: String?,
+        endDateDataSource: String?,
+        additionalInfoDataSource: String?
     ) {
         self.presenter = presenter
         self.router = router
@@ -50,6 +63,10 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
         self.enterSceneStatus = enterSceneStatus
+        self.nameDataSource = nameDataSource
+        self.startDateDataSource = startDateDataSource
+        self.endDateDataSource = endDateDataSource
+        self.additionalInfoDataSource = additionalInfoDataSource
     }
     
     // MARK: - DataStore
@@ -59,8 +76,11 @@ final class FlowerSelectInteractor: FlowerSelectDataStore, FlowerSelectBusinessL
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     
     var enterSceneStatus: String
-
     var selectedFlower: String = ""
+    var nameDataSource: String?
+    var startDateDataSource: String?
+    var endDateDataSource: String?
+    var additionalInfoDataSource: String?
     
     enum EnterSceneStatus: String {
         case create = "create"
@@ -116,6 +136,16 @@ extension FlowerSelectInteractor {
 extension FlowerSelectInteractor {
     func didTapButton() async {
 
+        do {
+
+            guard let startData = self.startDateDataSource?.fullStringDate(.yearMonthDay).dateToString(.iso) else { return }
+
+            try await self.worker.requestChallengeCreate(name: self.nameDataSource ?? "", description: self.additionalInfoDataSource ?? "", user2Flower: self.selectedFlower, startDate: startData)
+            await self.router.routeToChallengeCreateFinishScene()
+        }
+        catch {
+            await self.presenter.presentStartChallengeError(error: error)
+        }
     }
 }
 

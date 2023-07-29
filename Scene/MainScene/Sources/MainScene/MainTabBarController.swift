@@ -64,9 +64,19 @@ final class MainTabBarController: UITabBarController {
     
     private func setTabBarLayout() {
         self.view.bringSubviewToFront(self.mainTabBar)
-        
+
         self.mainTabBar.snp.makeConstraints { make in
-            make.edges.equalTo(self.tabBar)
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(61 + UIDevice.current.safeAreaBottomHeight)
+        }
+
+        let isHideBottomPushed = (self.selectedViewController as? UINavigationController)?.topViewController?.hidesBottomBarWhenPushed
+
+        if !(isHideBottomPushed ?? false) {
+            self.mainTabBar.isHidden = false
+        }
+        else {
+            self.mainTabBar.isHidden = true
         }
     }
     
