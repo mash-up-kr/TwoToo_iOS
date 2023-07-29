@@ -9,7 +9,13 @@
 import UIKit
 
 @MainActor
-protocol ChallengeConfirmRoutingLogic {}
+protocol ChallengeConfirmRoutingLogic {
+    /// 닫기
+    func pop()
+    
+    /// 꽃 선택 화면으로 이동한다.
+    func routeToFlowerSelectScene(status: ChallengeConfirm.Model.ConfirmStatus, info: ChallengeConfirm.Model.ChallengeInfo)
+}
 
 final class ChallengeConfirmRouter {
     weak var viewController: ChallengeConfirmViewController?
@@ -17,5 +23,11 @@ final class ChallengeConfirmRouter {
 }
 
 extension ChallengeConfirmRouter: ChallengeConfirmRoutingLogic {
+    func pop() {
+        self.viewController?.navigationController?.popViewController(animated: true)
+    }
     
+    func routeToFlowerSelectScene(status: ChallengeConfirm.Model.ConfirmStatus, info: ChallengeConfirm.Model.ChallengeInfo) {
+        
+    }
 }

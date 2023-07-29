@@ -10,4 +10,5 @@ import CoreKit
 
 protocol ChallengeConfirmWorkerProtocol {}
 
-final class ChallengeConfirmWorker: ChallengeConfirmWorkerProtocol {}
+final class ChallengeConfirmWorker: ChallengeConfirmWorkerProtocol {
+}
