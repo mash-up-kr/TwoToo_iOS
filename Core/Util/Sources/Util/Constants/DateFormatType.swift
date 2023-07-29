@@ -13,6 +13,8 @@ public enum DateFormatType: String {
     case monthDay = "MM/dd"
     case hourMinute = "HH:mm"
     case iso = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
+    case hangleYearMonthDay = "yyyy년 MM월 dd일"
+
 
     var displayName: String {
         return self.rawValue
