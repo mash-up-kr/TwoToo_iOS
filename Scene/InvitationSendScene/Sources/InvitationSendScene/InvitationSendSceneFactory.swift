@@ -30,9 +30,16 @@ public final class InvitationSendSceneFactory {
     
     public func make(with configuration: InvitationSendConfiguration) -> InvitationSendScene {
         
+        let localDataSource = LocalDataSource()
+        let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        
         let presenter = InvitationSendPresenter()
         let router = InvitationSendRouter()
-        let worker = InvitationSendWorker()
+        let worker = InvitationSendWorker(
+            invitationLocalWorker: invitationLocalWorker,
+            meLocalWorker: meLocalWorker
+        )
         let interactor = InvitationSendInteractor(
             presenter: presenter,
             router: router,

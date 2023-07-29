@@ -19,7 +19,7 @@ public final class TTTagView: UIView, UIComponentBased {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-        self.backgroundColor = .white
+        self.attribute()
     }
     
     required init?(coder: NSCoder) {
@@ -39,15 +39,15 @@ public final class TTTagView: UIView, UIComponentBased {
         self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
             make.leading.equalToSuperview().offset(10)
-            make.bottom.equalToSuperview().inset(4)
-            make.trailing.equalToSuperview().inset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().offset(-3)
         }
     }
     
     public func attribute() {
-        
+        self.backgroundColor = .white
     }
 
     

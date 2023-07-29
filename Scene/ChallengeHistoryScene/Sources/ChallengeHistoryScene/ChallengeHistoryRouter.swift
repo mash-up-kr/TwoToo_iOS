@@ -34,6 +34,6 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
     }
     
     func dismiss() {
-        
+        self.viewController?.dismiss(animated: true)
     }
 }
