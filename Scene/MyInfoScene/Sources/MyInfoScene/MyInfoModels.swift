@@ -13,10 +13,30 @@ enum MyInfo {
     // MARK: Entity
     
     enum Model {
-        
+        struct Data {
+            var myNickname: String
+            var partnerNickname: String
+            var challengeTotalCount: String?
+        }
     }
     
     enum ViewModel {
-        
+        struct Lists {
+            var items: [Item]?
+            
+            struct Item {
+                var title: String
+            }
+        }
+
+        struct Data {
+            var myNickname: String
+            var partnerNickname: String
+            var challengeTotalCount: String?
+        }
+
+        struct Toast {
+            var message: String?
+        }
     }
 }
