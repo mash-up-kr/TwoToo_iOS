@@ -34,5 +34,12 @@ public enum Pallete: String {
         }
         return palleteColor
     }
-    
+
+    /// cgColor
+    public static func setColor(_ pallete: Pallete) -> CGColor {
+        guard let palleteColor = UIColor(named: pallete.rawValue, in: Bundle.module, compatibleWith: nil) else {
+            return UIColor.clear.cgColor
+        }
+        return palleteColor.cgColor
+    }
 }

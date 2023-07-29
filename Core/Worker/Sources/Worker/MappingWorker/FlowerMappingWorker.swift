@@ -8,7 +8,7 @@
 import UIKit
 import DesignSystem
 
-public enum Flower: Equatable {
+public enum Flower: Int, Equatable, CaseIterable {
     case rose
     case tulip
     case cotton
@@ -17,6 +17,19 @@ public enum Flower: Equatable {
     case sunflower
     case camellia
     case delphinium
+
+    public var name: String {
+        switch self {
+        case .rose: return "rose"
+        case .tulip: return "tulip"
+        case .cotton: return "cotton"
+        case .fig: return "fig"
+        case .chrysanthemum: return "chrysanthemum"
+        case .sunflower: return "sunflower"
+        case .camellia: return "camellia"
+        case .delphinium: return "delphinium"
+        }
+    }
 }
 
 public enum GrowsStatus: Equatable {
@@ -202,6 +215,27 @@ final public class FlowerMappingWorker {
             return .asset(.flower_success_my_bling_camellia)!
         case .delphinium:
             return .asset(.flower_success_my_bling_delphinium)!
+        }
+    }
+    
+    public func getBlurImage() -> UIImage {
+        switch flowerType {
+        case .rose:
+            return .asset(.flower_blur_rose)!
+        case .tulip:
+            return .asset(.flower_blur_tulip)!
+        case .cotton:
+            return .asset(.flower_blur_cotton)!
+        case .fig:
+            return .asset(.flower_blur_fig)!
+        case .chrysanthemum:
+            return .asset(.flower_blur_chrysanthemum)!
+        case .sunflower:
+            return .asset(.flower_blur_sunflower_blur)!
+        case .camellia:
+            return .asset(.flower_blur_camellia)!
+        case .delphinium:
+            return .asset(.flower_blur_delphinium)!
         }
     }
     
