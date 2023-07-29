@@ -9,17 +9,30 @@
 import CoreKit
 import UIKit
 import DesignSystem
+import Util
 
 protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
+    /// NextButton enable 한다
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
+    /// 캘린더 화면 보여준다.
     func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.ChallengeDate)
+    /// 챌린지 명을 업데이트 시켜준다.
+    func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name)
 }
 
 final class ChallengeEssentialInfoInputViewController: UIViewController {
+
     var interactor: ChallengeEssentialInfoInputBusinessLogic
 
     // MARK: - UI
-    
+
+    private lazy var navigationbar: TTNavigationDetailBar = {
+        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        v.delegate = self
+        v.delegate?.didTapDetailLeftButton()
+        return v
+    }()
+
     private lazy var headerStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
@@ -60,14 +73,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.titleLabel?.font = .body2
         v.layer.cornerRadius = 10
         v.contentEdgeInsets = .init(top: 8, left: 11, bottom: 8, right: 11)
-
-        return v
-    }()
-
-    private lazy var entireDateStackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .horizontal
-        v.spacing = 36
+        v.addTapAction { [weak self] in
+            Task {
+                await self?.interactor.didTapChallengeRecommendationButton()
+            }
+        }
         return v
     }()
 
@@ -93,6 +103,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
         v.addTarget(self, action: #selector(didTapStartDate), for: .valueChanged)
+        v.minimumDate = Date()
         return v
     }()
 
@@ -111,6 +122,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
         v.addTarget(self, action: #selector(didTapEndDate), for: .valueChanged)
+        v.minimumDate = Date()
         return v
     }()
 
@@ -124,6 +136,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
+        v.addAction { [weak self] in
+            Task {
+                await self?.interactor.didTapNextButton()
+            }
+        }
         return v
     }()
 
@@ -182,17 +199,30 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.view.backgroundColor = .second02
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
-        self.entireDateStackView.addArrangedSubviews(self.startDateStackView, self.endDateStackView)
         self.startDateStackView.addArrangedSubviews(self.startDateLabel, self.startDatePicker)
         self.endDateStackView.addArrangedSubviews(self.endDateLabel, self.endDatePicker)
 
-        self.view.addSubviews(self.headerStackView, self.challengeNameTextField, self.challengeRecommendButton, self.entireDateStackView, self.nextButton)
+        self.view.addSubviews(
+            self.navigationbar,
+            self.headerStackView,
+            self.challengeNameTextField,
+            self.challengeRecommendButton,
+            self.startDateStackView,
+            self.endDateStackView,
+            self.nextButton
+        )
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
 
+        self.navigationbar.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+
         self.headerStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(2)
+            make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(24)
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
             make.bottom.equalTo(self.challengeNameTextField.snp.top).offset(-19)
@@ -207,20 +237,18 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 
         self.challengeRecommendButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
-            make.bottom.equalTo(self.entireDateStackView.snp.top).offset(-43)
         }
         
         self.startDateStackView.snp.makeConstraints { make in
+            make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(43)
+            make.leading.equalTo(self.challengeRecommendButton.snp.leading)
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
 
         self.endDateStackView.snp.makeConstraints { make in
+            make.leading.equalTo(self.startDateStackView.snp.trailing).offset(36)
+            make.top.equalTo(self.startDateStackView.snp.top)
             make.width.equalTo(UIScreen.main.bounds.width * 0.27)
-        }
-
-        self.entireDateStackView.snp.makeConstraints { make in
-            make.leading.equalTo(self.challengeRecommendButton.snp.leading)
-            make.trailing.equalToSuperview().offset(-109)
         }
 
         self.nextButton.snp.makeConstraints { make in
@@ -232,6 +260,16 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 }
 
 // MARK: - Trigger
+
+extension ChallengeEssentialInfoInputViewController: TTNavigationDetailBarDelegate {
+    func didTapDetailLeftButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func didTapDetailRightButton() {
+
+    }
+}
 
 // MARK: - Trigger by Parent Scene
 
@@ -256,6 +294,12 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
         viewModel.isEnabled.unwrap { enable in
             self.nextButton.setIsEnabled(enable)
+        }
+    }
+
+    func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name) {
+        viewModel.text.unwrap {
+            self.challengeNameTextField.setTextFieldValue(text: $0)
         }
     }
 }

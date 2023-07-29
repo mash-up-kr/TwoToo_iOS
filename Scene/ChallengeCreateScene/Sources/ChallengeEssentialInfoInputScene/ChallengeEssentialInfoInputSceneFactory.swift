@@ -16,7 +16,6 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 public struct ChallengeEssentialInfoInputConfiguration {
 
     public init() {}
-
 }
 
 public final class ChallengeEssentialInfoInputSceneFactory {
@@ -31,7 +30,8 @@ public final class ChallengeEssentialInfoInputSceneFactory {
         let interactor = ChallengeEssentialInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerSelectChallengeName: configuration.didTriggerSelectChallengeName
         )
         let viewController = ChallengeEssentialInfoInputViewController(
             interactor: interactor
