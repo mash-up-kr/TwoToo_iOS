@@ -41,7 +41,10 @@ public final class ChallengeAdditionalInfoInputSceneFactory {
         let interactor = ChallengeAdditionalInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            nameDataSource: configuration.challengeName,
+            startDateDataSource: configuration.challengeStartDate,
+            endDateDataSource: configuration.challengeEndDate
         )
         let viewController = ChallengeAdditionalInfoInputViewController(
             interactor: interactor

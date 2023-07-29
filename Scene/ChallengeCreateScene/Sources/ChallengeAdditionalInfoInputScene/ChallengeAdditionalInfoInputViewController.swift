@@ -63,6 +63,11 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.setIsEnabled(true)
+        v.addAction {
+            Task {
+                await self.interactor.didTapNextButton()
+            }
+        }
         return v
     }()
 
