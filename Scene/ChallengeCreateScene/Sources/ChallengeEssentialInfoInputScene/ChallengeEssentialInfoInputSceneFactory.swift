@@ -16,7 +16,6 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 public struct ChallengeEssentialInfoInputConfiguration {
 
     public init() {}
-
 }
 
 public final class ChallengeEssentialInfoInputSceneFactory {

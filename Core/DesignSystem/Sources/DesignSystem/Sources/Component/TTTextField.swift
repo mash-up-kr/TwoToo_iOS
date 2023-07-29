@@ -93,7 +93,12 @@ final public class TTTextField: UIView, UIComponentBased {
             make.height.equalTo(UIScreen.main.bounds.size.height * 0.054)
         }
     }
-    
+
+    /// textField의 값을 설정해주는 함수
+    public func setTextFieldValue(text: String) {
+        self.textField.text = text
+    }
+
     /// textField의 값을 가져오는 함수
     public func getTextFieldValue() -> String {
         return textField.text ?? ""
