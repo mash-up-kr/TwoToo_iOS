@@ -8,8 +8,14 @@
 import UIKit
 import DesignSystem
 
+protocol ChallengeAfterStartDateViewDelegate: AnyObject {
+    func didTapChallengeAfterStartDateStartButton()
+}
+
 /// 챌린지 시작일 초과 화면
 final class ChallengeAfterStartDateView: UIView {
+    
+    weak var delegate: ChallengeCreatedViewDelegate?
     
     lazy var nicknameStackView: TrailingInfoStackView = {
         let v = TrailingInfoStackView()
@@ -35,6 +41,9 @@ final class ChallengeAfterStartDateView: UIView {
     lazy var startButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "챌린지 시작하기", .small)
         v.setIsEnabled(true)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapChallengeCreatedStartButton()
+        }
         return v
     }()
     

@@ -7,11 +7,24 @@
 
 import UIKit
 
+protocol ChallengeInProgressViewDelegate: AnyObject {
+    func didTapCertificateButton()
+    func didTapMyFlowerEmptySpeechBubbleView()
+    func didTapStickButton()
+    func didTapChallengeInfo()
+}
+
 /// 챌린지 진행중 뷰
 final class ChallengeInProgressView: UIView {
+    
+    weak var delegate: ChallengeInProgressViewDelegate?
+
     /// 닉네임 정보, 챌린지 정보를 담은 스택뷰
     lazy var topChallengeInfoView: TopChallengeInfoView = {
         let v = TopChallengeInfoView()
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapChallengeInfo()
+        }
         return v
     }()
     /// 챌린지 진행도 뷰
@@ -28,6 +41,7 @@ final class ChallengeInProgressView: UIView {
     /// 내 꽃 정보 뷰
     lazy var myFlowerView: MyFlowerView = {
         let v = MyFlowerView()
+        v.delegate = self
         return v
     }()
     /// 상대방 꽃 정보 뷰
@@ -42,18 +56,21 @@ final class ChallengeInProgressView: UIView {
     }()
     /// 찌르기 버튼
     lazy var nudgeBeeButton: UIButton = {
-       let v = UIButton()
-       v.setImage(.asset(.icon_push_bee), for: .normal)
-       return v
+        let v = UIButton()
+        v.setImage(.asset(.icon_push_bee), for: .normal)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapStickButton()
+        }
+        return v
     }()
     /// 찌르기 버튼 타이틀
     lazy var nudgeTitleLabel: UILabel = {
-       let v = UILabel()
-       v.text = "콕 찌르기 (5/5)"
-       v.textColor = .primary
-       v.font = .body2
-       v.textAlignment = .center
-       return v
+        let v = UILabel()
+        v.text = "콕 찌르기 (5/5)"
+        v.textColor = .primary
+        v.font = .body2
+        v.textAlignment = .center
+        return v
     }()
 
     // MARK: - Method
@@ -139,4 +156,14 @@ final class ChallengeInProgressView: UIView {
         self.nudgeTitleLabel.text = viewModel.stickText
     }
     
+}
+
+extension ChallengeInProgressView: MyFlowerViewDelegate {
+    func didTapEmptySpeechBubbleView() {
+        self.delegate?.didTapMyFlowerEmptySpeechBubbleView()
+    }
+    
+    func didTapCertificateView() {
+        self.delegate?.didTapCertificateButton()
+    }
 }
