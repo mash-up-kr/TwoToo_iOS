@@ -41,7 +41,7 @@ public final class TTPopup: UIView, UIComponentBased {
         v.axis = .horizontal
         v.addArrangedSubviews(self.leftButton, self.rightButton)
         v.alignment = .center
-        v.spacing = 73
+        v.spacing = 60
 
         return v
     }()
@@ -164,8 +164,10 @@ public final class TTPopup: UIView, UIComponentBased {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
-        self.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        if self.superview != nil {
+            self.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         }
     }
     

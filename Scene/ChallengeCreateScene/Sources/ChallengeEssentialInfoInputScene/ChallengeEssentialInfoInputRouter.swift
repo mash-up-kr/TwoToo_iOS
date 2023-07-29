@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import ChallengeAdditionalInfoInputScene
 
+// 다음화면
 @MainActor
-protocol ChallengeEssentialInfoInputRoutingLogic {}
+protocol ChallengeEssentialInfoInputRoutingLogic {
+    /// 추가 입력 화면으로 이동한다.
+    func routeToAdditionalInfoScene()
+    /// 챌린지 추천 바텀시트 화면으로 이동한다.
+    func routeToChallengeRecommendationScene()
+}
 
 final class ChallengeEssentialInfoInputRouter {
     weak var viewController: ChallengeEssentialInfoInputViewController?
@@ -17,5 +24,16 @@ final class ChallengeEssentialInfoInputRouter {
 }
 
 extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingLogic {
+    func routeToAdditionalInfoScene() {
+
+        let challengeAdditionalInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init())
+
+        let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
+
+        self.viewController?.navigationController?.pushViewController(challengeAdditionalInfoInputViewController, animated: true)
+    }
     
+    func routeToChallengeRecommendationScene() {
+        
+    }
 }

@@ -8,7 +8,9 @@
 
 import CoreKit
 
-protocol ChallengeCreateFinishBusinessLogic {}
+protocol ChallengeCreateFinishBusinessLogic {
+    func didTapConfimrButton() async
+}
 
 protocol ChallengeCreateFinishDataStore: AnyObject {}
 
@@ -43,10 +45,12 @@ extension ChallengeCreateFinishInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (페이지 이동)
 
 extension ChallengeCreateFinishInteractor {
-    
+    func didTapConfimrButton() async {
+        await self.router.dismiss()
+    }
 }
 
 // MARK: - Application Business Logic

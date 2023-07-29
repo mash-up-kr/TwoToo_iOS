@@ -111,7 +111,7 @@ final class ChallengeInProgressView: UIView {
         
         self.heartImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.myFlowerView.snp.centerY).multipliedBy(1.1)
+            make.centerY.equalTo(self.myFlowerView.snp.centerY)
         }
                 
         self.nudgeBeeButton.snp.makeConstraints { make in
@@ -135,7 +135,7 @@ final class ChallengeInProgressView: UIView {
                                          partnerNickname: viewModel.order.partenrNameText)
         self.partnerFlowerView.configureInProgress(viewModel: viewModel.partnerFlower)
         self.myFlowerView.configureInProgress(viewModel: viewModel.myFlower)
-//        viewMode.isHeartHidden
+        self.heartImage.isHidden = viewModel.isHeartHidden
         self.nudgeTitleLabel.text = viewModel.stickText
     }
     

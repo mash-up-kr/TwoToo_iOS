@@ -10,7 +10,7 @@ import UIKit
 final class TTProgressBar: UIView {
     
     // MARK: - My UI
-    private lazy var myNicknameLabel: UILabel = {
+    private lazy var partnerNicknameLabel: UILabel = {
         let v = UILabel()
         v.font = .body2
         v.textAlignment = .center
@@ -18,7 +18,7 @@ final class TTProgressBar: UIView {
         return v
     }()
     
-    private lazy var myPercentLabel: UILabel = {
+    private lazy var partnerPercentLabel: UILabel = {
         let v = UILabel()
         v.textAlignment = .center
         v.font = .body3
@@ -26,30 +26,6 @@ final class TTProgressBar: UIView {
         return v
     }()
     
-    private lazy var myPercentView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .mainPink
-        v.layer.cornerRadius = 5
-        return v
-    }()
-    
-    private lazy var myPercentContentView: UIView = {
-        let v = UIView()
-        v.addSubview(self.myPercentView)
-        v.backgroundColor = .mainLightPink
-        v.layer.cornerRadius = 5
-        return v
-    }()
-    
-    // MARK: - Partner UI
-    private lazy var partnerNicknameLabel: UILabel = {
-        let v = UILabel()
-        v.font = .body2
-        v.textColor = .mainCoral
-        v.textAlignment = .center
-        return v
-    }()
-        
     private lazy var partnerPercentView: UIView = {
         let v = UIView()
         v.backgroundColor = .mainPink
@@ -65,7 +41,31 @@ final class TTProgressBar: UIView {
         return v
     }()
     
-    private lazy var partnerPercentLabel: UILabel = {
+    // MARK: - Partner UI
+    private lazy var myNicknameLabel: UILabel = {
+        let v = UILabel()
+        v.font = .body2
+        v.textColor = .mainCoral
+        v.textAlignment = .center
+        return v
+    }()
+        
+    private lazy var myPercentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .mainPink
+        v.layer.cornerRadius = 5
+        return v
+    }()
+    
+    private lazy var myPercentContentView: UIView = {
+        let v = UIView()
+        v.addSubview(self.myPercentView)
+        v.backgroundColor = .mainLightPink
+        v.layer.cornerRadius = 5
+        return v
+    }()
+    
+    private lazy var myPercentLabel: UILabel = {
         let v = UILabel()
         v.textAlignment = .center
         v.font = .body3
@@ -86,44 +86,44 @@ final class TTProgressBar: UIView {
     
     private func layout() {
         
-        self.addSubviews(self.myNicknameLabel,
-                         self.myPercentContentView,
-                         self.myPercentLabel,
-                         self.partnerNicknameLabel,
+        self.addSubviews(self.partnerNicknameLabel,
                          self.partnerPercentContentView,
-                         self.partnerPercentLabel)
-        // --> my
-        self.myNicknameLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().multipliedBy(0.3)
-            make.centerY.equalToSuperview().multipliedBy(0.6)
-        }
-        
-        self.myPercentContentView.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.trailing.equalTo(self.myPercentLabel.snp.leading).offset(-13)
-            make.height.equalToSuperview().dividedBy(5.5)
-            make.centerY.equalToSuperview().multipliedBy(0.6)
-        }
-        
-        self.myPercentLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(13)
-            make.centerY.equalToSuperview().multipliedBy(0.6)
-        }
-        
+                         self.partnerPercentLabel,
+                         self.myNicknameLabel,
+                         self.myPercentContentView,
+                         self.myPercentLabel)
         // --> partner
         self.partnerNicknameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview().multipliedBy(0.3)
-            make.centerY.equalToSuperview().multipliedBy(1.4)
+            make.centerY.equalToSuperview().multipliedBy(0.6)
         }
         
         self.partnerPercentContentView.snp.makeConstraints { make in
             make.width.equalTo(100)
-            make.trailing.equalTo(self.partnerPercentLabel.snp.leading).offset(-13)
+            make.trailing.equalToSuperview().inset(43)
+            make.height.equalToSuperview().dividedBy(5.5)
+            make.centerY.equalToSuperview().multipliedBy(0.6)
+        }
+        
+        self.partnerPercentLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(13)
+            make.centerY.equalToSuperview().multipliedBy(0.6)
+        }
+        
+        // --> my
+        self.myNicknameLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().multipliedBy(0.3)
+            make.centerY.equalToSuperview().multipliedBy(1.4)
+        }
+        
+        self.myPercentContentView.snp.makeConstraints { make in
+            make.width.equalTo(100)
+            make.trailing.equalToSuperview().inset(43)
             make.height.equalToSuperview().dividedBy(5.5)
             make.centerY.equalToSuperview().multipliedBy(1.4)
         }
         
-        self.partnerPercentLabel.snp.makeConstraints { make in
+        self.myPercentLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(13)
             make.centerY.equalToSuperview().multipliedBy(1.4)
         }
@@ -154,20 +154,14 @@ final class TTProgressBar: UIView {
     
     
     private func configurePercent(my: Double, partner: Double) {
-        self.myPercentLabel.text = "\(Int(my))%"
-        self.partnerPercentLabel.text = "\(Int(partner))%"
-        
-        let myPercent: Double = my / 100
-        let partnerPercent: Double = partner / 100
-
-        self.myPercentView.snp.makeConstraints { make in
+        self.myPercentView.snp.remakeConstraints { make in
             make.top.leading.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().multipliedBy(myPercent)
+            make.trailing.equalToSuperview().multipliedBy(my)
         }
 
-        self.partnerPercentView.snp.makeConstraints { make in
+        self.partnerPercentView.snp.remakeConstraints { make in
             make.top.leading.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().multipliedBy(partnerPercent)
+            make.trailing.equalToSuperview().multipliedBy(partner)
         }
     }
 
