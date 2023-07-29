@@ -95,6 +95,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
         v.addTarget(self, action: #selector(didTapStartDate), for: .valueChanged)
+        v.minimumDate = Date()
         return v
     }()
 
@@ -113,6 +114,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
         v.addTarget(self, action: #selector(didTapEndDate), for: .valueChanged)
+        v.minimumDate = Date()
         return v
     }()
 
