@@ -7,6 +7,7 @@
 //
 
 import CoreKit
+import Foundation
 
 protocol HomeBusinessLogic {
     /// 진입
@@ -44,6 +45,8 @@ protocol HomeDataStore: AnyObject {
     /// - Parameters:
     ///     - 업데이트 여부 `Bool`
     var didTriggerRouteToHistoryScene: PassthroughSubject<Bool, Never> { get }
+    /// 화면 진입 트리거
+    var didTriggerAppear: PassthroughSubject<Void, Never> { get }
     /// 챌린지
     var challenge: Home.Model.Challenge? { get set }
 }
@@ -65,11 +68,15 @@ final class HomeInteractor: HomeDataStore, HomeBusinessLogic {
         self.router = router
         self.worker = worker
         self.didTriggerRouteToHistoryScene = didTriggerRouteToHistoryScene
+        
+        self.observe()
     }
     
     // MARK: - DataStore
     
     var didTriggerRouteToHistoryScene: PassthroughSubject<Bool, Never>
+    
+    var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
     
     var challenge: Home.Model.Challenge?
 }
@@ -81,6 +88,16 @@ extension HomeInteractor {
     /// 외부 액션 옵저빙
     func observe() {
         
+        self.didTriggerAppear
+            .sink { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                Task {
+                    await self.didAppear()
+                }
+            }
+            .store(in: &self.cancellables)
     }
 }
 
