@@ -29,9 +29,13 @@ public final class NudgeSendSceneFactory {
     
     public func make(with configuration: NudgeSendConfiguration) -> NudgeSendScene {
         
+        let stickNetworkWorker = StickNetworkWorker()
+        
         let presenter = NudgeSendPresenter()
         let router = NudgeSendRouter()
-        let worker = NudgeSendWorker()
+        let worker = NudgeSendWorker(
+            stickNetworkWorker: stickNetworkWorker
+        )
         let interactor = NudgeSendInteractor(
             presenter: presenter,
             router: router,

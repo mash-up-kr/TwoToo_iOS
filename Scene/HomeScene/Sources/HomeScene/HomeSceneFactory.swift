@@ -34,7 +34,7 @@ public final class HomeSceneFactory {
         let homeLocalWorker = HomeLocalWorker(localDataSource: localDataSource)
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let homeNetworkWorker = HomeNetworkWorker()
-        let challengeFinishWorker = ChallengeFinishWorker()
+        let challengeFinishNetworkWorker = ChallengeFinishNetworkWorker()
         
         let presenter = HomePresenter()
         let router = HomeRouter()
@@ -42,7 +42,7 @@ public final class HomeSceneFactory {
             homeLocalWorker: homeLocalWorker,
             meLocalWorker: meLocalWorker,
             homeNetworkWorker: homeNetworkWorker,
-            challengeFinishWorker: challengeFinishWorker
+            challengeFinishNetworkWorker: challengeFinishNetworkWorker
         )
         let interactor = HomeInteractor(
             presenter: presenter,

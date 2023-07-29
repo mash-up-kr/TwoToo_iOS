@@ -6,6 +6,9 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import NudgeSendScene
+import PraiseSendScene
+import ChallengeCertificateScene
 import UIKit
 
 @MainActor
@@ -31,8 +34,6 @@ final class HomeRouter {
     weak var dataStore: HomeDataStore?
 }
 
-// TODO: 라우팅을 할때 dataStore 에 있는 챌린지 정보를 전달합니다.
-
 extension HomeRouter: HomeRoutingLogic {
     
     func routeToChallengeEssentialInfoInputScene() {
@@ -44,15 +45,33 @@ extension HomeRouter: HomeRoutingLogic {
     }
     
     func routeToPraiseSendScene() {
-        
+        guard let dataStore = self.dataStore else {
+            return
+        }
+        let praiseSendScene = PraiseSendSceneFactory().make(
+            with: .init(certificateID: dataStore.challenge?.partnerInfo.todayCert?.id ?? "")
+        )
+        self.viewController?.present(praiseSendScene.bottomSheetViewController, animated: true)
     }
     
     func routeToChallengeCertificateScene() {
-        
+        guard let dataStore = self.dataStore else {
+            return
+        }
+        let challengeCertificateScene = ChallengeCertificateSceneFactory().make(
+            with: .init(challengeID: dataStore.challenge?.id ?? "")
+        )
+        self.viewController?.present(challengeCertificateScene.bottomSheetViewController, animated: true)
     }
     
     func routeToNudgeSendScene() {
-        
+        guard let dataStore = self.dataStore else {
+            return
+        }
+        let nudgeSendScene = NudgeSendSceneFactory().make(
+            with: .init(remainingNudgeCount: dataStore.challenge?.stickRemaining ?? 5)
+        )
+        self.viewController?.present(nudgeSendScene.bottomSheetViewController, animated: true)
     }
     
     func routeToChallengeHistoryScene() {

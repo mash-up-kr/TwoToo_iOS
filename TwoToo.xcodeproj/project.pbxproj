@@ -388,6 +388,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TwoToo;
+				INFOPLIST_KEY_NSCameraUsageDescription = "인증 사진 촬영";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "인증 사진 첨부";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -421,6 +423,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoToo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TwoToo;
+				INFOPLIST_KEY_NSCameraUsageDescription = "인증 사진 촬영";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "인증 사진 첨부";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
