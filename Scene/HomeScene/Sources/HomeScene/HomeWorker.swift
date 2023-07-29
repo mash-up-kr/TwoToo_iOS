@@ -22,376 +22,203 @@ protocol HomeWorkerProtocol {
 
 final class HomeWorker: HomeWorkerProtocol {
     
-    // TODO: UD에서 챌린지 완료 확인 여부를 업데이트 및 추출하는 작업 필요
+    var homeLocalWorker: HomeLocalWorkerProtocol
+    var meLocalWorker: MeLocalWorkerProtocol
+    var homeNetworkWorker: HomeNetworkWorkerProtocol
+    var challengeFinishWorker: ChallengeFinishWorkerProtocol
+    
+    init(
+        homeLocalWorker: HomeLocalWorkerProtocol,
+        meLocalWorker: MeLocalWorkerProtocol,
+        homeNetworkWorker: HomeNetworkWorkerProtocol,
+        challengeFinishWorker: ChallengeFinishWorkerProtocol
+    ) {
+        self.homeLocalWorker = homeLocalWorker
+        self.meLocalWorker = meLocalWorker
+        self.homeNetworkWorker = homeNetworkWorker
+        self.challengeFinishWorker = challengeFinishWorker
+    }
+    
     var challengeCompletedConfirmed: Bool {
         get {
-            return false
+            return self.homeLocalWorker.challengeCompletedConfirmed ?? false
         }
         set {
-            
+            self.homeLocalWorker.challengeCompletedConfirmed = newValue
         }
     }
     
-    // TODO: UD에서 둘다 인증 확인 여부를 업데이트 및 추출하는 작업 필요
     var bothCertificationConfirmed: Bool {
         get {
-            return false
+            return self.homeLocalWorker.bothCertificationConfirmed ?? false
         }
         set {
-            
+            self.homeLocalWorker.bothCertificationConfirmed = newValue
         }
     }
     
-    var mockCount: Int = 1
-    
     func fetchHomeInfo() async throws -> Home.Model.HomeInfo {
-        let challenge: Home.Model.Challenge = .mockForNumber(number: self.mockCount)
-        self.mockCount += 1
+        let homeResponse = try await self.homeNetworkWorker.requestHomeInquiry()
+        
+        var id: String = ""
+        if let challengeNo = homeResponse.onGoingChallenge?.challengeNo {
+            id = String(challengeNo)
+        }
+        
+        let challengeStatus = self.mapChallengeStatus(from: homeResponse.viewState, homeResponse: homeResponse)
+        
+        let myInfo = self.mapUserInfo(
+            from: homeResponse.myInfo,
+            commit: homeResponse.myCommit,
+            flower: homeResponse.onGoingChallenge?.user1Flower,
+            commitCount: homeResponse.onGoingChallenge?.user1CommitCnt
+        )
+        let partnerInfo = self.mapUserInfo(
+            from: homeResponse.partnerInfo,
+            commit: homeResponse.partnerCommit,
+            flower: homeResponse.onGoingChallenge?.user2Flower,
+            commitCount: homeResponse.onGoingChallenge?.user2CommitCnt
+        )
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        let startDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.startDate) }
+        let endDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.endDate) }
+        
+        let challenge: Home.Model.Challenge = .init(
+            id: id,
+            name: homeResponse.onGoingChallenge?.name,
+            startDate: startDate,
+            endDate: endDate,
+            order: homeResponse.challengeTotal,
+            status: challengeStatus,
+            myInfo: myInfo,
+            partnerInfo: partnerInfo,
+            stickRemaining: homeResponse.myStingCnt
+        )
+        
         return .init(challenge: challenge)
     }
     
     func requestChallengeComplete(challengeID: String) async throws {
-        
+        if let challengeNo = Int(challengeID) {
+            _ = try await self.challengeFinishWorker.requestChallengeFinish(challengeNo: challengeNo)
+        }
+        throw NSError(domain: "no challenge id", code: -1)
     }
-}
-
-extension Home.Model.Challenge {
-    static func mockForNumber(number: Int) -> Home.Model.Challenge {
-        switch number % 13 {
-        case 1:
-            return .mockCreated
-        case 2:
-            return .mockWaiting
-        case 3:
-            return .mockBeforeStart
-        case 4:
-            return .mockBeforeStartDate
-        case 5:
-            return .mockAfterStartDate
-        case 6:
-            return .mockInProgressBothUncertificated
-        case 7:
-            return .mockInProgressOnlyPartnerCertificated
-        case 8:
-            return .mockInProgressOnlyMeCertificated
-        case 9:
-            return .mockInProgressBothCertificatedUncomfirmed
-        case 10:
-            return .mockInProgressBothCertificatedComfirmed
-        case 11:
-            return .mockCompletedUncomfirmed
-        case 12:
-            return .mockCompletedUncomfirmedThank
-        default:
-            return .mockCompletedComfirmed
+    
+    // MARK: - Mapping
+    
+    private func mapChallengeStatus(from viewState: HomeResponse.ViewState, homeResponse: HomeResponse) -> Home.Model.Status {
+        switch viewState {
+            case .BEFORE_CREATE:
+                return .created
+                
+            case .BEFORE_MY_APPROVE:
+                return .beforeStart
+                
+            case .BEFORE_PARTNER_APPROVE:
+                return .waiting
+                
+            case .APPROVED_BUT_BEFORE_START_DATE:
+                return .beforeStartDate
+                
+            case .IN_PROGRESS:
+                if homeResponse.myCommit == nil && homeResponse.partnerCommit == nil {
+                    return .inProgress(.bothUncertificated)
+                }
+                else if homeResponse.myCommit == nil {
+                    return .inProgress(.onlyPartnerCertificated)
+                }
+                else if homeResponse.partnerCommit == nil {
+                    return .inProgress(.onlyMeCertificated)
+                }
+                else {
+                    if self.bothCertificationConfirmed {
+                        return .inProgress(.bothCertificated(.comfirmed))
+                    }
+                    else {
+                        return .inProgress(.bothCertificated(.uncomfirmed))
+                    }
+                }
+            case .COMPLETE:
+                if self.challengeCompletedConfirmed {
+                    return .completed(.comfirmed)
+                }
+                else {
+                    return .completed(.uncomfirmed)
+                }
+            case .EXPIRED_BY_NOT_APPROVED:
+                return .afterStartDate
         }
     }
 
-    static var mockCreated: Home.Model.Challenge {
-        return .init(
-            status: .created,
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주"
-            ),
-            partnerInfo: .init(
-                id: "Test2",
-                nickname: "왕자"
-            )
+    private func mapUserInfo(from user: HomeResponse.User, commit: HomeResponse.Commit?, flower: HomeResponse.OnGoingChallenge.Flower?, commitCount: Int?) -> Home.Model.User {
+        var userInfo: Home.Model.User = .init(
+            id: String(user.userNo),
+            nickname: user.nickname
         )
+        
+        if let commit = commit {
+            userInfo.todayCert = .init(id: String(commit.commitNo), complimentComment: commit.partnerComment)
+        }
+        
+        userInfo.certCount = commitCount ?? 0
+        userInfo.growStatus = self.mapGrowStatus(from: commitCount)
+        userInfo.flower = flower.map(self.mapFlowerType)
+        
+        return userInfo
     }
 
-    static var mockWaiting: Home.Model.Challenge {
-        return .init(
-            id: "1",
-            name: "운동",
-            startDate: Date().addingTimeInterval(3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 23),
-            status: .waiting,
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주"
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                flower: .rose
-            )
-        )
-    }
-    
-    static var mockBeforeStart: Home.Model.Challenge {
-        return .init(
-            id: "2",
-            name: "운동",
-            startDate: Date().addingTimeInterval(3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 23),
-            status: .beforeStart,
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자"
-            )
-        )
-    }
-    
-    static var mockBeforeStartDate: Home.Model.Challenge {
-        return .init(
-            id: "3",
-            name: "운동",
-            startDate: Date().addingTimeInterval(3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 23),
-            status: .beforeStartDate,
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                flower: .rose
-            )
-        )
-    }
-    
-    static var mockAfterStartDate: Home.Model.Challenge {
-        return .init(
-            id: "4",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 21),
-            status: .afterStartDate,
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자"
-            )
-        )
+    private func mapGrowStatus(from commitCount: Int?) -> Home.Model.GrowsStatus {
+        guard let commitCount = commitCount else {
+            return .seed
+        }
+        if commitCount == 22 {
+            return .bloom
+        }
+        else if commitCount >= 17 {
+            return .flower
+        }
+        else if commitCount >= 15 {
+            return .peak
+        }
+        else if commitCount >= 10 {
+            return .bud
+        }
+        else if commitCount >= 5 {
+            return .sprout
+        }
+        else {
+            return .seed
+        }
     }
 
-    static var mockInProgressBothUncertificated: Home.Model.Challenge {
-        return .init(
-            id: "5",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 21),
-            order: 2,
-            status: .inProgress(.bothUncertificated),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 1,
-                growStatus: .seed,
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 1,
-                growStatus: .seed,
-                flower: .rose
-            ),
-            stickRemaining: 5
-        )
-    }
-    
-    static var mockInProgressOnlyPartnerCertificated: Home.Model.Challenge {
-        return .init(
-            id: "6",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 21),
-            order: 2,
-            status: .inProgress(.onlyPartnerCertificated),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 1,
-                growStatus: .seed,
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 1,
-                growStatus: .seed,
-                todayCert: .init(id: "1"),
-                flower: .rose
-            ),
-            stickRemaining: 5
-        )
-    }
-    
-    static var mockInProgressOnlyMeCertificated: Home.Model.Challenge {
-        return .init(
-            id: "7",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 21),
-            order: 2,
-            status: .inProgress(.onlyMeCertificated),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 1,
-                growStatus: .seed,
-                todayCert: .init(id: "1"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 1,
-                growStatus: .seed,
-                flower: .rose
-            ),
-            stickRemaining: 5
-        )
-    }
-    
-    static var mockInProgressBothCertificatedUncomfirmed: Home.Model.Challenge {
-        return .init(
-            id: "8",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 20),
-            endDate: Date().addingTimeInterval(3600 * 24 * 2),
-            order: 2,
-            status: .inProgress(.bothCertificated(.uncomfirmed)),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 17,
-                growStatus: .flower,
-                todayCert: .init(id: "1"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 16,
-                growStatus: .peak,
-                todayCert: .init(id: "1"),
-                flower: .rose
-            ),
-            stickRemaining: 5
-        )
-    }
-    
-    static var mockInProgressBothCertificatedComfirmed: Home.Model.Challenge {
-        return .init(
-            id: "9",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 1),
-            endDate: Date().addingTimeInterval(3600 * 24 * 21),
-            order: 2,
-            status: .inProgress(.bothCertificated(.comfirmed)),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 1,
-                growStatus: .seed,
-                todayCert: .init(id: "1", complimentComment: "123"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 1,
-                growStatus: .seed,
-                todayCert: .init(id: "1", complimentComment: "123123212321"),
-                flower: .rose
-            ),
-            stickRemaining: 5
-        )
-    }
-    
-    static var mockCompletedUncomfirmed: Home.Model.Challenge {
-        return .init(
-            id: "10",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 22),
-            endDate: Date(),
-            order: 2,
-            status: .completed(.uncomfirmed),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 21,
-                growStatus: .flower,
-                todayCert: .init(id: "1", complimentComment: "123"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 22,
-                growStatus: .bloom,
-                todayCert: .init(id: "1", complimentComment: "1234"),
-                flower: .rose
-            )
-        )
-    }
-    
-    static var mockCompletedUncomfirmedThank: Home.Model.Challenge {
-        return .init(
-            id: "11",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 22),
-            endDate: Date(),
-            order: 2,
-            status: .completed(.uncomfirmed),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 1,
-                growStatus: .seed,
-                todayCert: .init(id: "1", complimentComment: "123"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 2,
-                growStatus: .seed,
-                todayCert: .init(id: "1", complimentComment: "1234"),
-                flower: .rose
-            )
-        )
-    }
-    
-    static var mockCompletedComfirmed: Home.Model.Challenge {
-        return .init(
-            id: "12",
-            name: "운동",
-            startDate: Date().addingTimeInterval(-3600 * 24 * 22),
-            endDate: Date(),
-            order: 2,
-            status: .completed(.comfirmed),
-            myInfo: .init(
-                id: "Test",
-                nickname: "공주",
-                certCount: 19,
-                growStatus: .flower,
-                todayCert: .init(id: "1", complimentComment: "123"),
-                flower: .rose
-            ),
-            partnerInfo: .init(
-                id: "Test",
-                nickname: "왕자",
-                certCount: 22,
-                growStatus: .bloom,
-                todayCert: .init(id: "1", complimentComment: "1234"),
-                flower: .rose
-            )
-        )
+    private func mapFlowerType(from flower: HomeResponse.OnGoingChallenge.Flower) -> Flower {
+        switch flower {
+            case .FIG:
+                return .fig
+                
+            case .TULIP:
+                return .tulip
+                
+            case .ROSE:
+                return .rose
+                
+            case .COTTON:
+                return .cotton
+                
+            case .CHRYSANTHEMUM:
+                return .chrysanthemum
+                
+            case .SUNFLOWER:
+                return .sunflower
+                
+            case .CAMELLIA:
+                return .camellia
+                
+            case .DELPHINIUM:
+                return .delphinium
+        }
     }
 }
