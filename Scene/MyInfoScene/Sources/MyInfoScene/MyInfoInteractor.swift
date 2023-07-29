@@ -104,22 +104,6 @@ extension MyInfoInteractor {
             await self.router.routeToAnnouncementScene()
         }
     }
-
-    func didTapAnnouncement() async {
-        await self.router.routeToAnnouncementScene()
-    }
-
-    func didTapUserGuide() async {
-        await self.router.routeToUserGuideScene()
-    }
-
-    func didTapInquery() async {
-        await self.router.routeToInqueryScene()
-    }
-
-    func didTapCreators() async {
-        await self.router.routeToCreatorsScene()
-    }
 }
 
 // MARK: - Application Business Logic

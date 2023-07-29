@@ -12,6 +12,7 @@ import UIKit
 protocol MyInfoDisplayLogic: AnyObject {
     func displayLists(viewModel: MyInfo.ViewModel.Lists)
     func displayMyInfo(viewModel: MyInfo.ViewModel.Data)
+    func displayToast(viewModel: MyInfo.ViewModel.Toast)
 }
 
 final class MyInfoViewController: UIViewController {
@@ -195,6 +196,12 @@ extension MyInfoViewController: MyInfoDisplayLogic {
         self.myNicknameLabel.text = viewModel.myNickname
         self.partnerNicknameLabel.text = viewModel.partnerNickname
         self.myNameTagView.titleLabel.text = viewModel.myNickname
+    }
+
+    func displayToast(viewModel: MyInfo.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
 }
 

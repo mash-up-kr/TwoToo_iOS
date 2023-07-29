@@ -14,16 +14,6 @@ protocol MyInfoPresentationLogic {
     func presentMyInfo(model: MyInfo.Model.Data)
     /// 마이 페이지 오류를 보여준다.
     func presentMyInfoError(error: Error)
-    /// 설명서 화면을 보여준다.
-    func presentInstructions()
-    /// 공지사항 화면을 보여준다.
-    func presentAnnouncement()
-    /// 이용 가이드 화면을 보여준다.
-    func presentUserGuide()
-    /// 투투에 문의하기 화면을 보여준다.
-    func presentInquery()
-    /// 만든이들 화면을 보여준다.
-    func presentCreators()
 }
 
 final class MyInfoPresenter {
@@ -44,33 +34,13 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
                 .init(title: "만든이들")
             ])
 
-        let totalCount = "\(model.challengeTotalCount ?? "0")번쨰 꽃 피우는중"
+        let totalCount = "\(model.challengeTotalCount ?? "0")번째 꽃 피우는중"
 
         self.viewController?.displayLists(viewModel: myInfoItems)
         self.viewController?.displayMyInfo(viewModel: .init(myNickname: model.myNickname, partnerNickname: model.partnerNickname, challengeTotalCount: totalCount))
     }
-
-    func presentInstructions() {
-        
-    }
-    
-    func presentAnnouncement() {
-        
-    }
-    
-    func presentUserGuide() {
-        
-    }
-    
-    func presentInquery() {
-        
-    }
-    
-    func presentCreators() {
-        
-    }
     
     func presentMyInfoError(error: Error) {
-        
+        self.viewController?.displayToast(viewModel: .init(message: error.localizedDescription))
     }
 }

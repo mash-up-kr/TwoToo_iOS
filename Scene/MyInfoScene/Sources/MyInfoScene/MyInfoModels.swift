@@ -34,5 +34,9 @@ enum MyInfo {
             var partnerNickname: String
             var challengeTotalCount: String?
         }
+
+        struct Toast {
+            var message: String?
+        }
     }
 }
