@@ -7,14 +7,14 @@
 //
 
 import UIKit
+import FlowerSelectScene
 
 @MainActor
 protocol ChallengeConfirmRoutingLogic {
     /// 닫기
     func pop()
-    
     /// 꽃 선택 화면으로 이동한다.
-    func routeToFlowerSelectScene(status: ChallengeConfirm.Model.ConfirmStatus, info: ChallengeConfirm.Model.ChallengeInfo)
+    func routeToFlowerSelectScene()
 }
 
 final class ChallengeConfirmRouter {
@@ -27,7 +27,18 @@ extension ChallengeConfirmRouter: ChallengeConfirmRoutingLogic {
         self.viewController?.navigationController?.popViewController(animated: true)
     }
     
-    func routeToFlowerSelectScene(status: ChallengeConfirm.Model.ConfirmStatus, info: ChallengeConfirm.Model.ChallengeInfo) {
-        
+    func routeToFlowerSelectScene() {
+        guard let challengeName = self.dataStore?.challengeName,
+              let challengeStartDate = self.dataStore?.challengeStartDate,
+              let challengeEndDate = self.dataStore?.challengeEndDate,
+              let didEnterStatus = self.dataStore?.didEnterStatusDataSource
+
+        else { return }
+
+        let flowerSelectScene = FlowerSelectSceneFactory().make(with: .init(didTriggerChallengeCreateScene: .init(), didTriggerRouteToHomeScene: .init(), enterSceneStatus: didEnterStatus, challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.challengeRule))
+
+        let flowerSelectViewController = flowerSelectScene.viewController
+
+        self.viewController?.navigationController?.pushViewController(flowerSelectViewController, animated: true)
     }
 }

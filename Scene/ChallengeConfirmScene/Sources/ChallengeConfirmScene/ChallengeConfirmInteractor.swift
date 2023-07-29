@@ -25,7 +25,7 @@ protocol ChallengeConfirmDataStore: AnyObject {
     /// 챌린지 규칙
     var challengeRule: String? { get }
     /// 챌린지 진입점
-    var didEnterStatus: String { get }
+    var didEnterStatusDataSource: String { get }
 }
 
 final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConfirmBusinessLogic {
@@ -52,7 +52,7 @@ final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConf
         self.challengeStartDate = challengeStartDate
         self.challengeEndDate = challengeEndDate
         self.challengeRule = challengeRule
-        self.didEnterStatus = didEnterStatus
+        self.didEnterStatusDataSource = didEnterStatus
     }
     
     // MARK: - DataStore
@@ -61,7 +61,7 @@ final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConf
     var challengeStartDate: String
     var challengeEndDate: String
     var challengeRule: String?
-    var didEnterStatus: String
+    var didEnterStatusDataSource: String
     
     enum FlowerSelectStatus: String {
         case create = "create"
@@ -84,7 +84,9 @@ extension ChallengeConfirmInteractor {
 
 extension ChallengeConfirmInteractor {
     func didAppear() async {
-        let chanllengeConfirmStatus = FlowerSelectStatus(rawValue: didEnterStatus)
+        let chanllengeConfirmStatus = FlowerSelectStatus(rawValue: didEnterStatusDataSource)
+
+        didEnterStatusDataSource = chanllengeConfirmStatus?.rawValue ?? "create"
         
         switch chanllengeConfirmStatus {
         case .create:
@@ -106,9 +108,8 @@ extension ChallengeConfirmInteractor {
         }
     }
 
-    // TODO: - 다음 버튼 눌렀을 떄 화면전환 구현 필요
     func didTapNextButton() async {
-
+        await self.router.routeToFlowerSelectScene()
     }
 }
 
