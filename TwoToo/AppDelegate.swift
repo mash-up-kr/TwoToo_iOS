@@ -15,11 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-//        KakaoSDK.initSDK(appKey: "")
+        KakaoSDK.initSDK(appKey: "")
         Font.registerTTFont()
 
-        // TODO: - info 파일 추가 시 주석 제거
-//        FirebaseApp.configure()
+        FirebaseApp.configure()
 
         return true
     }

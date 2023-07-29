@@ -40,9 +40,18 @@ public final class SplashSceneFactory {
     
     public func make(with configuration: SplashConfiguration) -> SplashScene {
         
+        let localDataSource = LocalDataSource()
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
+        let meNetworkWorker = MeNetworkWorker()
+        
         let presenter = SplashPresenter()
         let router = SplashRouter()
-        let worker = SplashWorker()
+        let worker = SplashWorker(
+            meLocalWorker: meLocalWorker,
+            invitationLocalWorker: invitationLocalWorker,
+            meNetworkWorker: meNetworkWorker
+        )
         let interactor = SplashInteractor(
             presenter: presenter,
             router: router,

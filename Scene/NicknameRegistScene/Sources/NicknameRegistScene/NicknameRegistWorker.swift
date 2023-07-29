@@ -36,6 +36,9 @@ final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     var invitedUser: NicknameRegist.Model.InvitedUser? {
         if let user: String = self.invitedUserLocalWorker.invitedUser,
            let userNo: Int = self.invitedUserLocalWorker.invitedUserNo {
+            if self.meLocalWorker.userNo == userNo {
+                return nil
+            }
             return NicknameRegist.Model.InvitedUser(no: userNo, name: user)
         } else {
             return nil
