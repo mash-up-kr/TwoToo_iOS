@@ -19,10 +19,16 @@ protocol ChallengeCertificateWorkerProtocol {
     /// 사진을 갤러리에 저장한다.
     func saveImage(image: ChallengeCertificate.Model.Image) async throws
     /// 인증하기 요청
-    func requestCertificate(certificateImage: ChallengeCertificate.Model.Image, certificateComment: String) async throws
+    func requestCertificate(challengeID: String, certificateImage: ChallengeCertificate.Model.Image, certificateComment: String) async throws
 }
 
 final class ChallengeCertificateWorker: ChallengeCertificateWorkerProtocol {
+    
+    var commitNetworkWorker: CommitNetworkWorkerProtocol
+    
+    init(commitNetworkWorker: CommitNetworkWorkerProtocol) {
+        self.commitNetworkWorker = commitNetworkWorker
+    }
     
     func requestCameraPermission() async throws -> Bool {
         return await withCheckedContinuation { continuation in
@@ -69,7 +75,23 @@ final class ChallengeCertificateWorker: ChallengeCertificateWorkerProtocol {
         }
     }
     
-    func requestCertificate(certificateImage: ChallengeCertificate.Model.Image, certificateComment: String) async throws {
-        // mock success
+    func requestCertificate(challengeID: String, certificateImage: ChallengeCertificate.Model.Image, certificateComment: String) async throws {
+        guard let challengeNo = Int(challengeID) else {
+            throw NSError(domain: "not fount challenge", code: -1)
+        }
+        guard let img = certificateImage.jpegData(compressionQuality: 1.0) else {
+            throw NSError(domain: "not fount img", code: -1)
+        }
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy_MM_dd_HH_MM_ss"
+        let formattedDate = dateFormatter.string(from: date)
+        
+        _ = try await self.commitNetworkWorker.requestCommit(
+            text: certificateComment,
+            challengeNo: challengeNo,
+            img: img,
+            fileName: formattedDate
+        )
     }
 }

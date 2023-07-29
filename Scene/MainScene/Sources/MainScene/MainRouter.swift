@@ -71,7 +71,7 @@ extension MainRouter: MainRoutingLogic {
 
         let navigationControllers = [historyNavigationController, homeNavigationController, myInfoNavigationController]
         source.setViewControllers(navigationControllers, animated: true)
-        source.setTab(.history) // TODO: - 테스트 때메 바꿈
+        source.setTab(.home)
     }
     
     func switchHistoryTab() {

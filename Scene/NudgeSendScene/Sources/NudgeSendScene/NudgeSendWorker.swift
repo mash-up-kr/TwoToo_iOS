@@ -15,7 +15,13 @@ protocol NudgeSendWorkerProtocol {
 
 final class NudgeSendWorker: NudgeSendWorkerProtocol {
     
+    var stickNetworkWorker: StickNetworkWorkerProtocol
+    
+    init(stickNetworkWorker: StickNetworkWorkerProtocol) {
+        self.stickNetworkWorker = stickNetworkWorker
+    }
+    
     func requestNudge(nudgeComment: String) async throws {
-        
+        _ = try await self.stickNetworkWorker.requestStick(message: nudgeComment)
     }
 }

@@ -25,18 +25,18 @@ final class HomeWorker: HomeWorkerProtocol {
     var homeLocalWorker: HomeLocalWorkerProtocol
     var meLocalWorker: MeLocalWorkerProtocol
     var homeNetworkWorker: HomeNetworkWorkerProtocol
-    var challengeFinishWorker: ChallengeFinishWorkerProtocol
+    var challengeFinishNetworkWorker: ChallengeFinishNetworkWorkerProtocol
     
     init(
         homeLocalWorker: HomeLocalWorkerProtocol,
         meLocalWorker: MeLocalWorkerProtocol,
         homeNetworkWorker: HomeNetworkWorkerProtocol,
-        challengeFinishWorker: ChallengeFinishWorkerProtocol
+        challengeFinishNetworkWorker: ChallengeFinishNetworkWorkerProtocol
     ) {
         self.homeLocalWorker = homeLocalWorker
         self.meLocalWorker = meLocalWorker
         self.homeNetworkWorker = homeNetworkWorker
-        self.challengeFinishWorker = challengeFinishWorker
+        self.challengeFinishNetworkWorker = challengeFinishNetworkWorker
     }
     
     var challengeCompletedConfirmed: Bool {
@@ -102,7 +102,7 @@ final class HomeWorker: HomeWorkerProtocol {
     
     func requestChallengeComplete(challengeID: String) async throws {
         if let challengeNo = Int(challengeID) {
-            _ = try await self.challengeFinishWorker.requestChallengeFinish(challengeNo: challengeNo)
+            _ = try await self.challengeFinishNetworkWorker.requestChallengeFinish(challengeNo: challengeNo)
         }
         throw NSError(domain: "no challenge id", code: -1)
     }

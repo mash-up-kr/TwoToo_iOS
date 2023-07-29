@@ -33,6 +33,8 @@ protocol ChallengeCertificateBusinessLogic {
 }
 
 protocol ChallengeCertificateDataStore: AnyObject {
+    /// 챌린지 ID
+    var challengeID: String { get }
     /// 인증 사진
     var certificateImage: ChallengeCertificate.Model.Image? { get set }
     /// 인증 소감
@@ -49,14 +51,18 @@ final class ChallengeCertificateInteractor: ChallengeCertificateDataStore, Chall
     init(
         presenter: ChallengeCertificatePresentationLogic,
         router: ChallengeCertificateRoutingLogic,
-        worker: ChallengeCertificateWorkerProtocol
+        worker: ChallengeCertificateWorkerProtocol,
+        challengeID: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.challengeID = challengeID
     }
     
     // MARK: - DataStore
+    
+    var challengeID: String
     
     var certificateImage: ChallengeCertificate.Model.Image?
     
@@ -180,6 +186,7 @@ extension ChallengeCertificateInteractor {
         }
         do {
             try await self.worker.requestCertificate(
+                challengeID: self.challengeID,
                 certificateImage: certificateImage,
                 certificateComment: self.certificateComment
             )

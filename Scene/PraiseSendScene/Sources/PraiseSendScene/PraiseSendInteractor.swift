@@ -16,6 +16,8 @@ protocol PraiseSendBusinessLogic {
 }
 
 protocol PraiseSendDataStore: AnyObject {
+    /// 인증 ID
+    var certificateID: String { get set }
     /// 칭찬 문구
     var praiseComment: String { get set }
 }
@@ -30,14 +32,18 @@ final class PraiseSendInteractor: PraiseSendDataStore, PraiseSendBusinessLogic {
     init(
         presenter: PraiseSendPresentationLogic,
         router: PraiseSendRoutingLogic,
-        worker: PraiseSendWorkerProtocol
+        worker: PraiseSendWorkerProtocol,
+        certificateID: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.certificateID = certificateID
     }
     
     // MARK: - DataStore
+    
+    var certificateID: String
     
     var praiseComment: String = ""
     
@@ -84,7 +90,7 @@ extension PraiseSendInteractor {
         }
         
         do {
-            try await self.worker.requestPraise(praiseComment: self.praiseComment)
+            try await self.worker.requestPraise(certificateID: self.certificateID, praiseComment: self.praiseComment)
             await self.presenter.presentPraiseSuccess()
             await self.router.dismiss()
         }

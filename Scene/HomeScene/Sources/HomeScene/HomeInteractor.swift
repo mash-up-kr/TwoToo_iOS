@@ -145,6 +145,8 @@ extension HomeInteractor {
         catch {
             await self.presenter.presentHomeError(error: error)
         }
+        
+        await self.router.routeToChallengeCertificateScene()
     }
 }
 

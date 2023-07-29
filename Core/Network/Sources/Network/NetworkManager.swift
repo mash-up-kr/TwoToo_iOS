@@ -245,6 +245,7 @@ public class NetworkManager {
         data: Data,
         fileName: String,
         mimeType: String,
+        parameters: [String: String]? = nil,
         additionalHeaders: HTTPHeaders? = nil
     ) async throws -> T {
         guard self.isConnectedToInternet else {
@@ -254,10 +255,20 @@ public class NetworkManager {
         var headers = self.configuration.headers
         additionalHeaders?.forEach { headers.add($0) }
         
+        print("--------------- Network Start ---------------")
+        
         return try await withCheckedThrowingContinuation { continuation in
             AF.upload(
                 multipartFormData: { multipartFormData in
-                    multipartFormData.append(data, withName: "file", fileName: fileName, mimeType: mimeType)
+                    multipartFormData.append(data, withName: "img", fileName: fileName, mimeType: mimeType)
+                    
+                    if let parameters = parameters {
+                        for parameter in parameters {
+                            if let data = parameter.value.data(using: .utf8) {
+                                multipartFormData.append(data, withName: parameter.key)
+                            }
+                        }
+                    }
                 },
                 to: self.configuration.baseURL + path,
                 headers: headers,
@@ -268,6 +279,10 @@ public class NetworkManager {
             .responseData { response in
                 switch(response.result) {
                     case let .success(data):
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            print(json)
+                        }
+                        print("--------------- Network End ---------------")
                         do {
                             let decodedData = try JSONDecoder().decode(T.self, from: data)
                             continuation.resume(returning: decodedData)

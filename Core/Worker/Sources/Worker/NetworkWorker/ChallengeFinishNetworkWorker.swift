@@ -1,5 +1,5 @@
 //
-//  ChallengeFinishWorker.swift
+//  ChallengeFinishNetworkWorker.swift
 //  
 //
 //  Created by 박건우 on 2023/07/29.
@@ -43,11 +43,11 @@ public struct ChallengeFinishResponse: Decodable {
     }
 }
 
-public protocol ChallengeFinishWorkerProtocol {
+public protocol ChallengeFinishNetworkWorkerProtocol {
     func requestChallengeFinish(challengeNo: Int) async throws -> ChallengeFinishResponse
 }
 
-public final class ChallengeFinishWorker: ChallengeFinishWorkerProtocol {
+public final class ChallengeFinishNetworkWorker: ChallengeFinishNetworkWorkerProtocol {
     
     public init() {}
     
