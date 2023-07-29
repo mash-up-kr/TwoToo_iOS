@@ -18,8 +18,6 @@ protocol NicknameRegistPresentationLogic {
     func presentDisabledConfirmButton()
     /// 닉네임 설정 오류를 보여준다.
     func presentNicknameError(error: Error)
-    /// 매칭 오류를 보여준다.
-    func presentMatchingError(error: Error)
 }
 
 final class NicknameRegistPresenter {
@@ -48,9 +46,5 @@ extension NicknameRegistPresenter: NicknameRegistPresentationLogic {
     
     func presentNicknameError(error: Error) {
         self.viewController?.displayToast(viewModel: .init(message: "닉네임을 설정하던 중 오류가 발생하였습니다"))
-    }
-    
-    func presentMatchingError(error: Error) {
-        self.viewController?.displayToast(viewModel: .init(message: "상대방과 매칭 요청 중 오류가 발생하였습니다"))
     }
 }

@@ -14,7 +14,7 @@ public protocol ChallengeCreateFinishScene: AnyObject, Scene {
 }
 
 public struct ChallengeCreateFinishConfiguration {
-    
+    public init() {}
 }
 
 public final class ChallengeCreateFinishSceneFactory {

@@ -265,8 +265,8 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                     expect(viewModel.myFlower.isCertificationButtonHidden).to(beTrue())
                 }
 
-                it("상대방 꽃의 인증 완료 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beFalse())
+                it("상대방 꽃의 인증 완료 히든 여부가 true로 표현된다.") {
+                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beTrue())
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 false로 표현된다.") {

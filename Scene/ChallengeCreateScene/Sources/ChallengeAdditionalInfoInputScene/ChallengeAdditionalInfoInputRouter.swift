@@ -9,7 +9,12 @@
 import UIKit
 
 @MainActor
-protocol ChallengeAdditionalInfoInputRoutingLogic {}
+protocol ChallengeAdditionalInfoInputRoutingLogic {
+    /// 뒤로 간다
+    func pop()
+    /// 챌린지 확인 화면으로 이동한다.
+    func routeToChallengeConfirmScene()
+}
 
 final class ChallengeAdditionalInfoInputRouter {
     weak var viewController: ChallengeAdditionalInfoInputViewController?
@@ -17,5 +22,12 @@ final class ChallengeAdditionalInfoInputRouter {
 }
 
 extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutingLogic {
+
+    func pop() {
+        self.viewController?.navigationController?.popViewController(animated: true)
+    }
     
+    func routeToChallengeConfirmScene() {
+        
+    }
 }

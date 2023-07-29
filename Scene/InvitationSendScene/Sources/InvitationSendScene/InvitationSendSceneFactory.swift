@@ -17,9 +17,9 @@ public struct InvitationSendConfiguration {
     /// 대기 화면 이동 트리거
     /// - Parameters:
     ///     - 초대 링크 `String`
-    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>
+    public var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
     
-    public init(didTriggerRouteToInvitationWaitScene: PassthroughSubject<String, Never>) {
+    public init(didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>) {
         self.didTriggerRouteToInvitationWaitScene = didTriggerRouteToInvitationWaitScene
     }
 }

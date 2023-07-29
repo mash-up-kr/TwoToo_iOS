@@ -144,16 +144,22 @@ final class PartnerFlowerView: UIView {
         self.flowerImageView.image = viewModel.image
         self.certificatedStackView.isHidden = viewModel.isCertificationCompleteHidden
         self.nicknameView.titleLabel.text = viewModel.partnerNameText
-        self.speechBubbleView.isHidden = viewModel.isComplimentCommentHidden
-        self.emptySpeechBubbleImageView.isHidden = viewModel.isComplimentCommentHidden
-        // 칭찬문구 O
-        if !viewModel.complimentCommentText.isEmpty {
-            self.speechBubbleView.configure(title: viewModel.complimentCommentText)
-            self.speechBubbleView.isHidden = false
-            self.emptySpeechBubbleImageView.isHidden = true
-        } else { // 칭찬문구 X
-            self.emptySpeechBubbleImageView.isHidden = false
+        
+        if viewModel.isComplimentCommentHidden {
             self.speechBubbleView.isHidden = true
+            self.emptySpeechBubbleImageView.isHidden = true
+        }
+        else {
+            // 칭찬문구 O
+            if !viewModel.complimentCommentText.isEmpty {
+                self.speechBubbleView.configure(title: viewModel.complimentCommentText)
+                self.speechBubbleView.isHidden = false
+                self.emptySpeechBubbleImageView.isHidden = true
+            }
+            else { // 칭찬문구 X
+                self.emptySpeechBubbleImageView.isHidden = false
+                self.speechBubbleView.isHidden = true
+            }
         }
     }
     
