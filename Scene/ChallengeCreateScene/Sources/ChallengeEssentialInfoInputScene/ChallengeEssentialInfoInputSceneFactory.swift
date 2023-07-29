@@ -15,8 +15,13 @@ public protocol ChallengeEssentialInfoInputScene: AnyObject, Scene {
 
 public struct ChallengeEssentialInfoInputConfiguration {
 
-    public init() {}
+    var didTriggerSelectChallengeName: PassthroughSubject<String, Never>
 
+    public init(
+        didTriggerSelectChallengeName: PassthroughSubject<String, Never>
+    ) {
+        self.didTriggerSelectChallengeName = didTriggerSelectChallengeName
+    }
 }
 
 public final class ChallengeEssentialInfoInputSceneFactory {
@@ -31,7 +36,8 @@ public final class ChallengeEssentialInfoInputSceneFactory {
         let interactor = ChallengeEssentialInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerSelectChallengeName: configuration.didTriggerSelectChallengeName
         )
         let viewController = ChallengeEssentialInfoInputViewController(
             interactor: interactor

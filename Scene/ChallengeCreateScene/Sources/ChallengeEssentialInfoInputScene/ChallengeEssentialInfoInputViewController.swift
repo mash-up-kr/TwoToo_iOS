@@ -9,10 +9,15 @@
 import CoreKit
 import UIKit
 import DesignSystem
+import Util
 
 protocol ChallengeEssentialInfoInputDisplayLogic: AnyObject {
+    /// NextButton enable 한다
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton)
+    /// 캘린더 화면 보여준다.
     func displayCalendar(viewModel: ChallengeEssentialInfoInput.ViewModel.ChallengeDate)
+    /// 챌린지 명을 업데이트 시켜준다.
+    func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name)
 }
 
 final class ChallengeEssentialInfoInputViewController: UIViewController {
@@ -60,7 +65,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         v.titleLabel?.font = .body2
         v.layer.cornerRadius = 10
         v.contentEdgeInsets = .init(top: 8, left: 11, bottom: 8, right: 11)
-
+        v.addTapAction { [weak self] in
+            Task {
+                await self?.interactor.didTapChallengeRecommendationButton()
+            }
+        }
         return v
     }()
 
@@ -256,6 +265,12 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
     func displaySetEnableNextButton(viewModel: ChallengeEssentialInfoInput.ViewModel.NextButton) {
         viewModel.isEnabled.unwrap { enable in
             self.nextButton.setIsEnabled(enable)
+        }
+    }
+
+    func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name) {
+        viewModel.text.unwrap {
+            self.challengeNameTextField.setTextFieldValue(text: $0)
         }
     }
 }

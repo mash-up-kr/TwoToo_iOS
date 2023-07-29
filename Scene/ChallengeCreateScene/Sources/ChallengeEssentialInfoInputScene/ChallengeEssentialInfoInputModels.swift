@@ -26,6 +26,10 @@ enum ChallengeEssentialInfoInput {
             struct NextButton {
                 var isEnabled: Bool?
             }
+
+            struct Name {
+                var text: String?
+            }
         }
     }
     

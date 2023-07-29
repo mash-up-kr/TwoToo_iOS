@@ -8,6 +8,7 @@
 
 import UIKit
 import ChallengeAdditionalInfoInputScene
+import ChallengeRecommendScene
 
 // 다음화면
 @MainActor
@@ -26,7 +27,7 @@ final class ChallengeEssentialInfoInputRouter {
 extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingLogic {
     func routeToAdditionalInfoScene() {
 
-        let challengeAdditionalInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init())
+        let challengeAdditionalInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init(didTriggerSelectChallengeName: .init()))
 
         let challengeAdditionalInfoInputViewController = challengeAdditionalInfoInputScene.viewController
 
@@ -34,6 +35,10 @@ extension ChallengeEssentialInfoInputRouter: ChallengeEssentialInfoInputRoutingL
     }
     
     func routeToChallengeRecommendationScene() {
-        
+        guard let challengeName = self.dataStore?.didTriggerSelectChallengeName else { return }
+
+        let challengeRecommendationScene = ChallengeRecommendSceneFactory().make(with: .init(didTriggerSelectChallengeName: challengeName)).bottomSheetViewController
+
+        self.viewController?.present(challengeRecommendationScene, animated: true)
     }
 }

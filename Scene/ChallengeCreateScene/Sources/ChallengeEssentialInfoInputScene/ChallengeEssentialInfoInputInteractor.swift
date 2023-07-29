@@ -32,9 +32,13 @@ protocol ChallengeEssentialInfoInputBusinessLogic {
     func didTapNextButton() async
 }
 
-protocol ChallengeEssentialInfoInputDataStore: AnyObject {}
+protocol ChallengeEssentialInfoInputDataStore: AnyObject {
+    /// 챌린지 이름 선택 트리거
+    var didTriggerSelectChallengeName: PassthroughSubject<String, Never> { get }
+}
 
 final class ChallengeEssentialInfoInputInteractor: ChallengeEssentialInfoInputDataStore, ChallengeEssentialInfoInputBusinessLogic {
+
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: ChallengeEssentialInfoInputPresentationLogic
@@ -44,14 +48,19 @@ final class ChallengeEssentialInfoInputInteractor: ChallengeEssentialInfoInputDa
     init(
         presenter: ChallengeEssentialInfoInputPresentationLogic,
         router: ChallengeEssentialInfoInputRoutingLogic,
-        worker: ChallengeEssentialInfoInputWorkerProtocol
+        worker: ChallengeEssentialInfoInputWorkerProtocol,
+        didTriggerSelectChallengeName: PassthroughSubject<String, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.observe()
     }
     
     // MARK: - DataStore
+
+    /// 챌린지 추천 버튼에서 채택한 챌린지명
+    var didTriggerSelectChallengeName: PassthroughSubject<String, Never> = .init()
 
     var nameDataSource: String?
     var startDateDataSource: String?
@@ -64,7 +73,18 @@ extension ChallengeEssentialInfoInputInteractor {
     
     /// 외부 액션 옵저빙
     func observe() {
-        
+        didTriggerSelectChallengeName.sink { name in
+            self.nameDataSource = name
+
+            Task {
+                await self.presenter.presentChallengeName(model: .init(text: name))
+            }
+        }
+        .store(in: &cancellables)
+    }
+
+    func updateChallengeName(text: String) async {
+        await self.presenter.presentChallengeName(model: .init(text: text))
     }
 }
 
@@ -84,9 +104,8 @@ extension ChallengeEssentialInfoInputInteractor {
         await self.didUpdateNextButton()
     }
 
-    // TODO: - 챌린지 버튼 탭 후 화면전환
     func didTapChallengeRecommendationButton() async {
-
+        await self.router.routeToChallengeRecommendationScene()
     }
 }
 
@@ -118,6 +137,7 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didUpdateChallengeName() async -> Bool{
+
         guard let nameData = self.nameDataSource else {
             return true
         }
@@ -165,9 +185,8 @@ extension ChallengeEssentialInfoInputInteractor {
         }
     }
 
-    // TODO: - 다음 버튼 탭 후 화면 전환
     func didTapNextButton() async {
-
+        await self.router.routeToAdditionalInfoScene()
     }
 }
 
