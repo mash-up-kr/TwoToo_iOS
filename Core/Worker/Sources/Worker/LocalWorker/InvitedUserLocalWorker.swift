@@ -15,7 +15,7 @@ public final class InvitedUserLocalWorker: InvitedUserLocalWorkerProtocol {
     
     var localDataSource: LocalDataSourceProtocol?
     
-    public init(localDataSource: LocalDataSourceProtocol = LocalDataSource()) {
+    public init(localDataSource: LocalDataSourceProtocol) {
         self.localDataSource = localDataSource
     }
     
@@ -23,10 +23,10 @@ public final class InvitedUserLocalWorker: InvitedUserLocalWorkerProtocol {
     
     public var invitedUser: String? {
         get {
-            return self.localDataSource?.read(key: key)
+            return self.localDataSource?.read(key: self.key)
         }
-        set(user) {
-            self.localDataSource?.save(value: user, key: key)
+        set {
+            self.localDataSource?.save(value: newValue, key: self.key)
         }
     }
 }

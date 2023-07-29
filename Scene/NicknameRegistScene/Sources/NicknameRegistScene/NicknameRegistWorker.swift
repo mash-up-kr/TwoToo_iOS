@@ -19,12 +19,9 @@ protocol NicknameRegistWorkerProtocol {
 
 final class NicknameRegistWorker: NicknameRegistWorkerProtocol {
     
-    var localDataSource: LocalDataSourceProtocol
     var invitedUserWorker: InvitedUserLocalWorkerProtocol
         
-    init(localDataSource: LocalDataSourceProtocol,
-         invitedUserLocalWorker: InvitedUserLocalWorkerProtocol) {
-        self.localDataSource = localDataSource
+    init(invitedUserLocalWorker: InvitedUserLocalWorkerProtocol) {
         self.invitedUserWorker = invitedUserLocalWorker
     }
     
