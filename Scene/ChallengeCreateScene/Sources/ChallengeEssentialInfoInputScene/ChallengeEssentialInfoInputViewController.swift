@@ -254,7 +254,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.nextButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -309,10 +309,9 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
 extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.nextButton.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-330)
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 10)
             }
-
             self.view.layoutIfNeeded()
         }
     }
@@ -320,9 +319,8 @@ extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
             self.nextButton.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-54)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
-
             self.view.layoutIfNeeded()
         }
     }

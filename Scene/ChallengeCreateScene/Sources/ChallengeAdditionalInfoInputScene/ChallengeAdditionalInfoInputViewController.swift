@@ -125,9 +125,9 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
         }
 
         self.nextButton.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(100)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -178,7 +178,7 @@ extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
             }
 
             self.nextButton.snp.makeConstraints { make in
-                make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(10)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 10)
             }
 
             self.view.layoutIfNeeded()
@@ -192,7 +192,7 @@ extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
             }
 
             self.nextButton.snp.makeConstraints { make in
-                make.top.lessThanOrEqualTo(self.challengeRuleTextView.snp.bottom).offset(100)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
 
             self.view.layoutIfNeeded()
