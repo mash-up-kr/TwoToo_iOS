@@ -32,6 +32,7 @@ final class InvitationSendWorker: InvitationSendWorkerProtocol {
     func requestInvitationLinkCreate() async throws -> String {
         let link = try await self.createInvitationLink()
         self.invitationLocalWorker.isInvitationSend = true
+        self.invitationLocalWorker.invitationLink = link
         return link
     }
     
@@ -80,7 +81,11 @@ final class InvitationSendWorker: InvitationSendWorkerProtocol {
                     continuation.resume(throwing: error)
                     return
                 }
-                continuation.resume(returning: url?.absoluteString ?? "")
+                if let url = url?.absoluteString {
+                    continuation.resume(returning: url)
+                    return
+                }
+                continuation.resume(throwing: NSError(domain: "create_invitation_link", code: -1))
             }
         }
     }
