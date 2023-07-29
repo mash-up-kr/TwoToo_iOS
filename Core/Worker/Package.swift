@@ -15,13 +15,15 @@ let package = Package(
     dependencies: [
         .package(path: "./Network"),
         .package(path: "./Local"),
+        .package(path: "./DesignSystem")
     ],
     targets: [
         .target(
             name: "Worker",
             dependencies: [
                 .product(name: "Network", package: "Network"),
-                .product(name: "Local", package: "Local")
+                .product(name: "Local", package: "Local"),
+                .product(name: "DesignSystem", package: "DesignSystem")
             ]
         ),
         .testTarget(

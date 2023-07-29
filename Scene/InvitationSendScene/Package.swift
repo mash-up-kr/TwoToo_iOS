@@ -21,13 +21,18 @@ let package = Package(
         .package(
             url: "https://github.com/Quick/Quick",
             .upToNextMajor(from: "6.0.0")
+        ),
+        .package(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            .upToNextMajor(from: "10.0.0")
         )
     ],
     targets: [
         .target(
             name: "InvitationSendScene",
             dependencies: [
-                .product(name: "CoreKit", package: "CoreKit")
+                .product(name: "CoreKit", package: "CoreKit"),
+                .product(name: "FirebaseDynamicLinks", package: "firebase-ios-sdk")
             ],
             resources: [.process("Assets")]
         ),
