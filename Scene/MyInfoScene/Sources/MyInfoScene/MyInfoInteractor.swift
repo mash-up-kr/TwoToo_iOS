@@ -13,15 +13,7 @@ protocol MyInfoBusinessLogic {
     func didLoad() async
     /// 설명서 버튼 클릭
     func didTapGuideButton() async
-    /// 공지사항을 클릭
-    func didTapAnnouncement() async
-    /// 이용 가이드를 클릭
-    func didTapUserGuide() async
-    /// 문의하기를 클릭
-    func didTapInquery() async
-    /// 만든이들을 클릭
-    func didTapCreators() async
-
+    /// Lists에 있는 목록들 클릭
     func didTapLists(index: Int) async
 }
 
@@ -54,23 +46,6 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
     
     /// 화면 진입 트리거
     var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
-
-
-    enum Lists: Int {
-        case announcement
-        case userGuide
-        case inquery
-        case creators
-
-        var title: String {
-            switch self {
-            case .announcement: return "announcement"
-            case .userGuide: return "userGuide"
-            case .inquery: return "inquery"
-            case .creators: return "crators"
-            }
-        }
-    }
 }
 
 // MARK: - Interactive Business Logic
@@ -114,12 +89,20 @@ extension MyInfoInteractor {
         await self.router.routeToGuideScene()
     }
 
-    func didTapLists(index: Int) {
-//        let lists = Lists.announcement.
-//
-//        switch lists?.title {
+    func didTapLists(index: Int) async {
 
-
+        switch index {
+        case 0:
+            await self.router.routeToAnnouncementScene()
+        case 1:
+            await self.router.routeToUserGuideScene()
+        case 2:
+            await self.router.routeToInqueryScene()
+        case 3:
+            await self.router.routeToCreatorsScene()
+        default:
+            await self.router.routeToAnnouncementScene()
+        }
     }
 
     func didTapAnnouncement() async {
