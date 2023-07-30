@@ -28,9 +28,11 @@ public final class MyInfoSceneFactory {
     
     public func make(with configuration: MyInfoConfiguration) -> MyInfoScene {
         
+        let meNetworkWorker = MeNetworkWorker()
+        
         let presenter = MyInfoPresenter()
         let router = MyInfoRouter()
-        let worker = MyInfoWorker()
+        let worker = MyInfoWorker(meNetworkWorker: meNetworkWorker)
         let interactor = MyInfoInteractor(
             presenter: presenter,
             router: router,
