@@ -221,7 +221,7 @@ extension MyInfoViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Task {
-            await self.interactor.didTapLists(index: indexPath.row)
+            await self.interactor.didTapMyInfoLists(index: indexPath.row)
         }
     }
 }

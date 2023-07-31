@@ -7,19 +7,12 @@
 //
 
 import UIKit
+import SafariServices
 
 @MainActor
 protocol MyInfoRoutingLogic {
-    /// 설명서 화면으로 이동한다.
-    func routeToGuideScene()
-    /// 공지사항 화면으로 이동한다.
-    func routeToAnnouncementScene()
-    /// 이용 가이드 화면으로 이동한다.
-    func routeToUserGuideScene()
-    /// 문의하기 화면으로 이동한다.
-    func routeToInqueryScene()
-    /// 만든이들 화면으로 이동한다.
-    func routeToCreatorsScene()
+    /// 마이페이지 내 공지사항, 이용가이드, 투투에 문의하기, 만든이들 화면으로 이동한다.
+    func routeToMyInfoListsScene(url: URL)
 }
 
 final class MyInfoRouter {
@@ -28,23 +21,11 @@ final class MyInfoRouter {
 }
 
 extension MyInfoRouter: MyInfoRoutingLogic {
-    func routeToGuideScene() {
+    /// 사파리 웹뷰로 보여준다.
+    func routeToMyInfoListsScene(url: URL) {
 
-    }
-
-    func routeToAnnouncementScene() {
-
-    }
-
-    func routeToUserGuideScene() {
-
-    }
-
-    func routeToInqueryScene() {
-
-    }
-
-    func routeToCreatorsScene() {
-
+        let safariViewController = SFSafariViewController(url: url)
+        
+        self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
 }

@@ -14,8 +14,21 @@ protocol MyInfoWorkerProtocol {
 }
 
 final class MyInfoWorker: MyInfoWorkerProtocol {
-    // TODO: - API 요청 후 연동
+    
+    var meNetworkWorker: MeNetworkWorkerProtocol
+    
+    init(meNetworkWorker: MeNetworkWorkerProtocol) {
+        self.meNetworkWorker = meNetworkWorker
+    }
+    
     func fetchMypageInfo() async throws -> MyInfo.Model.Data {
-        return  .init(myNickname: "왕", partnerNickname: "여왕", challengeTotalCount: "3")
+        
+        let mypageResponse = try await self.meNetworkWorker.requestMeInquiry()
+        
+        return  .init(
+            myNickname: mypageResponse.nickname ?? "",
+            partnerNickname: mypageResponse.partnerNickname ?? "",
+            challengeTotalCount: String(mypageResponse.totalChallengeCount ?? 0)
+        )
     }
 }

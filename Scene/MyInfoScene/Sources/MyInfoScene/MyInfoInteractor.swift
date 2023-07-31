@@ -7,6 +7,7 @@
 //
 
 import CoreKit
+import Foundation
 
 protocol MyInfoBusinessLogic {
     /// 첫 진입
@@ -14,7 +15,7 @@ protocol MyInfoBusinessLogic {
     /// 설명서 버튼 클릭
     func didTapGuideButton() async
     /// Lists에 있는 목록들 클릭
-    func didTapLists(index: Int) async
+    func didTapMyInfoLists(index: Int) async
 }
 
 protocol MyInfoDataStore: AnyObject {
@@ -43,6 +44,30 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
     }
     
     // MARK: - DataStore
+    
+    enum MyInfoLists: Int {
+        /// 공지사항
+        case announcement
+        /// 이용 가이드 및 설명서
+        case userGuide
+        /// 투투에 문의하기
+        case inquery
+        /// 만든이들
+        case creators
+        
+        var url: URL? {
+            switch self {
+            case .announcement:
+                return URL(string: "https://two2too2.github.io/personal.html")
+            case .userGuide:
+                return URL(string: "https://two2too2.github.io/")
+            case .inquery:
+                return URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeUGNUGzl3MnGUAIR-rtfgYYrDYRIoKh_Ozpd4prqA1qIBKRw/viewform?usp=sf_link")
+            case .creators:
+                return URL(string: "https://two2too2.github.io/creater.html")
+            }
+        }
+    }
     
     /// 화면 진입 트리거
     var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
@@ -85,24 +110,18 @@ extension MyInfoInteractor {
 // MARK: Feature (페이지 이동)
 
 extension MyInfoInteractor {
+    /// 설명서 버튼 클릭했을 때
     func didTapGuideButton() async {
-        await self.router.routeToGuideScene()
+        guard let url = MyInfoLists.userGuide.url else { return }
+        
+        await self.router.routeToMyInfoListsScene(url: url)
     }
 
-    func didTapLists(index: Int) async {
-
-        switch index {
-        case 0:
-            await self.router.routeToAnnouncementScene()
-        case 1:
-            await self.router.routeToUserGuideScene()
-        case 2:
-            await self.router.routeToInqueryScene()
-        case 3:
-            await self.router.routeToCreatorsScene()
-        default:
-            await self.router.routeToAnnouncementScene()
-        }
+    /// 공지사항, 이용가이드, 투투에 문의하기, 만든이들 클릭했을 때
+    func didTapMyInfoLists(index: Int) async {
+        guard let url = MyInfoLists(rawValue: index)?.url else { return }
+     
+        await self.router.routeToMyInfoListsScene(url: url)
     }
 }
 
