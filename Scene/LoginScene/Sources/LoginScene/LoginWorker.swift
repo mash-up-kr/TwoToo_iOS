@@ -31,6 +31,7 @@ final class LoginWorker: LoginWorkerProtocol {
     var invitationLocalWorker: InvitationLocalWorkerProtocol
     var meLocalWorker: MeLocalWorkerProtocol
     var authNetworkWorker: AuthNetworkWorkerProtocol
+    var appleLoginManager = AppleManger()
     
     init(
         onboardLocalWorker: OnboardingLocalWorkerProtocol,
@@ -68,10 +69,12 @@ final class LoginWorker: LoginWorkerProtocol {
         let kakaoID = try await self.fetchKakaoID()
         return try await self.requestLogin(socialId: String(kakaoID), loginType: "Kakao")
     }
-    
-    // TODO: AuthenticationServices 활용
+        
     func loginWithApple() async throws -> Login.Model.UserState {
-        return .nickname
+        self.appleLoginManager.configure()
+        
+        let id = try await self.appleLoginManager.fetchAppleID()
+        return try await self.requestLogin(socialId: id, loginType: "Apple")
     }
     
     private func requestLogin(socialId: String, loginType: String) async throws -> Login.Model.UserState {
@@ -84,6 +87,7 @@ final class LoginWorker: LoginWorkerProtocol {
         self.meLocalWorker.nickname = authResponse.nickname
         self.meLocalWorker.userNo = authResponse.userNo
         self.meLocalWorker.partnerNo = authResponse.partnerNo
+        
         switch authResponse.state {
             case "NEED_NICKNAME":
                 return .nickname
