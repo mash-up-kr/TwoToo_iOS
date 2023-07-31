@@ -66,7 +66,7 @@ final class LoginViewController: UIViewController {
     private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
         var v: ASAuthorizationAppleIDButton
         if #available(iOS 13.2, *) {
-            v = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
+            v = ASAuthorizationAppleIDButton(type: .default, style: .black)
             v.cornerRadius = 17
         }
         else {
