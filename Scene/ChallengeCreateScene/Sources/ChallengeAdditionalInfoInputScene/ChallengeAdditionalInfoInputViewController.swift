@@ -173,12 +173,13 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.updateConstraints { make in
+            self.challengeRuleTextView.snp.makeConstraints { make in
                 make.top.equalTo(self.headerStackView.snp.bottom).offset(10)
+                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.50)
             }
 
-            self.nextButton.snp.makeConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 10)
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(keyboardFrame.height - 10)
             }
 
             self.view.layoutIfNeeded()
@@ -187,11 +188,12 @@ extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
 
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.updateConstraints { make in
+            self.challengeRuleTextView.snp.makeConstraints { make in
                 make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
+                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
             }
 
-            self.nextButton.snp.makeConstraints { make in
+            self.nextButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
 
