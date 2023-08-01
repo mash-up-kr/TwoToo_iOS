@@ -70,35 +70,70 @@ extension ChallengeHistoryPresenter {
     -> ChallengeHistory.ViewModel.Challenge {
         return .init(id: model.id,
                      name: model.name,
-                     dDayText: self.makedDayText(start: model.startDate,
-                                                   end: model.endDate),
+                     dDayText: self.makedDayText(start: Date().dateToString(.yearMonthDay).fullStringDate(),
+                                                   end: model.endDate.dateToString(.yearMonthDay).fullStringDate()),
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
-                     cellInfo: self.makeCellInfoList(startToEndDateList: self.makeStartToEndDateList(start: model.startDate,
-                                                                                                     end: model.endDate),
+                     cellInfo: self.makeCellInfoList(start: model.startDate,
+                                                     end: model.endDate,
                                                      myList: model.myInfo.certificates,
                                                      partnerList: model.partnerInfo.certificates))
     }
     /// cell 뷰모델 리스트 생성
-    private func makeCellInfoList(startToEndDateList: [Date],
-                          myList: ChallengeHistory.Model.CertificateList,
-                          partnerList: ChallengeHistory.Model.CertificateList)
+    private func makeCellInfoList(start: Date,
+                                  end: Date,
+                                  myList: ChallengeHistory.Model.CertificateList,
+                                  partnerList: ChallengeHistory.Model.CertificateList)
     -> ChallengeHistory.ViewModel.CellInfoList {
+        
+        let today = Date().dateToString(.yearMonthDay).fullStringDate()
+        var current = start.dateToString(.yearMonthDay).fullStringDate()
+        let end = end.dateToString(.yearMonthDay).fullStringDate()
+        
         var cellInfoList: ChallengeHistory.ViewModel.CellInfoList = []
-        startToEndDateList.forEach { day in
-            let dateText = day.dateToString(.monthDay)
-            let my = self.isUserCertificateInfo(pivDateText: dateText, userType: .user, certificateList: myList)
-            let partner = self.isUserCertificateInfo(pivDateText: dateText, userType: .partner, certificateList: partnerList)
-            let cellInfo = ChallengeHistory.ViewModel.CellInfo(dateText: dateText,
-                                                               isToday: self.isToday(day),
-                                                               my: my,
-                                                               partner: partner)
+        
+        while current <= end {
             
-            cellInfoList.append(cellInfo)
+            if current > today { break } // 오늘 날짜 이후의 값은 제거
+            
+            var my: ChallengeHistory.ViewModel.CertificatePhotoViewModel?
+            if let myModel = myList.first(where: {
+                current.dateToString(.yearMonthDay) == $0.certificateTime.dateToString(.yearMonthDay)
+            }) {
+                my = .init(
+                    certificateID: myModel.id,
+                    user: .user,
+                    photoURL: URL(string: myModel.certificateImageUrl),
+                    timeText: myModel.certificateTime.dateToString(.hourMinute)
+                )
+            }
+            
+            var partner: ChallengeHistory.ViewModel.CertificatePhotoViewModel?
+            if let partnerModel = partnerList.first(where: {
+                current.dateToString(.yearMonthDay) == $0.certificateTime.dateToString(.yearMonthDay)
+            }) {
+                partner = .init(
+                    certificateID: partnerModel.id,
+                    user: .partner,
+                    photoURL: URL(string: partnerModel.certificateImageUrl),
+                    timeText: partnerModel.certificateTime.dateToString(.hourMinute)
+                )
+            }
+            
+            let cell = ChallengeHistory.ViewModel.CellInfo(
+                dateText: current.dateToString(.monthDay),
+                isToday: current == today,
+                my: my,
+                partner: partner
+            )
+            cellInfoList.append(cell)
+            
+            // 다음 날짜로 이동 (1일 더하기)
+            current = Calendar.current.date(byAdding: .day, value: 1, to: current)!
         }
         
-        return cellInfoList
+        return cellInfoList.reversed()
     }
     
     /// 해당 일자에 유저의 인증 정보가 있는지 체크 후 매핑

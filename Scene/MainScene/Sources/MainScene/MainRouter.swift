@@ -60,12 +60,30 @@ extension MainRouter: MainRoutingLogic {
         
         historyViewController.hidesBottomBarWhenPushed = false
         historyNavigationController.setNavigationBarHidden(true, animated: false)
+        historyNavigationController.interactivePopGestureRecognizer?.isEnabled = true
         
         homeViewController.hidesBottomBarWhenPushed = false
         homeNavigationController.setNavigationBarHidden(true, animated: false)
+        homeNavigationController.interactivePopGestureRecognizer?.isEnabled = true
         
         myInfoViewController.hidesBottomBarWhenPushed = false
         myInfoNavigationController.setNavigationBarHidden(true, animated: false)
+        
+        historyViewController.tabBarItem = .init(
+            title: nil,
+            image: .asset(.icon_history_yellow)!.withRenderingMode(.alwaysOriginal),
+            selectedImage: .asset(.icon_history_brown)!.withRenderingMode(.alwaysOriginal)
+        )
+        homeViewController.tabBarItem = .init(
+            title: nil,
+            image: .asset(.icon_history_yellow)!.withRenderingMode(.alwaysOriginal),
+            selectedImage: .asset(.icon_home_brown)!.withRenderingMode(.alwaysOriginal)
+        )
+        myInfoViewController.tabBarItem = .init(
+            title: nil,
+            image: .asset(.icon_mypage_yellow)!.withRenderingMode(.alwaysOriginal),
+            selectedImage: .asset(.icon_mypage_brown)!.withRenderingMode(.alwaysOriginal)
+        )
         
         // Render
 

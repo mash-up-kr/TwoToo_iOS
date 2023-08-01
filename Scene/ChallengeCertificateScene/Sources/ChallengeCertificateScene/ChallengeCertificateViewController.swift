@@ -116,6 +116,12 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
         self.registKeyboardDelegate()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.post(name: NSNotification.Name("modal_dismissed"), object: nil)
+    }
+    
     // MARK: - Layout
     
     private func setUI() {

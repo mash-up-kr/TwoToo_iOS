@@ -195,7 +195,7 @@ extension Home.Model.Challenge {
             partnerFlowerMapper = FlowerMappingWorker(flowerType: partnerFlower)
         }
         viewModel.partnerFlower.image = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.partnerFlower.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
+        viewModel.partnerFlower.complimentCommentText = self.myInfo.todayCert?.complimentComment ?? ""
         viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
         
         // 내 꽃 매핑
@@ -205,7 +205,7 @@ extension Home.Model.Challenge {
         }
         viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
         viewModel.myFlower.cetificationGuideText = "내 씨앗을 눌러 인증 해보세요!"
-        viewModel.myFlower.complimentCommentText = self.myInfo.todayCert?.complimentComment ?? ""
+        viewModel.myFlower.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
         // 챌린지 진행 상태 매핑

@@ -9,8 +9,8 @@
 import CoreKit
 
 protocol ChallengeHistoryBusinessLogic {
-    /// 첫 진입
-    func didLoad() async
+    /// 진입
+    func didAppear() async
     /// 인증하기 버튼 클릭
     func didTapCertificate() async
     /// 인증 선택
@@ -30,8 +30,14 @@ protocol ChallengeHistoryBusinessLogic {
 }
 
 protocol ChallengeHistoryDataStore: AnyObject {
+    /// 챌린지 ID
+    var challengeID: String { get }
     /// 챌린지 상세
-    var challenge: ChallengeHistory.Model.Challenge { get }
+    var challenge: ChallengeHistory.Model.Challenge? { get }
+    /// 내 닉네임
+    var myNickname: String? { get }
+    /// 파트너 닉네임
+    var partnerNickname: String? { get }
 }
 
 final class ChallengeHistoryInteractor: ChallengeHistoryDataStore, ChallengeHistoryBusinessLogic {
@@ -45,17 +51,27 @@ final class ChallengeHistoryInteractor: ChallengeHistoryDataStore, ChallengeHist
         presenter: ChallengeHistoryPresentationLogic,
         router: ChallengeHistoryRoutingLogic,
         worker: ChallengeHistoryWorkerProtocol,
-        challenge: ChallengeHistory.Model.Challenge
+        challengeID: String
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
-        self.challenge = challenge
+        self.challengeID = challengeID
     }
     
     // MARK: - DataStore
     
-    var challenge: ChallengeHistory.Model.Challenge
+    var challengeID: String
+    
+    var challenge: ChallengeHistory.Model.Challenge?
+    
+    var myNickname: String? {
+        self.worker.myNickname
+    }
+    
+    var partnerNickname: String? {
+        self.worker.partnerNickname
+    }
 }
 
 // MARK: - Interactive Business Logic
@@ -72,9 +88,15 @@ extension ChallengeHistoryInteractor {
 
 extension ChallengeHistoryInteractor {
     
-    func didLoad() async {
-        print(">>>>> 챌린지", self.challenge)
-        await self.presenter.presentChallenge(challenge: self.challenge)
+    func didAppear() async {
+        do {
+            let challenge = try await self.worker.requestChallengeDetailInquiry(challengeID: self.challengeID)
+            self.challenge = challenge
+            await self.presenter.presentChallenge(challenge: challenge)
+        }
+        catch {
+            //
+        }
     }
 }
 
@@ -92,22 +114,30 @@ extension ChallengeHistoryInteractor {
 extension ChallengeHistoryInteractor {
     
     func didSelectCertificate(certificateID: String) async {
-        let myCertificate = self.challenge.myInfo.certificates
+        guard let challenge = self.challenge else {
+            return
+        }
+        
+        let myCertificate = challenge.myInfo.certificates
             .filter {
                 $0.id == certificateID
             }.first
-        let partnerCertificate = self.challenge.partnerInfo.certificates
+        let partnerCertificate = challenge.partnerInfo.certificates
             .filter {
                 $0.id == certificateID
             }.first
         
         if let myCertificate = myCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(title: self.challenge.name,
-                                                                 certificate: myCertificate)
+            await self.router.routeToChallengeHistoryDetailScene(title: challenge.name,
+                                                                 certificate: myCertificate,
+                                                                 nickname: self.worker.myNickname ?? "",
+                                                                 partnerNickname: self.worker.partnerNickname ?? "")
         }
         else if let partnerCertificate = partnerCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(title: self.challenge.name,
-                                                                 certificate: partnerCertificate)
+            await self.router.routeToChallengeHistoryDetailScene(title: challenge.name,
+                                                                 certificate: partnerCertificate,
+                                                                 nickname: self.worker.partnerNickname ?? "",
+                                                                 partnerNickname: self.worker.myNickname ?? "")
         }
     }
 }
@@ -134,7 +164,7 @@ extension ChallengeHistoryInteractor {
     
     func didTapQuitPopupQuitButton() async {
         do {
-            try await self.worker.requestChallengeQuit(challengeID: self.challenge.id)
+            try await self.worker.requestChallengeQuit(challengeID: self.challengeID)
             await self.presenter.presentChallengeQuitSuccess()
             await self.router.dismiss()
         }

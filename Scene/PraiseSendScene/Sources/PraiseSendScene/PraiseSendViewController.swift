@@ -91,6 +91,12 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
         self.setUI()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.post(name: NSNotification.Name("modal_dismissed"), object: nil)
+    }
+    
     // MARK: - Layout
     
     private func setUI() {

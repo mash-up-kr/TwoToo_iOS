@@ -85,6 +85,7 @@ final class NicknameRegistViewController: UIViewController {
         v.titleLabel?.font = .h3
         v.backgroundColor = .grey400
         v.layer.cornerRadius = 20
+        v.isEnabled = false
         v.addAction {
             Task {
                 await self.interactor.didTapConfirmButton()

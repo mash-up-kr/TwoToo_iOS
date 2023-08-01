@@ -87,8 +87,8 @@ final class ChallengeInProgressView: UIView {
         self.addSubviews(self.topChallengeInfoView,
                          self.progressBar,
                          self.nicknameStackView,
-                         self.myFlowerView,
                          self.partnerFlowerView,
+                         self.myFlowerView,
                          self.heartImage,
                          self.nudgeBeeButton,
                          self.nudgeTitleLabel)

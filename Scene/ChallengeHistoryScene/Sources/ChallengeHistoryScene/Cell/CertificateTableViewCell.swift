@@ -102,6 +102,14 @@ final class CertificateTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.myCertificateID = ""
+        self.partnerCertificateID = ""
+        self.willCertificate = false
+    }
+    
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
         self.dateLabel.text = viewModel.dateText
         // 유저 인증 O
@@ -123,6 +131,9 @@ final class CertificateTableViewCell: UITableViewCell {
         // 유저 이미지 인증하기 상태
         if viewModel.isToday && self.myCertificateID.isEmpty {
             self.willCertificate = true
+        }
+        else {
+            self.willCertificate = false
         }
     }
     

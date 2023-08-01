@@ -67,23 +67,47 @@ final class HomeWorker: HomeWorkerProtocol {
         
         let challengeStatus = self.mapChallengeStatus(from: homeResponse.viewState, homeResponse: homeResponse)
         
-        let myInfo = self.mapUserInfo(
-            from: homeResponse.myInfo,
-            commit: homeResponse.myCommit,
-            flower: homeResponse.onGoingChallenge?.user1Flower,
-            commitCount: homeResponse.onGoingChallenge?.user1CommitCnt
-        )
-        let partnerInfo = self.mapUserInfo(
-            from: homeResponse.partnerInfo,
-            commit: homeResponse.partnerCommit,
-            flower: homeResponse.onGoingChallenge?.user2Flower,
-            commitCount: homeResponse.onGoingChallenge?.user2CommitCnt
-        )
+        var myInfo: Home.Model.User
+        var partnerInfo: Home.Model.User
+        
+        if homeResponse.onGoingChallenge?.user1.userNo == self.meLocalWorker.userNo {
+            myInfo = self.mapUserInfo(
+                from: homeResponse.myInfo,
+                commit: homeResponse.myCommit,
+                flower: homeResponse.onGoingChallenge?.user1Flower,
+                commitCount: homeResponse.onGoingChallenge?.user1CommitCnt
+            )
+            partnerInfo = self.mapUserInfo(
+                from: homeResponse.partnerInfo,
+                commit: homeResponse.partnerCommit,
+                flower: homeResponse.onGoingChallenge?.user2Flower,
+                commitCount: homeResponse.onGoingChallenge?.user2CommitCnt
+            )
+        }
+        else {
+            myInfo = self.mapUserInfo(
+                from: homeResponse.myInfo,
+                commit: homeResponse.myCommit,
+                flower: homeResponse.onGoingChallenge?.user2Flower,
+                commitCount: homeResponse.onGoingChallenge?.user2CommitCnt
+            )
+            partnerInfo = self.mapUserInfo(
+                from: homeResponse.partnerInfo,
+                commit: homeResponse.partnerCommit,
+                flower: homeResponse.onGoingChallenge?.user1Flower,
+                commitCount: homeResponse.onGoingChallenge?.user1CommitCnt
+            )
+        }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         let startDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.startDate) }
         let endDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.endDate) }
+        
+        self.meLocalWorker.userNo = homeResponse.myInfo.userNo
+        self.meLocalWorker.nickname = homeResponse.myInfo.nickname
+        self.meLocalWorker.partnerNo = homeResponse.partnerInfo.userNo
+        self.meLocalWorker.partnerNickname = homeResponse.partnerInfo.nickname
         
         let challenge: Home.Model.Challenge = .init(
             id: id,
@@ -94,7 +118,8 @@ final class HomeWorker: HomeWorkerProtocol {
             status: challengeStatus,
             myInfo: myInfo,
             partnerInfo: partnerInfo,
-            stickRemaining: homeResponse.myStingCnt
+            stickRemaining: 5 - (homeResponse.myStingCnt ?? 0),
+            description: homeResponse.onGoingChallenge?.description
         )
         
         return .init(challenge: challenge)
@@ -165,7 +190,10 @@ final class HomeWorker: HomeWorkerProtocol {
         
         userInfo.certCount = commitCount ?? 0
         userInfo.growStatus = self.mapGrowStatus(from: commitCount)
-        userInfo.flower = flower.map(self.mapFlowerType)
+        
+        if let flower = flower {
+            userInfo.flower = self.mapFlowerType(from: flower)
+        }
         
         return userInfo
     }
@@ -194,7 +222,7 @@ final class HomeWorker: HomeWorkerProtocol {
         }
     }
 
-    private func mapFlowerType(from flower: HomeResponse.OnGoingChallenge.Flower) -> Flower {
+    private func mapFlowerType(from flower: HomeResponse.OnGoingChallenge.Flower) -> Flower? {
         switch flower {
             case .FIG:
                 return .fig
@@ -219,6 +247,9 @@ final class HomeWorker: HomeWorkerProtocol {
                 
             case .DELPHINIUM:
                 return .delphinium
+                
+            case .none:
+                return nil
         }
     }
 }

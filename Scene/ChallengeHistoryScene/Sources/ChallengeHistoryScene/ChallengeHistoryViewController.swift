@@ -68,6 +68,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = TTTagView(textColor: .mainCoral,
                           fontSize: .body2,
                           cornerRadius: 15)
+        v.isHidden = true
         return v
     }()
     
@@ -75,6 +76,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = TTTagView(textColor: .primary,
                           fontSize: .body2,
                           cornerRadius: 15)
+        v.isHidden = true
         return v
     }()
     
@@ -122,16 +124,37 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.view.backgroundColor = .second02
+        self.registNotification()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         Task {
-            await self.interactor.didLoad()
+            await self.interactor.didAppear()
         }
+    }
+    
+    @objc private func viewDidAppearWithModalDismissed() {
+        Task {
+            await self.interactor.didAppear()
+        }
+    }
+    
+    private func registNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewDidAppearWithModalDismissed),
+            name: NSNotification.Name("modal_dismissed"),
+            object: nil
+        )
     }
     
     // MARK: - Layout
     
     private func setUI() {
+        self.view.backgroundColor = .second02
+        
         self.view.addSubviews(self.navigationBar,
                               self.dDayTagView,
                               self.titleLabel,
@@ -260,6 +283,8 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     }
     
     func displayChallenge(viewModel: ChallengeHistory.ViewModel.Challenge) {
+        self.myNicknameTagView.isHidden = false
+        self.partnerNicknameTagView.isHidden = false
         self.dDayTagView.titleLabel.text = viewModel.dDayText
         self.titleLabel.text = viewModel.name
         self.additionalInfoLabel.text = viewModel.additionalInfo
@@ -288,9 +313,7 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
     }
     
     func dismissQuitPopup() {
-        Task {
-            await self.interactor.didTapQuitPopupBackground()
-        }
+        self.popupView.isHidden = true
     }
     
     func displayToast(message: String) {

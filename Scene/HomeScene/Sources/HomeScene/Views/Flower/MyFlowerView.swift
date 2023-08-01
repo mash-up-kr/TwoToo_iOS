@@ -37,6 +37,7 @@ final class MyFlowerView: UIView {
     lazy var emptySpeechBubbleImageView: UIImageView = {
         let v = UIImageView(.icon_bubble_write)
         v.isHidden = true
+        v.isUserInteractionEnabled = true
         v.addTapAction { [weak self] in
             self?.delegate?.didTapEmptySpeechBubbleView()
         }
@@ -107,11 +108,13 @@ final class MyFlowerView: UIView {
         }
         
         self.emptySpeechBubbleImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-32)
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
         }
