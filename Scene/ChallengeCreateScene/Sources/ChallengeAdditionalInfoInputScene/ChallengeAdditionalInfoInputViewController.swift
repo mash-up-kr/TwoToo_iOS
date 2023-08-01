@@ -186,13 +186,18 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.makeConstraints { make in
+            self.challengeRuleTextView.snp.remakeConstraints { make in
                 make.top.equalTo(self.headerStackView.snp.bottom).offset(10)
-                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.50)
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.5)
             }
 
-            self.nextButton.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(keyboardFrame.height - 10)
+            self.nextButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(57)
+                make.top.equalTo(self.challengeRuleTextView.snp.bottom).offset(10)
             }
 
             self.view.layoutIfNeeded()
@@ -201,12 +206,17 @@ extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
 
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.makeConstraints { make in
+            self.challengeRuleTextView.snp.remakeConstraints { make in
                 make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
                 make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
             }
 
-            self.nextButton.snp.updateConstraints { make in
+            self.nextButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(57)
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
 
