@@ -69,6 +69,8 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         Task {
             await self.interactor.didLoad()
         }
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Layout
@@ -185,4 +187,11 @@ extension HistoryViewController {
         return layout
     }
 
+}
+
+extension HistoryViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }

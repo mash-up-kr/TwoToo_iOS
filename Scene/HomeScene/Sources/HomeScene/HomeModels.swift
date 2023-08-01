@@ -41,6 +41,8 @@ enum Home {
             var partnerInfo: User
             /// 찌르기 남은 횟수
             var stickRemaining: Int?
+            /// 챌린지 설명
+            var description: String?
         }
 
         /// 유저

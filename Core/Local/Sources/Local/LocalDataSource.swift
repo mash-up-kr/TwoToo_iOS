@@ -13,7 +13,7 @@ public protocol LocalDataSourceProtocol {
     func save(value: Bool, key: String)
     func save(value: Int, key: String)
     
-    func read<T: Any> (value: T, key: String) -> Any?
+    func read<T: Any> (key: String) -> T?
     func read(key: String) -> String?
     func read(key: String) -> Bool?
     func read(key: String) -> Int?
@@ -47,7 +47,7 @@ public final class LocalDataSource: LocalDataSourceProtocol {
     }
     
     // MARK: - Read
-    public func read<T: Any>(value: T, key: String) -> Any? {
+    public func read<T: Any>(key: String) -> T? {
         UserDefaults.standard.object(forKey: key) as? T
     }
         

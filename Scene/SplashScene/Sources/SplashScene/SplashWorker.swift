@@ -39,6 +39,7 @@ final class SplashWorker: SplashWorkerProtocol {
         self.meLocalWorker.userNo = meResponse.userNo
         self.meLocalWorker.nickname = meResponse.nickname
         self.meLocalWorker.partnerNo = meResponse.partnerNo
+        self.meLocalWorker.partnerNickname = meResponse.partnerNickname
         
         if meResponse.nickname == nil || meResponse.nickname?.isEmpty ?? true {
             return .nickname

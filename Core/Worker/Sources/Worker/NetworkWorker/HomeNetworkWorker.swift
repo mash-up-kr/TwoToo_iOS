@@ -60,6 +60,8 @@ public struct HomeResponse: Decodable {
             case SUNFLOWER
             case CAMELLIA
             case DELPHINIUM
+            
+            case none = ""
         }
     }
     

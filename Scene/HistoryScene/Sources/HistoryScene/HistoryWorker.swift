@@ -8,6 +8,13 @@
 
 import CoreKit
 
-protocol HistoryWorkerProtocol {}
+protocol HistoryWorkerProtocol {
+    func fetchChallengeList() async throws -> History.Model.ChallengeList
+}
 
-final class HistoryWorker: HistoryWorkerProtocol {}
+final class HistoryWorker: HistoryWorkerProtocol {
+    
+    func fetchChallengeList() async throws -> History.Model.ChallengeList {
+        return []
+    }
+}

@@ -13,6 +13,7 @@ public protocol MeLocalWorkerProtocol {
     var userNo: Int? { get set }
     var nickname: String? { get set }
     var partnerNo: Int? { get set }
+    var partnerNickname: String? { get set }
     var deviceToken: String? { get set }
 }
 
@@ -28,6 +29,7 @@ public final class MeLocalWorker: MeLocalWorkerProtocol {
     private let userNoKey: String = "userNo"
     private let nicknameKey: String = "nickname"
     private let partnerNoKey: String = "partnerNo"
+    private let partnerNicknameKey: String = "partnerNickname"
     private let deviceTokenKey: String = "deviceToken"
     
     public var token: String? {
@@ -78,6 +80,18 @@ public final class MeLocalWorker: MeLocalWorkerProtocol {
                 return
             }
             self.localDataSource?.save(value: newValue, key: self.partnerNoKey)
+        }
+    }
+    
+    public var partnerNickname: String? {
+        get {
+            return self.localDataSource?.read(key: self.partnerNicknameKey)
+        }
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            self.localDataSource?.save(value: newValue, key: self.partnerNicknameKey)
         }
     }
     

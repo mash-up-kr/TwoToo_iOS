@@ -31,6 +31,7 @@ import Foundation
 struct Formatter {
     static let shared: DateFormatter = {
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
         return dateFormatter
     }()
 

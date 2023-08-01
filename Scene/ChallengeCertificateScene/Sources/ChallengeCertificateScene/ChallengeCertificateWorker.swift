@@ -84,7 +84,7 @@ final class ChallengeCertificateWorker: ChallengeCertificateWorkerProtocol {
         }
         let date = Date()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd_HH_MM_ss"
+        dateFormatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
         let formattedDate = dateFormatter.string(from: date)
         
         _ = try await self.commitNetworkWorker.requestCommit(

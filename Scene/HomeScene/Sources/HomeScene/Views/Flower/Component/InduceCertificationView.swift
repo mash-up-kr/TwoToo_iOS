@@ -15,7 +15,7 @@ final class InduceCertificationView: UIStackView {
         v.textColor = .grey500
         return v
     }()
-
+    
     lazy var certificatedImageView: UIImageView = {
         let v = UIImageView(.icon_certificated)
         return v

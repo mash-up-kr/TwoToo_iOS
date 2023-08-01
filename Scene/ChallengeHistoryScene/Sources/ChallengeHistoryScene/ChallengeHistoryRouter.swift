@@ -6,7 +6,9 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import CoreKit
 import UIKit
+import ChallengeCertificateScene
 import ChallengeHistoryDetailScene
 
 @MainActor
@@ -15,7 +17,9 @@ protocol ChallengeHistoryRoutingLogic {
     func routeToChallengeCertificateScene()
     /// 인증 상세 화면으로 이동한다.
     func routeToChallengeHistoryDetailScene(title: String,
-                                            certificate: ChallengeHistory.Model.Certificate)
+                                            certificate: ChallengeHistory.Model.Certificate,
+                                            nickname: String,
+                                            partnerNickname: String)
     /// 화면을 닫는다.
     func dismiss()
 }
@@ -27,15 +31,20 @@ final class ChallengeHistoryRouter {
 
 extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
     func routeToChallengeHistoryDetailScene(title: String,
-                                            certificate: ChallengeHistory.Model.Certificate) {
-//        print(">>>")
+                                            certificate: ChallengeHistory.Model.Certificate,
+                                            nickname: String,
+                                            partnerNickname: String) {
+        
+        guard let dataStore = self.dataStore else {
+            return
+        }
         let fac = ChallengeHistoryDetailSceneFactory().make(with: .init(detail: .init(id: certificate.id,
                                                                                       challengeName: title,
                                                                                       certificateImageUrl: certificate.certificateImageUrl,
                                                                                       certificateComment: certificate.certificateComment,
                                                                                       certificateTime: certificate.certificateTime,
                                                                                       complimentComment: certificate.complimentComment),
-                                                                        user: .init(myNickname: "테스트공주", partnerNickname: "테스트왕자"))) // TODO: - 공통 worker에서 가져오기
+                                                                        user: .init(myNickname: nickname, partnerNickname: partnerNickname)))
         let vc = fac.viewController
         vc.modalPresentationStyle = .fullScreen
         self.viewController?.present(vc, animated: true)
@@ -43,7 +52,13 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
     
     
     func routeToChallengeCertificateScene() {
-        
+        guard let dataStore = self.dataStore else {
+            return
+        }
+        let challengeCertificateScene = ChallengeCertificateSceneFactory().make(
+            with: .init(challengeID: dataStore.challenge?.id ?? "")
+        )
+        self.viewController?.present(challengeCertificateScene.bottomSheetViewController, animated: true)
     }
     
     func dismiss() {

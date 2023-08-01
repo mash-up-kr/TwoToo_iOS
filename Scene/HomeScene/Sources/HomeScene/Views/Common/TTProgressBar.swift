@@ -154,14 +154,28 @@ final class TTProgressBar: UIView {
     
     
     private func configurePercent(my: Double, partner: Double) {
-        self.myPercentView.snp.remakeConstraints { make in
-            make.top.leading.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().multipliedBy(my)
+        if my == 0 {
+            self.myPercentView.snp.remakeConstraints { make in
+                make.top.leading.bottom.equalToSuperview()
+            }
         }
-
-        self.partnerPercentView.snp.remakeConstraints { make in
-            make.top.leading.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().multipliedBy(partner)
+        else {
+            self.myPercentView.snp.remakeConstraints { make in
+                make.top.leading.bottom.equalToSuperview()
+                make.trailing.equalToSuperview().multipliedBy(my)
+            }
+        }
+        
+        if partner == 0 {
+            self.partnerPercentView.snp.remakeConstraints { make in
+                make.top.leading.bottom.equalToSuperview()
+            }
+        }
+        else {
+            self.partnerPercentView.snp.remakeConstraints { make in
+                make.top.leading.bottom.equalToSuperview()
+                make.trailing.equalToSuperview().multipliedBy(partner)
+            }
         }
     }
 

@@ -55,13 +55,16 @@ extension HistoryInteractor {
 extension HistoryInteractor {
     func didLoad() async {
         do {
-            // TODO: - 워커에서 데이터 받아 challengeList에 저장하기
+            let challengeList = try await self.worker.fetchChallengeList()
+            self.challengeList = challengeList
+            
             if challengeList.isEmpty {
                 await self.presenter.presentEmpty()
             } else {
                 await self.presenter.presentHistoryChallengeList(model: challengeList)
             }
-        } catch {
+        }
+        catch {
             await self.presenter.presentHistoryError(model: error)
         }
     }

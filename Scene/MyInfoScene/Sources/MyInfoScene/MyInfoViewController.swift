@@ -107,6 +107,8 @@ final class MyInfoViewController: UIViewController {
         Task {
             await self.interactor.didLoad()
         }
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Layout
@@ -223,5 +225,12 @@ extension MyInfoViewController: UITableViewDataSource, UITableViewDelegate {
         Task {
             await self.interactor.didTapMyInfoLists(index: indexPath.row)
         }
+    }
+}
+
+extension MyInfoViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

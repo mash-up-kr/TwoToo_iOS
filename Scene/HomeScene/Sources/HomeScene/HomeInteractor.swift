@@ -131,6 +131,7 @@ extension HomeInteractor {
                     await self.presenter.presentChallengeInProgress(challenge: challenge)
                     
                     if inProgress == .bothCertificated(.uncomfirmed) {
+                        self.worker.bothCertificationConfirmed = true
                         await self.presenter.presentBothCertificationPopup()
                     }
                     
@@ -138,6 +139,7 @@ extension HomeInteractor {
                     await self.presenter.presentChallengeCompleted(challenge: challenge)
                     
                     if completed == .uncomfirmed {
+                        self.worker.challengeCompletedConfirmed = true
                         await self.presenter.presentCompletedPopup(challenge: challenge)
                     }
             }
@@ -224,7 +226,6 @@ extension HomeInteractor {
     }
     
     func didTapBothCertificationPopupYesOption() async {
-        self.worker.bothCertificationConfirmed = true
         await self.presenter.dismissBothCertificationPopup()
         await self.router.routeToPraiseSendScene()
     }

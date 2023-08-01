@@ -13,6 +13,8 @@ final class TopChallengeInfoView: UIView {
         let v = UILabel()
         v.textColor = .mainCoral
         v.font = .h1
+        v.textAlignment = .center
+        v.lineBreakMode = .byTruncatingTail
         return v
     }()
     
@@ -37,8 +39,8 @@ final class TopChallengeInfoView: UIView {
         self.addSubviews(self.titleLabel, self.dateTagView)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().multipliedBy(0.6)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
         
         self.dateTagView.snp.makeConstraints { make in

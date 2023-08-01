@@ -232,12 +232,16 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
     }
     
     func displayCompliment(compliment: ChallengeHistoryDetail.ViewModel.Compliment) {
-        if compliment.complimentComment != nil {
+        if !(compliment.complimentComment?.isEmpty ?? true) {
             self.complimentTitleLabel.isHidden = false
             self.complimentContentView.isHidden = false
             self.complimentTitleLabel.text = compliment.complimentTitle
             self.complimentLabel.text = compliment.complimentComment
             self.complimentLabel.setLineSpacing(8)
+        }
+        else {
+            self.complimentTitleLabel.isHidden = true
+            self.complimentContentView.isHidden = true
         }
     }
     

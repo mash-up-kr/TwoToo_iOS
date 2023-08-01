@@ -107,6 +107,9 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registNotification()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,6 +118,21 @@ final class HomeViewController: UIViewController {
         Task {
             await self.interactor.didAppear()
         }
+    }
+    
+    @objc private func viewDidAppearWithModalDismissed() {
+        Task {
+            await self.interactor.didAppear()
+        }
+    }
+    
+    private func registNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewDidAppearWithModalDismissed),
+            name: NSNotification.Name("modal_dismissed"),
+            object: nil
+        )
     }
 
     // MARK: - Layout
@@ -457,5 +475,12 @@ extension HomeViewController: TTNavigationBarDelegate {
         Task {
             await self.interactor.didTapGuideButton()
         }
+    }
+}
+
+extension HomeViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

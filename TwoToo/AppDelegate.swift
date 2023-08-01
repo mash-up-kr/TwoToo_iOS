@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Messaging.messaging().delegate = self
         
+        UITabBar.appearance().backgroundColor = .mainPink
+        
         let current = UNUserNotificationCenter.current()
         current.delegate = self
         current.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
