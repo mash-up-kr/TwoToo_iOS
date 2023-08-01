@@ -25,7 +25,7 @@ extension ChallengeRecommendPresenter: ChallengeRecommendPresentationLogic {
     
     func presentRecommendChallenges() {
         self.viewController?.displayChallenges(viewModel: .init(items: [
-            .init(title: ("💗", "사랑한다고 얘기 해주기")),
+            .init(title: ("🔥", "오늘의 갓생 인증하기")),
             .init(title: ("📝", "하루 한 문장 일상 공유하기")),
             .init(title: ("👍", "하루에 한번 칭찬 해주기")),
             .init(title: ("📷", "거울 셀카 찍기")),

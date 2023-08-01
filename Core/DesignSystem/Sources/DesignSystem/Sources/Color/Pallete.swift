@@ -27,6 +27,7 @@ public enum Pallete: String {
     case grey400 = "Grey_400"
     case grey500 = "Grey_500"
     case grey600 = "Grey_600"
+    case grey700 = "Grey_700"
     
     public static func setColor(_ pallete: Pallete) -> UIColor {
         guard let palleteColor = UIColor(named: pallete.rawValue, in: Bundle.module, compatibleWith: nil) else {

@@ -56,5 +56,9 @@ extension UIColor {
     public static var grey600: UIColor {
         return Pallete.setColor(.grey600)
     }
+
+    public static var grey700: UIColor {
+        return Pallete.setColor(.grey700)
+    }
     
 }

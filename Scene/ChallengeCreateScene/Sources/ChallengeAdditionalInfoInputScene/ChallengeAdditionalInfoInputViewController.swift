@@ -69,9 +69,11 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.setIsEnabled(true)
-        v.addAction {
+        v.addAction { [weak self] in
+            self?.didTapView()
             Task {
-                await self.interactor.didTapNextButton()
+                try await Task.sleep(nanoseconds: 100000000)
+                await self?.interactor.didTapNextButton()
             }
         }
         return v
@@ -91,12 +93,24 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registKeyboardDelegate()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.challengeRuleTextView.becomeFirstResponder()
+    }
+    
+    @objc private func didTapView() {
+        self.view.endEditing(true)
     }
     
     // MARK: - Layout
     
     private func setUI() {
         self.view.backgroundColor = .second02
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        self.view.addGestureRecognizer(tapGesture)
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeRuleTextView, self.nextButton)
@@ -114,20 +128,19 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
             make.top.equalTo(self.navigationbar.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(24)
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
-            make.bottom.equalTo(self.challengeRuleTextView.snp.top).offset(-42)
         }
 
         self.challengeRuleTextView.snp.makeConstraints { make in
+            make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.lessThanOrEqualTo(self.nextButton.snp.top).offset(-100)
             make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
         }
 
         self.nextButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -166,4 +179,48 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 
 extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInputDisplayLogic {
 
+}
+
+// MARK: - Keyboard Setting
+
+extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.challengeRuleTextView.snp.remakeConstraints { make in
+                make.top.equalTo(self.headerStackView.snp.bottom).offset(10)
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.5)
+            }
+
+            self.nextButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(57)
+                make.top.equalTo(self.challengeRuleTextView.snp.bottom).offset(10)
+            }
+
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    func willHideKeyboard(duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+            self.challengeRuleTextView.snp.remakeConstraints { make in
+                make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
+            }
+
+            self.nextButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.height.equalTo(57)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            }
+
+            self.view.layoutIfNeeded()
+        }
+    }
 }

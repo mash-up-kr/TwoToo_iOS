@@ -136,7 +136,9 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.addAction { [weak self] in
+            self?.didTapView()
             Task {
+                try await Task.sleep(nanoseconds: 100000000)
                 await self?.interactor.didTapNextButton()
             }
         }
@@ -162,6 +164,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registKeyboardDelegate()
 
         Task {
             await self.interactor.didLoad()
@@ -180,6 +183,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.challengeNameTextField.becomeFirstResponder()
+    }
+    
     @objc private func didTapStartDate(_ sender: UIDatePicker) {
         Task {
             await self.interactor.didTapStartDate(startDate: startDatePicker.date)
@@ -192,10 +200,16 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         }
     }
     
+    @objc private func didTapView() {
+        self.view.endEditing(true)
+    }
+    
     // MARK: - Layout
     
     private func setUI() {
         self.view.backgroundColor = .second02
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        self.view.addGestureRecognizer(tapGesture)
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.startDateStackView.addArrangedSubviews(self.startDateLabel, self.startDatePicker)
@@ -253,7 +267,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.nextButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -299,6 +313,60 @@ extension ChallengeEssentialInfoInputViewController: ChallengeEssentialInfoInput
     func displayChallengeName(viewModel: ChallengeEssentialInfoInput.ViewModel.Name) {
         viewModel.text.unwrap {
             self.challengeNameTextField.setTextFieldValue(text: $0)
+        }
+    }
+}
+
+// MARK: - Keyboard Setting
+
+extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+
+            self.headerStackView.snp.updateConstraints { make in
+                make.bottom.equalTo(self.challengeNameTextField.snp.top)
+            }
+
+            self.challengeNameTextField.snp.updateConstraints { make in
+                make.bottom.equalTo(self.challengeRecommendButton.snp.top).offset(-10)
+            }
+            self.startDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(5)
+            }
+
+            self.endDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.startDateStackView.snp.top)
+            }
+
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height + 5)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    func willHideKeyboard(duration: Double) {
+        UIView.animate(withDuration: 0.3) {
+
+            self.headerStackView.snp.updateConstraints { make in
+                make.bottom.equalTo(self.challengeNameTextField.snp.top).offset(-19)
+            }
+
+            self.challengeNameTextField.snp.updateConstraints { make in
+                make.bottom.equalTo(self.challengeRecommendButton.snp.top).offset(-20)
+            }
+            self.startDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(43)
+            }
+
+            self.endDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.startDateStackView.snp.top)
+            }
+
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            }
+            self.view.layoutIfNeeded()
         }
     }
 }

@@ -81,7 +81,7 @@ public class Toast {
     /// 토스트 컨테이너를 생성하는 함수
     private func createToastContainer() -> UIView {
         let toastContainer = UIView(frame: CGRect())
-        toastContainer.backgroundColor = .mainLightPink
+        toastContainer.backgroundColor = .grey700
         toastContainer.layer.cornerRadius = 10
         toastContainer.clipsToBounds = true
         toastContainer.alpha = 0.0
@@ -92,7 +92,7 @@ public class Toast {
     private func createToastLabel(message: String) -> UILabel {
         let toastLabel = UILabel(frame: CGRect())
         toastLabel.text = message
-        toastLabel.textColor = .primary
+        toastLabel.textColor = .mainWhite
         toastLabel.font = .body1
         toastLabel.numberOfLines = 0
         toastLabel.textAlignment = .center
