@@ -9,8 +9,8 @@
 import Foundation
 
 protocol HistoryBusinessLogic {
-    /// 첫 진입
-    func didLoad() async
+    /// 진입
+    func didAppear() async
     /// 챌린지 히스토리 클릭
     func didTapChallengeHistory(index: Int) async
     /// 설명서 클릭
@@ -53,7 +53,7 @@ extension HistoryInteractor {
 
 // MARK: Feature (진입)
 extension HistoryInteractor {
-    func didLoad() async {
+    func didAppear() async {
         do {
             let challengeList = try await self.worker.fetchChallengeList()
             self.challengeList = challengeList

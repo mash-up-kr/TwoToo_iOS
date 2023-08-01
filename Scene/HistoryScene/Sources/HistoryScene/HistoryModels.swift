@@ -30,36 +30,9 @@ enum History {
             /// 종료일
             var endDate: Date
             /// 내 정보
-            var myInfo: User
+            var myFlower: Flower?
             /// 상대방 정보
-            var partnerInfo: User
-        }
-        
-        struct User: Equatable {
-            /// 유저 ID
-            var id: String
-            /// 닉네임
-            var nickname: String
-            /// 꽃 이름
-            var flower: Flower
-            /// 챌린지 추가 정보 문구
-            var additionalInfo: String?
-            /// 인증 리스트
-            var certificates: [Certificate]
-        }
-        
-        /// 인증
-        struct Certificate: Equatable {
-            /// 인증 ID
-            var id: String
-            /// 인증 사진
-            var certificateImageUrl: String
-            /// 인증 소감
-            var certificateComment: String
-            /// 입력 시간
-            var certificateTime: Date
-            /// 칭찬 문구
-            var complimentComment: String?
+            var partnerFlower: Flower?
         }
         
         struct ErrorToast {
@@ -81,9 +54,9 @@ enum History {
             /// 챌린지 날짜 정보 텍스트
             var dateText: String
             /// 상대 꽃 이미지
-            var partnerFlowerImage: UIImage
+            var partnerFlowerImage: UIImage?
             /// 내 꽃 이미지
-            var myFlowerImage: UIImage
+            var myFlowerImage: UIImage?
         }
         
         struct Toast {

@@ -50,8 +50,14 @@ private extension HistoryPresenter {
             let start: String = $0.startDate.dateToString(.shortYearMonthDay)
             let end: String = $0.endDate.dateToString(.shortYearMonthDay)
             let dateText: String = start + " ~ " + end
-            let partnerFlower = FlowerMappingWorker(flowerType: $0.partnerInfo.flower).getSmallImage()
-            let myFlower = FlowerMappingWorker(flowerType: $0.myInfo.flower).getSmallImage()
+            var partnerFlower: UIImage?
+            if let partnerInfoFlower = $0.partnerFlower {
+                partnerFlower = FlowerMappingWorker(flowerType: partnerInfoFlower).getSmallImage()
+            }
+            var myFlower: UIImage?
+            if let myInfoFlower = $0.myFlower {
+                myFlower = FlowerMappingWorker(flowerType: myInfoFlower).getSmallImage()
+            }
             let cellInfo = History.ViewModel.CellInfo(orderText: "\($0.order)번째 챌린지",
                                                       nameText: $0.name,
                                                       dateText: dateText,

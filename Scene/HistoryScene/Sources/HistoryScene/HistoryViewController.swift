@@ -29,17 +29,11 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
     
     // MARK: - UI
     lazy var navigationBar: TTNavigationBar = {
-        let v = TTNavigationBar(title: "우리의 정원",
+        let v = TTNavigationBar(title: "우리의 히스토리",
                                 rightButtonImage: .asset(.icon_info))
         v.delegate = self
         return v
     }()
-    
-    func didTapRightButton() {
-        Task {
-            await self.interactor.didTapManualButton()
-        }
-    }
     
     lazy var historyCollectionView: UICollectionView = {
         let layout = generateCollectionViewLayout()
@@ -66,11 +60,16 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         super.viewDidLoad()
         self.setUI()
         self.setAttribute()
-        Task {
-            await self.interactor.didLoad()
-        }
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        Task {
+            await self.interactor.didAppear()
+        }
     }
     
     // MARK: - Layout
@@ -83,7 +82,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         let guide = self.view.safeAreaLayoutGuide
         
         self.navigationBar.snp.makeConstraints { make in
-            make.top.equalTo(guide.snp.top).offset(13)
+            make.top.equalTo(guide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
         }
@@ -96,7 +95,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         }
         
         self.historyEmptyView.snp.makeConstraints { make in
-            make.top.equalTo(guide.snp.top)
+            make.top.equalTo(self.navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -122,6 +121,15 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
 
 // MARK: - Trigger
 
+extension HistoryViewController {
+    
+    func didTapRightButton() {
+        Task {
+            await self.interactor.didTapManualButton()
+        }
+    }
+}
+
 // MARK: - Trigger by Parent Scene
 
 extension HistoryViewController: HistoryScene {
@@ -137,7 +145,6 @@ extension HistoryViewController: HistoryDisplayLogic {
     }
     
     func displayChallengeEmptyView() {
-        self.navigationBar.isHidden = true
         self.historyCollectionView.isHidden = true
         self.historyEmptyView.isHidden = false
     }
@@ -151,13 +158,8 @@ extension HistoryViewController: HistoryDisplayLogic {
 
 extension HistoryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.layer.borderColor = UIColor.mainPink.cgColor
-            cell.layer.borderWidth = 3
-            cell.layer.cornerRadius = 20
-            Task {
-                await self.interactor.didTapChallengeHistory(index: indexPath.row)
-            }
+        Task {
+            await self.interactor.didTapChallengeHistory(index: indexPath.row)
         }
     }
 }
