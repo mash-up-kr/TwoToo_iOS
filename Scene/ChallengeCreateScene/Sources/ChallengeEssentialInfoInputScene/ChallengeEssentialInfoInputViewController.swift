@@ -136,7 +136,9 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.addAction { [weak self] in
+            self?.didTapView()
             Task {
+                try await Task.sleep(nanoseconds: 100000000)
                 await self?.interactor.didTapNextButton()
             }
         }
@@ -181,6 +183,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.challengeNameTextField.becomeFirstResponder()
+    }
+    
     @objc private func didTapStartDate(_ sender: UIDatePicker) {
         Task {
             await self.interactor.didTapStartDate(startDate: startDatePicker.date)
@@ -193,10 +200,16 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         }
     }
     
+    @objc private func didTapView() {
+        self.view.endEditing(true)
+    }
+    
     // MARK: - Layout
     
     private func setUI() {
         self.view.backgroundColor = .second02
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        self.view.addGestureRecognizer(tapGesture)
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.startDateStackView.addArrangedSubviews(self.startDateLabel, self.startDatePicker)

@@ -69,9 +69,11 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
         v.setIsEnabled(true)
-        v.addAction {
+        v.addAction { [weak self] in
+            self?.didTapView()
             Task {
-                await self.interactor.didTapNextButton()
+                try await Task.sleep(nanoseconds: 100000000)
+                await self?.interactor.didTapNextButton()
             }
         }
         return v
@@ -94,10 +96,21 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
         self.registKeyboardDelegate()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.challengeRuleTextView.becomeFirstResponder()
+    }
+    
+    @objc private func didTapView() {
+        self.view.endEditing(true)
+    }
+    
     // MARK: - Layout
     
     private func setUI() {
         self.view.backgroundColor = .second02
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        self.view.addGestureRecognizer(tapGesture)
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeRuleTextView, self.nextButton)
