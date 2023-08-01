@@ -8,6 +8,7 @@
 
 import UIKit
 import ChallengeHistoryScene
+import SafariServices
 import WebKit
 
 @MainActor
@@ -25,11 +26,21 @@ final class HistoryRouter {
 
 extension HistoryRouter: HistoryRoutingLogic {
     func routeToChallengeHistoryScene(model: History.Model.Challenge) {
-        // TODO: - ChallengeHistoryScene
+        let challengeHistoryScene = ChallengeHistorySceneFactory().make(
+            with: .init(challengeID: model.id)
+        )
+        let challengeHistoryViewController = challengeHistoryScene.viewController
+        challengeHistoryViewController.hidesBottomBarWhenPushed = true
+        self.viewController?.navigationController?.pushViewController(challengeHistoryViewController, animated: true)
     }
     
     func routeToManualScene() {
-        // TODO: - WebView
+        guard let url = URL(string: "https://two2too2.github.io/") else {
+            return
+        }
+        let safariViewController = SFSafariViewController(url: url)
+        
+        self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
     
 }

@@ -70,7 +70,7 @@ extension ChallengeHistoryPresenter {
     -> ChallengeHistory.ViewModel.Challenge {
         return .init(id: model.id,
                      name: model.name,
-                     dDayText: self.makedDayText(start: Date().dateToString(.yearMonthDay).fullStringDate(),
+                     dDayText: self.makedDayText(start: Date(),
                                                    end: model.endDate.dateToString(.yearMonthDay).fullStringDate()),
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,

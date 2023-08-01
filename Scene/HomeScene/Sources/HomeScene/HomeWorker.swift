@@ -99,10 +99,8 @@ final class HomeWorker: HomeWorkerProtocol {
             )
         }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        let startDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.startDate) }
-        let endDate = homeResponse.onGoingChallenge.flatMap { dateFormatter.date(from: $0.endDate) }
+        let startDate = homeResponse.onGoingChallenge?.startDate.fullStringDate(.iso)
+        let endDate = homeResponse.onGoingChallenge?.endDate.fullStringDate(.iso)
         
         self.meLocalWorker.userNo = homeResponse.myInfo.userNo
         self.meLocalWorker.nickname = homeResponse.myInfo.nickname

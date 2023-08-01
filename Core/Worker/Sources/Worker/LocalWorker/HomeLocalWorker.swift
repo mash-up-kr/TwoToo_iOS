@@ -28,9 +28,7 @@ public final class HomeLocalWorker: HomeLocalWorkerProtocol {
     
     public var challengeCompletedConfirmed: Bool? {
         get {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let currentDateString = dateFormatter.string(from: Date())
+            let currentDateString = Date().dateToString(.yearMonthDay)
             if self.lastChallengeCompletedConfirmedDateString != currentDateString {
                 self.localDataSource.save(value: false, key: self.challengeCompletedConfirmedKey)
                 return false
@@ -42,9 +40,7 @@ public final class HomeLocalWorker: HomeLocalWorkerProtocol {
                 return
             }
             if newValue {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let currentDateString = dateFormatter.string(from: Date())
+                let currentDateString = Date().dateToString(.yearMonthDay)
                 self.lastChallengeCompletedConfirmedDateString = currentDateString
             }
             self.localDataSource.save(value: newValue, key: self.challengeCompletedConfirmedKey)
@@ -53,9 +49,7 @@ public final class HomeLocalWorker: HomeLocalWorkerProtocol {
     
     public var bothCertificationConfirmed: Bool? {
         get {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let currentDateString = dateFormatter.string(from: Date())
+            let currentDateString = Date().dateToString(.yearMonthDay)
             if self.lastBothCertificationConfirmedDateString != currentDateString {
                 self.localDataSource.save(value: false, key: self.bothCertificationConfirmedKey)
                 return false
@@ -67,9 +61,7 @@ public final class HomeLocalWorker: HomeLocalWorkerProtocol {
                 return
             }
             if newValue {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let currentDateString = dateFormatter.string(from: Date())
+                let currentDateString = Date().dateToString(.yearMonthDay)
                 self.lastBothCertificationConfirmedDateString = currentDateString
             }
             self.localDataSource.save(value: newValue, key: self.bothCertificationConfirmedKey)

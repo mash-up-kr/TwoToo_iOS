@@ -105,6 +105,8 @@ final class CertificateTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        self.myImageView.image = nil
+        self.partnerImageView.image = nil
         self.myCertificateID = ""
         self.partnerCertificateID = ""
         self.willCertificate = false
