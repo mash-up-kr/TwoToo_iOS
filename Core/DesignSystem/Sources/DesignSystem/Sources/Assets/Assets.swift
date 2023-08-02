@@ -125,6 +125,7 @@ public enum Assets: String {
     case icon_all_verified
     case app_icon
     case app_logo
+    case app_splash_icon
     case history_card
     case history_fail
     case history_certificate

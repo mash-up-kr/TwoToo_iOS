@@ -100,4 +100,8 @@ public final class TTNavigationDetailBar: UIView {
             make.centerY.equalToSuperview()
         }
     }
+    
+    public func setIsHiddenRightButton(_ isHidden: Bool) {
+        self.rightButton.isHidden = isHidden
+    }
 }

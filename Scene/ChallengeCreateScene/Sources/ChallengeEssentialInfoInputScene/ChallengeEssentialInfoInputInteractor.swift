@@ -78,18 +78,15 @@ extension ChallengeEssentialInfoInputInteractor {
     
     /// 외부 액션 옵저빙
     func observe() {
-        didTriggerSelectChallengeName.sink { name in
+        self.didTriggerSelectChallengeName.sink { name in
             self.nameDataSource = name
 
             Task {
+                await self.didUpdateNextButton()
                 await self.presenter.presentChallengeName(model: .init(text: name))
             }
         }
         .store(in: &cancellables)
-    }
-
-    func updateChallengeName(text: String) async {
-        await self.presenter.presentChallengeName(model: .init(text: text))
     }
 }
 
