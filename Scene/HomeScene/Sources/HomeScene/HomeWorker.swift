@@ -126,6 +126,7 @@ final class HomeWorker: HomeWorkerProtocol {
     func requestChallengeComplete(challengeID: String) async throws {
         if let challengeNo = Int(challengeID) {
             _ = try await self.challengeFinishNetworkWorker.requestChallengeFinish(challengeNo: challengeNo)
+            return
         }
         throw NSError(domain: "no challenge id", code: -1)
     }

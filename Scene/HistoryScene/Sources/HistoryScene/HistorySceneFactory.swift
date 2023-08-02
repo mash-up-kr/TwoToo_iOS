@@ -10,7 +10,7 @@ import CoreKit
 
 @MainActor
 public protocol HistoryScene: AnyObject, Scene {
-    
+    func displayUpdated()
 }
 
 public struct HistoryConfiguration {

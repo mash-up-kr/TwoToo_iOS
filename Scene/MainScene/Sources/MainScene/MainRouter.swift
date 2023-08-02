@@ -42,7 +42,7 @@ extension MainRouter: MainRoutingLogic {
         
         let historyScene = HistorySceneFactory().make(with: .init())
         let homeScene = HomeSceneFactory().make(with: .init(didTriggerRouteToHistoryScene: dataStore.didTriggerRouteToHistoryScene))
-        let myInfoScene = MyInfoSceneFactory().make(with: .init(didTriggerAppear: .init()))
+        let myInfoScene = MyInfoSceneFactory().make(with: .init(didTriggerRouteToLoginScene: dataStore.didTriggerRouteToLoginScene))
         
         self.historyScene = historyScene
         self.homeScene = homeScene
@@ -94,5 +94,6 @@ extension MainRouter: MainRoutingLogic {
     
     func switchHistoryTab() {
         self.tabBarController?.setTab(.history)
+        self.historyScene?.displayUpdated()
     }
 }
