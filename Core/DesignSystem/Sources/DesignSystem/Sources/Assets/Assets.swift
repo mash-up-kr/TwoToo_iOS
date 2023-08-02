@@ -81,6 +81,7 @@ public enum Assets: String {
     case icon_home_brown
     case icon_history_yellow
     case icon_home_pink
+    case icon_home_yellow
     case icon_history_brown
     case icon_history_pink
     case icon_bubble_write

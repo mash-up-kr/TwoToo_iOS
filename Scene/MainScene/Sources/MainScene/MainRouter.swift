@@ -76,7 +76,7 @@ extension MainRouter: MainRoutingLogic {
         )
         homeViewController.tabBarItem = .init(
             title: nil,
-            image: .asset(.icon_history_yellow)!.withRenderingMode(.alwaysOriginal),
+            image: .asset(.icon_home_yellow)!.withRenderingMode(.alwaysOriginal),
             selectedImage: .asset(.icon_home_brown)!.withRenderingMode(.alwaysOriginal)
         )
         myInfoViewController.tabBarItem = .init(

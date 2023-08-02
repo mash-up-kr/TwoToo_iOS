@@ -23,7 +23,7 @@ public struct NetworkConfiguration {
             "accept": "application/json",
             "Content-Type": "application/json"
         ],
-        baseURL: String = "https://twotoo-node-zmtrd.run.goorm.site",
+        baseURL: String = "http://43.202.68.239:3000",
         maxWaitTime: Double = 15.0
     ) {
         self.headers = headers
