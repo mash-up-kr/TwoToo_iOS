@@ -30,6 +30,12 @@ public final class TTNavigationBar: UIView {
         return v
     }()
     
+    public lazy var logoImageView: UIImageView = {
+        let v = UIImageView(.app_logo)
+        v.isHidden = true
+        return v
+    }()
+    
     private lazy var rightButton: UIButton = {
         let v = UIButton()
         v.addAction { [weak self] in
@@ -55,7 +61,11 @@ public final class TTNavigationBar: UIView {
     public convenience init(title: String?,
                             rightButtonImage: UIImage?) {
         self.init()
-        self.titleLabel.text = title
+        if let _title = title, _title == "TwoToo" {
+            self.logoImageView.isHidden = false
+        } else {
+            self.titleLabel.text = title
+        }
         self.rightButton.setImage(rightButtonImage, for: .normal)
     }
     
@@ -66,11 +76,18 @@ public final class TTNavigationBar: UIView {
     // MARK: - Layout
 
     private func setUI() {
-        [self.titleLabel, self.rightButton].forEach {
+        [self.titleLabel, self.logoImageView, self.rightButton].forEach {
             self.addSubview($0)
         }
         
         self.titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(self.containerLeadingTrailingInset)
+            make.centerY.equalToSuperview()
+        }
+        
+        self.logoImageView.snp.makeConstraints { make in
+            make.width.equalTo(93)
+            make.height.equalTo(16)
             make.leading.equalToSuperview().offset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
