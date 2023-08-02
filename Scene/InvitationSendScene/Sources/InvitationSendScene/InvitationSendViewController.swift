@@ -84,7 +84,7 @@ final class InvitationSendViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         
         self.view.addSubviews(self.navigationBar, self.contentView, self.sendButton)
         

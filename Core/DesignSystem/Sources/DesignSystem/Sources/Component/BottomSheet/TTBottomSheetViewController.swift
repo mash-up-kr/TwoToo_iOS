@@ -20,6 +20,7 @@ final public class TTBottomSheetViewController: FloatingPanelController {
         v.backgroundColor = .second02
         v.borderColor = .clear
         v.borderWidth = 0
+        v.backgroundColor = UIColor(patternImage: UIImage(named: "home_background", in: Bundle.module, with: nil)!)
         return v
     }()
     

@@ -152,7 +152,7 @@ final class ChallengeConfirmViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
 
         self.headerStackView.addArrangedSubviews(self.processLabel, self.headerLabel, self.captionLabel)
         self.challenageTitleStackView.addArrangedSubviews(self.challengeTitleLabel, self.challengeDateLabel)

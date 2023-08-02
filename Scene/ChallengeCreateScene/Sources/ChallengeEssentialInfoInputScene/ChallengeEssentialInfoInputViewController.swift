@@ -205,7 +205,7 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
         self.view.addGestureRecognizer(tapGesture)
 

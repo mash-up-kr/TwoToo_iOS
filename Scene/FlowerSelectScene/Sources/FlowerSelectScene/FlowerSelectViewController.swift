@@ -82,7 +82,7 @@ final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarD
         v.delegate = self
         v.dataSource = self
         v.collectionViewLayout = createCollectionViewlayout()
-        v.backgroundColor = .second02
+        v.setBackgroundDefault()
         v.showsVerticalScrollIndicator = false
         return v
     }()
@@ -145,7 +145,7 @@ final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarD
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
 
         self.headerStackView.addArrangedSubviews(self.headerLabel, self.captionLabel)
         self.view.addSubviews(self.navigationbar,

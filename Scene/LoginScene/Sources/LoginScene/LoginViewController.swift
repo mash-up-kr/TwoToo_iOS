@@ -37,7 +37,7 @@ final class LoginViewController: UIViewController {
         v.delegate = self
         v.dataSource = self
         v.register(LoginCollectionViewCell.self, forCellWithReuseIdentifier: LoginCollectionViewCell.identifier)
-        v.backgroundColor = .second02
+        v.setBackgroundDefault()
         v.isPagingEnabled = true
         v.showsHorizontalScrollIndicator = false
         return v
@@ -111,7 +111,7 @@ final class LoginViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         
         self.view.addSubviews(self.navigationBar,
                               self.collectionView,

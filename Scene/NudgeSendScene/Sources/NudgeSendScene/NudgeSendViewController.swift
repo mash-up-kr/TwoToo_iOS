@@ -97,7 +97,7 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         
         self.view.addSubview(self.backScrollView)
         

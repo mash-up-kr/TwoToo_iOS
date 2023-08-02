@@ -115,7 +115,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
     }
     
     private func setAttribute() {
-        self.view.backgroundColor = .second02 // TODO: - will change
+        self.view.setBackgroundDefault()
     }
         
     // MARK: - CollectionView DataSource

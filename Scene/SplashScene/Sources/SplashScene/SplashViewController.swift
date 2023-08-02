@@ -60,7 +60,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         
         self.view.addSubview(self.contentView)
         

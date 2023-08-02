@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreKit
 
 final class MyInfoTableViewCell: UITableViewCell {
     
@@ -31,7 +32,7 @@ final class MyInfoTableViewCell: UITableViewCell {
     }
     
     private func setLayout() {
-        self.contentView.backgroundColor = .second02
+        self.contentView.setBackgroundDefault()
         
         self.contentView.addSubview(titleLabel)
         
