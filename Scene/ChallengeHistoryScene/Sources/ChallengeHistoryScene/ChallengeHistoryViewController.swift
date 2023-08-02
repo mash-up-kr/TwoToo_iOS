@@ -37,7 +37,6 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = TTNavigationDetailBar(title: nil,
                                       leftButtonImage: .asset(.icon_back),
                                       rightButtonImage: .asset(.icon_more))
-        self.navigationBar.setIsHiddenRightButton(false)
         v.delegate = self
         return v
     }()
