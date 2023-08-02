@@ -73,6 +73,12 @@ final class ChallengeCreateFinishViewController: UIViewController {
         self.setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
     // MARK: - Layout
     
     private func setUI() {
@@ -121,4 +127,11 @@ extension ChallengeCreateFinishViewController: ChallengeCreateFinishScene {
 
 extension ChallengeCreateFinishViewController: ChallengeCreateFinishDisplayLogic {
     
+}
+
+extension ChallengeCreateFinishViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
 }

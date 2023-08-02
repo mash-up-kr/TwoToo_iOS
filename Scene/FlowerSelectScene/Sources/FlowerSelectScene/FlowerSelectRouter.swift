@@ -13,6 +13,8 @@ import ChallengeCreateFinishScene
 protocol FlowerSelectRoutingLogic {
     /// 뒤로가기 버튼 클릭
     func pop()
+    /// 루트로 이동
+    func routeToRootScene()
     /// 챌린지 생성 완료 화면으로 이동
     func routeToChallengeCreateFinishScene()
 }
@@ -26,6 +28,10 @@ extension FlowerSelectRouter: FlowerSelectRoutingLogic {
 
     func pop() {
         self.viewController?.navigationController?.popViewController(animated: true)
+    }
+    
+    func routeToRootScene() {
+        self.viewController?.navigationController?.popToRootViewController(animated: true)
     }
 
     func routeToChallengeCreateFinishScene() {

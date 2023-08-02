@@ -195,6 +195,7 @@ extension ChallengeCertificateInteractor {
         }
         catch {
             await self.presenter.presentCertificateError(error: error)
+            await self.router.dismiss()
         }
     }
 }

@@ -10,16 +10,20 @@ import CoreKit
 
 protocol FlowerSelectWorkerProtocol {
     func requestChallengeCreate(name: String, description: String, user2Flower: String, startDate: String) async throws
+    func requestChallengeApprove(challengeID: String, user1Flower: String) async throws
 }
 
 final class FlowerSelectWorker: FlowerSelectWorkerProtocol {
 
     var challengeCrateNetworkWorker: ChallengeCreateNetworkWorkerProtocol
+    var challengeApproveNetworkWorker: ChallengeApproveNetworkWorkerProtocol
 
     init(
-        challengeCrateNetworkWorker: ChallengeCreateNetworkWorkerProtocol
+        challengeCrateNetworkWorker: ChallengeCreateNetworkWorkerProtocol,
+        challengeApproveNetworkWorker: ChallengeApproveNetworkWorkerProtocol
     ) {
         self.challengeCrateNetworkWorker = challengeCrateNetworkWorker
+        self.challengeApproveNetworkWorker = challengeApproveNetworkWorker
     }
 
     func requestChallengeCreate(
@@ -36,5 +40,12 @@ final class FlowerSelectWorker: FlowerSelectWorkerProtocol {
         )
 
         print(challengeCrateResponse)
+    }
+    
+    func requestChallengeApprove(challengeID: String, user1Flower: String) async throws {
+        _ = try await self.challengeApproveNetworkWorker.requestChallengeApprove(
+            challengeNo: Int(challengeID) ?? 0,
+            user1Flower: user1Flower
+        )
     }
 }

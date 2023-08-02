@@ -28,15 +28,18 @@ public struct FlowerSelectConfiguration {
     let challengeEndDate: String
     /// 챌린지 규칙
     let challengeRule: String?
+    /// 챌린지 iD
+    let challengeID: String?
 
     public init(
-    didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
-    didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
-    enterSceneStatus: String,
-    challengeName: String,
-    challengeStartDate: String,
-    challengeEndDate: String,
-    challengeRule: String?
+        didTriggerChallengeCreateScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        enterSceneStatus: String,
+        challengeName: String,
+        challengeStartDate: String,
+        challengeEndDate: String,
+        challengeRule: String?,
+        challengeID: String?
     ) {
         self.didTriggerChallengeCreateScene = didTriggerChallengeCreateScene
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
@@ -45,6 +48,7 @@ public struct FlowerSelectConfiguration {
         self.challengeStartDate = challengeStartDate
         self.challengeEndDate = challengeEndDate
         self.challengeRule = challengeRule
+        self.challengeID = challengeID
     }
 }
 
@@ -56,9 +60,13 @@ public final class FlowerSelectSceneFactory {
         
         let presenter = FlowerSelectPresenter()
         let challengeCreateWorker = FlowerSelectNetworkWorker()
+        let challengeApproveWorker = ChallengeApproveNetworkWorker()
 
         let router = FlowerSelectRouter()
-        let worker = FlowerSelectWorker(challengeCrateNetworkWorker: challengeCreateWorker)
+        let worker = FlowerSelectWorker(
+            challengeCrateNetworkWorker: challengeCreateWorker,
+            challengeApproveNetworkWorker: challengeApproveWorker
+        )
         let interactor = FlowerSelectInteractor(
             presenter: presenter,
             router: router,
@@ -69,7 +77,8 @@ public final class FlowerSelectSceneFactory {
             nameDataSource: configuration.challengeName,
             startDateDataSource: configuration.challengeStartDate,
             endDateDataSource: configuration.challengeEndDate,
-            additionalInfoDataSource: configuration.challengeRule
+            additionalInfoDataSource: configuration.challengeRule,
+            challengeID: configuration.challengeID
         )
         let viewController = FlowerSelectViewController(
             interactor: interactor

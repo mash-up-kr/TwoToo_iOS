@@ -36,7 +36,7 @@ extension ChallengeAdditionalInfoInputRouter: ChallengeAdditionalInfoInputRoutin
               let didEnterStatus = self.dataStore?.didEnterStatus
         else { return }
 
-        let challengeConfirmScene = ChallengeConfirmSceneFactory().make(with: .init(challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.additionalInfoDataSource, didEnterStatus: didEnterStatus))
+        let challengeConfirmScene = ChallengeConfirmSceneFactory().make(with: .init(challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.additionalInfoDataSource, challengeID: nil, didEnterStatus: didEnterStatus))
 
         let challengeConfirmViewController = challengeConfirmScene.viewController
 

@@ -108,6 +108,10 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         self.setUI()
         self.registNotification()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
