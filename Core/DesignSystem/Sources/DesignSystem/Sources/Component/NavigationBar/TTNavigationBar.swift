@@ -87,7 +87,7 @@ public final class TTNavigationBar: UIView {
         
         self.logoImageView.snp.makeConstraints { make in
             make.width.equalTo(93)
-            make.height.equalTo(13)
+            make.height.equalTo(16)
             make.leading.equalToSuperview().offset(self.containerLeadingTrailingInset)
             make.centerY.equalToSuperview()
         }
