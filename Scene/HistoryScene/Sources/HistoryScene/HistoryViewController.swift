@@ -77,7 +77,9 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         super.viewDidAppear(animated)
         
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didAppear()
+            Loading.shared.stopLoadingView()
         }
     }
     

@@ -129,7 +129,9 @@ final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarD
         self.setUI()
 
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
         }
     }
 

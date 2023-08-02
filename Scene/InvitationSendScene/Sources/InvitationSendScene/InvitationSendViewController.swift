@@ -67,7 +67,9 @@ final class InvitationSendViewController: UIViewController {
         let v = TTPrimaryButton.create(title: "초대장 보내기", .large)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapInvitationSendButton()
+                Loading.shared.stopLoadingView()
             }
         }
         v.setIsEnabled(true)

@@ -105,7 +105,9 @@ final class MyInfoViewController: UIViewController {
         self.setUI()
         
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
         }
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self

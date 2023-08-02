@@ -164,7 +164,7 @@ extension NudgeSendViewController: NudgeSendDisplayLogic {
     }
     
     func displayNudgeCommentField(viewModel: NudgeSend.ViewModel.NudgeCommentField) {
-        // not work
+        // do not work
     }
     
     func displayNudgeButton(viewModel: NudgeSend.ViewModel.NudgeButton) {

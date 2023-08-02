@@ -102,7 +102,9 @@ final class NicknameRegistViewController: UIViewController {
         self.setNavigation()
         self.registKeyboardDelegate()
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
         }
     }
     
