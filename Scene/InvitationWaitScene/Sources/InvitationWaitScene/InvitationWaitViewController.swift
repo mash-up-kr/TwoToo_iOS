@@ -79,7 +79,9 @@ final class InvitationWaitViewController: UIViewController {
         let v = TTPrimaryButton.create(title: "새로고침", .large)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapRefreshButton()
+                Loading.shared.stopLoadingView()
             }
         }
         v.setIsEnabled(true)

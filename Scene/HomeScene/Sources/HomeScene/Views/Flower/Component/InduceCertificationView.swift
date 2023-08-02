@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 final class InduceCertificationView: UIStackView {
     
@@ -16,8 +17,10 @@ final class InduceCertificationView: UIStackView {
         return v
     }()
     
-    lazy var certificatedImageView: UIImageView = {
-        let v = UIImageView(.icon_certificated)
+    lazy var certificatedLottieView: LottieAnimationView = {
+        let v = LottieAnimationView(name: "watering_lottie", bundle: .module)
+        v.loopMode = .loop
+        v.animationSpeed = 0.5
         return v
     }()
     
@@ -27,7 +30,9 @@ final class InduceCertificationView: UIStackView {
         self.spacing = 10
         self.alignment = .center
         self.addArrangedSubviews(self.titleLabel,
-                                 self.certificatedImageView)
+                                 self.certificatedLottieView)
+        
+        self.certificatedLottieView.play()
     }
     
     required init(coder: NSCoder) {

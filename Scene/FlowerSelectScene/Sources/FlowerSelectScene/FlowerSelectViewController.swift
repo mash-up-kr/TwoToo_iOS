@@ -70,7 +70,9 @@ final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarD
         v.setIsEnabled(true)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapButton()
+                Loading.shared.stopLoadingView()
             }
         }
         return v

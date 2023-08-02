@@ -131,13 +131,17 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         super.viewDidAppear(animated)
         
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didAppear()
+            Loading.shared.stopLoadingView()
         }
     }
     
     @objc private func viewDidAppearWithModalDismissed() {
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didAppear()
+            Loading.shared.stopLoadingView()
         }
     }
     
