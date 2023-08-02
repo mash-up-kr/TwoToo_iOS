@@ -141,7 +141,7 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Layout
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         
         let guide = self.view.safeAreaLayoutGuide
         

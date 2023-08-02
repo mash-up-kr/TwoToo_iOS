@@ -112,7 +112,7 @@ final class NicknameRegistViewController: UIViewController {
     
     // MARK: - Layout
     private func setUI() {
-        self.view.backgroundColor = .second02 // TODO: - 종이질감 이미지로 변경 필요
+        self.view.setBackgroundDefault()
         
         let guide = self.view.safeAreaLayoutGuide
         

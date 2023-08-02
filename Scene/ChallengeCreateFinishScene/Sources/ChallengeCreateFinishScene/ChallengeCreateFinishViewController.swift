@@ -82,7 +82,7 @@ final class ChallengeCreateFinishViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
         self.view.addSubviews(self.titleLabel, self.captionLabel, self.mainImageView, self.backgroundImage, self.confirmButton)
 
         self.titleLabel.snp.makeConstraints { make in

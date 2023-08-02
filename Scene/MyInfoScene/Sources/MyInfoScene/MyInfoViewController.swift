@@ -81,7 +81,7 @@ final class MyInfoViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let v = UITableView(frame: .zero)
         v.registerCell(MyInfoTableViewCell.self)
-        v.backgroundColor = .second02
+        v.setBackgroundDefault()
         v.dataSource = self
         v.delegate = self
         v.separatorStyle = .none
@@ -114,7 +114,7 @@ final class MyInfoViewController: UIViewController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .second02
+        self.view.setBackgroundDefault()
 
         self.nameStackView.addArrangedSubviews(self.myNicknameLabel, self.heartImageView, self.partnerNicknameLabel)
         self.view.addSubviews(
