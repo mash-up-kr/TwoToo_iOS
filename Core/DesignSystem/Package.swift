@@ -20,14 +20,20 @@ let package = Package(
         .package(
             url: "https://github.com/scenee/FloatingPanel",
             .upToNextMajor(from: "2.6.2")
-        )
+        ),
+        .package(
+            url: "https://github.com/airbnb/lottie-ios",
+            .upToNextMajor(from: "4.2.0")
+        ),
+        .package(url: "https://github.com/airbnb/swift", .upToNextMajor(from: "1.0.1"))
     ],
     targets: [
         .target(
             name: "DesignSystem",
             dependencies: [
                 .product(name: "SnapKit", package: "SnapKit"),
-                .product(name: "FloatingPanel", package: "FloatingPanel")
+                .product(name: "FloatingPanel", package: "FloatingPanel"),
+                .product(name: "Lottie", package: "lottie-ios")
             ],
             resources: [.process("Resources")]
         ),
