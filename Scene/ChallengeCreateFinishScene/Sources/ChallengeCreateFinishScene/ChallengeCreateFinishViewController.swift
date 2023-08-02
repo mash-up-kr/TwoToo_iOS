@@ -50,7 +50,9 @@ final class ChallengeCreateFinishViewController: UIViewController {
         v.setIsEnabled(true)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapConfimrButton()
+                Loading.shared.stopLoadingView()
             }
         }
         return v
