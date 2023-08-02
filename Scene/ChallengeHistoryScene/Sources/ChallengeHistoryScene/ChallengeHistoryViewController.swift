@@ -37,6 +37,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         let v = TTNavigationDetailBar(title: nil,
                                       leftButtonImage: .asset(.icon_back),
                                       rightButtonImage: .asset(.icon_more))
+        self.navigationBar.setIsHiddenRightButton(false)
         v.delegate = self
         return v
     }()
@@ -293,6 +294,13 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
         self.partnerNicknameTagView.titleLabel.text = viewModel.partnerNickname
         self.certificateList = viewModel.cellInfo
         self.certificateTableView.reloadData()
+        
+        if viewModel.dDayText == "완료" {
+            self.navigationBar.setIsHiddenRightButton(true)
+        }
+        else {
+            self.navigationBar.setIsHiddenRightButton(false)
+        }
     }
 
     func displayOptionPopup(title: String) {

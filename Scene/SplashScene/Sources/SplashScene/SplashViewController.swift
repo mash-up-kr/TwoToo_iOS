@@ -36,7 +36,7 @@ final class SplashViewController: UIViewController {
     
     lazy var appIconImageView: UIImageView = {
         let v = UIImageView()
-        v.image = .asset(.app_icon)!
+        v.image = .asset(.app_splash_icon)!
         return v
     }()
     

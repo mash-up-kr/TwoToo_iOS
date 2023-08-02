@@ -106,7 +106,8 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         
         self.historyEmptyView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.bottom.equalTo(guide.snp.bottom)
+            make.leading.trailing.equalToSuperview()
         }
         
         self.historyEmptyLabel.snp.makeConstraints { make in
