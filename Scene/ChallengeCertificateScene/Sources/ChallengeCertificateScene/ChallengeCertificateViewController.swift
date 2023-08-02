@@ -87,7 +87,9 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
         let v = TTPrimaryButton.create(title: "인증하기", .large)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapCertificate()
+                Loading.shared.stopLoadingView()
             }
         }
         v.setIsEnabled(false)
@@ -214,7 +216,9 @@ extension ChallengeCertificateViewController: TTTextViewDelegate,
             return
         }
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didTakePhoto(image: image)
+            Loading.shared.stopLoadingView()
         }
     }
    

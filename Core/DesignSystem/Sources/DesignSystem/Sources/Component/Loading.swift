@@ -26,18 +26,26 @@ public final class Loading {
             return
         }
         
-        window.addSubview(self.loadingView)
-        window.bringSubviewToFront(self.loadingView)
-        
-        let height = window.frame.height
-        let width = window.frame.width
-        
-        self.loadingView.snp.makeConstraints { make in
-            make.width.equalTo(width)
-            make.height.equalTo(height)
+        self.loadingView.alpha = 0
+        UIView.animate(withDuration: 1, delay: 1) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            window.addSubview(self.loadingView)
+            window.bringSubviewToFront(self.loadingView)
+            
+            let height = window.frame.height
+            let width = window.frame.width
+            
+            self.loadingView.snp.makeConstraints { make in
+                make.width.equalTo(width)
+                make.height.equalTo(height)
+            }
+            
+            self.loadingView.startLoading()
+            
+            self.loadingView.alpha = 1
         }
-        
-        self.loadingView.startLoading()
     }
     
     /// 사용 예시:
@@ -75,8 +83,10 @@ public final class LoadingView: UIView {
     }
     
     private func layout() {
-        self.indicatorImageView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        self.indicatorImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalTo(144)
+            make.width.equalTo(128)
         }
     }
     

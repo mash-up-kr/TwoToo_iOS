@@ -31,6 +31,8 @@ final class InduceCertificationView: UIStackView {
         self.alignment = .center
         self.addArrangedSubviews(self.titleLabel,
                                  self.certificatedLottieView)
+        
+        self.certificatedLottieView.play()
     }
     
     required init(coder: NSCoder) {
