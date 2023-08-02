@@ -15,10 +15,10 @@ public protocol MyInfoScene: AnyObject, Scene {
 
 public struct MyInfoConfiguration {
     
-    var didTriggerAppear: PassthroughSubject<Void, Never>
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
     
-    public init(didTriggerAppear: PassthroughSubject<Void, Never>) {
-        self.didTriggerAppear = didTriggerAppear
+    public init(didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>) {
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
     }
 }
 
@@ -28,16 +28,21 @@ public final class MyInfoSceneFactory {
     
     public func make(with configuration: MyInfoConfiguration) -> MyInfoScene {
         
+        let localDataSource = LocalDataSource()
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let meNetworkWorker = MeNetworkWorker()
         
         let presenter = MyInfoPresenter()
         let router = MyInfoRouter()
-        let worker = MyInfoWorker(meNetworkWorker: meNetworkWorker)
+        let worker = MyInfoWorker(
+            meLocalWorker: meLocalWorker,
+            meNetworkWorker: meNetworkWorker
+        )
         let interactor = MyInfoInteractor(
             presenter: presenter,
             router: router,
             worker: worker,
-            didTriggerAppear: configuration.didTriggerAppear
+            didTriggerRouteToLoginScene: configuration.didTriggerRouteToLoginScene
         )
         let viewController = MyInfoViewController(
             interactor: interactor

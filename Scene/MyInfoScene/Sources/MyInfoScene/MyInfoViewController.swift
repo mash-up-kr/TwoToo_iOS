@@ -187,17 +187,39 @@ extension MyInfoViewController: MyInfoScene {
 
 extension MyInfoViewController: MyInfoDisplayLogic {
     func displayLists(viewModel: MyInfo.ViewModel.Lists) {
-        viewModel.items.unwrap { [weak self] in
-            self?.myInfoLists = $0
-            self?.tableView.reloadData()
-        }
+        UIView.transition(
+            with: self.view,
+            duration: 0.25,
+            options: .transitionCrossDissolve,
+            animations: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                viewModel.items.unwrap {
+                    self.myInfoLists = $0
+                    self.tableView.reloadData()
+                }
+            },
+            completion: nil
+        )
     }
 
     func displayMyInfo(viewModel: MyInfo.ViewModel.Data) {
-        self.challengeCountLabel.text = viewModel.challengeTotalCount
-        self.myNicknameLabel.text = viewModel.myNickname
-        self.partnerNicknameLabel.text = viewModel.partnerNickname
-        self.myNameTagView.titleLabel.text = viewModel.myNickname
+        UIView.transition(
+            with: self.view,
+            duration: 0.25,
+            options: .transitionCrossDissolve,
+            animations: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.challengeCountLabel.text = viewModel.challengeTotalCount
+                self.myNicknameLabel.text = viewModel.myNickname
+                self.partnerNicknameLabel.text = viewModel.partnerNickname
+                self.myNameTagView.titleLabel.text = viewModel.myNickname
+            },
+            completion: nil
+        )
     }
 
     func displayToast(viewModel: MyInfo.ViewModel.Toast) {

@@ -71,7 +71,7 @@ extension ChallengeHistoryPresenter {
         return .init(id: model.id,
                      name: model.name,
                      dDayText: self.makedDayText(start: Date(),
-                                                   end: model.endDate.dateToString(.yearMonthDay).fullStringDate()),
+                                                   end: model.endDate),
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
@@ -87,9 +87,9 @@ extension ChallengeHistoryPresenter {
                                   partnerList: ChallengeHistory.Model.CertificateList)
     -> ChallengeHistory.ViewModel.CellInfoList {
         
-        let today = Date().dateToString(.yearMonthDay).fullStringDate()
-        var current = start.dateToString(.yearMonthDay).fullStringDate()
-        let end = end.dateToString(.yearMonthDay).fullStringDate()
+        let today = Date()
+        var current = start
+        let end = end
         
         var cellInfoList: ChallengeHistory.ViewModel.CellInfoList = []
         
@@ -123,7 +123,7 @@ extension ChallengeHistoryPresenter {
             
             let cell = ChallengeHistory.ViewModel.CellInfo(
                 dateText: current.dateToString(.monthDay),
-                isToday: current == today,
+                isToday: current.dateToString(.yearMonthDay) == today.dateToString(.yearMonthDay),
                 my: my,
                 partner: partner
             )

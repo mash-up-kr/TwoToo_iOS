@@ -11,19 +11,19 @@ import Network
 // https://twotoo-node-zmtrd.run.goorm.site/challenge/0/finish
 
 public struct ChallengeFinishResponse: Decodable {
-    public var challengeNo: Int
-    public var name: String
-    public var description: String
-    public var user1: User
-    public var user2: User
-    public var startDate: String
-    public var endDate: String
-    public var user1CommitCnt: Int
-    public var user2CommitCnt: Int
-    public var user1Flower: Flower
-    public var user2Flower: Flower
-    public var isApproved: Bool
-    public var isFinished: Bool
+    public var challengeNo: Int?
+    public var name: String?
+    public var description: String?
+    public var user1: User?
+    public var user2: User?
+    public var startDate: String?
+    public var endDate: String?
+    public var user1CommitCnt: Int?
+    public var user2CommitCnt: Int?
+    public var user1Flower: Flower?
+    public var user2Flower: Flower?
+    public var isApproved: Bool?
+    public var isFinished: Bool?
     
     public struct User: Decodable {
         public var userNo: Int

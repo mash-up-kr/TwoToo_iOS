@@ -182,7 +182,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.didTriggerRouteToHomeScene
             .receive(on: DispatchQueue.main)
             .sink {
-                let mainScene = MainSceneFactory().make(with: .init())
+                let mainScene = MainSceneFactory().make(with: .init(
+                    didTriggerRouteToLoginScene: self.didTriggerRouteToLoginScene
+                ))
                 let tc = mainScene.viewController
                 self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
                 self.window?.rootViewController = tc

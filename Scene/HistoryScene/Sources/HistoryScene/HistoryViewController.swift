@@ -47,7 +47,6 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         return v
     }()
     
-    // TODO: - Empty뷰 디자인 없음
     lazy var historyEmptyView: UIView = {
         let v = UIView()
         v.isHidden = true
@@ -132,6 +131,27 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         cell.configure(viewModel: viewModel)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 && self.animated {
+            cell.layer.borderColor = UIColor.mainPink.cgColor
+            UIView.animate(
+                withDuration: 0.5,
+                animations: ({
+                    cell.layer.borderWidth = 3
+                    cell.layer.cornerRadius = 10
+                }),
+                completion: { _ in
+                    UIView.animate(withDuration: 2) {
+                        cell.layer.borderWidth = 0
+                    }
+                }
+            )
+            self.animated = false
+        }
+    }
+    
+    var animated: Bool = false
 }
 
 // MARK: - Trigger
@@ -149,19 +169,44 @@ extension HistoryViewController {
 
 extension HistoryViewController: HistoryScene {
     
+    func displayUpdated() {
+        self.animated = true
+    }
 }
 
 // MARK: - Display Logic
 
 extension HistoryViewController: HistoryDisplayLogic {
     func displayChallengeList(viewModel: History.ViewModel.CellInfoList) {
-        self.cellInfoList = viewModel
-        self.historyCollectionView.reloadData()
+        UIView.transition(
+            with: self.view,
+            duration: 0.25,
+            options: .transitionCrossDissolve,
+            animations: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.cellInfoList = viewModel
+                self.historyCollectionView.reloadData()
+            },
+            completion: nil
+        )
     }
     
     func displayChallengeEmptyView() {
-        self.historyCollectionView.isHidden = true
-        self.historyEmptyView.isHidden = false
+        UIView.transition(
+            with: self.view,
+            duration: 0.25,
+            options: .transitionCrossDissolve,
+            animations: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.historyCollectionView.isHidden = true
+                self.historyEmptyView.isHidden = false
+            },
+            completion: nil
+        )
     }
     
     func displayToast(viewModel: History.ViewModel.Toast) {

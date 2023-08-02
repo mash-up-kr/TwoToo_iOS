@@ -7,6 +7,7 @@
 //
 
 import CoreKit
+import Foundation
 
 protocol FlowerSelectBusinessLogic {
     /// 첫진입

@@ -19,8 +19,8 @@ protocol MyInfoBusinessLogic {
 }
 
 protocol MyInfoDataStore: AnyObject {
-    /// 화면 진입 트리거
-       var didTriggerAppear: PassthroughSubject<Void, Never> { get }
+    /// 로그인 화면 이동 트리거
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never> { get }
 }
 
 final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
@@ -35,12 +35,12 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
         presenter: MyInfoPresentationLogic,
         router: MyInfoRoutingLogic,
         worker: MyInfoWorkerProtocol,
-        didTriggerAppear: PassthroughSubject<Void, Never>
+        didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
-        self.didTriggerAppear = didTriggerAppear
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
     }
     
     // MARK: - DataStore
@@ -54,6 +54,8 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
         case inquery
         /// 만든이들
         case creators
+        /// 로그아웃
+        case logout
         
         var url: URL? {
             switch self {
@@ -65,12 +67,13 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
                 return URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeUGNUGzl3MnGUAIR-rtfgYYrDYRIoKh_Ozpd4prqA1qIBKRw/viewform?usp=sf_link")
             case .creators:
                 return URL(string: "https://two2too2.github.io/creater.html")
+            case .logout:
+                return nil
             }
         }
     }
     
-    /// 화면 진입 트리거
-    var didTriggerAppear: PassthroughSubject<Void, Never> = .init()
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
 }
 
 // MARK: - Interactive Business Logic
@@ -79,15 +82,6 @@ extension MyInfoInteractor {
     
     /// 외부 액션 옵저빙
     func observe() {
-        self.didTriggerAppear
-            .sink { [weak self] in
-                guard let self = self else { return }
-                
-                Task {
-                    await self.didLoad()
-                }
-            }
-            .store(in: &self.cancellables)
     }
 }
 
@@ -119,7 +113,14 @@ extension MyInfoInteractor {
 
     /// 공지사항, 이용가이드, 투투에 문의하기, 만든이들 클릭했을 때
     func didTapMyInfoLists(index: Int) async {
-        guard let url = MyInfoLists(rawValue: index)?.url else { return }
+        let myInfo = MyInfoLists(rawValue: index)
+        
+        if myInfo == .logout {
+            await self.worker.logout()
+            self.didTriggerRouteToLoginScene.send(())
+        }
+        
+        guard let url = myInfo?.url else { return }
      
         await self.router.routeToMyInfoListsScene(url: url)
     }

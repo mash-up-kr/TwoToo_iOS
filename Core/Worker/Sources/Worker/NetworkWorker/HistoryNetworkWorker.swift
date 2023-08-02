@@ -20,6 +20,8 @@ public struct HistoryResponse: Decodable {
     public var user2CommitCnt: Int
     public var user1Flower: Flower
     public var user2Flower: Flower
+    public var user1No: Int
+    public var user2No: Int
     
     public enum Flower: String, Decodable {
         case FIG

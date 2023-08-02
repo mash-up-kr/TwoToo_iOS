@@ -31,7 +31,8 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
                 .init(title: "공지사항"),
                 .init(title: "이용 가이드"),
                 .init(title: "투투에 문의하기"),
-                .init(title: "만든이들")
+                .init(title: "만든이들"),
+                .init(title: "로그아웃")
             ])
 
         let totalCount = "\(model.challengeTotalCount ?? "0")번째 꽃 피우는중"
