@@ -25,4 +25,11 @@ public extension UIView {
             objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN
         )
     }
+    
+    /// 종이재질 배경색 적용
+    /// 사용 예시:
+    /// self.view.setBackgroundDefault()
+    func setBackgroundDefault() {
+        self.backgroundColor = UIColor(patternImage: UIImage(named: "home_background", in: Bundle.module, with: nil)!)
+    }
 }
