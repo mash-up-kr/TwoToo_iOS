@@ -16,6 +16,10 @@ public final class Loading {
     
     private init() {}
     
+    /// 사용 예시:
+    /// ```swift
+    /// Loading.shared.showLoadingView()
+    /// ```
     public func showLoadingView() {
         
         guard let window = UIWindow.key else {
@@ -36,6 +40,10 @@ public final class Loading {
         self.loadingView.startLoading()
     }
     
+    /// 사용 예시:
+    /// ```swift
+    /// Loading.shared.stopLoadingView()
+    /// ```
     public func stopLoadingView() {
         self.loadingView.stopLoading()
     }
@@ -45,7 +53,7 @@ public final class Loading {
 public final class LoadingView: UIView {
             
     private let indicatorImageView: LottieAnimationView = {
-        let v = LottieAnimationView(name: "flower lottie_1", bundle: .module)
+        let v = LottieAnimationView(name: "flower lottie", bundle: .module)
         v.loopMode = .loop
         v.animationSpeed = 0.5
         return v
