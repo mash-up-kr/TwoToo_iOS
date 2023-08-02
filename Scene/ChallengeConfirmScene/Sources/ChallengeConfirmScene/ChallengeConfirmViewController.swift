@@ -55,6 +55,13 @@ final class ChallengeConfirmViewController: UIViewController {
         v.font = .body2
         return v
     }()
+    
+    private lazy var challengeContentView: UIView = {
+        let v = UIView()
+        v.layer.cornerRadius = 10
+        v.clipsToBounds = true
+        return v
+    }()
 
     private lazy var challengeConfirmView: UIView = {
         let v = UIView()
@@ -151,7 +158,8 @@ final class ChallengeConfirmViewController: UIViewController {
         self.challenageTitleStackView.addArrangedSubviews(self.challengeTitleLabel, self.challengeDateLabel)
         self.challengeConfirmView.addSubviews(self.challenageTitleStackView, self.challengeRuleLabel)
         self.challengeTitleView.addSubviews(self.challengeAppLabel, self.challengeImage)
-        self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeConfirmView, self.challengeTitleView, self.nextButton)
+        self.challengeContentView.addSubviews(self.challengeConfirmView, self.challengeTitleView)
+        self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeContentView, self.nextButton)
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
@@ -168,12 +176,19 @@ final class ChallengeConfirmViewController: UIViewController {
             make.trailing.lessThanOrEqualToSuperview().offset(-35)
             make.bottom.equalTo(self.challengeConfirmView.snp.top).offset(-41)
         }
-
-        self.challengeConfirmView.snp.makeConstraints { make in
+        
+        self.challengeContentView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(66)
             make.trailing.equalToSuperview().offset(-66)
+            make.bottom.lessThanOrEqualTo(self.nextButton.snp.top).offset(-100)
+        }
+
+        self.challengeConfirmView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.bottom.equalTo(self.challengeTitleView.snp.top)
             make.height.equalTo(UIScreen.main.bounds.height * 0.30)
+            make.top.equalToSuperview()
         }
 
         self.challenageTitleStackView.snp.makeConstraints { make in
@@ -192,7 +207,7 @@ final class ChallengeConfirmViewController: UIViewController {
         self.challengeTitleView.snp.makeConstraints { make in
             make.leading.equalTo(self.challengeConfirmView.snp.leading)
             make.trailing.equalTo(self.challengeConfirmView.snp.trailing)
-            make.bottom.lessThanOrEqualTo(self.nextButton.snp.top).offset(-100)
+            make.bottom.equalToSuperview()
         }
 
         self.challengeAppLabel.snp.makeConstraints { make in

@@ -97,7 +97,6 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 
     private lazy var startDatePicker: UIDatePicker = {
         let v = UIDatePicker()
-        v.backgroundColor = .mainWhite
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
@@ -116,12 +115,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
 
     private lazy var endDatePicker: UIDatePicker = {
         let v = UIDatePicker()
-        v.backgroundColor = .mainWhite
         v.datePickerMode = .date
         v.locale = Locale(identifier: "ko_KR")
         v.calendar.locale = Locale(identifier: "ko_KR")
         v.addTarget(self, action: #selector(didTapEndDate), for: .valueChanged)
-        v.minimumDate = Date()
+        v.minimumDate = Date().addingTimeInterval((86400 * 22))
         return v
     }()
 
@@ -255,13 +253,11 @@ final class ChallengeEssentialInfoInputViewController: UIViewController {
         self.startDateStackView.snp.makeConstraints { make in
             make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(43)
             make.leading.equalTo(self.challengeRecommendButton.snp.leading)
-            make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
 
         self.endDateStackView.snp.makeConstraints { make in
             make.leading.equalTo(self.startDateStackView.snp.trailing).offset(36)
             make.top.equalTo(self.startDateStackView.snp.top)
-            make.width.equalTo(UIScreen.main.bounds.width * 0.27)
         }
 
         self.nextButton.snp.makeConstraints { make in

@@ -13,6 +13,7 @@ public final class ChallengeCertificatePhotoView: UIView {
         let v = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 35, weight: .medium)
         v.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
+        v.isUserInteractionEnabled = false
         v.tintColor = .mainWhite
         return v
     }()

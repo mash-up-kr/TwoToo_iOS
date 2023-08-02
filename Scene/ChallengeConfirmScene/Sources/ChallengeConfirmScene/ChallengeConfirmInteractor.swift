@@ -24,6 +24,8 @@ protocol ChallengeConfirmDataStore: AnyObject {
     var challengeEndDate: String { get }
     /// 챌린지 규칙
     var challengeRule: String? { get }
+    /// 챌린지 ID
+    var challengeID: String? { get }
     /// 챌린지 진입점
     var didEnterStatusDataSource: String { get }
 }
@@ -43,6 +45,7 @@ final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConf
         challengeStartDate: String,
         challengeEndDate: String,
         challengeRule: String?,
+        challengeID: String?,
         didEnterStatus: String
     ) {
         self.presenter = presenter
@@ -52,6 +55,7 @@ final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConf
         self.challengeStartDate = challengeStartDate
         self.challengeEndDate = challengeEndDate
         self.challengeRule = challengeRule
+        self.challengeID = challengeID
         self.didEnterStatusDataSource = didEnterStatus
     }
     
@@ -61,13 +65,14 @@ final class ChallengeConfirmInteractor: ChallengeConfirmDataStore, ChallengeConf
     var challengeStartDate: String
     var challengeEndDate: String
     var challengeRule: String?
+    var challengeID: String?
     var didEnterStatusDataSource: String
     
     enum FlowerSelectStatus: String {
         case create = "create"
-        case confirm = "confirm"
+        case view = "view"
         case accept = "accept"
-        }
+    }
 }
 
 // MARK: - Interactive Business Logic
@@ -93,7 +98,7 @@ extension ChallengeConfirmInteractor {
             await self.presenter.presentChallengeConfirmView(
                 status: .create,
                 model: .init(title: challengeName, startDate: challengeStartDate, endDate: challengeEndDate, rule: challengeRule))
-        case .confirm:
+        case .view:
             await self.presenter.presentChallengeConfirmView(
                 status: .confirm,
                 model: .init(title: challengeName, startDate: challengeStartDate, endDate: challengeEndDate, rule: challengeRule))

@@ -35,7 +35,7 @@ extension ChallengeConfirmRouter: ChallengeConfirmRoutingLogic {
 
         else { return }
 
-        let flowerSelectScene = FlowerSelectSceneFactory().make(with: .init(didTriggerChallengeCreateScene: .init(), didTriggerRouteToHomeScene: .init(), enterSceneStatus: didEnterStatus, challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.challengeRule))
+        let flowerSelectScene = FlowerSelectSceneFactory().make(with: .init(didTriggerChallengeCreateScene: .init(), didTriggerRouteToHomeScene: .init(), enterSceneStatus: didEnterStatus, challengeName: challengeName, challengeStartDate: challengeStartDate, challengeEndDate: challengeEndDate, challengeRule: self.dataStore?.challengeRule, challengeID: self.dataStore?.challengeID))
 
         let flowerSelectViewController = flowerSelectScene.viewController
 

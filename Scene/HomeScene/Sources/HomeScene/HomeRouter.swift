@@ -56,6 +56,7 @@ extension HomeRouter: HomeRoutingLogic {
             challengeStartDate: dataStore.challenge?.startDate?.dateToString(.shortYearMonthDay) ?? "",
             challengeEndDate: dataStore.challenge?.endDate?.dateToString(.shortYearMonthDay) ?? "",
             challengeRule: dataStore.challenge?.description ?? "",
+            challengeID: dataStore.challenge?.id,
             didEnterStatus: entryPoint
         ))
         let challengeConfirmViewController = challengeConfirmScene.viewController

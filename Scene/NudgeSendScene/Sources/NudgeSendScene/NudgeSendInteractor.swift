@@ -107,6 +107,7 @@ extension NudgeSendInteractor {
         }
         catch {
             await self.presenter.presentNudgeError(error: error)
+            await self.router.dismiss()
         }
     }
 }

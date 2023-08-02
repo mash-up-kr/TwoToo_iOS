@@ -231,7 +231,7 @@ extension HomeInteractor {
     }
     
     func didTapMyComplimentCommnet() async {
-        if self.challenge?.myInfo.todayCert?.complimentComment?.isEmpty ?? true {
+        if self.challenge?.partnerInfo.todayCert?.complimentComment?.isEmpty ?? true {
             await self.router.routeToPraiseSendScene()
         }
     }

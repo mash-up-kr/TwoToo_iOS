@@ -96,6 +96,7 @@ extension PraiseSendInteractor {
         }
         catch {
             await self.presenter.presentPraiseError(error: error)
+            await self.router.dismiss()
         }
     }
 }

@@ -54,6 +54,16 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         return v
     }()
     
+    lazy var historyEmptyLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .grey500
+        v.font = .body1
+        v.text = "챌린지를 완료해\n히스토리를 만들어보세요 :)"
+        v.textAlignment = .center
+        v.numberOfLines = 0
+        return v
+    }()
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -78,6 +88,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         self.view.addSubviews(self.navigationBar,
                               self.historyCollectionView,
                               self.historyEmptyView)
+        self.historyEmptyView.addSubview(self.historyEmptyLabel)
         
         let guide = self.view.safeAreaLayoutGuide
         
@@ -97,6 +108,10 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         self.historyEmptyView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        self.historyEmptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     

@@ -22,6 +22,8 @@ public struct ChallengeConfirmConfiguration {
     let challengeEndDate: String
     /// 챌린지 규칙
     let challegneRule: String?
+    /// 챌린지 ID
+    let challengeID: String?
     /// 진입점 상태
     let didEnterStatus: String
 
@@ -30,12 +32,14 @@ public struct ChallengeConfirmConfiguration {
         challengeStartDate: String,
         challengeEndDate: String,
         challengeRule: String?,
+        challengeID: String?,
         didEnterStatus: String
     ) {
         self.challengeName = challengeName
         self.challengeStartDate = challengeStartDate
         self.challengeEndDate = challengeEndDate
         self.challegneRule = challengeRule
+        self.challengeID = challengeID
         self.didEnterStatus = didEnterStatus
     }
 }
@@ -57,6 +61,7 @@ public final class ChallengeConfirmSceneFactory {
             challengeStartDate: configuration.challengeStartDate,
             challengeEndDate: configuration.challengeEndDate,
             challengeRule: configuration.challegneRule,
+            challengeID: configuration.challengeID,
             didEnterStatus: configuration.didEnterStatus
         )
         let viewController = ChallengeConfirmViewController(
