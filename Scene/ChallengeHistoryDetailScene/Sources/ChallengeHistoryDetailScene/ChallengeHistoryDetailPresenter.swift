@@ -35,7 +35,7 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         ChallengeHistoryDetail.ViewModel.Compliment)
     {
         let dateText = model.certificateTime.dateToString(.hangleYearMonthDay)
-        let timeText = "입력 시간  " + model.certificateTime.dateToString(.hourMinute)
+        let timeText = "인증 시간  " + model.certificateTime.dateToString(.hourMinute)
         let title = "\(model.myNickname)의 기록"
         let certification = ChallengeHistoryDetail.ViewModel.Challenge(challengeName: model.challengeName,
                                                                        certificationDateText: dateText,
