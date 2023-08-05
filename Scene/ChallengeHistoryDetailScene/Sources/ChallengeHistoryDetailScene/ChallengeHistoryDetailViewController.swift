@@ -108,7 +108,7 @@ final class ChallengeHistoryDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.view.backgroundColor = .second01
+        self.view.setBackgroundDefault()
         Task {
             await self.interactor.didLoad()
         }
