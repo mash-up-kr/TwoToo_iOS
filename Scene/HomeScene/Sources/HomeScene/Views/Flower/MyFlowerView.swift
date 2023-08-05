@@ -80,7 +80,7 @@ final class MyFlowerView: UIView {
     lazy var nicknameView: TTTagView = {
         let v = TTTagView(textColor: .mainCoral,
                           fontSize: .body2,
-                          cornerRadius: 15)
+                          cornerRadius: 13)
         return v
     }()
     // MARK: - Method
@@ -110,6 +110,8 @@ final class MyFlowerView: UIView {
         self.emptySpeechBubbleImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
+            make.width.equalToSuperview().multipliedBy(0.7)
+            make.height.equalTo(62)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-32)
         }
         
