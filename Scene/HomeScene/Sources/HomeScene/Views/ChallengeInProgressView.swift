@@ -94,10 +94,10 @@ final class ChallengeInProgressView: UIView {
                          self.nudgeTitleLabel)
                 
         self.topChallengeInfoView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(11)
+            make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
-            make.height.equalToSuperview().multipliedBy(0.113)
+            make.height.equalToSuperview().multipliedBy(0.14)
         }
         
         self.progressBar.snp.makeConstraints { make in
@@ -115,13 +115,13 @@ final class ChallengeInProgressView: UIView {
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalToSuperview().multipliedBy(0.75)
             make.centerX.equalToSuperview().multipliedBy(0.5)
             make.width.equalToSuperview().dividedBy(2)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalToSuperview().multipliedBy(0.75)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.width.equalToSuperview().dividedBy(2)
         }
