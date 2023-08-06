@@ -144,17 +144,29 @@ extension MyInfoInteractor {
             self.didTriggerRouteToLoginScene.send(())
         }
 
+
         if myInfo == .singout {
 
-            
+            do {
+                let socailLoginType = try await self.worker.fetchSocialLoginType()
 
-            // 애플 로그인 시 로그인 재 시도
+                if socailLoginType == .appleLogin {
 
-            // 상태에 따라 회원탈퇴 or 탈퇴 취소
-            Task {
-                await self.presenter.presentSignOutPopup()
+                    Task {
+                        self.worker.retryAppleLogin()
+                        await self.presenter.presentSignOutPopup()
+                    }
+                }
+                else if socailLoginType == .kakaoLogin {
+                    Task {
+                        await self.presenter.presentSignOutPopup()
+                    }
+                }
             }
 
+            catch {
+
+            }
         }
         
         guard let url = myInfo?.url else { return }

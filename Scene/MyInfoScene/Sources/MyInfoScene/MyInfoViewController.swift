@@ -10,8 +10,11 @@ import CoreKit
 import UIKit
 
 protocol MyInfoDisplayLogic: AnyObject {
+    /// 마이페이지 리스트를 보여준다.
     func displayLists(viewModel: MyInfo.ViewModel.Lists)
+    /// 마이페이지 정보를 보여준다.
     func displayMyInfo(viewModel: MyInfo.ViewModel.Data)
+    /// 토스트를 보여준다.
     func displayToast(viewModel: MyInfo.ViewModel.Toast)
     /// 회원탈퇴 팝업을 보여준다.
     func displaySignOutPopup(viewModel: MyInfo.ViewModel.SignOutViewModel)
@@ -205,201 +208,193 @@ extension MyInfoViewController: MyInfoScene {
 
 extension MyInfoViewController: MyInfoDisplayLogic {
     func displaySignOutPopup(viewModel: MyInfo.ViewModel.SignOutViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
+        viewModel.show.unwrap {
+            let popupContentView = UIView()
+            let imageView = UIImageView()
+            imageView.image = $0
+            imageView.contentMode = .scaleAspectFit
+            popupContentView.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
 
-                let popupView = TTPopup()
-                popupView.configure(title: MyInfo.ViewModel.SignOutViewModel.title,
-                                    resultView: popupContentView,
-                                    description: MyInfo.ViewModel.SignOutViewModel.message,
-                                    buttonTitles: [
-                                        MyInfo.ViewModel.SignOutViewModel.cancelOptionText,
-                                        MyInfo.ViewModel.SignOutViewModel.signOutOptionText
-                                    ])
+            let popupView = TTPopup()
+            popupView.configure(title: MyInfo.ViewModel.SignOutViewModel.title,
+                                resultView: popupContentView,
+                                description: MyInfo.ViewModel.SignOutViewModel.message,
+                                buttonTitles: [
+                                    MyInfo.ViewModel.SignOutViewModel.cancelOptionText,
+                                    MyInfo.ViewModel.SignOutViewModel.signOutOptionText
+                                ])
 
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapSignOutPopupCancelButton()
-                    }
-                }
-
-                popupView.didTapRightButton {
-                    Task {
-                        await self?.interactor.didTapSignoutPopupSignOutButton()
-                    }
-                }
-
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapSignOutPopupBackground()
-                    }
-                }
-
-                self?.signOutPopupView = popupView
-
-                if let signOutPopupView = self?.signOutPopupView {
-                    self?.view.addSubview(signOutPopupView)
+            popupView.didTapLeftButton {
+                Task {
+                    await self.interactor.didTapSignOutPopupCancelButton()
                 }
             }
 
-            viewModel.dismiss.unwrap {
-                self?.signOutPopupView?.removeFromSuperview()
-                self?.signOutPopupView = nil
+            popupView.didTapRightButton {
+                Task {
+                    await self.interactor.didTapSignoutPopupSignOutButton()
+                }
             }
+
+            popupView.didTapBackground {
+                Task {
+                    await self.interactor.didTapSignOutPopupBackground()
+                }
+            }
+
+            self.signOutPopupView = popupView
+
+            if let signOutPopupView = self.signOutPopupView {
+                self.view.addSubview(signOutPopupView)
+            }
+        }
+
+        viewModel.dismiss.unwrap {
+            self.signOutPopupView?.removeFromSuperview()
+            self.signOutPopupView = nil
         }
     }
 
     func displaySignOutCompletePopup(viewModel: MyInfo.ViewModel.SignOutCompletedViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
+        viewModel.show.unwrap {
+            let popupContentView = UIView()
+            let imageView = UIImageView()
+            imageView.image = $0
+            imageView.contentMode = .scaleAspectFit
+            popupContentView.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
 
-                let popupView = TTPopup()
-                popupView.configure(title: MyInfo.ViewModel.SignOutCompletedViewModel.title,
-                                    resultView: popupContentView,
-                                    description: MyInfo.ViewModel.SignOutCompletedViewModel.message,
-                                    buttonTitles: [
-                                        MyInfo.ViewModel.SignOutCompletedViewModel.confirmOptionText
-                                    ])
+            let popupView = TTPopup()
+            popupView.configure(title: MyInfo.ViewModel.SignOutCompletedViewModel.title,
+                                resultView: popupContentView,
+                                description: MyInfo.ViewModel.SignOutCompletedViewModel.message,
+                                buttonTitles: [
+                                    MyInfo.ViewModel.SignOutCompletedViewModel.confirmOptionText
+                                ])
 
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapSignOutCompleteConfirmButton()
-                    }
-                }
-
-
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapSignOutCompletePopupBackground()
-                    }
-                }
-
-                self?.signOutCompletePopupView = popupView
-
-                if let signOutCompletePopupView = self?.signOutCompletePopupView {
-                    self?.view.addSubview(signOutCompletePopupView)
+            popupView.didTapLeftButton {
+                Task {
+                    await self.interactor.didTapSignOutCompleteConfirmButton()
                 }
             }
 
-            viewModel.dismiss.unwrap {
-                self?.signOutCompletePopupView?.removeFromSuperview()
-                self?.signOutCompletePopupView = nil
+
+            popupView.didTapBackground {
+                Task {
+                    await self.interactor.didTapSignOutCompletePopupBackground()
+                }
             }
+
+            self.signOutCompletePopupView = popupView
+
+            if let signOutCompletePopupView = self.signOutCompletePopupView {
+                self.view.addSubview(signOutCompletePopupView)
+            }
+        }
+
+        viewModel.dismiss.unwrap {
+            self.signOutCompletePopupView?.removeFromSuperview()
+            self.signOutCompletePopupView = nil
         }
     }
 
     func displaySignOutCancelPopup(viewModel: MyInfo.ViewModel.SignOutCancelViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
+        viewModel.show.unwrap {
+            let popupContentView = UIView()
+            let imageView = UIImageView()
+            imageView.image = $0
+            imageView.contentMode = .scaleAspectFit
+            popupContentView.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
 
-                let popupView = TTPopup()
-                popupView.configure(title: MyInfo.ViewModel.SignOutCancelViewModel.title,
-                                    resultView: popupContentView,
-                                    description: MyInfo.ViewModel.SignOutCancelViewModel.message,
-                                    buttonTitles: [
-                                        MyInfo.ViewModel.SignOutCancelViewModel.noOptionText,
-                                        MyInfo.ViewModel.SignOutCancelViewModel.SingOutCancelOptionText
-                                    ])
+            let popupView = TTPopup()
+            popupView.configure(title: MyInfo.ViewModel.SignOutCancelViewModel.title,
+                                resultView: popupContentView,
+                                description: MyInfo.ViewModel.SignOutCancelViewModel.message,
+                                buttonTitles: [
+                                    MyInfo.ViewModel.SignOutCancelViewModel.noOptionText,
+                                    MyInfo.ViewModel.SignOutCancelViewModel.SingOutCancelOptionText
+                                ])
 
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapSignOutCancelCompleteNobutton()
-                    }
-                }
-
-                popupView.didTapRightButton {
-                    Task {
-                        await self?.interactor.didTapCancelSignOutCancelButton()
-                    }
-                }
-
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapSignOutCancelPopupBackground()
-                    }
-                }
-
-                self?.signOutCancelPopupView = popupView
-
-                if let signOutCancelPopupView = self?.signOutCancelPopupView {
-                    self?.view.addSubview(signOutCancelPopupView)
+            popupView.didTapLeftButton {
+                Task {
+                    await self.interactor.didTapSignOutCancelCompleteNobutton()
                 }
             }
 
-            viewModel.dismiss.unwrap {
-                self?.signOutCancelPopupView?.removeFromSuperview()
-                self?.signOutCancelPopupView = nil
+            popupView.didTapRightButton {
+                Task {
+                    await self.interactor.didTapCancelSignOutCancelButton()
+                }
             }
+
+            popupView.didTapBackground {
+                Task {
+                    await self.interactor.didTapSignOutCancelPopupBackground()
+                }
+            }
+
+            self.signOutCancelPopupView = popupView
+
+            if let signOutCancelPopupView = self.signOutCancelPopupView {
+                self.view.addSubview(signOutCancelPopupView)
+            }
+        }
+
+        viewModel.dismiss.unwrap {
+            self.signOutCancelPopupView?.removeFromSuperview()
+            self.signOutCancelPopupView = nil
         }
     }
 
     func displaySignOutCancelCompletePopup(viewModel: MyInfo.ViewModel.SignOutCancelCompletedViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
+        viewModel.show.unwrap {
+            let popupContentView = UIView()
+            let imageView = UIImageView()
+            imageView.image = $0
+            imageView.contentMode = .scaleAspectFit
+            popupContentView.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
 
-                let popupView = TTPopup()
-                popupView.configure(title: MyInfo.ViewModel.SignOutCancelCompletedViewModel.title,
-                                    resultView: popupContentView,
-                                    description: MyInfo.ViewModel.SignOutCancelCompletedViewModel.message,
-                                    buttonTitles: [
-                                        MyInfo.ViewModel.SignOutCancelCompletedViewModel.confirmOptionText
-                                    ])
+            let popupView = TTPopup()
+            popupView.configure(title: MyInfo.ViewModel.SignOutCancelCompletedViewModel.title,
+                                resultView: popupContentView,
+                                description: MyInfo.ViewModel.SignOutCancelCompletedViewModel.message,
+                                buttonTitles: [
+                                    MyInfo.ViewModel.SignOutCancelCompletedViewModel.confirmOptionText
+                                ])
 
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapSignOutCancelCompleteConfirmButton()
-                    }
-                }
-
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapSignOutCancelCompletePopupBackground()
-                    }
-                }
-
-                self?.signoutCancelCompletePopupView = popupView
-
-                if let signoutCancelCompletePopupView = self?.signoutCancelCompletePopupView {
-                    self?.view.addSubview(signoutCancelCompletePopupView)
+            popupView.didTapLeftButton {
+                Task {
+                    await self.interactor.didTapSignOutCancelCompleteConfirmButton()
                 }
             }
 
-            viewModel.dismiss.unwrap {
-                self?.signoutCancelCompletePopupView?.removeFromSuperview()
-                self?.signoutCancelCompletePopupView = nil
+            popupView.didTapBackground {
+                Task {
+                    await self.interactor.didTapSignOutCancelCompletePopupBackground()
+                }
             }
+
+            self.signoutCancelCompletePopupView = popupView
+
+            if let signoutCancelCompletePopupView = self.signoutCancelCompletePopupView {
+                self.view.addSubview(signoutCancelCompletePopupView)
+            }
+        }
+
+        viewModel.dismiss.unwrap {
+            self.signoutCancelCompletePopupView?.removeFromSuperview()
+            self.signoutCancelCompletePopupView = nil
         }
     }
 
@@ -443,17 +438,6 @@ extension MyInfoViewController: MyInfoDisplayLogic {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
         }
-    }
-
-    /// 애니메이션과 함께 뷰를 그립니다.
-    private func displayWithAnimation(animations: @escaping () -> Void) {
-        UIView.transition(
-            with: self.view,
-            duration: 0.25,
-            options: .transitionCrossDissolve,
-            animations: animations,
-            completion: nil
-        )
     }
 }
 

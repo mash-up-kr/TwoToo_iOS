@@ -87,6 +87,7 @@ final class LoginWorker: LoginWorkerProtocol {
         self.meLocalWorker.nickname = authResponse.nickname
         self.meLocalWorker.userNo = authResponse.userNo
         self.meLocalWorker.partnerNo = authResponse.partnerNo
+        self.meLocalWorker.socialType = loginType
         
         switch authResponse.state {
             case "NEED_NICKNAME":

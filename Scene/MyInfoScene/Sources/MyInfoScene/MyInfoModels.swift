@@ -19,6 +19,19 @@ enum MyInfo {
             var challengeTotalCount: String?
         }
 
+        enum SignOutStatus: Equatable {
+            /// 회원 탈퇴 전
+            case unapplied
+            /// 회원 탈퇴 후
+            case applied
+        }
+
+        enum SocialLoginStatus: Equatable {
+            /// 카카오 로그인
+            case kakaoLogin
+            /// 애플 로그인
+            case appleLogin
+        }
     }
     
     enum ViewModel {

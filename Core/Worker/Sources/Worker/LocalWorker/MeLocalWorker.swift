@@ -15,6 +15,7 @@ public protocol MeLocalWorkerProtocol {
     var partnerNo: Int? { get set }
     var partnerNickname: String? { get set }
     var deviceToken: String? { get set }
+    var socialType: String? { get set }
 }
 
 public final class MeLocalWorker: MeLocalWorkerProtocol {
@@ -31,6 +32,7 @@ public final class MeLocalWorker: MeLocalWorkerProtocol {
     private let partnerNoKey: String = "partnerNo"
     private let partnerNicknameKey: String = "partnerNickname"
     private let deviceTokenKey: String = "deviceToken"
+    private let socialTypeKey: String = "socialType"
     
     public var token: String? {
         get {
@@ -104,6 +106,18 @@ public final class MeLocalWorker: MeLocalWorkerProtocol {
                 return
             }
             self.localDataSource?.save(value: newValue, key: self.deviceTokenKey)
+        }
+    }
+
+    public var socialType: String? {
+        get {
+            return self.localDataSource?.read(key: self.socialTypeKey)
+        }
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            self.localDataSource?.save(value: newValue, key: self.socialTypeKey)
         }
     }
 }

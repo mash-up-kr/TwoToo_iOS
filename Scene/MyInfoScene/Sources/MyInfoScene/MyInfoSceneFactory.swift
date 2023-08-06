@@ -31,12 +31,14 @@ public final class MyInfoSceneFactory {
         let localDataSource = LocalDataSource()
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let meNetworkWorker = MeNetworkWorker()
+        let appleLoginWorker = CommonAppleLoginWorker()
         
         let presenter = MyInfoPresenter()
         let router = MyInfoRouter()
         let worker = MyInfoWorker(
             meLocalWorker: meLocalWorker,
-            meNetworkWorker: meNetworkWorker
+            meNetworkWorker: meNetworkWorker,
+            appleLoginWorker: appleLoginWorker
         )
         let interactor = MyInfoInteractor(
             presenter: presenter,
