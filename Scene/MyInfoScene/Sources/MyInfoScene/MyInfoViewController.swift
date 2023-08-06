@@ -235,6 +235,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
 
             popupView.didTapRightButton {
                 Task {
+                    try await Task.sleep(nanoseconds: 1000000000)
                     await self.interactor.didTapSignoutPopupSignOutButton()
                 }
             }
@@ -331,6 +332,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
 
             popupView.didTapRightButton {
                 Task {
+                    try await Task.sleep(nanoseconds: 1000000000)
                     await self.interactor.didTapCancelSignOutCancelButton()
                 }
             }
