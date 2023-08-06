@@ -33,6 +33,11 @@ final class InduceCertificationView: UIStackView {
                                  self.certificatedLottieView)
         
         self.certificatedLottieView.play()
+        
+        self.certificatedLottieView.snp.makeConstraints { make in
+            make.width.equalTo(75)
+            make.height.equalTo(70)
+        }
     }
     
     required init(coder: NSCoder) {

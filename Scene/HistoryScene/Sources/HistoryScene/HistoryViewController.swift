@@ -56,8 +56,9 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
     lazy var historyEmptyLabel: UILabel = {
         let v = UILabel()
         v.textColor = .grey500
-        v.font = .body1
+        v.font = .h3
         v.text = "챌린지를 완료해\n히스토리를 만들어보세요 :)"
+        v.setLineSpacing(10)
         v.textAlignment = .center
         v.numberOfLines = 0
         return v
