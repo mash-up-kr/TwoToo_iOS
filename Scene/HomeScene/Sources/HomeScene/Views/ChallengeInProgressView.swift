@@ -97,7 +97,6 @@ final class ChallengeInProgressView: UIView {
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
-            make.height.equalToSuperview().multipliedBy(0.14)
         }
         
         self.progressBar.snp.makeConstraints { make in
