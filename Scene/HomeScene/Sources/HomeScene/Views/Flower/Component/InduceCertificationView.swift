@@ -8,7 +8,7 @@
 import UIKit
 import Lottie
 
-final class InduceCertificationView: UIStackView {
+final class InduceCertificationView: UIView {
     
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -24,18 +24,31 @@ final class InduceCertificationView: UIStackView {
         return v
     }()
     
-    init() {
-        super.init(frame: .zero)
-        self.axis = .vertical
-        self.spacing = 10
-        self.alignment = .center
-        self.addArrangedSubviews(self.titleLabel,
-                                 self.certificatedLottieView)
-        
-        self.certificatedLottieView.play()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.layout()
     }
     
-    required init(coder: NSCoder) {
+    private func layout() {
+        self.addSubviews(self.titleLabel,
+                         self.certificatedLottieView)
+        
+        self.certificatedLottieView.play()
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.top.centerX.equalToSuperview()
+            make.height.equalTo(16)
+        }
+        
+        self.certificatedLottieView.snp.makeConstraints { make in
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
+            make.width.equalTo(75)
+            make.height.equalTo(70)
+            make.centerX.bottom.equalToSuperview()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
