@@ -9,7 +9,12 @@
 import UIKit
 
 @MainActor
-protocol ChallengeConfirmPresentationLogic {}
+protocol ChallengeConfirmPresentationLogic {
+    /// 챌린지 확인 화면을 보여준다.
+    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus, model: ChallengeConfirm.Model.ChallengeInfo)
+    /// 챌린지 확인 에러 화면을 보여준다.
+    func presentChallengeConfirmViewError(error: Error)
+}
 
 final class ChallengeConfirmPresenter {
     weak var viewController: ChallengeConfirmDisplayLogic?
@@ -19,5 +24,22 @@ final class ChallengeConfirmPresenter {
 // MARK: - Presentation Logic
 
 extension ChallengeConfirmPresenter: ChallengeConfirmPresentationLogic {
-    
+
+    func presentChallengeConfirmView(status: ChallengeConfirm.Model.ConfirmStatus, model: ChallengeConfirm.Model.ChallengeInfo) {
+        
+        let date = model.startDate + " ~ " + model.endDate
+        
+        switch status {
+        case .create:
+            self.viewController?.displayCreateView(info: .init(title: model.title, date: date, rule: model.rule))
+        case .confirm:
+            self.viewController?.displayConfirmView(info: .init(title: model.title, date: date, rule: model.rule))
+        case .accept:
+            self.viewController?.displayAcceptView(info: .init(title: model.title, date: date, rule: model.rule))
+        }
+    }
+
+    func presentChallengeConfirmViewError(error: Error) {
+
+    }
 }

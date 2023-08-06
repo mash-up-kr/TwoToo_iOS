@@ -7,14 +7,20 @@
 //
 
 import CoreKit
+import UIKit
 
 @MainActor
 public protocol ChallengeCertificateScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct ChallengeCertificateConfiguration {
     
+    public let challengeID: String
+    
+    public init(challengeID: String) {
+        self.challengeID = challengeID
+    }
 }
 
 public final class ChallengeCertificateSceneFactory {
@@ -23,13 +29,18 @@ public final class ChallengeCertificateSceneFactory {
     
     public func make(with configuration: ChallengeCertificateConfiguration) -> ChallengeCertificateScene {
         
+        let commitNetworkWorker = CommitNetworkWorker()
+        
         let presenter = ChallengeCertificatePresenter()
         let router = ChallengeCertificateRouter()
-        let worker = ChallengeCertificateWorker()
+        let worker = ChallengeCertificateWorker(
+            commitNetworkWorker: commitNetworkWorker
+        )
         let interactor = ChallengeCertificateInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            challengeID: configuration.challengeID
         )
         let viewController = ChallengeCertificateViewController(
             interactor: interactor

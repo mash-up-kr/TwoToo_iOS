@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol PraiseSendRoutingLogic {}
+protocol PraiseSendRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class PraiseSendRouter {
     weak var viewController: PraiseSendViewController?
@@ -18,4 +21,7 @@ final class PraiseSendRouter {
 
 extension PraiseSendRouter: PraiseSendRoutingLogic {
     
+    func dismiss() {
+        self.viewController?.dismiss(animated: true)
+    }
 }

@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeHistoryDetailRoutingLogic {}
+protocol ChallengeHistoryDetailRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class ChallengeHistoryDetailRouter {
     weak var viewController: ChallengeHistoryDetailViewController?
@@ -17,5 +20,7 @@ final class ChallengeHistoryDetailRouter {
 }
 
 extension ChallengeHistoryDetailRouter: ChallengeHistoryDetailRoutingLogic {
-    
+    func dismiss() {
+        self.viewController?.dismiss(animated: true)
+    }
 }

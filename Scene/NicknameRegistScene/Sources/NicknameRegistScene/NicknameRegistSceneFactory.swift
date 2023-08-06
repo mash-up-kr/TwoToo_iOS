@@ -14,7 +14,18 @@ public protocol NicknameRegistScene: AnyObject, Scene {
 }
 
 public struct NicknameRegistConfiguration {
+    /// 초대장 전송 화면 이동 트리거
+    public var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
+    /// 홈 화면 이동 트리거
+    public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     
+    public init(
+        didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    ) {
+        self.didTriggerRouteToInvitationSendScene = didTriggerRouteToInvitationSendScene
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+    }
 }
 
 public final class NicknameRegistSceneFactory {
@@ -22,14 +33,24 @@ public final class NicknameRegistSceneFactory {
     public init() {}
     
     public func make(with configuration: NicknameRegistConfiguration) -> NicknameRegistScene {
+        let localDataSource = LocalDataSource()
+        let invitedUserLocalWorker = InvitedUserLocalWorker(localDataSource: localDataSource)
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let nicknameNetworkWorker = NicknameNetworkWorker()
         
         let presenter = NicknameRegistPresenter()
         let router = NicknameRegistRouter()
-        let worker = NicknameRegistWorker()
+        let worker = NicknameRegistWorker(
+            invitedUserLocalWorker: invitedUserLocalWorker,
+            meLocalWorker: meLocalWorker,
+            nicknameNetworkWorker: nicknameNetworkWorker
+        )
         let interactor = NicknameRegistInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToInvitationSendScene: configuration.didTriggerRouteToInvitationSendScene,
+            didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene
         )
         let viewController = NicknameRegistViewController(
             interactor: interactor

@@ -18,5 +18,12 @@ enum ChallengeRecommend {
     
     enum ViewModel {
         
+        struct Challenges {
+            var items: [Challenge]?
+            
+            struct Challenge {
+                var title: (icon: String, challengeName: String)
+            }
+        }
     }
 }

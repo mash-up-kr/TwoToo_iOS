@@ -14,7 +14,12 @@ public protocol MainScene: AnyObject, Scene {
 }
 
 public struct MainConfiguration {
+    /// 로그인 화면 이동 트리거
+    public var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
     
+    public init(didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>) {
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
+    }
 }
 
 public final class MainSceneFactory {
@@ -29,13 +34,14 @@ public final class MainSceneFactory {
         let interactor = MainInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            didTriggerRouteToLoginScene: configuration.didTriggerRouteToLoginScene
         )
-        let viewController = MainViewController(
+        let viewController = MainTabBarController(
             interactor: interactor
         )
-        presenter.viewController = viewController
-        router.viewController = viewController
+        presenter.tabBarController = viewController
+        router.tabBarController = viewController
         router.dataStore = interactor
         
         return viewController

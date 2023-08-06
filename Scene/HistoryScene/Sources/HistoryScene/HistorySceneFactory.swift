@@ -10,11 +10,14 @@ import CoreKit
 
 @MainActor
 public protocol HistoryScene: AnyObject, Scene {
-    
+    func displayUpdated()
 }
 
 public struct HistoryConfiguration {
     
+    public init() {
+        
+    }
 }
 
 public final class HistorySceneFactory {
@@ -23,9 +26,13 @@ public final class HistorySceneFactory {
     
     public func make(with configuration: HistoryConfiguration) -> HistoryScene {
         
+        let localDataSource = LocalDataSource()
+        let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let historyNetworkWorker = HistoryNetworkWorker()
+        
         let presenter = HistoryPresenter()
         let router = HistoryRouter()
-        let worker = HistoryWorker()
+        let worker = HistoryWorker(meLocalWorker: meLocalWorker, historyNetworkWorker: historyNetworkWorker)
         let interactor = HistoryInteractor(
             presenter: presenter,
             router: router,

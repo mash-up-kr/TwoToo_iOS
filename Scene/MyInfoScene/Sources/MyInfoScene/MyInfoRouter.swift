@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import SafariServices
 
 @MainActor
-protocol MyInfoRoutingLogic {}
+protocol MyInfoRoutingLogic {
+    /// 마이페이지 내 공지사항, 이용가이드, 투투에 문의하기, 만든이들 화면으로 이동한다.
+    func routeToMyInfoListsScene(url: URL)
+}
 
 final class MyInfoRouter {
     weak var viewController: MyInfoViewController?
@@ -17,5 +21,11 @@ final class MyInfoRouter {
 }
 
 extension MyInfoRouter: MyInfoRoutingLogic {
-    
+    /// 사파리 웹뷰로 보여준다.
+    func routeToMyInfoListsScene(url: URL) {
+
+        let safariViewController = SFSafariViewController(url: url)
+        
+        self.viewController?.present(safariViewController, animated: true, completion: nil)
+    }
 }

@@ -5,18 +5,87 @@
 //  Created by 박건우 on 2023/06/03.
 //
 
+import CoreKit
+import SceneKit
+import MainScene
+import NudgeSendScene
+import ChallengeCertificateScene
+import PraiseSendScene
+import InvitationSendScene
+import InvitationWaitScene
+import ChallengeRecommendScene
 import UIKit
+import NicknameRegistScene
+import SplashScene
+import LoginScene
+import KakaoSDKAuth
+import Firebase
+import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    /// 로그인 화면 이동 트리거
+    let didTriggerRouteToLoginScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 닉네임 설정 화면 이동 트리거
+    let didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 초대장 전송 화면 이동 트리거
+    let didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never> = .init()
+    
+    /// 대기 화면 이동 트리거
+    let didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never> = .init()
+    
+    /// 홈 화면 이동 트리거
+    let didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> = .init()
+    
+    var cancellables: Set<AnyCancellable> = []
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        if let userActivity = connectionOptions.userActivities.first {
+            self.scene(scene, continue: userActivity)
+        } else {
+            self.scene(scene, openURLContexts: connectionOptions.urlContexts)
+        }
+        
+        self.bindTrigger() // 트리거를 바인딩합니다.
+        
+        self.window = UIWindow(windowScene: windowScene)
+        self.window!.makeKeyAndVisible()
+        
+        let splashScene = SplashSceneFactory().make(with: .init(
+            didTriggerRouteToLoginScene: self.didTriggerRouteToLoginScene,
+            didTriggerRouteToNickNameScene: self.didTriggerRouteToNickNameScene,
+            didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+            didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene,
+            didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+        ))
+        let vc = splashScene.viewController
+        let nav = UINavigationController(rootViewController: vc)
+        self.window?.rootViewController = nav
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        if let incomingURL = userActivity.webpageURL {
+            let handled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
+                if (dynamicLink != nil) && !(error != nil) {
+                    self.handleDynamicLink(dynamicLink)
+                }
+            }
+            print(handled)
+        }
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,6 +116,102 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    private func bindTrigger() {
+        
+        self.didTriggerRouteToLoginScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let loginScene = LoginSceneFactory().make(with: .init(
+                    didTriggerRouteToNickNameScene: self.didTriggerRouteToNickNameScene,
+                    didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+                    didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene,
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+                ))
+                let vc = loginScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToNickNameScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let nicknameRegistScene = NicknameRegistSceneFactory().make(with: .init(
+                    didTriggerRouteToInvitationSendScene: self.didTriggerRouteToInvitationSendScene,
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene
+                ))
+                let vc = nicknameRegistScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToInvitationSendScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let invitationSendScene = InvitationSendSceneFactory().make(with: .init(
+                    didTriggerRouteToInvitationWaitScene: self.didTriggerRouteToInvitationWaitScene
+                ))
+                let vc = invitationSendScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToInvitationWaitScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let invitationWaitScene = InvitationWaitSceneFactory().make(with: .init(
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene,
+                    invitationLink: $0
+                ))
+                let vc = invitationWaitScene.viewController
+                let nav = UINavigationController(rootViewController: vc)
+                nav.isNavigationBarHidden = true
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
+                self.window?.rootViewController = nav
+            }
+            .store(in: &self.cancellables)
+        
+        self.didTriggerRouteToHomeScene
+            .receive(on: DispatchQueue.main)
+            .sink {
+                let mainScene = MainSceneFactory().make(with: .init(
+                    didTriggerRouteToLoginScene: self.didTriggerRouteToLoginScene
+                ))
+                let tc = mainScene.viewController
+                self.window?.layer.add(TransitionOptions(direction: .fade).animation, forKey: kCATransition)
+                self.window?.rootViewController = tc
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func handleDynamicLink(_ dynamicLink: DynamicLink?) {
+        guard let dynamicLink = dynamicLink, let deepLink = dynamicLink.url else {
+            return
+        }
+        
+        let localDataSource = LocalDataSource()
+        let invitedUserLocalWorker = InvitedUserLocalWorker(localDataSource: localDataSource)
+        
+        let queryItems = URLComponents(url: deepLink, resolvingAgainstBaseURL: true)?.queryItems
+        let path = deepLink.path
+        
+        // 매칭
+        if path == "/invite" {
+            if let userNo = queryItems?.filter({ item in item.name == "userNo" }).first?.value {
+                invitedUserLocalWorker.invitedUserNo = Int(userNo)
+            }
+            if let nickname = queryItems?.filter({ item in item.name == "nickname" }).first?.value {
+                invitedUserLocalWorker.invitedUser = nickname
+            }
+        }
+    }
 }
 

@@ -11,12 +11,45 @@ import UIKit
 enum ChallengeEssentialInfoInput {
     
     // MARK: Entity
-    
+
     enum Model {
-        
+
+        struct Info {
+            
+            struct StartDate {
+                let date: Date?
+            }
+            struct EndDate {
+                let date: Date?
+            }
+            
+            struct NextButton {
+                var isEnabled: Bool?
+            }
+
+            struct Name {
+                var text: String?
+            }
+        }
     }
     
     enum ViewModel {
-        
+
+        struct Name {
+            var text: String?
+        }
+
+        struct ChallengeCommentField {
+            static let maxLength = 20
+        }
+
+        struct NextButton {
+            var isEnabled: Bool?
+        }
+
+        struct ChallengeDate {
+            var startDate: Date?
+            var endDate: Date?
+        }
     }
 }

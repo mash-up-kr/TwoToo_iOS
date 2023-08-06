@@ -14,7 +14,19 @@ public protocol ChallengeAdditionalInfoInputScene: AnyObject, Scene {
 }
 
 public struct ChallengeAdditionalInfoInputConfiguration {
-    
+    let challengeName: String
+    let challengeStartDate: String
+    let challengeEndDate: String
+
+    public init(
+        challengeName: String,
+        challengeStartDate: String,
+        challengeEndDate: String
+    ) {
+        self.challengeName = challengeName
+        self.challengeStartDate = challengeStartDate
+        self.challengeEndDate = challengeEndDate
+    }
 }
 
 public final class ChallengeAdditionalInfoInputSceneFactory {
@@ -29,7 +41,10 @@ public final class ChallengeAdditionalInfoInputSceneFactory {
         let interactor = ChallengeAdditionalInfoInputInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            nameDataSource: configuration.challengeName,
+            startDateDataSource: configuration.challengeStartDate,
+            endDateDataSource: configuration.challengeEndDate
         )
         let viewController = ChallengeAdditionalInfoInputViewController(
             interactor: interactor

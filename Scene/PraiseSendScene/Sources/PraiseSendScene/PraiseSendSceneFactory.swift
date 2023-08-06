@@ -7,14 +7,20 @@
 //
 
 import CoreKit
+import UIKit
 
 @MainActor
 public protocol PraiseSendScene: AnyObject, Scene {
-    
+    var bottomSheetViewController: UIViewController { get }
 }
 
 public struct PraiseSendConfiguration {
     
+    public let certificateID: String
+    
+    public init(certificateID: String) {
+        self.certificateID = certificateID
+    }
 }
 
 public final class PraiseSendSceneFactory {
@@ -23,13 +29,16 @@ public final class PraiseSendSceneFactory {
     
     public func make(with configuration: PraiseSendConfiguration) -> PraiseSendScene {
         
+        let commentNetworkWorker = CommentNetworkWorker()
+        
         let presenter = PraiseSendPresenter()
         let router = PraiseSendRouter()
-        let worker = PraiseSendWorker()
+        let worker = PraiseSendWorker(commentNetworkWorker: commentNetworkWorker)
         let interactor = PraiseSendInteractor(
             presenter: presenter,
             router: router,
-            worker: worker
+            worker: worker,
+            certificateID: configuration.certificateID
         )
         let viewController = PraiseSendViewController(
             interactor: interactor

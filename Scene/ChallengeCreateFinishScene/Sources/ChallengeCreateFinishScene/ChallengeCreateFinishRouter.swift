@@ -9,7 +9,10 @@
 import UIKit
 
 @MainActor
-protocol ChallengeCreateFinishRoutingLogic {}
+protocol ChallengeCreateFinishRoutingLogic {
+    /// 화면을 닫는다.
+    func dismiss()
+}
 
 final class ChallengeCreateFinishRouter {
     weak var viewController: ChallengeCreateFinishViewController?
@@ -17,5 +20,7 @@ final class ChallengeCreateFinishRouter {
 }
 
 extension ChallengeCreateFinishRouter: ChallengeCreateFinishRoutingLogic {
-    
+    func dismiss() {
+        self.viewController?.navigationController?.popToRootViewController(animated: true)
+    }
 }

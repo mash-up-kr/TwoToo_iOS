@@ -8,9 +8,23 @@
 
 import CoreKit
 
-protocol SplashBusinessLogic {}
+protocol SplashBusinessLogic {
+    /// 첫 진입
+    func didLoad() async
+}
 
-protocol SplashDataStore: AnyObject {}
+protocol SplashDataStore: AnyObject {
+    /// 로그인 화면 이동 트리거
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never> { get }
+    /// 닉네임 설정 화면 이동 트리거
+    var didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never> { get }
+    /// 초대장 전송 화면 이동 트리거
+    var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never> { get }
+    /// 대기 화면 이동 트리거
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never> { get }
+    /// 홈 화면 이동 트리거
+    var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
+}
 
 final class SplashInteractor: SplashDataStore, SplashBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
@@ -22,15 +36,34 @@ final class SplashInteractor: SplashDataStore, SplashBusinessLogic {
     init(
         presenter: SplashPresentationLogic,
         router: SplashRoutingLogic,
-        worker: SplashWorkerProtocol
+        worker: SplashWorkerProtocol,
+        didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>,
+        didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
+        self.didTriggerRouteToNickNameScene = didTriggerRouteToNickNameScene
+        self.didTriggerRouteToInvitationSendScene = didTriggerRouteToInvitationSendScene
+        self.didTriggerRouteToInvitationWaitScene = didTriggerRouteToInvitationWaitScene
+        self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
     }
     
     // MARK: - DataStore
     
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
+    
+    var didTriggerRouteToNickNameScene: PassthroughSubject<Void, Never>
+    
+    var didTriggerRouteToInvitationSendScene: PassthroughSubject<Void, Never>
+    
+    var didTriggerRouteToInvitationWaitScene: PassthroughSubject<String?, Never>
+    
+    var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
 }
 
 // MARK: - Interactive Business Logic
@@ -43,10 +76,34 @@ extension SplashInteractor {
     }
 }
 
-// MARK: Feature ()
+// MARK: Feature (진입)
 
 extension SplashInteractor {
     
+    func didLoad() async {
+        do {
+            let userState = try await self.worker.fetchUserState()
+            switch userState {
+                case .login:
+                    self.didTriggerRouteToLoginScene.send(())
+                    
+                case .nickname:
+                    self.didTriggerRouteToNickNameScene.send(())
+                    
+                case .invitationSend:
+                    self.didTriggerRouteToInvitationSendScene.send(())
+                    
+                case .invitationWait:
+                    self.didTriggerRouteToInvitationWaitScene.send(nil)
+                    
+                case .home:
+                    self.didTriggerRouteToHomeScene.send(())
+            }
+        }
+        catch {
+            self.didTriggerRouteToLoginScene.send(())
+        }
+    }
 }
 
 // MARK: - Application Business Logic
