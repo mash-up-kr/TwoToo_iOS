@@ -17,22 +17,29 @@ protocol MyInfoWorkerProtocol {
     func fetchSocialLoginType() async throws -> MyInfo.Model.SocialLoginStatus
     /// 애플 로그인 재인증
     func retryAppleLogin()
+
+    func setSignoutStatus(required: Bool)
+    /// 회원탈퇴 요청 상태
+    func fetchSignOutStatus() -> Bool
 }
 
 final class MyInfoWorker: MyInfoWorkerProtocol {
-    
+
     var meLocalWorker: MeLocalWorkerProtocol
     var meNetworkWorker: MeNetworkWorkerProtocol
     var appleLoginWorker: AppleLoginWorkerProtocol
+    var myInfoLocalWorker: MyInfoLocalWorkerProtocol
     
     init(
         meLocalWorker: MeLocalWorkerProtocol,
         meNetworkWorker: MeNetworkWorkerProtocol,
-        appleLoginWorker: AppleLoginWorkerProtocol
+        appleLoginWorker: AppleLoginWorkerProtocol,
+        myInfoLocalWorker: MyInfoLocalWorkerProtocol
     ) {
         self.meLocalWorker = meLocalWorker
         self.meNetworkWorker = meNetworkWorker
         self.appleLoginWorker = appleLoginWorker
+        self.myInfoLocalWorker = myInfoLocalWorker
     }
     
     func fetchMypageInfo() async throws -> MyInfo.Model.Data {
@@ -66,5 +73,15 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
         Task {
             try await appleLoginWorker.retryAppleLogin()
         }
+    }
+
+    func setSignoutStatus(required: Bool) {
+        self.myInfoLocalWorker.signOutRequestCompleted = required
+    }
+
+
+    func fetchSignOutStatus() -> Bool {
+        guard let requestCompletedStatus =  self.myInfoLocalWorker.signOutRequestCompleted else { return true}
+        return requestCompletedStatus
     }
 }

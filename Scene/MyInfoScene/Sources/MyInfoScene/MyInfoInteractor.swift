@@ -154,12 +154,26 @@ extension MyInfoInteractor {
 
                     Task {
                         self.worker.retryAppleLogin()
-                        await self.presenter.presentSignOutPopup()
+
+                        let isSingOutRequired = self.worker.fetchSignOutStatus()
+                        /// true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
+                        if isSingOutRequired {
+                            await self.presenter.presentSignOutCancelPopup()
+                        } else {
+                            await self.presenter.presentSignOutPopup()
+                        }
+
                     }
                 }
                 else if socailLoginType == .kakaoLogin {
                     Task {
-                        await self.presenter.presentSignOutPopup()
+                        let isSingOutRequired = self.worker.fetchSignOutStatus()
+                        if isSingOutRequired {
+                            await self.presenter.presentSignOutCancelPopup()
+
+                        } else {
+                            await self.presenter.presentSignOutPopup()
+                        }
                     }
                 }
             }
@@ -189,6 +203,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCompletePopup()
+        self.worker.setSignoutStatus(required: true)
     }
 
     func didTapCancelSignOutCancelButton() async {
@@ -202,6 +217,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCancelCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
+        self.worker.setSignoutStatus(required: false)
     }
 
     func didTapSignOutPopupBackground() async {
@@ -210,6 +226,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCompletePopupBackground() async {
         await self.presenter.dismissSignOutCompletePopup()
+        self.worker.setSignoutStatus(required: true)
     }
 
     func didTapSignOutCancelPopupBackground() async {
@@ -218,6 +235,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCancelCompletePopupBackground() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
+        self.worker.setSignoutStatus(required: false)
     }
 }
 
