@@ -6,6 +6,7 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import CoreKit
 import UIKit
 
 @MainActor
@@ -14,6 +15,23 @@ protocol MyInfoPresentationLogic {
     func presentMyInfo(model: MyInfo.Model.Data)
     /// 마이 페이지 오류를 보여준다.
     func presentMyInfoError(error: Error)
+
+    /// 회원 탈퇴하기 팝업을 보여준다
+    func presentSignOutPopup()
+    /// 회원 탈퇴하기 팝업을 제거한다.
+    func dismissSignOutPopup()
+    /// 회원 탈퇴 완료 팝업을 보여준다.
+    func presentSignOutCompletePopup()
+    /// 회원 탈퇴  완료 팝업을 제거한다.
+    func dismissSignOutCompletePopup()
+    /// 회원 탈퇴 취소 팝업을 보여준다.
+    func presentSignOutCancelPopup()
+    /// 회원 탈퇴 취소 팝업을 제거한다.
+    func dismissSignOutCancelPopup()
+    /// 회원 탈퇴 취소 완료 팝업을 보여준다.
+    func presentSignOutCancelCompletePopup()
+    /// 회원 탈퇴 취소 완료 팝업을 제거한다.
+    func dismissSignOutCancelCompletePopup()
 }
 
 final class MyInfoPresenter {
@@ -32,7 +50,8 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
                 .init(title: "이용 가이드"),
                 .init(title: "투투에 문의하기"),
                 .init(title: "만든이들"),
-                .init(title: "로그아웃")
+                .init(title: "로그아웃"),
+                .init(title: "회원탈퇴")
             ])
 
         let totalCount = "\(model.challengeTotalCount ?? "0")번째 꽃 피우는중"
@@ -43,5 +62,37 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
     
     func presentMyInfoError(error: Error) {
         self.viewController?.displayToast(viewModel: .init(message: error.localizedDescription))
+    }
+
+    func presentSignOutPopup() {
+        self.viewController?.displaySignOutPopup(viewModel: .init(show: .asset(.icon_delete)))
+    }
+
+    func dismissSignOutPopup() {
+        self.viewController?.displaySignOutPopup(viewModel: .init(dismiss: ()))
+    }
+
+    func presentSignOutCompletePopup() {
+        self.viewController?.displaySignOutCompletePopup(viewModel: .init(show: .asset(.icon_delete)))
+    }
+
+    func dismissSignOutCompletePopup() {
+        self.viewController?.displaySignOutCompletePopup(viewModel: .init(dismiss: ()))
+    }
+
+    func presentSignOutCancelPopup() {
+        self.viewController?.displaySignOutCancelPopup(viewModel: .init(show: .asset(.icon_nickname_mate)))
+    }
+
+    func dismissSignOutCancelPopup() {
+        self.viewController?.displaySignOutCancelPopup(viewModel: .init(dismiss: ()))
+    }
+
+    func presentSignOutCancelCompletePopup() {
+        self.viewController?.displaySignOutCancelCompletePopup(viewModel: .init(show: .asset(.icon_congratulation)))
+    }
+
+    func dismissSignOutCancelCompletePopup() {
+        self.viewController?.displaySignOutCancelCompletePopup(viewModel: .init(dismiss: ()))
     }
 }

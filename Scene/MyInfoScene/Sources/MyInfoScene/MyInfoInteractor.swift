@@ -16,6 +16,26 @@ protocol MyInfoBusinessLogic {
     func didTapGuideButton() async
     /// Lists에 있는 목록들 클릭
     func didTapMyInfoLists(index: Int) async
+    /// 회원 탈퇴 팝업의 탈퇴하기 버튼 클릭
+    func didTapSignoutPopupSignOutButton() async
+    /// 회원 탈퇴 팝업의 취소 버튼 클릭
+    func didTapSignOutPopupCancelButton() async
+    /// 회원 탈퇴 완료 확인 버튼 클릭
+    func didTapSignOutCompleteConfirmButton() async
+    /// 회원 탈퇴 취소 팝업의 탈퇴 취소 버튼 클릭
+    func didTapCancelSignOutCancelButton() async
+    /// 회원 탈퇴 취소 팝업의 아니요 버튼 클릭
+    func didTapSignOutCancelCompleteNobutton() async
+    /// 회원 탈퇴 취소 완료의 확인 버튼 클릭
+    func didTapSignOutCancelCompleteConfirmButton() async
+    /// 회원탈퇴 팝업의 배경 클릭
+    func didTapSignOutPopupBackground() async
+    /// 회원 탈퇴 완료 팝업의 배경 클릭
+    func didTapSignOutCompletePopupBackground() async
+    /// 회원 탈퇴 취소하기 팝업의 배경 클릭
+    func didTapSignOutCancelPopupBackground() async
+    /// 회원 탈퇴 취소 완료 팝업의 배경 클릭
+    func didTapSignOutCancelCompletePopupBackground() async
 }
 
 protocol MyInfoDataStore: AnyObject {
@@ -56,6 +76,8 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
         case creators
         /// 로그아웃
         case logout
+        /// 회원탈퇴
+        case singout
         
         var url: URL? {
             switch self {
@@ -68,6 +90,8 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
             case .creators:
                 return URL(string: "https://two2too2.github.io/creater.html")
             case .logout:
+                return nil
+            case .singout:
                 return nil
             }
         }
@@ -119,10 +143,86 @@ extension MyInfoInteractor {
             await self.worker.logout()
             self.didTriggerRouteToLoginScene.send(())
         }
+
+        if myInfo == .singout {
+            let socailLoginType = self.worker.fetchSocialLoginType()
+
+            if socailLoginType == .appleLogin {
+                try? await self.worker.retryAppleLogin()
+
+                let isSingOutRequired = self.worker.fetchAppleSignOutStatus()
+                // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
+                if isSingOutRequired {
+                    await self.presenter.presentSignOutCancelPopup()
+                } else {
+                    await self.presenter.presentSignOutPopup()
+                }
+            }
+            else if socailLoginType == .kakaoLogin {
+                let isSingOutRequired = self.worker.fetchKakaoSignOutStatus()
+                // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
+                if isSingOutRequired {
+                    await self.presenter.presentSignOutCancelPopup()
+
+                } else {
+                    await self.presenter.presentSignOutPopup()
+                }
+            }
+        }
         
         guard let url = myInfo?.url else { return }
      
         await self.router.routeToMyInfoListsScene(url: url)
+    }
+}
+
+// MARK: Feature (회원 탈퇴)
+
+extension MyInfoInteractor {
+    func didTapSignoutPopupSignOutButton() async {
+        await self.presenter.dismissSignOutPopup()
+        await self.presenter.presentSignOutCompletePopup()
+    }
+
+    func didTapSignOutPopupCancelButton() async {
+        await self.presenter.dismissSignOutPopup()
+    }
+
+    func didTapSignOutCompleteConfirmButton() async {
+        await self.presenter.dismissSignOutCompletePopup()
+        self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
+    }
+
+    func didTapCancelSignOutCancelButton() async {
+        await self.presenter.dismissSignOutCancelPopup()
+        await self.presenter.presentSignOutCancelCompletePopup()
+    }
+
+    func didTapSignOutCancelCompleteNobutton() async {
+        await self.presenter.dismissSignOutCancelPopup()
+    }
+
+    func didTapSignOutCancelCompleteConfirmButton() async {
+        await self.presenter.dismissSignOutCancelCompletePopup()
+        self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
+    }
+
+    func didTapSignOutPopupBackground() async {
+        await self.presenter.dismissSignOutPopup()
+    }
+
+    func didTapSignOutCompletePopupBackground() async {
+        await self.presenter.dismissSignOutCompletePopup()
+        self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
+    }
+
+    func didTapSignOutCancelPopupBackground() async {
+        await self.presenter.dismissSignOutCancelPopup()
+    }
+
+    func didTapSignOutCancelCompletePopupBackground() async {
+        await self.presenter.dismissSignOutCancelCompletePopup()
+        self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
     }
 }
 
