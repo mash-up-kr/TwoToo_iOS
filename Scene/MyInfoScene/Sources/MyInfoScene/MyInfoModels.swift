@@ -19,11 +19,11 @@ enum MyInfo {
             var challengeTotalCount: String?
         }
 
-        enum SocialLoginStatus: Equatable {
+        enum SocialLoginStatus: String, Equatable {
             /// 카카오 로그인
-            case kakaoLogin
+            case kakaoLogin = "Kakao"
             /// 애플 로그인
-            case appleLogin
+            case appleLogin = "Apple"
         }
     }
     

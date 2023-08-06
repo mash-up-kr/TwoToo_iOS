@@ -14,13 +14,15 @@ protocol MyInfoWorkerProtocol {
     /// 로그아웃
     func logout() async
     /// 소셜로그인 타입 조회
-    func fetchSocialLoginType() async throws -> MyInfo.Model.SocialLoginStatus
+    func fetchSocialLoginType() -> MyInfo.Model.SocialLoginStatus
     /// 애플 로그인 재인증
-    func retryAppleLogin()
-
-    func setSignoutStatus(required: Bool)
-    /// 회원탈퇴 요청 상태
-    func fetchSignOutStatus() -> Bool
+    func retryAppleLogin() async throws
+    /// 회원탈퇴 요청 상태 세팅
+    func setSignoutStatus(required: Bool, socialType: MyInfo.Model.SocialLoginStatus)
+    /// 카카오 회원탈퇴 요청 상태
+    func fetchKakaoSignOutStatus() -> Bool
+    /// 애플 회원탈퇴 요청 상태
+    func fetchAppleSignOutStatus() -> Bool
 }
 
 final class MyInfoWorker: MyInfoWorkerProtocol {
@@ -57,31 +59,31 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
         self.meLocalWorker.token = ""
     }
 
-    func fetchSocialLoginType() async throws -> MyInfo.Model.SocialLoginStatus {
+    func fetchSocialLoginType() -> MyInfo.Model.SocialLoginStatus {
+        return .init(rawValue: self.meLocalWorker.socialType ?? "") ?? .appleLogin
+    }
 
-        switch self.meLocalWorker.socialType {
-        case "Kakao":
-            return .kakaoLogin
-        case "Apple":
-            return .appleLogin
-        default:
-            return .appleLogin
+    func retryAppleLogin() async throws {
+        _ = try await self.appleLoginWorker.retryAppleLogin()
+    }
+
+    func setSignoutStatus(required: Bool, socialType: MyInfo.Model.SocialLoginStatus) {
+        switch socialType {
+            case .kakaoLogin:
+                self.myInfoLocalWorker.kakaoSignOutRequestCompleted = required
+                
+            case .appleLogin:
+                self.myInfoLocalWorker.appleSignOutRequestCompleted = required
         }
     }
-
-    func retryAppleLogin() {
-        Task {
-            try await appleLoginWorker.retryAppleLogin()
-        }
+    
+    func fetchKakaoSignOutStatus() -> Bool {
+        guard let requestCompletedStatus = self.myInfoLocalWorker.kakaoSignOutRequestCompleted else { return true}
+        return requestCompletedStatus
     }
 
-    func setSignoutStatus(required: Bool) {
-        self.myInfoLocalWorker.signOutRequestCompleted = required
-    }
-
-
-    func fetchSignOutStatus() -> Bool {
-        guard let requestCompletedStatus =  self.myInfoLocalWorker.signOutRequestCompleted else { return true}
+    func fetchAppleSignOutStatus() -> Bool {
+        guard let requestCompletedStatus = self.myInfoLocalWorker.appleSignOutRequestCompleted else { return true}
         return requestCompletedStatus
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import AuthenticationServices
 
 public protocol AppleLoginWorkerProtocol {
-    func retryAppleLogin() async throws
+    func retryAppleLogin() async throws -> String
 }
 
 public final class CommonAppleLoginWorker: AppleLoginWorkerProtocol {
@@ -17,8 +17,9 @@ public final class CommonAppleLoginWorker: AppleLoginWorkerProtocol {
 
     public init() {}
 
-    public func retryAppleLogin() async {
+    public func retryAppleLogin() async throws -> String {
         self.appleLoginManager.configure()
+        return try await self.appleLoginManager.fetchAppleID()
     }
 }
 

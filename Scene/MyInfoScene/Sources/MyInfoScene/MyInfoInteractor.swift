@@ -144,42 +144,29 @@ extension MyInfoInteractor {
             self.didTriggerRouteToLoginScene.send(())
         }
 
-
         if myInfo == .singout {
+            let socailLoginType = self.worker.fetchSocialLoginType()
 
-            do {
-                let socailLoginType = try await self.worker.fetchSocialLoginType()
+            if socailLoginType == .appleLogin {
+                try? await self.worker.retryAppleLogin()
 
-                if socailLoginType == .appleLogin {
-
-                    Task {
-                        self.worker.retryAppleLogin()
-
-                        let isSingOutRequired = self.worker.fetchSignOutStatus()
-                        /// true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
-                        if isSingOutRequired {
-                            await self.presenter.presentSignOutCancelPopup()
-                        } else {
-                            await self.presenter.presentSignOutPopup()
-                        }
-
-                    }
-                }
-                else if socailLoginType == .kakaoLogin {
-                    Task {
-                        let isSingOutRequired = self.worker.fetchSignOutStatus()
-                        if isSingOutRequired {
-                            await self.presenter.presentSignOutCancelPopup()
-
-                        } else {
-                            await self.presenter.presentSignOutPopup()
-                        }
-                    }
+                let isSingOutRequired = self.worker.fetchAppleSignOutStatus()
+                // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
+                if isSingOutRequired {
+                    await self.presenter.presentSignOutCancelPopup()
+                } else {
+                    await self.presenter.presentSignOutPopup()
                 }
             }
+            else if socailLoginType == .kakaoLogin {
+                let isSingOutRequired = self.worker.fetchKakaoSignOutStatus()
+                // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
+                if isSingOutRequired {
+                    await self.presenter.presentSignOutCancelPopup()
 
-            catch {
-
+                } else {
+                    await self.presenter.presentSignOutPopup()
+                }
             }
         }
         
@@ -203,7 +190,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCompletePopup()
-        self.worker.setSignoutStatus(required: true)
+        self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
     }
 
     func didTapCancelSignOutCancelButton() async {
@@ -217,7 +204,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCancelCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
-        self.worker.setSignoutStatus(required: false)
+        self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
     }
 
     func didTapSignOutPopupBackground() async {
@@ -226,7 +213,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCompletePopupBackground() async {
         await self.presenter.dismissSignOutCompletePopup()
-        self.worker.setSignoutStatus(required: true)
+        self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
     }
 
     func didTapSignOutCancelPopupBackground() async {
@@ -235,7 +222,7 @@ extension MyInfoInteractor {
 
     func didTapSignOutCancelCompletePopupBackground() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
-        self.worker.setSignoutStatus(required: false)
+        self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
     }
 }
 
