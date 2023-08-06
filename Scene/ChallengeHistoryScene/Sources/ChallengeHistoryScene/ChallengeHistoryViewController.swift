@@ -51,6 +51,8 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     private let titleLabel: UILabel = {
         let v = UILabel()
         v.textColor = .primary
+        v.numberOfLines = 2
+        v.lineBreakMode = .byTruncatingTail
         v.font = .h2
         return v
     }()
