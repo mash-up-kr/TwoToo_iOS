@@ -24,7 +24,7 @@ public final class ChallengeQuitNetworkWorker: ChallengeQuitNetworkWorkerProtoco
     
     public func requestChallengeQuit(challengeNo: Int) async throws -> ChallengeQuitResponse {
         return try await NetworkManager.shared.request(
-            path: "challenge/\(challengeNo)",
+            path: "/challenge/\(challengeNo)",
             method: .delete
         )
     }
