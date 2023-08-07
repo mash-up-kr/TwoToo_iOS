@@ -117,6 +117,7 @@ final class MyFlowerView: UIView {
         
         self.induceCertificationView.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
         }
