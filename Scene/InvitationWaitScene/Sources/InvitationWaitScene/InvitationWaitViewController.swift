@@ -64,6 +64,7 @@ final class InvitationWaitViewController: UIViewController {
         let v = UILabel()
         v.textColor = .grey600
         v.font = .body2
+        v.textAlignment = .center
         v.text = "* 만약 초대링크를 잃어버리셨다면, 초대장 다시보내기를 해보세요"
         v.numberOfLines = 0
         return v
