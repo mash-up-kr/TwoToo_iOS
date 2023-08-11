@@ -134,7 +134,7 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
             make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
+            make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.7)
         }
 
         self.nextButton.snp.makeConstraints { make in
