@@ -188,7 +188,7 @@ final class HomeWorker: HomeWorkerProtocol {
         }
         
         userInfo.certCount = commitCount ?? 0
-        userInfo.growStatus = self.mapGrowStatus(from: commitCount)
+        userInfo.growStatus = self.mapGrowStatus(from: commitCount) ?? .seed
         
         if let flower = flower {
             userInfo.flower = self.mapFlowerType(from: flower)
@@ -197,27 +197,25 @@ final class HomeWorker: HomeWorkerProtocol {
         return userInfo
     }
 
-    private func mapGrowStatus(from commitCount: Int?) -> Home.Model.GrowsStatus {
+    private func mapGrowStatus(from commitCount: Int?) -> Home.Model.GrowsStatus? {
         guard let commitCount = commitCount else {
             return .seed
         }
-        if commitCount == 22 {
-            return .bloom
-        }
-        else if commitCount >= 17 {
-            return .flower
-        }
-        else if commitCount >= 15 {
-            return .peak
-        }
-        else if commitCount >= 10 {
-            return .bud
-        }
-        else if commitCount >= 5 {
-            return .sprout
-        }
-        else {
+        switch commitCount {
+        case 0:
             return .seed
+        case 1...4:
+            return .sprout
+        case 5...9:
+            return .bud
+        case 10...15:
+            return .peak
+        case 16...21:
+            return .bloom
+        case 22:
+            return .flower
+        default:
+            return nil
         }
     }
 
