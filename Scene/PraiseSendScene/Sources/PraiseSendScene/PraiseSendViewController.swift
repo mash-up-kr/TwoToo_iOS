@@ -78,9 +78,6 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
-        v.addTapAction { [weak self] in
-            self?.view.endEditing(true)
-        }
         return v
     }()
     
