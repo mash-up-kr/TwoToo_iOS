@@ -71,9 +71,6 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
-        v.addTapAction { [weak self] in
-            self?.view.endEditing(true)
-        }
         return v
     }()
     
@@ -82,7 +79,7 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        
+        self.messageTextView.becomeFirstResponder()
         Task {
             await self.interactor.didLoad()
         }
@@ -102,7 +99,7 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
         self.view.addSubview(self.backScrollView)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(30)
+            make.top.equalToSuperview().offset(46)
             make.centerX.equalToSuperview()
         }
         
@@ -114,13 +111,13 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
         }
 
         self.pushButton.snp.makeConstraints { make in
-            make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
+            make.top.equalTo(self.messageTextView.snp.bottom).offset(64)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(57)
             make.bottom.equalToSuperview()
         }
-        
+                
         self.scrollSizeFitView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -154,7 +151,6 @@ extension NudgeSendViewController: NudgeSendScene {
 }
 
 // MARK: - Display Logic
-
 extension NudgeSendViewController: NudgeSendDisplayLogic {
     
     func displayTitle(viewModel: NudgeSend.ViewModel.Title) {
