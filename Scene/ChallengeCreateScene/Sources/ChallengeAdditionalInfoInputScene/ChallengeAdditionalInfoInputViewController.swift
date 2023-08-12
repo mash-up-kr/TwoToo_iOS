@@ -134,7 +134,7 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
             make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
+            make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.7)
         }
 
         self.nextButton.snp.makeConstraints { make in
@@ -186,40 +186,26 @@ extension ChallengeAdditionalInfoInputViewController: ChallengeAdditionalInfoInp
 extension ChallengeAdditionalInfoInputViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.remakeConstraints { make in
-                make.top.equalTo(self.headerStackView.snp.bottom).offset(10)
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-24)
-                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.5)
+            self.challengeRuleTextView.snp.updateConstraints { make in
+                make.top.equalTo(self.headerStackView.snp.bottom).offset(20)
             }
-
-            self.nextButton.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-24)
-                make.height.equalTo(57)
-                make.top.equalTo(self.challengeRuleTextView.snp.bottom).offset(10)
+            
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(keyboardFrame.height - 20)
             }
-
             self.view.layoutIfNeeded()
         }
     }
 
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
-            self.challengeRuleTextView.snp.remakeConstraints { make in
+            self.challengeRuleTextView.snp.updateConstraints { make in
                 make.top.equalTo(self.headerStackView.snp.bottom).offset(42)
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-24)
-                make.height.equalTo(self.challengeRuleTextView.snp.width).multipliedBy(0.77)
             }
-
-            self.nextButton.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-24)
-                make.height.equalTo(57)
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            
+            self.nextButton.snp.updateConstraints { make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
-
             self.view.layoutIfNeeded()
         }
     }
