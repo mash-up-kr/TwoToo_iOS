@@ -78,9 +78,6 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
     private lazy var backScrollView: UIScrollView = {
         let v = SelfSizingScrollView()
         v.addSubview(self.scrollSizeFitView)
-        v.addTapAction { [weak self] in
-            self?.view.endEditing(true)
-        }
         return v
     }()
     
@@ -89,6 +86,7 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.messageTextView.becomeFirstResponder()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -115,12 +113,17 @@ final class PraiseSendViewController: UIViewController, BottomSheetViewControlle
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(85)
         }
-
-        self.pushButton.snp.makeConstraints { make in
-            make.top.equalTo(self.messageTextView.snp.bottom).offset(44)
+        
+        self.descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.messageTextView.snp.bottom).offset(14)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(57)
+        }
+
+        self.pushButton.snp.makeConstraints { make in
+            make.top.equalTo(self.descriptionLabel.snp.bottom).offset(30)
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().inset(24)
             make.bottom.equalToSuperview()
         }
 

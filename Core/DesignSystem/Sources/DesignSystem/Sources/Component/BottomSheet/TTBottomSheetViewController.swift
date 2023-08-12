@@ -49,8 +49,8 @@ final public class TTBottomSheetViewController: FloatingPanelController {
         surfaceView.grabberHandle.isHidden = false
         surfaceView.grabberHandle.backgroundColor = .grey400
         surfaceView.grabberHandleSize = .init(width: 39, height: 5)
+        surfaceView.grabberHandlePadding = 20
         surfaceView.appearance = appearence
-        // TODO: grabberHandle 위치 약간 내리기
     }
     
     private func setUpBackDropView(_ backDropView: BackdropView) {
