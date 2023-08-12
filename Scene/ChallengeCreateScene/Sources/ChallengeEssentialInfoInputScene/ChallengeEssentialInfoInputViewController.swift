@@ -319,6 +319,9 @@ extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         
         UIView.animate(withDuration: 0.3) {
+            self.startDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(20)
+            }
             self.nextButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 20)
             }
@@ -328,7 +331,9 @@ extension ChallengeEssentialInfoInputViewController: KeyboardDelegate {
 
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: 0.3) {
-
+            self.startDateStackView.snp.updateConstraints { make in
+                make.top.equalTo(self.challengeRecommendButton.snp.bottom).offset(43)
+            }
             self.nextButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
