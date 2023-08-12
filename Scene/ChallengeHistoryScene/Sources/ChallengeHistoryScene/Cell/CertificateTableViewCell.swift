@@ -34,7 +34,7 @@ final class CertificateTableViewCell: UITableViewCell {
         v.textColor = .white
         return v
     }()
-    
+        
     lazy var myImageView: UIImageView = {
         let v = UIImageView()
         v.layer.cornerRadius = 10
@@ -96,6 +96,7 @@ final class CertificateTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layout()
         self.attribute()
+        self.applyDimming()
     }
     
     required init?(coder: NSCoder) {
@@ -190,5 +191,14 @@ final class CertificateTableViewCell: UITableViewCell {
     func attribute() {
         self.backgroundColor = .clear
         self.selectionStyle = .none
+    }
+
+    func applyDimming() {
+        [self.myImageView, self.partnerImageView].forEach { image in
+            let dimLayer = CALayer()
+            dimLayer.backgroundColor = UIColor.black.withAlphaComponent(0.1).cgColor
+            dimLayer.frame = .init(x: 0, y: 0, width: 127, height: 127)
+            image.layer.addSublayer(dimLayer)
+        }
     }
 }

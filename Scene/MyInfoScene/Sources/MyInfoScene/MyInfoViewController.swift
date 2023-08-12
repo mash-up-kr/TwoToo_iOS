@@ -173,6 +173,7 @@ final class MyInfoViewController: UIViewController {
         self.myNameTagView.snp.makeConstraints { make in
             make.top.equalTo(self.challengeCountLabel.snp.bottom).offset(14)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
+            make.height.equalTo(28)
         }
         
         self.separator.snp.makeConstraints { make in
