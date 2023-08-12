@@ -102,7 +102,7 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView()
+        let v = SelfSizingScrollView(maxHeight: UIScreen.main.bounds.height * 0.72)
         v.delegate = self
         v.addTapAction { [weak self] in
             self?.view.endEditing(true)
