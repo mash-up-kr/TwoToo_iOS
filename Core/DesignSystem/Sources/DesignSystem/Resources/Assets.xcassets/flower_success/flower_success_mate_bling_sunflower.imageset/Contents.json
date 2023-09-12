@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=my_bling_sunflower.png",
+      "filename" : "flower_success_mate_bling_sunflower.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=my_bling_sunflower@2x.png",
+      "filename" : "flower_success_mate_bling_sunflower@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=my_bling_sunflower@3x.png",
+      "filename" : "flower_success_mate_bling_sunflower@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
