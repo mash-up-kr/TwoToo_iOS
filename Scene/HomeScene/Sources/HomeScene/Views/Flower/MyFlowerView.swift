@@ -25,8 +25,9 @@ final class MyFlowerView: UIView {
         return v
     }()
     /// 꽃 상위에 보여질 인증 유도 스택 뷰
-    lazy var induceCertificationView: InduceCertificationView = {
-        let v = InduceCertificationView()
+    lazy var induceCertificationView: InduceCertificationStackView = {
+        let v = InduceCertificationStackView()
+        v.axis = .vertical
         v.isHidden = true
         v.addTapAction { [weak self] in
             self?.delegate?.didTapCertificateView()
@@ -71,6 +72,7 @@ final class MyFlowerView: UIView {
     // MARK: - 공통 컴포넌트
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
+        v.contentMode = .scaleAspectFit
         v.addTapAction { [weak self] in
             self?.delegate?.didTapCertificateView()
         }
@@ -87,7 +89,6 @@ final class MyFlowerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-        self.attribute()
     }
     
     required init?(coder: NSCoder) {
@@ -116,10 +117,8 @@ final class MyFlowerView: UIView {
         }
         
         self.induceCertificationView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
-            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-8)
+            make.bottom.equalTo(self.flowerImageView.snp.top).offset(-12)
         }
         
         self.flowerInfoStackView.snp.makeConstraints { make in
@@ -130,14 +129,24 @@ final class MyFlowerView: UIView {
         
         self.flowerImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
         
         self.nicknameView.snp.makeConstraints { make in
-            make.top.equalTo(self.flowerImageView.snp.bottom).offset(7)
             make.height.equalTo(27)
             make.bottom.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
         }
+        
+        // SE 같은 작은 화면일 때
+        if UIDevice.current.deviceType == .default {
+            self.flowerImageView.snp.remakeConstraints { make in
+                make.height.greaterThanOrEqualTo(180)
+                make.centerX.equalToSuperview().multipliedBy(0.8)
+                make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
+            }
+        }
+
     }
     
     private func attribute() {
