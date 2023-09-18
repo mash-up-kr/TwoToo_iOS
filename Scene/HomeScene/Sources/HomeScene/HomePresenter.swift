@@ -162,12 +162,14 @@ extension Home.Model.Challenge {
             ),
             order: .init(challengeOrderText: "", partenrNameText: "", myNameText: ""),
             partnerFlower: .init(
-                image: UIImage(), isCertificationCompleteHidden: false,
-                isComplimentCommentHidden: false, complimentCommentText: "", partnerNameText: ""
+                image: UIImage(),
+                topViewModel: .init(isCertificationCompleteHidden: false, isComplimentCommentHidden: false, complimentCommentText: ""),
+                partnerNameText: ""
             ),
             myFlower: .init(
-                image: UIImage(), isCertificationButtonHidden: false,
-                cetificationGuideText: "", isComplimentCommentHidden: false, complimentCommentText: "", myNameText: ""),
+                image: UIImage(),
+                topViewModel: .init(isCertificationButtonHidden: false, cetificationGuideText: "", isComplimentCommentHidden: false, complimentCommentText: ""),
+                myNameText: ""),
             isHeartHidden: false,
             stickText: ""
         )
@@ -195,7 +197,7 @@ extension Home.Model.Challenge {
             partnerFlowerMapper = FlowerMappingWorker(flowerType: partnerFlower)
         }
         viewModel.partnerFlower.image = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.partnerFlower.complimentCommentText = self.myInfo.todayCert?.complimentComment ?? ""
+        viewModel.partnerFlower.topViewModel.complimentCommentText = self.myInfo.todayCert?.complimentComment ?? ""
         viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
         
         // 내 꽃 매핑
@@ -204,44 +206,44 @@ extension Home.Model.Challenge {
             myFlowerMapper = FlowerMappingWorker(flowerType: myFlower)
         }
         viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.myFlower.cetificationGuideText = "내 씨앗을 눌러 인증 해보세요!"
-        viewModel.myFlower.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
+        viewModel.myFlower.topViewModel.cetificationGuideText = "내 씨앗을 눌러 인증 해보세요!"
+        viewModel.myFlower.topViewModel.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
         // 챌린지 진행 상태 매핑
         switch  self.status {
-            case .inProgress(let inProgressStatus):
-                switch inProgressStatus {
-                    case .bothUncertificated:
-                        viewModel.myFlower.isCertificationButtonHidden = false
-                        viewModel.partnerFlower.isCertificationCompleteHidden = true
-                        viewModel.myFlower.isComplimentCommentHidden = true
-                        viewModel.partnerFlower.isComplimentCommentHidden = true
-                        viewModel.isHeartHidden = true
-                        
-                    case .onlyPartnerCertificated:
-                        viewModel.myFlower.isCertificationButtonHidden = false
-                        viewModel.partnerFlower.isCertificationCompleteHidden = false
-                        viewModel.myFlower.isComplimentCommentHidden = true
-                        viewModel.partnerFlower.isComplimentCommentHidden = true
-                        viewModel.isHeartHidden = true
-                        
-                    case .onlyMeCertificated:
-                        viewModel.myFlower.isCertificationButtonHidden = true
-                        viewModel.partnerFlower.isCertificationCompleteHidden = true
-                        viewModel.myFlower.isComplimentCommentHidden = true
-                        viewModel.partnerFlower.isComplimentCommentHidden = true
-                        viewModel.isHeartHidden = true
-                        
-                    case .bothCertificated(_):
-                        viewModel.myFlower.isCertificationButtonHidden = true
-                        viewModel.partnerFlower.isCertificationCompleteHidden = true
-                        viewModel.myFlower.isComplimentCommentHidden = false
-                        viewModel.partnerFlower.isComplimentCommentHidden = false
-                        viewModel.isHeartHidden = false
-                }
-            default:
-                break
+        case .inProgress(let inProgressStatus):
+            switch inProgressStatus {
+            case .bothUncertificated:
+                viewModel.myFlower.topViewModel.isCertificationButtonHidden = false
+                viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden = true
+                viewModel.myFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.isHeartHidden = true
+                
+            case .onlyPartnerCertificated:
+                viewModel.myFlower.topViewModel.isCertificationButtonHidden = false
+                viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden = false
+                viewModel.myFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.isHeartHidden = true
+                
+            case .onlyMeCertificated:
+                viewModel.myFlower.topViewModel.isCertificationButtonHidden = true
+                viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden = true
+                viewModel.myFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = true
+                viewModel.isHeartHidden = true
+                
+            case .bothCertificated(_):
+                viewModel.myFlower.topViewModel.isCertificationButtonHidden = true
+                viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden = true
+                viewModel.myFlower.topViewModel.isComplimentCommentHidden = false
+                viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = false
+                viewModel.isHeartHidden = false
+            }
+        default:
+            break
         }
         
         // 찌르기 텍스트

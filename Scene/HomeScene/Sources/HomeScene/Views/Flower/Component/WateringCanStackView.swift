@@ -8,7 +8,8 @@
 import UIKit
 import Lottie
 
-final class InduceCertificationStackView: UIStackView {
+/// 물뿌리개 로티 말풍선 뷰
+final class WateringCanStackView: UIStackView {
     
     lazy var titleLabel: UILabel = {
         let v = UILabel()
@@ -52,14 +53,17 @@ final class InduceCertificationStackView: UIStackView {
         self.addArrangedSubviews(self.titleLabel,
                                  self.wateringCanView)
         
+        let wateringCanViewWidth = UIDevice.current.deviceType == .default ? 65 : 75
+        let wateringCanViewHeight = UIDevice.current.deviceType == .default ? 45 : 55
+        
         self.certificatedLottieView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.center.equalToSuperview()
         }
         
         self.wateringCanView.snp.makeConstraints { make in
-            make.width.equalTo(75)
-            make.height.equalTo(55)
+            make.width.equalTo(wateringCanViewWidth)
+            make.height.equalTo(wateringCanViewHeight)
         }
         
         self.wateringCanUnderArrowView.snp.makeConstraints { make in

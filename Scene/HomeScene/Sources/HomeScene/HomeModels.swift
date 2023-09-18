@@ -222,30 +222,40 @@ enum Home {
             struct PartnerFlowerViewModel {
                 /// 이미지
                 var image: UIImage
-                /// 인증 완료 히든 여부
-                var isCertificationCompleteHidden: Bool
-                /// 칭찬 문구 히든 여부
-                var isComplimentCommentHidden: Bool
-                /// 칭찬 문구 텍스트
-                var complimentCommentText: String
+                /// 꽃 상단 정보
+                var topViewModel: TopViewModel
                 /// 상대방 이름 텍스트
                 var partnerNameText: String
+                
+                struct TopViewModel {
+                    /// 인증 완료 히든 여부
+                    var isCertificationCompleteHidden: Bool
+                    /// 칭찬 문구 히든 여부
+                    var isComplimentCommentHidden: Bool
+                    /// 칭찬 문구 텍스트
+                    var complimentCommentText: String
+                }
             }
 
             /// 내 꽃
             struct MyFlowerViewModel {
                 /// 이미지
                 var image: UIImage
-                /// 인증 버튼 히든 여부
-                var isCertificationButtonHidden: Bool
-                /// 인증 안내 텍스트
-                var cetificationGuideText: String
-                /// 칭찬 문구 히든 여부
-                var isComplimentCommentHidden: Bool
-                /// 칭찬 문구 텍스트
-                var complimentCommentText: String
+                /// 꽃 상단 정보
+                var topViewModel: TopViewModel
                 /// 내 이름 텍스트
                 var myNameText: String
+                
+                struct TopViewModel {
+                    /// 인증 버튼 히든 여부
+                    var isCertificationButtonHidden: Bool
+                    /// 인증 안내 텍스트
+                    var cetificationGuideText: String
+                    /// 칭찬 문구 히든 여부
+                    var isComplimentCommentHidden: Bool
+                    /// 칭찬 문구 텍스트
+                    var complimentCommentText: String
+                }
             }
         }
 
