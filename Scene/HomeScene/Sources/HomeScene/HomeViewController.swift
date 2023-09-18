@@ -166,7 +166,7 @@ final class HomeViewController: UIViewController {
         }
         
         let tabBarHeight: CGFloat = UIDevice.current.safeAreaBottomHeight + 61
-        let groundHeight = UIDevice.current.deviceType == .default ? 180 : 212
+        let groundHeight = UIDevice.current.deviceType == .default ? 170 : 212
         
         self.groundImageView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

@@ -19,16 +19,9 @@ final class MyFlowerView: UIView {
     
     weak var delegate: MyFlowerViewDelegate?
     
-    /// 꽃 이미지 위 컴포넌트
-    lazy var topView: MyFlowerTopView = {
-        let v = MyFlowerTopView()
-        v.delegate = self
-        return v
-    }()
-    
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
-        v.contentMode = .scaleAspectFit
+        v.contentMode = .bottom
         v.addTapAction { [weak self] in
             self?.delegate?.didTapCertificateView()
         }
@@ -46,6 +39,7 @@ final class MyFlowerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
+//        self.backgroundColor = .orange
     }
     
     required init?(coder: NSCoder) {
@@ -53,18 +47,11 @@ final class MyFlowerView: UIView {
     }
     
     private func layout() {
-        self.addSubviews(self.topView,
-                         self.flowerImageView,
+        self.addSubviews(self.flowerImageView,
                          self.nicknameView)
         
-        self.topView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(7)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
-        
         self.flowerImageView.snp.makeConstraints { make in
-            make.top.equalTo(self.topView.snp.bottom)
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
@@ -91,14 +78,10 @@ final class MyFlowerView: UIView {
     func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel) {
         self.flowerImageView.image = viewModel.image
         self.nicknameView.titleLabel.text = viewModel.myNameText
-        self.topView.configureInProgress(viewModel: viewModel.topViewModel)
     }
     
     func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.MyFlowerViewModel) {
         self.flowerImageView.image = viewModel.image
-//        self.flowerInfoStackView.isHidden = viewModel.isFlowerTextHidden
-//        self.flowerNameLabel.text = viewModel.flowerNameText
-//        self.flowerDescLabel.text = viewModel.flowerDescText
         self.nicknameView.titleLabel.text = viewModel.myNameText
     }
 }

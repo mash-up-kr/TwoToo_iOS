@@ -72,15 +72,15 @@ final class MyFlowerTopView: UIView {
                          self.complimentWriteBubbleImageView)
         
         self.speechBubbleView.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-42)
+            make.bottom.greaterThanOrEqualToSuperview().offset(-42)
         }
         
         self.complimentWriteBubbleImageView.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualToSuperview()
             make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.7)
-            make.height.equalTo(62)
-            make.bottom.equalToSuperview().offset(-24)
+            make.bottom.greaterThanOrEqualToSuperview().offset(-24)
         }
         
         self.wateringCanStackView.snp.makeConstraints { make in
