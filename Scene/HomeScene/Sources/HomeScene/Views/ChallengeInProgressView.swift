@@ -41,7 +41,7 @@ final class ChallengeInProgressView: UIView {
     /// 내 꽃 상위 컴포넌트
     lazy var myFlowerTopView: MyFlowerTopView = {
         let v = MyFlowerTopView()
-//        v.delegate = self
+        v.delegate = self
         return v
     }()
     /// 내 꽃 정보 뷰
@@ -131,34 +131,27 @@ final class ChallengeInProgressView: UIView {
         // --> PartnerFlower
         self.partnerFlowerTopView.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(7)
-            make.leading.equalToSuperview().offset(32)
-            make.width.equalToSuperview().dividedBy(2).offset(-32)
-            make.height.equalToSuperview().multipliedBy(0.12)
-            make.centerX.equalToSuperview().multipliedBy(0.5)
+            make.leading.trailing.equalTo(self.partnerFlowerView)
+            make.centerX.equalTo(self.partnerFlowerView.snp.centerX)
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
             make.top.equalTo(self.partnerFlowerTopView.snp.bottom)
-            make.centerX.equalToSuperview().multipliedBy(0.5)
-            make.width.equalToSuperview().dividedBy(2)
-//            make.height.equalToSuperview().multipliedBy(0.4)
+            make.centerX.equalToSuperview().multipliedBy(0.6)
+            make.height.greaterThanOrEqualTo(188)
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
         // --> MyFlower
         self.myFlowerTopView.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(7)
-            make.trailing.equalToSuperview().inset(32)
-            make.width.equalToSuperview().dividedBy(2).offset(-32)
-            make.height.equalToSuperview().multipliedBy(0.12)
-            make.centerX.equalToSuperview().multipliedBy(1.5)
+            make.centerX.equalTo(self.myFlowerView.snp.centerX)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.top.equalTo(self.myFlowerTopView.snp.bottom)
-            make.centerX.equalToSuperview().multipliedBy(1.5)
-            make.width.equalToSuperview().dividedBy(2)
-//            make.height.equalToSuperview().multipliedBy(0.4)
+            make.top.equalTo(self.myFlowerTopView.snp.bottom).offset(5)
+            make.centerX.equalToSuperview().multipliedBy(1.4)
+            make.height.greaterThanOrEqualTo(188) // TODO: 꽃 최대높이 적용 제대로 안됨
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
@@ -168,6 +161,7 @@ final class ChallengeInProgressView: UIView {
         }
                 
         let beeButtonWidthHeight = UIDevice.current.deviceType == .default ? 50 : 57
+        let beeButtonBottomOffset = UIDevice.current.deviceType == .default ? 10 : 38
 //        let nudgeBottomOffset = UIDevice.current.deviceType == .default ? 10 : 38
         self.nudgeBeeButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -177,7 +171,7 @@ final class ChallengeInProgressView: UIView {
         
         self.nudgeTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-38)
+            make.bottom.equalToSuperview().offset(-beeButtonBottomOffset)
         }
         
     }
@@ -198,7 +192,7 @@ final class ChallengeInProgressView: UIView {
     
 }
 
-extension ChallengeInProgressView: MyFlowerViewDelegate {
+extension ChallengeInProgressView: MyFlowerViewDelegate, MyFlowerTopViewDelegate {
     func didTapEmptySpeechBubbleView() {
         self.delegate?.didTapMyFlowerEmptySpeechBubbleView()
     }
@@ -206,4 +200,9 @@ extension ChallengeInProgressView: MyFlowerViewDelegate {
     func didTapCertificateView() {
         self.delegate?.didTapCertificateButton()
     }
+    
+    func didTapWateringCanView() {
+        self.delegate?.didTapCertificateButton()
+    }
 }
+

@@ -12,7 +12,7 @@ final class PartnerFlowerView: UIView {
 
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
-        v.contentMode = .bottom
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
@@ -39,6 +39,7 @@ final class PartnerFlowerView: UIView {
         
         self.flowerImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.width.equalTo(113)
             make.centerX.equalToSuperview().multipliedBy(1.2)
             make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
@@ -48,16 +49,6 @@ final class PartnerFlowerView: UIView {
             make.bottom.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
         }
-        
-        // SE 같은 작은 화면일때만 꽃 크기의 최대 높이를 설정한다.
-//        if UIDevice.current.deviceType == .default {
-//            self.flowerImageView.snp.remakeConstraints { make in
-//                make.height.lessThanOrEqualTo(180)
-//                make.centerX.equalToSuperview().multipliedBy(1.2)
-//                make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
-//            }
-//        }
-
     }
 
     func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.PartnerFlowerViewModel) {

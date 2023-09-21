@@ -45,28 +45,11 @@ final class PartnerFlowerTopView: UIView {
         return v
     }()
     // MARK: - 챌린지 완료 : 꽃 이미지 위에 배치한 컴포넌트
-    /// 꽃 이름 라벨
-    lazy var flowerNameLabel: UILabel = {
-        let v = UILabel()
-        v.font = .h3
-        v.textColor = .primary
-        return v
-    }()
-    /// 꽃말 라벨
-    lazy var flowerDescLabel: UILabel = {
-        let v = UILabel()
-        v.font = .body2
-        v.textColor = .primary
-        return v
-    }()
-    /// 꽃 이름, 꽃말 스택뷰
-    lazy var flowerInfoStackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .vertical
-        v.spacing = 7
+    /// 꽃말 보기 말풍선 이미지
+    lazy var showFlowerTextImageView: UIImageView = {
+        let v = UIImageView()
+        v.image = .asset(.icon_bubble_flowerLanguage)
         v.isHidden = true
-        v.alignment = .center
-        v.addArrangedSubviews(self.flowerNameLabel, self.flowerDescLabel)
         return v
     }()
     
@@ -84,7 +67,7 @@ final class PartnerFlowerTopView: UIView {
     private func layout() {
         self.addSubviews(self.speechBubbleView,
                          self.certificatedStackView,
-                         self.flowerInfoStackView,
+                         self.showFlowerTextImageView,
                          self.emptySpeechBubbleImageView)
         
         self.heartImageView.snp.makeConstraints { make in
@@ -97,10 +80,10 @@ final class PartnerFlowerTopView: UIView {
             make.bottom.greaterThanOrEqualToSuperview().offset(-20)
         }
         
-        self.flowerInfoStackView.snp.makeConstraints { make in
+        self.showFlowerTextImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(1.2)
-            make.bottom.equalToSuperview().offset(-12)
+            make.bottom.equalToSuperview().offset(-4)
         }
         
         self.certificatedStackView.snp.makeConstraints { make in
@@ -135,6 +118,8 @@ final class PartnerFlowerTopView: UIView {
     }
     
     func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.PartnerFlowerViewModel) {
-        
+        // 꽃말 보기 말풍선 히든 여부
+        self.showFlowerTextImageView.isHidden = viewModel.isFlowerTextHidden
+        // TODO: 챌린지 실패 시에 말풍선도 매핑 필요
     }
 }

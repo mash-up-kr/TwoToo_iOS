@@ -9,10 +9,8 @@ import UIKit
 import DesignSystem
 
 protocol MyFlowerViewDelegate: AnyObject {
-    /// 인증(물뿌리개, 꽃 이미지) 컴포넌트를 탭 했을 때
+    /// 꽃 이미지를 탭 했을 때 - 인증
     func didTapCertificateView()
-    /// 비어있는 말풍선을 탭 했을 때
-    func didTapEmptySpeechBubbleView()
 }
 
 final class MyFlowerView: UIView {
@@ -21,9 +19,9 @@ final class MyFlowerView: UIView {
     
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
-        v.contentMode = .bottom
+        v.contentMode = .scaleAspectFit
         v.addTapAction { [weak self] in
-            self?.delegate?.didTapCertificateView()
+            self?.delegate?.didTapCertificateView() // TODO: 터치 왜 안먹지?
         }
         return v
     }()
@@ -53,6 +51,7 @@ final class MyFlowerView: UIView {
         self.flowerImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.width.equalTo(113)
             make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
         
@@ -61,15 +60,6 @@ final class MyFlowerView: UIView {
             make.bottom.equalToSuperview()
             make.centerX.equalTo(self.flowerImageView.snp.centerX)
         }
-        
-        // SE 같은 작은 화면일때만 꽃 크기의 최대 높이를 설정한다.
-//        if UIDevice.current.deviceType == .default {
-//            self.flowerImageView.snp.remakeConstraints { make in
-//                make.height.lessThanOrEqualTo(180)
-//                make.centerX.equalToSuperview().multipliedBy(1.2)
-//                make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
-//            }
-//        }
     }
     
     private func attribute() {
@@ -86,12 +76,3 @@ final class MyFlowerView: UIView {
     }
 }
 
-extension MyFlowerView: MyFlowerTopViewDelegate {
-    func didTapWateringCanView() {
-        self.delegate?.didTapCertificateView()
-    }
-    
-    func didTapEmptySpeechBubbleView() {
-        self.delegate?.didTapEmptySpeechBubbleView()
-    }
-}

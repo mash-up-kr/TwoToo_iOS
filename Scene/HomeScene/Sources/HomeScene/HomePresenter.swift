@@ -206,7 +206,7 @@ extension Home.Model.Challenge {
             myFlowerMapper = FlowerMappingWorker(flowerType: myFlower)
         }
         viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.myFlower.topViewModel.cetificationGuideText = "내 씨앗을 눌러 인증 해보세요!"
+        viewModel.myFlower.topViewModel.cetificationGuideText = "씨앗을 눌러 인증 해보세요!"
         viewModel.myFlower.topViewModel.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
