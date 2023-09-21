@@ -112,7 +112,7 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
 
             context("내 칭찬 문구") {
                 it("내 꽃의 칭찬 문구 텍스트가 'Test'로 표현된다.") {
-                    expect(viewModel.myFlower.complimentCommentText).to(equal("Test"))
+                    expect(viewModel.myFlower.topViewModel.complimentCommentText).to(equal("Test"))
                 }
             }
 
@@ -170,7 +170,7 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
 
             context("상대방 칭찬 문구") {
                 it("상대방 꽃의 칭찬 문구 텍스트가 'Test'로 표현된다.") {
-                    expect(viewModel.partnerFlower.complimentCommentText).to(equal("Test"))
+                    expect(viewModel.partnerFlower.topViewModel.complimentCommentText).to(equal("Test"))
                 }
             }
 
@@ -181,19 +181,19 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                 }
 
                 it("내 꽃의 인증 버튼 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.myFlower.isCertificationButtonHidden).to(beFalse())
+                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beFalse())
                 }
 
                 it("상대방 꽃의 인증 완료 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden).to(beTrue())
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("하트 히든 여부가 true로 표현된다.") {
@@ -208,19 +208,19 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                 }
 
                 it("내 꽃의 인증 버튼 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.myFlower.isCertificationButtonHidden).to(beFalse())
+                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beFalse())
                 }
 
                 it("상대방 꽃의 인증 완료 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beFalse())
+                    expect(viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden).to(beFalse())
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("하트 히든 여부가 true로 표현된다.") {
@@ -235,19 +235,19 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                 }
 
                 it("내 꽃의 인증 버튼 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.isCertificationButtonHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 인증 완료 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden).to(beTrue())
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isComplimentCommentHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("하트 히든 여부가 true로 표현된다.") {
@@ -262,19 +262,19 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                 }
 
                 it("내 꽃의 인증 버튼 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.isCertificationButtonHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 인증 완료 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.partnerFlower.isCertificationCompleteHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.topViewModel.isCertificationCompleteHidden).to(beTrue())
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.myFlower.isComplimentCommentHidden).to(beFalse())
+                    expect(viewModel.myFlower.topViewModel.isComplimentCommentHidden).to(beFalse())
                 }
 
                 it("상대방 꽃의 칭찬 문구 히든 여부가 false로 표현된다.") {
-                    expect(viewModel.partnerFlower.isComplimentCommentHidden).to(beFalse())
+                    expect(viewModel.partnerFlower.topViewModel.isComplimentCommentHidden).to(beFalse())
                 }
 
                 it("하트 히든 여부가 false로 표현된다.") {
