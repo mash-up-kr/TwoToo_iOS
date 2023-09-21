@@ -9,7 +9,7 @@ import UIKit
 import DesignSystem
 
 protocol MyFlowerTopViewDelegate: AnyObject {
-    /// 물뿌리개 인증 버튼을 탭 했을 때
+    /// 물뿌리개를 탭 했을 때 - 인증
     func didTapWateringCanView()
     /// 비어있는 말풍선을 탭 했을 때
     func didTapEmptySpeechBubbleView()
@@ -50,7 +50,8 @@ final class MyFlowerTopView: UIView {
     /// 꽃말 보기 말풍선 이미지
     lazy var flowerLanguageImageView: UIImageView = {
         let v = UIImageView()
-//        v.image = .asset(.)
+        v.image = .asset(.icon_bubble_flowerLanguage)
+        v.isHidden = true
         return v
     }()
     
@@ -58,7 +59,6 @@ final class MyFlowerTopView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-        self.backgroundColor = .yellow
     }
     
     required init?(coder: NSCoder) {
