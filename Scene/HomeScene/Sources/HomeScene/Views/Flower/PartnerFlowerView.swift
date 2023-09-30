@@ -41,6 +41,7 @@ final class PartnerFlowerView: UIView {
             make.top.equalToSuperview()
             make.width.equalTo(113)
             make.centerX.equalToSuperview().multipliedBy(1.2)
+            make.height.lessThanOrEqualTo(188)
             make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
         

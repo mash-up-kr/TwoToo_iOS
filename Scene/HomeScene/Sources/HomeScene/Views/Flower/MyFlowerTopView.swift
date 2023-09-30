@@ -70,22 +70,24 @@ final class MyFlowerTopView: UIView {
                          self.showFlowerTextImageView,
                          self.complimentWriteBubbleImageView)
         
+        let speechBubbleBottom = UIDevice.current.deviceType == .default ? 20 : 32
+
         self.speechBubbleView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualToSuperview()
+            make.top.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.greaterThanOrEqualToSuperview().offset(-42)
+            make.bottom.equalToSuperview().offset(-speechBubbleBottom)
         }
         
         self.complimentWriteBubbleImageView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualToSuperview()
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.greaterThanOrEqualToSuperview().offset(-24)
+            make.bottom.greaterThanOrEqualToSuperview().offset(-speechBubbleBottom)
         }
         
         self.wateringCanView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(12)
         }
         
         self.showFlowerTextImageView.snp.makeConstraints { make in

@@ -53,13 +53,19 @@ final class WateringCanView: UIView {
         self.addSubviews(self.titleLabel,
                                  self.wateringCanView)
         
-        let wateringCanViewWidth = UIDevice.current.deviceType == .default ? 65 : 75
-        let wateringCanViewHeight = UIDevice.current.deviceType == .default ? 45 : 55
+        var wateringCanViewWidth = 75
+        var wateringCanViewHeight = 55
+        var wateringCanViewTopOffset = 10
         
+        if UIDevice.current.deviceType == .default {
+            wateringCanViewWidth = 65
+            wateringCanViewHeight = 45
+            wateringCanViewTopOffset = 5
+        }
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.wateringCanView.snp.top).offset(-10)
+            make.bottom.equalTo(self.wateringCanView.snp.top).offset(-wateringCanViewTopOffset)
         }
         
         self.certificatedLottieView.snp.makeConstraints { make in

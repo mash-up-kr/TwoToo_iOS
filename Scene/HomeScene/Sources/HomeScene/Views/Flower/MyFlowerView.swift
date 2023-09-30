@@ -52,6 +52,7 @@ final class MyFlowerView: UIView {
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.width.equalTo(113)
+            make.height.lessThanOrEqualTo(188)
             make.bottom.equalTo(self.nicknameView.snp.top).offset(-7)
         }
         

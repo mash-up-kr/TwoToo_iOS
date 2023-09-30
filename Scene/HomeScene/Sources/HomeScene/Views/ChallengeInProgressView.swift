@@ -130,39 +130,36 @@ final class ChallengeInProgressView: UIView {
         let flowerBottomOffset = UIDevice.current.deviceType == .default ? -10 : 22
         // --> PartnerFlower
         self.partnerFlowerTopView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(7)
-            make.leading.trailing.equalTo(self.partnerFlowerView)
+            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
             make.centerX.equalTo(self.partnerFlowerView.snp.centerX)
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
             make.top.equalTo(self.partnerFlowerTopView.snp.bottom)
             make.centerX.equalToSuperview().multipliedBy(0.6)
-            make.height.greaterThanOrEqualTo(188)
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
         // --> MyFlower
         self.myFlowerTopView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(7)
+            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
             make.centerX.equalTo(self.myFlowerView.snp.centerX)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.top.equalTo(self.myFlowerTopView.snp.bottom).offset(5)
+            make.top.equalTo(self.myFlowerTopView.snp.bottom)
             make.centerX.equalToSuperview().multipliedBy(1.4)
-            make.height.greaterThanOrEqualTo(188) // TODO: 꽃 최대높이 적용 제대로 안됨
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
         self.heartImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.myFlowerView.snp.centerY)
+            make.centerY.equalTo(self.myFlowerView.snp.centerY).offset(-10)
         }
                 
         let beeButtonWidthHeight = UIDevice.current.deviceType == .default ? 50 : 57
         let beeButtonBottomOffset = UIDevice.current.deviceType == .default ? 10 : 38
-//        let nudgeBottomOffset = UIDevice.current.deviceType == .default ? 10 : 38
+
         self.nudgeBeeButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.height.equalTo(beeButtonWidthHeight)
