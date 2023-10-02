@@ -189,7 +189,7 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                 }
 
                 it("내 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {
-                    expect(viewModel.myFlower.topViewModel.isCertificationButtonHidden).to(beTrue())
+                    expect(viewModel.myFlower.topViewModel.isComplimentCommentHidden).to(beTrue())
                 }
 
                 it("상대방 꽃의 칭찬 문구 히든 여부가 true로 표현된다.") {

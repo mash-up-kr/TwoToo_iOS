@@ -75,9 +75,9 @@ final class PartnerFlowerTopView: UIView {
         }
         
         self.speechBubbleView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-15)
+            make.width.lessThanOrEqualTo(150)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         self.showFlowerTextImageView.snp.makeConstraints { make in
@@ -94,7 +94,7 @@ final class PartnerFlowerTopView: UIView {
         self.emptySpeechBubbleImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview().multipliedBy(0.9)
-            make.bottom.equalToSuperview().offset(-12)
+            make.bottom.equalToSuperview().offset(-10)
         }
     }
     

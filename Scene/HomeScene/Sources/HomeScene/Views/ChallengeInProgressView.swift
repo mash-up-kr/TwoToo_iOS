@@ -131,24 +131,26 @@ final class ChallengeInProgressView: UIView {
         // --> PartnerFlower
         self.partnerFlowerTopView.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
-            make.centerX.equalTo(self.partnerFlowerView.snp.centerX)
+            make.centerX.equalToSuperview().multipliedBy(0.58)
         }
         
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.top.equalTo(self.partnerFlowerTopView.snp.bottom)
-            make.centerX.equalToSuperview().multipliedBy(0.6)
+            make.top.equalTo(self.partnerFlowerTopView.snp.bottom).offset(5)
+            make.width.equalToSuperview().dividedBy(2)
+            make.leading.equalToSuperview()
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
         // --> MyFlower
         self.myFlowerTopView.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
-            make.centerX.equalTo(self.myFlowerView.snp.centerX)
+            make.centerX.equalToSuperview().multipliedBy(1.42)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.top.equalTo(self.myFlowerTopView.snp.bottom)
-            make.centerX.equalToSuperview().multipliedBy(1.4)
+            make.top.equalTo(self.myFlowerTopView.snp.bottom).offset(5)
+            make.width.equalToSuperview().dividedBy(2)
+            make.trailing.equalToSuperview()
             make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         

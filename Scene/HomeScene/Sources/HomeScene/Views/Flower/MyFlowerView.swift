@@ -20,8 +20,9 @@ final class MyFlowerView: UIView {
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
         v.contentMode = .scaleAspectFit
+        v.isUserInteractionEnabled = true
         v.addTapAction { [weak self] in
-            self?.delegate?.didTapCertificateView() // TODO: 터치 왜 안먹지?
+            self?.delegate?.didTapCertificateView()
         }
         return v
     }()
