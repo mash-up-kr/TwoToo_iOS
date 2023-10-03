@@ -10,8 +10,8 @@ import CoreKit
 import Foundation
 
 protocol MyInfoBusinessLogic {
-    /// 첫 진입
-    func didLoad() async
+    /// 진입
+    func didAppear() async
     /// 설명서 버튼 클릭
     func didTapGuideButton() async
     /// Lists에 있는 목록들 클릭
@@ -109,11 +109,11 @@ extension MyInfoInteractor {
     }
 }
 
-// MARK: Feature (첫 진입)
+// MARK: Feature (진입)
 
 extension MyInfoInteractor {
-
-    func didLoad() async {
+    
+    func didAppear() async {
         do {
             let mypageInfo = try await self.worker.fetchMypageInfo()
             
