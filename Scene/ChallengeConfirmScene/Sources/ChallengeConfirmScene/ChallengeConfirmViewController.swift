@@ -130,18 +130,18 @@ final class ChallengeConfirmViewController: UIViewController {
         let v = TTPopup()
         v.isHidden = true
         v.didTapLeftButton {
-            Task {
-                await self.interactor.didTapQuitPopupCancelButton()
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupCancelButton()
             }
         }
         v.didTapRightButton {
-            Task {
-                await self.interactor.didTapQuitPopupQuitButton()
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupQuitButton()
             }
         }
         v.didTapBackground {
-            Task {
-                await self.interactor.didTapQuitPopupBackground()
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupBackground()
             }
         }
         return v
@@ -172,7 +172,6 @@ final class ChallengeConfirmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
-        self.registNotification()
 
         Task {
             await self.interactor.didAppear()
@@ -185,15 +184,6 @@ final class ChallengeConfirmViewController: UIViewController {
             await self.interactor.didAppear()
             Loading.shared.stopLoadingView()
         }
-    }
-    
-    private func registNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.viewDidAppearWithModalDismissed),
-            name: NSNotification.Name("modal_dismissed"),
-            object: nil
-        )
     }
     
     // MARK: - Layout
