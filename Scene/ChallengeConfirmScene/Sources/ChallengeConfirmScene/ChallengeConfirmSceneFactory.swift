@@ -49,10 +49,13 @@ public final class ChallengeConfirmSceneFactory {
     public init() {}
     
     public func make(with configuration: ChallengeConfirmConfiguration) -> ChallengeConfirmScene {
-        
+        let challengeQuitNetworkWorker = ChallengeQuitNetworkWorker()
+
         let presenter = ChallengeConfirmPresenter()
         let router = ChallengeConfirmRouter()
-        let worker = ChallengeConfirmWorker()
+        let worker = ChallengeConfirmWorker(
+            challengeQuitNetworkWorker: challengeQuitNetworkWorker
+        )
         let interactor = ChallengeConfirmInteractor(
             presenter: presenter,
             router: router,

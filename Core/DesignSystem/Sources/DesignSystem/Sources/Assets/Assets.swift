@@ -133,6 +133,7 @@ public enum Assets: String {
     case history_certificate
     case history_line
     case history_waiting
+    case img_buds
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

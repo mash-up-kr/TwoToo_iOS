@@ -43,5 +43,22 @@ enum ChallengeConfirm {
             /// 챌린지 규칙
             var rule: String?
         }
+        /// 그만두기 팝업
+        struct QuitPopup {
+            /// 타이틀
+            var title: String
+            /// 그만두기 아이콘
+            var iconImage: UIImage
+            /// 설명
+            var description: String
+            /// 경고문구
+            var warning: String
+            /// 하단의 왼쪽, 오른쪽 버튼 타이틀
+            var buttonTitles: [String]
+        }
+        
+        struct Toast {
+            var message: String?
+        }
     }
 }
