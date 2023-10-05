@@ -46,7 +46,8 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
     func presentQuitPopup() {
         let viewModel = ChallengeHistory.ViewModel.QuitPopup(title: "챌린지 그만두기",
                                                              iconImage: .asset(.icon_delete)!,
-                                                             description: "기존의 챌린지는 삭제 됩니다\n*(경고) 그만두기 시 양쪽 모두에게\n삭제 및 종료 됩니다!*",
+                                                             description: "기존의 챌린지는 삭제 됩니다",
+                                                             warningText: "* (경고) 그만두기 시 양쪽 모두에게\n삭제 및 종료 됩니다!*",
                                                              buttonTitles: ["취소", "그만두기"])
         self.viewController?.displayQuitPopup(viewModel: viewModel)
     }
