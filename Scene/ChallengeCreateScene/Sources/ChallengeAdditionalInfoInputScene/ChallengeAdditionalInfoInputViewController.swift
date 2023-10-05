@@ -17,7 +17,8 @@ final class ChallengeAdditionalInfoInputViewController: UIViewController {
     // MARK: - UI
 
     private lazy var navigationbar: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        let v = TTNavigationDetailBar()
+        v.configure(title: nil, leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
         v.delegate = self
         return v
     }()
