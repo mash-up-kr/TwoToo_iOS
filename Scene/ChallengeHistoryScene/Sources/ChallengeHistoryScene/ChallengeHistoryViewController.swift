@@ -34,9 +34,10 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
     
     // MARK: - UI
     private lazy var navigationBar: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: nil,
-                                      leftButtonImage: .asset(.icon_back),
-                                      rightButtonImage: .asset(.icon_more))
+        let v = TTNavigationDetailBar()
+        v.configure(title: "", 
+                    leftButtonImage: .asset(.icon_back),
+                    rightButtonImage: .asset(.icon_more))
         v.delegate = self
         return v
     }()
@@ -310,7 +311,7 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
 
     func displayOptionPopup(title: String) {
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let action = UIAlertAction(title: title, style: .default) { [weak self] _ in
+        let action = UIAlertAction(title: title, style: .destructive) { [weak self] _ in
             Task {
                 await self?.interactor.didTapOptionPopupQuitButton()
             }

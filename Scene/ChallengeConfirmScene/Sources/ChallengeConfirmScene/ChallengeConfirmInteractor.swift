@@ -13,6 +13,18 @@ protocol ChallengeConfirmBusinessLogic {
     func didAppear() async
     /// 다음 버튼 클릭
     func didTapNextButton() async
+    /// 옵션 버튼 클릭
+    func didTapOptionButton() async
+    /// 옵션 팝업의 챌린지 그만두기 버튼 클릭
+    func didTapOptionPopupQuitButton() async
+    /// 챌린지 그만두기 팝업의 취소 버튼 클릭
+    func didTapQuitPopupCancelButton() async
+    /// 챌린지 그만두기 팝업의 배경 클릭
+    func didTapQuitPopupBackground() async
+    /// 챌린지 그만두기 팝업의 그만두기 버튼 클릭
+    func didTapQuitPopupQuitButton() async
+    /// 뒤로가기 버튼 클릭
+    func didTapBackButton() async
 }
 
 protocol ChallengeConfirmDataStore: AnyObject {
@@ -120,8 +132,43 @@ extension ChallengeConfirmInteractor {
 
 // MARK: - Application Business Logic
 
-// MARK: UseCase ()
+// MARK: Feature (챌린지 그만두기)
 
 extension ChallengeConfirmInteractor {
     
+    func didTapOptionButton() async {
+        await self.presenter.presentOptionPopup()
+    }
+    
+    func didTapOptionPopupQuitButton() async {
+        await self.presenter.presentQuitPopup()
+    }
+    
+    func didTapQuitPopupCancelButton() async {
+        await self.presenter.dismissQuitPopup()
+    }
+    
+    func didTapQuitPopupBackground() async {
+        await self.presenter.dismissQuitPopup()
+    }
+    
+    func didTapQuitPopupQuitButton() async {
+        do {
+            try await self.worker.requestChallengeQuit(challengeID: self.challengeID ?? "")
+            await self.presenter.presentChallengeQuitSuccess()
+            await self.router.pop()
+        }
+        catch {
+            await self.presenter.presentChallengeQuitError(error: error)
+        }
+    }
+}
+
+// MARK: Feature (뒤로가기)
+
+extension ChallengeConfirmInteractor {
+    
+    func didTapBackButton() async {
+        await self.router.pop()
+    }
 }
