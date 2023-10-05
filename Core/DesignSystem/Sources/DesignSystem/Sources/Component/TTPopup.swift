@@ -63,6 +63,7 @@ public final class TTPopup: UIView, UIComponentBased {
         let v = UIStackView()
         v.axis = .vertical
         v.alignment = .center
+        v.spacing = 8
         v.addArrangedSubviews(self.descriptionLabel,
                               self.waringLabel)
         return v

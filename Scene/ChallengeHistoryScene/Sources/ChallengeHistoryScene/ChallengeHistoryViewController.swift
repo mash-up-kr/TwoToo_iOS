@@ -285,6 +285,7 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
         self.popupView.configure(title: viewModel.title,
                                  resultView: UIImageView(image: viewModel.iconImage),
                                  description: viewModel.description,
+                                 warningText: viewModel.warningText,
                                  buttonTitles: viewModel.buttonTitles)
         self.popupView.isHidden = false
     }
@@ -300,13 +301,6 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
         self.partnerNicknameTagView.titleLabel.text = viewModel.partnerNickname
         self.certificateList = viewModel.cellInfo
         self.certificateTableView.reloadData()
-        
-        if viewModel.dDayText == "완료" {
-            self.navigationBar.setIsHiddenRightButton(true)
-        }
-        else {
-            self.navigationBar.setIsHiddenRightButton(false)
-        }
     }
 
     func displayOptionPopup(title: String) {
@@ -348,5 +342,4 @@ extension ChallengeHistoryViewController: TTNavigationDetailBarDelegate {
             await self.interactor.didTapOptionButton()
         }
     }
-    
 }
