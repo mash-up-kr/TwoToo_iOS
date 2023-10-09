@@ -17,8 +17,8 @@ protocol HomeDisplayLogic: AnyObject {
     func displayChallengeAfterStartDateViewModel(viewModel: Home.ViewModel.ChallengeAfterStartDateViewModel)
     func displayChallengeInProgressViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel)
     func displayChallengeCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel)
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.BothCertificationViewModel)
-    func displayCompletedViewModel(viewModel: Home.ViewModel.CompletedViewModel)
+    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel)
+    func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
     func displayToast(viewModel: Home.ViewModel.Toast)
 }
 
@@ -273,7 +273,7 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.BothCertificationViewModel) {
+    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel) {
         self.displayWithAnimation { [weak self] in
             viewModel.show.unwrap {
                 let popupContentView = UIView()
@@ -286,12 +286,12 @@ extension HomeViewController: HomeDisplayLogic {
                 }
                 
                 let popupView = TTPopup()
-                popupView.configure(title: Home.ViewModel.BothCertificationViewModel.title,
+                popupView.configure(title: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.title,
                                     resultView: popupContentView,
-                                    description: Home.ViewModel.BothCertificationViewModel.message,
+                                    description: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.message,
                                     buttonTitles: [
-                                        Home.ViewModel.BothCertificationViewModel.noOptionText,
-                                        Home.ViewModel.BothCertificationViewModel.yesOptionText
+                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.noOptionText,
+                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.yesOptionText
                                     ])
                 
                 popupView.didTapLeftButton {
@@ -326,7 +326,7 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
-    func displayCompletedViewModel(viewModel: Home.ViewModel.CompletedViewModel) {
+    func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel) {
         self.displayWithAnimation { [weak self] in
             viewModel.show.unwrap {
                 let popupContentView = UIView()
@@ -342,7 +342,7 @@ extension HomeViewController: HomeDisplayLogic {
                 popupView.configure(title: $0.title,
                                      resultView: popupContentView,
                                      description: $0.message,
-                                     buttonTitles: [Home.ViewModel.CompletedViewModel.optionText])
+                                     buttonTitles: [Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel.optionText])
                 
                 popupView.didTapLeftButton {
                     Task {
@@ -472,6 +472,10 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
     }
 }
 extension HomeViewController: ChallengeCompletedViewDelegate{
+    func didTapShowFlowerLaunage() {
+        // TODO: 꽃말 보기 
+    }
+    
     func didTapChallengeCompletedFinishButton() {
         Task {
             await self.interactor.didTapChallengeCompleteButton()

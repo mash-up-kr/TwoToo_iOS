@@ -261,14 +261,10 @@ extension Home.Model.Challenge {
                 partnerPercentageNumber: 0, myPercentageNumber: 0
             ),
             order: .init(challengeOrderText: "", partenrNameText: "", myNameText: ""),
-            partnerFlower: .init(
-                image: UIImage(), isFlowerTextHidden: false,
-                flowerNameText: "", flowerDescText: "", partnerNameText: ""
-            ),
-            myFlower: .init(
-                image: UIImage(), isFlowerTextHidden: false,
-                flowerNameText: "", flowerDescText: "", myNameText: ""
-            )
+            partnerFlower: .init(isFlowerLanguageBubbleHidden: false, image: UIImage(), partnerNameText: ""),
+            myFlower: .init(isFlowerLanguageBubbleHidden: false, image: UIImage(), myNameText: ""),
+            myFlowerLanguagePopup: .init(flowerNameText: "", flowerDescText: "", flowerImage: UIImage(), challengeOrderText: ""),
+            partnerFlowerLanguagePopup: .init(flowerNameText: "", flowerDescText: "", flowerImage: UIImage(), challengeOrderText: "")
         )
         
         // 챌린지 정보 매핑
@@ -293,9 +289,8 @@ extension Home.Model.Challenge {
             partnerFlowerMapper = FlowerMappingWorker(flowerType: partnerFlower)
         }
         viewModel.partnerFlower.image = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.partnerFlower.flowerNameText = partnerFlowerMapper?.getName() ?? ""
-        viewModel.partnerFlower.flowerDescText = partnerFlowerMapper?.getDesc() ?? ""
-        viewModel.partnerFlower.isFlowerTextHidden = !(self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom)
+        let showPartnerFlowerLanguagePopup = (self.partnerInfo.growStatus == .flower || self.partnerInfo.growStatus == .bloom)
+        viewModel.partnerFlower.isFlowerLanguageBubbleHidden = !showPartnerFlowerLanguagePopup
         viewModel.partnerFlower.partnerNameText = self.partnerInfo.nickname
         
         // 내 꽃 매핑
@@ -304,15 +299,29 @@ extension Home.Model.Challenge {
             myFlowerMapper = FlowerMappingWorker(flowerType: myFlower)
         }
         viewModel.myFlower.image = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
-        viewModel.myFlower.flowerNameText = myFlowerMapper?.getName() ?? ""
-        viewModel.myFlower.flowerDescText = myFlowerMapper?.getDesc() ?? ""
-        viewModel.myFlower.isFlowerTextHidden = !(self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom)
+        let showMyFlowerLanguagePopup = (self.myInfo.growStatus == .flower || self.myInfo.growStatus == .bloom)
+        viewModel.myFlower.isFlowerLanguageBubbleHidden = !showMyFlowerLanguagePopup
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
+        // 파트너 꽃말 팝업 매핑
+        if showPartnerFlowerLanguagePopup {
+            viewModel.partnerFlowerLanguagePopup.flowerNameText = partnerFlowerMapper?.getName() ?? ""
+            viewModel.partnerFlowerLanguagePopup.flowerDescText = partnerFlowerMapper?.getDesc() ?? ""
+            viewModel.partnerFlowerLanguagePopup.flowerImage = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
+            viewModel.partnerFlowerLanguagePopup.challengeOrderText = self.calculateFlowerOrderText(order: self.order)
+        }
+        
+        // 내 꽃말 팝업 매핑
+        if showMyFlowerLanguagePopup {
+            viewModel.myFlowerLanguagePopup.flowerNameText = myFlowerMapper?.getName() ?? ""
+            viewModel.myFlowerLanguagePopup.flowerDescText = myFlowerMapper?.getDesc() ?? ""
+            viewModel.myFlowerLanguagePopup.flowerImage = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
+            viewModel.myFlowerLanguagePopup.challengeOrderText = self.calculateFlowerOrderText(order: self.order)
+        }
         return viewModel
     }
     
-    func toCompletedViewModel() -> Home.ViewModel.CompletedViewModel {
+    func toCompletedViewModel() -> Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel {
         var title: String
         var message: String
         var image: UIImage
@@ -383,6 +392,14 @@ private extension Home.Model.Challenge {
     func calculateOrderText(order: Int?) -> String {
         if let order = order {
             return "\(order)번째 챌린지 중"
+        } else {
+            return ""
+        }
+    }
+    
+    func calculateFlowerOrderText(order: Int?) -> String {
+        if let order = order {
+            return "\(order)번째 챌린지 꽃"
         } else {
             return ""
         }
