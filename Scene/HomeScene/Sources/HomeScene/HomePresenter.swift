@@ -261,10 +261,8 @@ extension Home.Model.Challenge {
                 partnerPercentageNumber: 0, myPercentageNumber: 0
             ),
             order: .init(challengeOrderText: "", partenrNameText: "", myNameText: ""),
-            partnerFlower: .init(isFlowerLanguageBubbleHidden: false, image: UIImage(), partnerNameText: ""),
-            myFlower: .init(isFlowerLanguageBubbleHidden: false, image: UIImage(), myNameText: ""),
-            myFlowerLanguagePopup: .init(flowerNameText: "", flowerDescText: "", flowerImage: UIImage(), challengeOrderText: ""),
-            partnerFlowerLanguagePopup: .init(flowerNameText: "", flowerDescText: "", flowerImage: UIImage(), challengeOrderText: "")
+            partnerFlower: .init(image: UIImage(), partnerNameText: "", isFlowerLanguageBubbleHidden: false),
+            myFlower: .init(image: UIImage(), myNameText: "", isFlowerLanguageBubbleHidden: false)
         )
         
         // 챌린지 정보 매핑
@@ -305,18 +303,15 @@ extension Home.Model.Challenge {
         
         // 파트너 꽃말 팝업 매핑
         if showPartnerFlowerLanguagePopup {
-            viewModel.partnerFlowerLanguagePopup.flowerNameText = partnerFlowerMapper?.getName() ?? ""
-            viewModel.partnerFlowerLanguagePopup.flowerDescText = partnerFlowerMapper?.getDesc() ?? ""
-            viewModel.partnerFlowerLanguagePopup.flowerImage = partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage()
-            viewModel.partnerFlowerLanguagePopup.challengeOrderText = self.calculateFlowerOrderText(order: self.order)
-        }
-        
-        // 내 꽃말 팝업 매핑
-        if showMyFlowerLanguagePopup {
-            viewModel.myFlowerLanguagePopup.flowerNameText = myFlowerMapper?.getName() ?? ""
-            viewModel.myFlowerLanguagePopup.flowerDescText = myFlowerMapper?.getDesc() ?? ""
-            viewModel.myFlowerLanguagePopup.flowerImage = myFlowerMapper?.getMyImageByStep(growStatus: self.myInfo.growStatus ?? .seed) ?? UIImage()
-            viewModel.myFlowerLanguagePopup.challengeOrderText = self.calculateFlowerOrderText(order: self.order)
+            viewModel.partnerFlower.flowerLanguagePopup = .init(flowerNameText: partnerFlowerMapper?.getName() ?? "",
+                                                                flowerDescText: partnerFlowerMapper?.getDesc() ?? "",
+                                                                flowerImage: partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage(),
+                                                                flowerOrderText: self.calculateFlowerOrderText(order: self.order))
+            
+            viewModel.myFlower.flowerLanguagePopup = .init(flowerNameText: myFlowerMapper?.getName() ?? "",
+                                                                flowerDescText: myFlowerMapper?.getDesc() ?? "",
+                                                                flowerImage: myFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage(),
+                                                                flowerOrderText: self.calculateFlowerOrderText(order: self.order))
         }
         return viewModel
     }

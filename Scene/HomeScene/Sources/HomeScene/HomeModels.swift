@@ -288,10 +288,6 @@ enum Home {
             var partnerFlower: PartnerFlowerViewModel
             /// 내 꽃
             var myFlower: MyFlowerViewModel
-            /// 내 꽃말 팝업
-            var myFlowerLanguagePopup: FlowerLanguagePopupViewModel
-            /// 상대방 꽃말 팝업
-            var partnerFlowerLanguagePopup: FlowerLanguagePopupViewModel
             
             /// 챌린지 정보
             struct ChallengeInfoViewModel {
@@ -327,22 +323,27 @@ enum Home {
 
             /// 상대방 꽃
             struct PartnerFlowerViewModel {
-                /// 꽃말 보기 히든 여부
-                var isFlowerLanguageBubbleHidden: Bool
                 /// 이미지
                 var image: UIImage
                 /// 상대방 이름 텍스트
                 var partnerNameText: String
+                /// 꽃말 보기 히든 여부
+                var isFlowerLanguageBubbleHidden: Bool
+                /// 상대방 꽃말 팝업
+                var flowerLanguagePopup: FlowerLanguageViewModel?
+
             }
 
             /// 내 꽃
             struct MyFlowerViewModel {
-                /// 꽃말 보기 히든 여부
-                var isFlowerLanguageBubbleHidden: Bool
                 /// 이미지
                 var image: UIImage
                 /// 내 이름 텍스트
                 var myNameText: String
+                /// 꽃말 보기 히든 여부
+                var isFlowerLanguageBubbleHidden: Bool
+                /// 내 꽃말 팝업
+                var flowerLanguagePopup: FlowerLanguageViewModel?
             }
             
             /// 완료 팝업
@@ -354,19 +355,21 @@ enum Home {
                 static let optionText: String = "확인"
             }
             
-            /// 꽃말 팝업
-            struct FlowerLanguagePopupViewModel {
-                var show: (image: UIImage, name: String, desc: String, order: String)?
-                var dismiss: ()?
-                
+            struct FlowerLanguageViewModel {
                 /// 꽃 이름 텍스트
                 var flowerNameText: String
                 /// 꽃 말 텍스트
                 var flowerDescText: String
                 /// 꽃 이미지
                 var flowerImage: UIImage
-                /// 몇번째 챌린지 텍스트
-                var challengeOrderText: String
+                /// 몇번째 꽃 텍스트
+                var flowerOrderText: String
+            }
+            
+            /// 꽃말 팝업
+            struct FlowerLanguagePopupViewModel {
+                var show: (FlowerLanguageViewModel)?
+                var dismiss: ()?
             }
         }
         

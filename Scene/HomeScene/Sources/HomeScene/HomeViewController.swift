@@ -34,8 +34,12 @@ final class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    // MARK: - Popup
+    var bothCertificationPopupView: TTPopup?
+    var completedPopupView: TTPopup?
+    var flowerLanguagePopupView: TTFlowerPopup?
     
+    // MARK: - UI Component
     /// 네비게이션 바
     lazy var navigationBar: TTNavigationBar = {
         let v = TTNavigationBar(title: "TwoToo",
@@ -92,10 +96,6 @@ final class HomeViewController: UIViewController {
         v.delegate = self
         return v
     }()
-    
-    var bothCertificationPopupView: TTPopup?
-    
-    var completedPopupView: TTPopup?
     
     lazy var groundImageView: UIImageView = {
         let v = UIImageView(.home_ground)
@@ -470,10 +470,40 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
             await self.interactor.didTapStickButton()
         }
     }
+    
 }
-extension HomeViewController: ChallengeCompletedViewDelegate{
-    func didTapShowFlowerLaunage() {
-        // TODO: 꽃말 보기 
+extension HomeViewController: ChallengeCompletedViewDelegate, TTFlowerPopupDelegate {
+    
+    func didTapShowFlowerLaunage(viewModel: Home.ViewModel.ChallengeCompletedViewModel.FlowerLanguagePopupViewModel) {
+        self.displayWithAnimation { [weak self] in
+            viewModel.show.unwrap {
+                let popupView = TTFlowerPopup()
+                popupView.configure(name: $0.flowerNameText,
+                                    description: $0.flowerDescText,
+                                    image: $0.flowerImage,
+                                    order: $0.flowerOrderText)
+          
+                self?.flowerLanguagePopupView = popupView
+                self?.flowerLanguagePopupView?.delegate = self
+                
+                // TODO: 왜 팝업이 안뜨지?
+                if let flowerLanguagePopupView = self?.flowerLanguagePopupView {
+                    self?.view.addSubview(flowerLanguagePopupView)
+                }
+            }
+            
+            viewModel.dismiss.unwrap {
+                self?.flowerLanguagePopupView?.removeFromSuperview()
+                self?.flowerLanguagePopupView = nil
+            }
+        }
+    }
+    
+    // TTFlowerPopupDelegate
+    func didTapCloseView() {
+        Task {
+            await self.interactor.didTapChallengeCompletedPopupBackground()
+        }
     }
     
     func didTapChallengeCompletedFinishButton() {
