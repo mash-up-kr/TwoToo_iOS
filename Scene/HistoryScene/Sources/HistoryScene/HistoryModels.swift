@@ -19,6 +19,8 @@ enum History {
         
         /// 챌린지
         struct Challenge {
+            // 챌린지 진행 상태
+            var viewState: String
             /// 챌린지 ID
             var id: String
             /// 챌린지 순서 - n번째 챌린지

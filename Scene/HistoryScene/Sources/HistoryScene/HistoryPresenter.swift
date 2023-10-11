@@ -51,6 +51,7 @@ private extension HistoryPresenter {
             let end: String = $0.endDate.dateToString(.shortYearMonthDay)
             let dateText: String = start + " ~ " + end
             var partnerFlower: UIImage?
+            var orderText = ""
             if let partnerInfoFlower = $0.partnerFlower {
                 partnerFlower = FlowerMappingWorker(flowerType: partnerInfoFlower).getSmallImage()
             }
@@ -64,7 +65,15 @@ private extension HistoryPresenter {
             else {
                 myFlower = .asset(.img_buds)
             }
-            let cellInfo = History.ViewModel.CellInfo(orderText: "\($0.order)번째 챌린지",
+            
+            if $0.viewState == "Finished" {
+              orderText = "\($0.order)번째 챌린지"
+            }
+            else {
+              orderText = "\($0.order)번째 챌린지 중"
+            }
+          
+            let cellInfo = History.ViewModel.CellInfo(orderText: orderText,
                                                       nameText: $0.name,
                                                       dateText: dateText,
                                                       partnerFlowerImage: partnerFlower,
