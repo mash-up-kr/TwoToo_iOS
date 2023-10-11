@@ -54,9 +54,15 @@ private extension HistoryPresenter {
             if let partnerInfoFlower = $0.partnerFlower {
                 partnerFlower = FlowerMappingWorker(flowerType: partnerInfoFlower).getSmallImage()
             }
+            else {
+                partnerFlower = .asset(.img_buds)
+            }
             var myFlower: UIImage?
             if let myInfoFlower = $0.myFlower {
                 myFlower = FlowerMappingWorker(flowerType: myInfoFlower).getSmallImage()
+            }
+            else {
+                myFlower = .asset(.img_buds)
             }
             let cellInfo = History.ViewModel.CellInfo(orderText: "\($0.order)번째 챌린지",
                                                       nameText: $0.name,
