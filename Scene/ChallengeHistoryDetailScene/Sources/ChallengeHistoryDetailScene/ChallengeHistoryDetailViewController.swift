@@ -8,10 +8,12 @@
 
 import CoreKit
 import UIKit
+import SKPhotoBrowser
 
 protocol ChallengeHistoryDetailDisplayLogic: AnyObject {
     func displayCertification(certification: ChallengeHistoryDetail.ViewModel.Challenge)
     func displayCompliment(compliment: ChallengeHistoryDetail.ViewModel.Compliment)
+    func displayPhoto(photo: ChallengeHistoryDetail.ViewModel.Photo)
 }
 
 final class ChallengeHistoryDetailViewController: UIViewController {
@@ -45,6 +47,12 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         let v = UIImageView()
         v.layer.cornerRadius = 10
         v.clipsToBounds = true
+        v.isUserInteractionEnabled = true
+        v.addTapAction { [weak self] in
+            Task { [weak self] in
+                await self?.interactor.didTapPhoto()
+            }
+        }
         return v
     }()
     /// 챌린지 이름 라벨
@@ -59,6 +67,7 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         let v = UILabel()
         v.font = .h4
         v.textColor = .primary
+        v.numberOfLines = 0
         return v
     }()
     /// 인증 시간 라벨
@@ -245,5 +254,9 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
         }
     }
     
-    
+    func displayPhoto(photo: ChallengeHistoryDetail.ViewModel.Photo) {
+        let browser = SKPhotoBrowser(photos: photo.images)
+        browser.initializePageIndex(0)
+        self.present(browser, animated: true, completion: {})
+    }
 }

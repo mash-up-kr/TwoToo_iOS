@@ -15,6 +15,10 @@ let package = Package(
     dependencies: [
         .package(path: "./CoreKit"),
         .package(
+            url: "https://github.com/suzuki-0000/SKPhotoBrowser",
+            .upToNextMajor(from: "7.0.0")
+        ),
+        .package(
             url: "https://github.com/Quick/Nimble",
             .upToNextMajor(from: "12.0.0")
         ),
@@ -27,7 +31,8 @@ let package = Package(
         .target(
             name: "ChallengeHistoryDetailScene",
             dependencies: [
-                .product(name: "CoreKit", package: "CoreKit")
+                .product(name: "CoreKit", package: "CoreKit"),
+                .product(name: "SKPhotoBrowser", package: "SKPhotoBrowser")
             ],
             resources: [.process("Assets")]
         ),
