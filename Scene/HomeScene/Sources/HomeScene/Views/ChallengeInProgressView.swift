@@ -38,10 +38,22 @@ final class ChallengeInProgressView: UIView {
         return v
     }()
 
+    /// 내 꽃 상위 컴포넌트
+    lazy var myFlowerTopView: MyFlowerTopView = {
+        let v = MyFlowerTopView()
+        v.delegate = self
+        return v
+    }()
     /// 내 꽃 정보 뷰
     lazy var myFlowerView: MyFlowerView = {
         let v = MyFlowerView()
         v.delegate = self
+        return v
+    }()
+    /// 상대방 꽃 상위 컴포넌트
+    lazy var partnerFlowerTopView: PartnerFlowerTopView = {
+        let v = PartnerFlowerTopView()
+//        v.delegate = self
         return v
     }()
     /// 상대방 꽃 정보 뷰
@@ -87,7 +99,9 @@ final class ChallengeInProgressView: UIView {
         self.addSubviews(self.topChallengeInfoView,
                          self.progressBar,
                          self.nicknameStackView,
+                         self.partnerFlowerTopView,
                          self.partnerFlowerView,
+                         self.myFlowerTopView,
                          self.myFlowerView,
                          self.heartImage,
                          self.nudgeBeeButton,
@@ -113,32 +127,50 @@ final class ChallengeInProgressView: UIView {
             make.trailing.equalToSuperview().inset(24)
         }
         
+        let flowerBottomOffset = UIDevice.current.deviceType == .default ? -10 : 22
+        // --> PartnerFlower
+        self.partnerFlowerTopView.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
+            make.centerX.equalToSuperview().multipliedBy(0.58)
+        }
+        
         self.partnerFlowerView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().multipliedBy(0.75)
-            make.centerX.equalToSuperview().multipliedBy(0.5)
+            make.top.equalTo(self.partnerFlowerTopView.snp.bottom).offset(5)
             make.width.equalToSuperview().dividedBy(2)
+            make.leading.equalToSuperview()
+            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
+        }
+        
+        // --> MyFlower
+        self.myFlowerTopView.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(self.progressBar.snp.bottom).offset(2)
+            make.centerX.equalToSuperview().multipliedBy(1.42)
         }
         
         self.myFlowerView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().multipliedBy(0.75)
-            make.centerX.equalToSuperview().multipliedBy(1.5)
+            make.top.equalTo(self.myFlowerTopView.snp.bottom).offset(5)
             make.width.equalToSuperview().dividedBy(2)
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(self.nudgeBeeButton.snp.top).offset(-flowerBottomOffset)
         }
         
         self.heartImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.myFlowerView.snp.centerY)
+            make.centerY.equalTo(self.myFlowerView.snp.centerY).offset(-10)
         }
                 
+        let beeButtonWidthHeight = UIDevice.current.deviceType == .default ? 50 : 57
+        let beeButtonBottomOffset = UIDevice.current.deviceType == .default ? 10 : 38
+
         self.nudgeBeeButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(57)
+            make.width.height.equalTo(beeButtonWidthHeight)
             make.bottom.equalTo(self.nudgeTitleLabel.snp.top).offset(-8)
         }
         
         self.nudgeTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(38)
+            make.bottom.equalToSuperview().offset(-beeButtonBottomOffset)
         }
         
     }
@@ -150,14 +182,16 @@ final class ChallengeInProgressView: UIView {
                                          myNickname: viewModel.order.myNameText,
                                          partnerNickname: viewModel.order.partenrNameText)
         self.partnerFlowerView.configureInProgress(viewModel: viewModel.partnerFlower)
+        self.partnerFlowerTopView.configureInProgress(viewModel: viewModel.partnerFlower.topViewModel)
         self.myFlowerView.configureInProgress(viewModel: viewModel.myFlower)
+        self.myFlowerTopView.configureInProgress(viewModel: viewModel.myFlower.topViewModel)
         self.heartImage.isHidden = viewModel.isHeartHidden
         self.nudgeTitleLabel.text = viewModel.stickText
     }
     
 }
 
-extension ChallengeInProgressView: MyFlowerViewDelegate {
+extension ChallengeInProgressView: MyFlowerViewDelegate, MyFlowerTopViewDelegate {
     func didTapEmptySpeechBubbleView() {
         self.delegate?.didTapMyFlowerEmptySpeechBubbleView()
     }
@@ -165,4 +199,9 @@ extension ChallengeInProgressView: MyFlowerViewDelegate {
     func didTapCertificateView() {
         self.delegate?.didTapCertificateButton()
     }
+    
+    func didTapWateringCanView() {
+        self.delegate?.didTapCertificateButton()
+    }
 }
+

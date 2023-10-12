@@ -119,6 +119,7 @@ public enum Assets: String {
     case icon_buds
     case icon_bubble_tail_my
     case icon_bubble_tail_partner
+    case icon_bubble_flowerLanguage
     case icon_check
     case icon_cryingseed
     case icon_blossome

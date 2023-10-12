@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "flower_success_mate_bling_sunflower.png",
+      "filename" : "icon_bubble_flowerLanguage.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "flower_success_mate_bling_sunflower@2x.png",
+      "filename" : "icon_bubble_flowerLanguage@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "flower_success_mate_bling_sunflower@3x.png",
+      "filename" : "icon_bubble_flowerLanguage@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
