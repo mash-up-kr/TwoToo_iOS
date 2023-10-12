@@ -82,26 +82,31 @@ final class MyInfoViewController: UIViewController {
     private lazy var nicknameStackView: UIStackView = {
       let v = UIStackView()
       v.axis = .horizontal
-      v.spacing = 9
       v.backgroundColor = .white
       v.layer.cornerRadius = 15
-      return v
-    }()
-  
-    private lazy var changeButton: UIButton = {
-      let v = UIButton()
-      v.setImage(.asset(.icon_edit), for: .normal)
-      v.addAction { [weak self] in
+      v.spacing = 10
+      v.isLayoutMarginsRelativeArrangement = true
+      
+      v.addTapAction { [weak self] in
         Task {
           await self?.interactor.didTapChangeNicknameButton()
         }
       }
       return v
     }()
+  
+    private lazy var changeImageView: UIImageView = {
+      let v = UIImageView()
+      v.image = .asset(.icon_edit)
+      v.contentMode = .scaleAspectFit
+      return v
+    }()
     
-    private lazy var myNameTagView: TTTagView = {
-        let v = TTTagView(textColor: .primary, fontSize: .body2, cornerRadius: 15)
-        return v
+    private lazy var myNameTagLabel: UILabel = {
+      let v = UILabel()
+      v.textColor = .primary
+      v.font = .body2
+      return v
     }()
     
     private lazy var separator: TTSeparator = {
@@ -167,16 +172,12 @@ final class MyInfoViewController: UIViewController {
         self.view.setBackgroundDefault()
 
         self.nameStackView.addArrangedSubviews(self.myNicknameLabel, self.heartImageView, self.partnerNicknameLabel)
-        self.nicknameStackView.addArrangedSubviews(self.myNameTagView, self.changeButton)
+        self.nicknameStackView.addArrangedSubviews(self.myNameTagLabel, self.changeImageView)
         self.view.addSubviews(
             self.navigationBar, self.mainImageView,
             self.nameStackView, self.challengeCountLabel,
             self.nicknameStackView, self.separator, self.tableView
         )
-      
-        self.changeButton.snp.makeConstraints { make in
-          make.height.width.equalTo(30)
-        }
         
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -189,8 +190,9 @@ final class MyInfoViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(113)
             make.height.equalTo(UIScreen.main.bounds.height * 0.158)
         }
+      self.nicknameStackView.layoutMargins = .init(top: 3, left: 10, bottom: 3, right: 10)
         
-        self.nameStackView.snp.makeConstraints { make in
+      self.nameStackView.snp.makeConstraints { make in
             make.top.equalTo(self.mainImageView.snp.bottom).offset(19)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
         }
@@ -211,7 +213,7 @@ final class MyInfoViewController: UIViewController {
         }
         
         self.separator.snp.makeConstraints { make in
-            make.top.equalTo(self.myNameTagView.snp.bottom).offset(34)
+            make.top.equalTo(self.myNameTagLabel.snp.bottom).offset(34)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -465,7 +467,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
                 self.challengeCountLabel.text = viewModel.challengeTotalCount
                 self.myNicknameLabel.text = viewModel.myNickname
                 self.partnerNicknameLabel.text = viewModel.partnerNickname
-                self.myNameTagView.titleLabel.text = viewModel.myNickname
+                self.myNameTagLabel.text = viewModel.myNickname
             },
             completion: nil
         )
