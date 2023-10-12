@@ -11,6 +11,7 @@ import Network
 // https://https://twotoo-node-zmtrd.run.goorm.site/challenge/histories
 
 public struct HistoryResponse: Decodable {
+    public var viewState: String
     public var challengeNo: Int
     public var name: String
     public var description: String
