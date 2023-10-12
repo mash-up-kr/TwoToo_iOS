@@ -173,7 +173,7 @@ extension ChangeNicknameViewController: ChangeNicknameViewControllerDisplayLogic
 extension ChangeNicknameViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: duration) {
             self.changeButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 20)
             }
@@ -182,7 +182,7 @@ extension ChangeNicknameViewController: KeyboardDelegate {
     }
     
     func willHideKeyboard(duration: Double) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: duration) {
             self.changeButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
