@@ -247,6 +247,8 @@ enum Home {
                 var myNameText: String
                 
                 struct TopViewModel {
+                    /// 인증 유도 텍스트 히든 여부
+                    var isHiddenCetificationGuideText: Bool
                     /// 인증 버튼 히든 여부
                     var isCertificationButtonHidden: Bool
                     /// 인증 안내 텍스트
