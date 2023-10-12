@@ -94,6 +94,8 @@ extension ChallengeEssentialInfoInputInteractor {
 
 extension ChallengeEssentialInfoInputInteractor {
     func didLoad() async {
+        self.startDateDataSource = Date().dateToString(.yearMonthDay)
+        self.endDateDataSource = Date().addingTimeInterval((86400 * 22)).dateToString(.yearMonthDay)
         await self.presenter.presentEnabled(nextButton: .init(isEnabled: false))
     }
 }
