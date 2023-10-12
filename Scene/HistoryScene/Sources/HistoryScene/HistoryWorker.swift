@@ -31,19 +31,21 @@ final class HistoryWorker: HistoryWorkerProtocol {
         if historyResponse.first?.user1No == self.meLocalWorker.userNo {
             return historyResponse.enumerated().map({ index, history in
                 return .init(
+                    viewState: history.viewState,
                     id: String(history.challengeNo),
                     order: index + 1,
                     name: history.name,
                     startDate: history.startDate.fullStringDate(.iso),
                     endDate: history.endDate.fullStringDate(.iso),
-                    myFlower: history.user1CommitCnt < 17 ? nil : self.mapFlowerType(from: history.user1Flower),
-                    partnerFlower: history.user2CommitCnt < 17 ? nil : self.mapFlowerType(from: history.user2Flower)
+                    myFlower: history.user1CommitCnt < 17 ? self.mapFlowerType(from: history.user1Flower) : self.mapFlowerType(from: history.user1Flower),
+                    partnerFlower: history.user2CommitCnt < 17 ? self.mapFlowerType(from: history.user2Flower) : self.mapFlowerType(from: history.user2Flower)
                 )
             }).reversed()
         }
         else {
             return historyResponse.enumerated().map({ index, history in
                 return .init(
+                    viewState: history.viewState,
                     id: String(history.challengeNo),
                     order: index + 1,
                     name: history.name,

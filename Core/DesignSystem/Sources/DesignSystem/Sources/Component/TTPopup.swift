@@ -9,6 +9,8 @@ import UIKit
 import Util
 
 public final class TTPopup: UIView, UIComponentBased {
+    
+    private var buttonTitles: [String] = []
 
     /// 팝업 표시시 딤 처리
     lazy var dimView: UIView = {
@@ -23,26 +25,6 @@ public final class TTPopup: UIView, UIComponentBased {
         v.layer.cornerRadius = 20
         v.backgroundColor = .mainWhite
         
-        return v
-    }()
-    
-    lazy var stackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .vertical
-        v.alignment = .center
-        v.spacing = 37
-        v.addArrangedSubviews(self.titleLabel, self.resultView, self.descriptionLabel, self.buttonStackView)
-        return v
-    }()
-
-    /// 하단 버튼 2개를 묶어둔 StackView
-    lazy var buttonStackView: UIStackView = {
-        let v = UIStackView()
-        v.axis = .horizontal
-        v.addArrangedSubviews(self.leftButton, self.rightButton)
-        v.alignment = .center
-        v.spacing = 60
-
         return v
     }()
 
@@ -64,8 +46,26 @@ public final class TTPopup: UIView, UIComponentBased {
         let v = UILabel()
         v.font = .omyupretty(size: ._16)
         v.numberOfLines = 0
-        v.textAlignment = .center
         v.textColor = .grey500
+        return v
+    }()
+    
+    lazy var waringLabel: UILabel = {
+        let v = UILabel()
+        v.font = .omyupretty(size: ._16)
+        v.numberOfLines = 0
+        v.textColor = .red
+        v.isHidden = true
+        return v
+    }()
+    
+    lazy var descriptionWarningStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.alignment = .center
+        v.spacing = 8
+        v.addArrangedSubviews(self.descriptionLabel,
+                              self.waringLabel)
         return v
     }()
 
@@ -84,8 +84,29 @@ public final class TTPopup: UIView, UIComponentBased {
 
         return v
     }()
-
-    private var buttonTitles: [String] = []
+    
+    /// 하단 버튼 2개를 묶어둔 StackView
+    lazy var buttonStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .horizontal
+        v.alignment = .center
+        v.spacing = 89
+        v.addArrangedSubviews(self.leftButton,
+                              self.rightButton)
+        return v
+    }()
+    
+    lazy var stackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.alignment = .center
+        v.spacing = 37
+        v.addArrangedSubviews(self.titleLabel,
+                              self.resultView,
+                              self.descriptionWarningStackView,
+                              self.buttonStackView)
+        return v
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -100,14 +121,25 @@ public final class TTPopup: UIView, UIComponentBased {
     public func configure(title: String,
                           resultView: UIView,
                           description: String,
+                          warningText: String = "",
                           buttonTitles: [String]) {
         self.titleLabel.text = title
         self.resultView.addSubview(resultView)
         resultView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
+        
         self.descriptionLabel.text = description
         self.descriptionLabel.setLineSpacing(8)
+        self.descriptionLabel.textAlignment = .center
+        
+        if !warningText.isEmpty {
+            self.waringLabel.isHidden = false
+            self.waringLabel.text = warningText
+            self.waringLabel.setLineSpacing(8)
+            self.waringLabel.textAlignment = .center
+        }
+
         self.buttonTitles = buttonTitles
         self.configureButtons(titles: buttonTitles)
     }

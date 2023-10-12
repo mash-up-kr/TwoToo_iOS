@@ -53,7 +53,9 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
         let v = TTPrimaryButton.create(title: "보내기", .large)
         v.didTapButton { [weak self] in
             Task {
+                Loading.shared.showLoadingView()
                 await self?.interactor.didTapSendButton()
+                Loading.shared.stopLoadingView()
             }
         }
         v.setIsEnabled(false)
