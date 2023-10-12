@@ -18,7 +18,7 @@ enum MyInfo {
             var partnerNickname: String
             var challengeTotalCount: String?
         }
-
+        
         enum SocialLoginStatus: String, Equatable {
             /// 카카오 로그인
             case kakaoLogin = "Kakao"
@@ -35,22 +35,22 @@ enum MyInfo {
                 var title: String
             }
         }
-
+        
         struct Data {
             var myNickname: String
             var partnerNickname: String
             var challengeTotalCount: String?
         }
-
+        
         struct Toast {
             var message: String?
         }
-
+        
         /// 회원 탈퇴 팝업
         struct SignOutViewModel {
             var show: (UIImage)?
             var dismiss: ()?
-
+            
             /// 타이틀
             static let title: String = "회원 탈퇴하기"
             /// 메세지
@@ -60,19 +60,19 @@ enum MyInfo {
             /// 탈퇴하기 옵션
             static let signOutOptionText: String = "탈퇴하기"
         }
-
+        
         /// 회원 탈퇴 완료 팝업
         struct SignOutCompletedViewModel {
             var show: (UIImage)?
             var dismiss: ()?
-
+            
             /// 타이틀
             static let title: String = "회원 탈퇴 완료"
             /// 메세지
             static let message: String = "아쉽지만 다음에 또 만나요!"
             /// 확인
             static let confirmOptionText: String = "확인"
-
+            
         }
     }
 }

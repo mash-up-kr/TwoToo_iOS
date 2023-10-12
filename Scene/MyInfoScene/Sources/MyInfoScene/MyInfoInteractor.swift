@@ -26,6 +26,12 @@ protocol MyInfoBusinessLogic {
     func didTapSignOutPopupBackground() async
     /// 회원 탈퇴 완료 팝업의 배경 클릭
     func didTapSignOutCompletePopupBackground() async
+    /// 회원 탈퇴 취소하기 팝업의 배경 클릭
+    func didTapSignOutCancelPopupBackground() async
+    /// 회원 탈퇴 취소 완료 팝업의 배경 클릭
+    func didTapSignOutCancelCompletePopupBackground() async
+    /// 닉네임 변경 버튼을 클릭
+    func didTapChangeNicknameButton() async
 }
 
 protocol MyInfoDataStore: AnyObject {
@@ -34,7 +40,7 @@ protocol MyInfoDataStore: AnyObject {
 }
 
 final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
-
+    
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: MyInfoPresentationLogic
@@ -124,7 +130,7 @@ extension MyInfoInteractor {
         
         await self.router.routeToMyInfoListsScene(url: url)
     }
-
+    
     /// 공지사항, 이용가이드, 투투에 문의하기, 만든이들 클릭했을 때
     func didTapMyInfoLists(index: Int) async {
         let myInfo = MyInfoLists(rawValue: index)
@@ -133,14 +139,14 @@ extension MyInfoInteractor {
             await self.worker.logout()
             self.didTriggerRouteToLoginScene.send(())
         }
-
+        
         if myInfo == .singout {
             await self.presenter.presentSignOutPopup()
             return
         }
         
         guard let url = myInfo?.url else { return }
-     
+        
         await self.router.routeToMyInfoListsScene(url: url)
     }
 }
@@ -158,23 +164,32 @@ extension MyInfoInteractor {
             await self.presenter.presentSignOutError(error: error)
         }
     }
-
+    
     func didTapSignOutPopupCancelButton() async {
         await self.presenter.dismissSignOutPopup()
     }
-
+    
     func didTapSignOutCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCompletePopup()
         self.didTriggerRouteToLoginScene.send(())
     }
-
+    
     func didTapSignOutPopupBackground() async {
         await self.presenter.dismissSignOutPopup()
     }
-
+    
     func didTapSignOutCompletePopupBackground() async {
         await self.presenter.dismissSignOutCompletePopup()
         self.didTriggerRouteToLoginScene.send(())
+
+    }
+}
+
+// MARK: Feature (닉네임 변경)
+
+extension MyInfoInteractor {
+    func didTapChangeNicknameButton() async {
+        await self.router.routeToChangeNicknameScene()
     }
 }
 

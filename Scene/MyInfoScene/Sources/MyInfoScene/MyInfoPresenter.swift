@@ -15,7 +15,7 @@ protocol MyInfoPresentationLogic {
     func presentMyInfo(model: MyInfo.Model.Data)
     /// 마이 페이지 오류를 보여준다.
     func presentMyInfoError(error: Error)
-
+    
     /// 회원 탈퇴하기 팝업을 보여준다
     func presentSignOutPopup()
     /// 회원 탈퇴하기 팝업을 제거한다.
@@ -47,9 +47,9 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
                 .init(title: "로그아웃"),
                 .init(title: "회원탈퇴")
             ])
-
+        
         let totalCount = "\(model.challengeTotalCount ?? "0")번째 꽃 피우는중"
-
+        
         self.viewController?.displayLists(viewModel: myInfoItems)
         self.viewController?.displayMyInfo(viewModel: .init(myNickname: model.myNickname, partnerNickname: model.partnerNickname, challengeTotalCount: totalCount))
     }
@@ -57,24 +57,28 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
     func presentMyInfoError(error: Error) {
         self.viewController?.displayToast(viewModel: .init(message: error.localizedDescription))
     }
-
+    
     func presentSignOutPopup() {
         self.viewController?.displaySignOutPopup(viewModel: .init(show: .asset(.icon_delete)))
     }
-
+    
     func dismissSignOutPopup() {
         self.viewController?.displaySignOutPopup(viewModel: .init(dismiss: ()))
     }
-
+    
     func presentSignOutCompletePopup() {
         self.viewController?.displaySignOutCompletePopup(viewModel: .init(show: .asset(.icon_delete)))
     }
-
+    
     func dismissSignOutCompletePopup() {
         self.viewController?.displaySignOutCompletePopup(viewModel: .init(dismiss: ()))
     }
     
     func presentSignOutError(error: Error) {
         self.viewController?.displayToast(viewModel: .init(message: error.localizedDescription))
+    }
+    
+    func presentChangeNicknameView() {
+        
     }
 }

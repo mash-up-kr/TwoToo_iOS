@@ -18,7 +18,7 @@ protocol MyInfoWorkerProtocol {
 }
 
 final class MyInfoWorker: MyInfoWorkerProtocol {
-
+    
     var meLocalWorker: MeLocalWorkerProtocol
     var meNetworkWorker: MeNetworkWorkerProtocol
     var signOutNetworkWorker: SignOutNetworkWorkerProtocol
