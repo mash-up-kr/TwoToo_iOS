@@ -13,6 +13,8 @@ protocol ChallengeHistoryDetailBusinessLogic {
     func didLoad() async
     /// 닫기 버튼 클릭
     func didTapCloseButton() async
+    /// 사진 클릭
+    func didTapPhoto() async
 }
 
 protocol ChallengeHistoryDetailDataStore: AnyObject {
@@ -62,6 +64,15 @@ extension ChallengeHistoryDetailInteractor {
         await self.presenter.presentChallengeDetail(detail: self.detail)
     }
     
+}
+
+// MARK: - Feature (사진 상세)
+
+extension ChallengeHistoryDetailInteractor {
+    
+    func didTapPhoto() async {
+        await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
+    }
 }
 
 // MARK: Feature (닫기)
