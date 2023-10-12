@@ -168,16 +168,14 @@ final class ChallengeCompletedView: UIView {
 // MARK: - ChallengeCompletedViewDelegate
 extension ChallengeCompletedView: MyFlowerTopInCompletedDelegate, PartnerFlowerTopInCompletedDelegate {
     func didTapShowMyFlowerLanguage() {
-        print("myPopupViewModel", myPopupViewModel)
         if let viewModel = myPopupViewModel {
-            self.delegate?.didTapShowFlowerLaunage(viewModel: .init(show: viewModel, dismiss: ()))
+            self.delegate?.didTapShowFlowerLaunage(viewModel: .init(show: viewModel, dismiss: nil))
         }
     }
     
     func didTapShowPartnerFlowerLanguage() {
-        print("partnerPopupViewModel", partnerPopupViewModel)
         if let viewModel = partnerPopupViewModel {
-            self.delegate?.didTapShowFlowerLaunage(viewModel: .init(show: viewModel, dismiss: ()))
+            self.delegate?.didTapShowFlowerLaunage(viewModel: .init(show: viewModel, dismiss: nil))
         }
     }
 }

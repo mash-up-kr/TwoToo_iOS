@@ -486,7 +486,6 @@ extension HomeViewController: ChallengeCompletedViewDelegate, TTFlowerPopupDeleg
                 self?.flowerLanguagePopupView = popupView
                 self?.flowerLanguagePopupView?.delegate = self
                 
-                // TODO: 왜 팝업이 안뜨지?
                 if let flowerLanguagePopupView = self?.flowerLanguagePopupView {
                     self?.view.addSubview(flowerLanguagePopupView)
                 }
@@ -501,9 +500,8 @@ extension HomeViewController: ChallengeCompletedViewDelegate, TTFlowerPopupDeleg
     
     // TTFlowerPopupDelegate
     func didTapCloseView() {
-        Task {
-            await self.interactor.didTapChallengeCompletedPopupBackground()
-        }
+        self.flowerLanguagePopupView?.removeFromSuperview()
+        self.flowerLanguagePopupView = nil
     }
     
     func didTapChallengeCompletedFinishButton() {

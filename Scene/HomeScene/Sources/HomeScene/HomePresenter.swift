@@ -307,7 +307,9 @@ extension Home.Model.Challenge {
                                                                 flowerDescText: partnerFlowerMapper?.getDesc() ?? "",
                                                                 flowerImage: partnerFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage(),
                                                                 flowerOrderText: self.calculateFlowerOrderText(order: self.order))
-            
+        }
+        // 내 꽃말 팝업 매핑
+        if showMyFlowerLanguagePopup {
             viewModel.myFlower.flowerLanguagePopup = .init(flowerNameText: myFlowerMapper?.getName() ?? "",
                                                                 flowerDescText: myFlowerMapper?.getDesc() ?? "",
                                                                 flowerImage: myFlowerMapper?.getMateImageByStep(growStatus: self.partnerInfo.growStatus ?? .seed) ?? UIImage(),

@@ -89,7 +89,6 @@ final class TTFlowerPopup: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.layout()
-        self.backgroundColor = .grey200
     }
 
     required init?(coder: NSCoder) {
@@ -100,7 +99,7 @@ final class TTFlowerPopup: UIView {
         super.didMoveToSuperview()
         
         if self.superview != nil {
-            self.snp.makeConstraints { make in
+            self.snp.remakeConstraints { make in
                 make.edges.equalToSuperview()
             }
         }

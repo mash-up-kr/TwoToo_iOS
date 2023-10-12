@@ -148,7 +148,9 @@ final class MyFlowerTopView: UIView {
     func configureCompleted(isHidden isFlowerLanguageBubbleHidden: Bool) {
         if isFlowerLanguageBubbleHidden { // 챌린지 실패
             self.challengeFailBubbleView.isHidden = false
+            self.showFlowerLanguageBubbleView.isHidden = true
         } else { // 챌린지 성공
+            self.challengeFailBubbleView.isHidden = true
             self.showFlowerLanguageBubbleView.isHidden = false
         }
     }
