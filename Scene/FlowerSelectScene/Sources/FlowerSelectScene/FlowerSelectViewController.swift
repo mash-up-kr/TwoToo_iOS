@@ -176,7 +176,7 @@ final class FlowerSelectViewController: UIViewController, TTNavigationDetailBarD
         }
 
         self.challengeButton.snp.makeConstraints { make in
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
         }
