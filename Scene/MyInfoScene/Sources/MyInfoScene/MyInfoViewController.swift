@@ -44,7 +44,7 @@ final class MyInfoViewController: UIViewController {
         v.image = .asset(.icon_nicknam_my)
         return v
     }()
-
+    
     private lazy var nameStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
@@ -58,14 +58,14 @@ final class MyInfoViewController: UIViewController {
         v.font = .body3
         return v
     }()
-
+    
     private lazy var partnerNicknameLabel: UILabel = {
         let v = UILabel()
         v.textColor = .mainCoral
         v.font = .body3
         return v
     }()
-
+    
     private lazy var heartImageView: UIImageView = {
         let v = UIImageView()
         v.image = .asset(.icon_heart)
@@ -78,35 +78,35 @@ final class MyInfoViewController: UIViewController {
         v.font = .body3
         return v
     }()
-  
+    
     private lazy var nicknameStackView: UIStackView = {
-      let v = UIStackView()
-      v.axis = .horizontal
-      v.backgroundColor = .white
-      v.layer.cornerRadius = 15
-      v.spacing = 10
-      v.isLayoutMarginsRelativeArrangement = true
-      
-      v.addTapAction { [weak self] in
-        Task {
-          await self?.interactor.didTapChangeNicknameButton()
+        let v = UIStackView()
+        v.axis = .horizontal
+        v.backgroundColor = .white
+        v.layer.cornerRadius = 15
+        v.spacing = 10
+        v.isLayoutMarginsRelativeArrangement = true
+        
+        v.addTapAction { [weak self] in
+            Task {
+                await self?.interactor.didTapChangeNicknameButton()
+            }
         }
-      }
-      return v
+        return v
     }()
-  
+    
     private lazy var changeImageView: UIImageView = {
-      let v = UIImageView()
-      v.image = .asset(.icon_edit)
-      v.contentMode = .scaleAspectFit
-      return v
+        let v = UIImageView()
+        v.image = .asset(.icon_edit)
+        v.contentMode = .scaleAspectFit
+        return v
     }()
     
     private lazy var myNameTagLabel: UILabel = {
-      let v = UILabel()
-      v.textColor = .primary
-      v.font = .body2
-      return v
+        let v = UILabel()
+        v.textColor = .primary
+        v.font = .body2
+        return v
     }()
     
     private lazy var separator: TTSeparator = {
@@ -124,13 +124,13 @@ final class MyInfoViewController: UIViewController {
         v.isScrollEnabled = false
         return v
     }()
-
+    
     var signOutPopupView: TTPopup?
-
+    
     var signOutCompletePopupView: TTPopup?
-
+    
     var signOutCancelPopupView: TTPopup?
-
+    
     var signoutCancelCompletePopupView: TTPopup?
     
     init(interactor: MyInfoBusinessLogic) {
@@ -156,21 +156,21 @@ final class MyInfoViewController: UIViewController {
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    Task {
-      Loading.shared.showLoadingView()
-      await self.interactor.didLoad()
-      Loading.shared.stopLoadingView()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task {
+            Loading.shared.showLoadingView()
+            await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
+        }
     }
-  }
     
     // MARK: - Layout
     
     private func setUI() {
         self.view.setBackgroundDefault()
-
+        
         self.nameStackView.addArrangedSubviews(self.myNicknameLabel, self.heartImageView, self.partnerNicknameLabel)
         self.nicknameStackView.addArrangedSubviews(self.myNameTagLabel, self.changeImageView)
         self.view.addSubviews(
@@ -190,13 +190,13 @@ final class MyInfoViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(113)
             make.height.equalTo(UIScreen.main.bounds.height * 0.158)
         }
-      self.nicknameStackView.layoutMargins = .init(top: 3, left: 10, bottom: 3, right: 10)
+        self.nicknameStackView.layoutMargins = .init(top: 3, left: 10, bottom: 3, right: 10)
         
-      self.nameStackView.snp.makeConstraints { make in
+        self.nameStackView.snp.makeConstraints { make in
             make.top.equalTo(self.mainImageView.snp.bottom).offset(19)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
         }
-
+        
         self.heartImageView.snp.makeConstraints { make in
             make.height.width.equalTo(10)
         }
@@ -254,7 +254,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             imageView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
-
+            
             let popupView = TTPopup()
             popupView.configure(title: MyInfo.ViewModel.SignOutViewModel.title,
                                 resultView: popupContentView,
@@ -263,39 +263,39 @@ extension MyInfoViewController: MyInfoDisplayLogic {
                                     MyInfo.ViewModel.SignOutViewModel.cancelOptionText,
                                     MyInfo.ViewModel.SignOutViewModel.signOutOptionText
                                 ])
-
+            
             popupView.didTapLeftButton {
                 Task {
                     await self.interactor.didTapSignOutPopupCancelButton()
                 }
             }
-
+            
             popupView.didTapRightButton {
                 Task {
                     try await Task.sleep(nanoseconds: 1000000000)
                     await self.interactor.didTapSignoutPopupSignOutButton()
                 }
             }
-
+            
             popupView.didTapBackground {
                 Task {
                     await self.interactor.didTapSignOutPopupBackground()
                 }
             }
-
+            
             self.signOutPopupView = popupView
-
+            
             if let signOutPopupView = self.signOutPopupView {
                 self.view.addSubview(signOutPopupView)
             }
         }
-
+        
         viewModel.dismiss.unwrap {
             self.signOutPopupView?.removeFromSuperview()
             self.signOutPopupView = nil
         }
     }
-
+    
     func displaySignOutCompletePopup(viewModel: MyInfo.ViewModel.SignOutCompletedViewModel) {
         viewModel.show.unwrap {
             let popupContentView = UIView()
@@ -306,7 +306,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             imageView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
-
+            
             let popupView = TTPopup()
             popupView.configure(title: MyInfo.ViewModel.SignOutCompletedViewModel.title,
                                 resultView: popupContentView,
@@ -314,33 +314,33 @@ extension MyInfoViewController: MyInfoDisplayLogic {
                                 buttonTitles: [
                                     MyInfo.ViewModel.SignOutCompletedViewModel.confirmOptionText
                                 ])
-
+            
             popupView.didTapLeftButton {
                 Task {
                     await self.interactor.didTapSignOutCompleteConfirmButton()
                 }
             }
-
-
+            
+            
             popupView.didTapBackground {
                 Task {
                     await self.interactor.didTapSignOutCompletePopupBackground()
                 }
             }
-
+            
             self.signOutCompletePopupView = popupView
-
+            
             if let signOutCompletePopupView = self.signOutCompletePopupView {
                 self.view.addSubview(signOutCompletePopupView)
             }
         }
-
+        
         viewModel.dismiss.unwrap {
             self.signOutCompletePopupView?.removeFromSuperview()
             self.signOutCompletePopupView = nil
         }
     }
-
+    
     func displaySignOutCancelPopup(viewModel: MyInfo.ViewModel.SignOutCancelViewModel) {
         viewModel.show.unwrap {
             let popupContentView = UIView()
@@ -351,7 +351,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             imageView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
-
+            
             let popupView = TTPopup()
             popupView.configure(title: MyInfo.ViewModel.SignOutCancelViewModel.title,
                                 resultView: popupContentView,
@@ -360,39 +360,39 @@ extension MyInfoViewController: MyInfoDisplayLogic {
                                     MyInfo.ViewModel.SignOutCancelViewModel.noOptionText,
                                     MyInfo.ViewModel.SignOutCancelViewModel.SingOutCancelOptionText
                                 ])
-
+            
             popupView.didTapLeftButton {
                 Task {
                     await self.interactor.didTapSignOutCancelCompleteNobutton()
                 }
             }
-
+            
             popupView.didTapRightButton {
                 Task {
                     try await Task.sleep(nanoseconds: 1000000000)
                     await self.interactor.didTapCancelSignOutCancelButton()
                 }
             }
-
+            
             popupView.didTapBackground {
                 Task {
                     await self.interactor.didTapSignOutCancelPopupBackground()
                 }
             }
-
+            
             self.signOutCancelPopupView = popupView
-
+            
             if let signOutCancelPopupView = self.signOutCancelPopupView {
                 self.view.addSubview(signOutCancelPopupView)
             }
         }
-
+        
         viewModel.dismiss.unwrap {
             self.signOutCancelPopupView?.removeFromSuperview()
             self.signOutCancelPopupView = nil
         }
     }
-
+    
     func displaySignOutCancelCompletePopup(viewModel: MyInfo.ViewModel.SignOutCancelCompletedViewModel) {
         viewModel.show.unwrap {
             let popupContentView = UIView()
@@ -403,7 +403,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             imageView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
-
+            
             let popupView = TTPopup()
             popupView.configure(title: MyInfo.ViewModel.SignOutCancelCompletedViewModel.title,
                                 resultView: popupContentView,
@@ -411,32 +411,32 @@ extension MyInfoViewController: MyInfoDisplayLogic {
                                 buttonTitles: [
                                     MyInfo.ViewModel.SignOutCancelCompletedViewModel.confirmOptionText
                                 ])
-
+            
             popupView.didTapLeftButton {
                 Task {
                     await self.interactor.didTapSignOutCancelCompleteConfirmButton()
                 }
             }
-
+            
             popupView.didTapBackground {
                 Task {
                     await self.interactor.didTapSignOutCancelCompletePopupBackground()
                 }
             }
-
+            
             self.signoutCancelCompletePopupView = popupView
-
+            
             if let signoutCancelCompletePopupView = self.signoutCancelCompletePopupView {
                 self.view.addSubview(signoutCancelCompletePopupView)
             }
         }
-
+        
         viewModel.dismiss.unwrap {
             self.signoutCancelCompletePopupView?.removeFromSuperview()
             self.signoutCancelCompletePopupView = nil
         }
     }
-
+    
     func displayLists(viewModel: MyInfo.ViewModel.Lists) {
         UIView.transition(
             with: self.view,
@@ -454,7 +454,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             completion: nil
         )
     }
-
+    
     func displayMyInfo(viewModel: MyInfo.ViewModel.Data) {
         UIView.transition(
             with: self.view,
@@ -472,7 +472,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             completion: nil
         )
     }
-
+    
     func displayToast(viewModel: MyInfo.ViewModel.Toast) {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
@@ -492,7 +492,7 @@ extension MyInfoViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(text: self.myInfoLists[indexPath.row].title)
         return cell
     }
-
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Task {

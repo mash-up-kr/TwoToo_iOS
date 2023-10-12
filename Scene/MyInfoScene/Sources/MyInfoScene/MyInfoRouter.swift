@@ -26,15 +26,15 @@ final class MyInfoRouter {
 extension MyInfoRouter: MyInfoRoutingLogic {
     /// 사파리 웹뷰로 보여준다.
     func routeToMyInfoListsScene(url: URL) {
-
+        
         let safariViewController = SFSafariViewController(url: url)
         
         self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
-  
+    
     func routeToChangeNicknameScene() {
-      let changeNicknameScene = ChangeNicknameSceneFactory().make(with: .init()).viewController
-      changeNicknameScene.hidesBottomBarWhenPushed = true
-      self.viewController?.navigationController?.pushViewController(changeNicknameScene, animated: true)
+        let changeNicknameScene = ChangeNicknameSceneFactory().make(with: .init()).viewController
+        changeNicknameScene.hidesBottomBarWhenPushed = true
+        self.viewController?.navigationController?.pushViewController(changeNicknameScene, animated: true)
     }
 }

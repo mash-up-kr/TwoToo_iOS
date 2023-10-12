@@ -46,7 +46,7 @@ protocol MyInfoDataStore: AnyObject {
 }
 
 final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
-
+    
     var cancellables: Set<AnyCancellable> = []
     
     var presenter: MyInfoPresentationLogic
@@ -114,7 +114,7 @@ extension MyInfoInteractor {
 // MARK: Feature (첫 진입)
 
 extension MyInfoInteractor {
-
+    
     func didLoad() async {
         do {
             let mypageInfo = try await self.worker.fetchMypageInfo()
@@ -136,7 +136,7 @@ extension MyInfoInteractor {
         
         await self.router.routeToMyInfoListsScene(url: url)
     }
-
+    
     /// 공지사항, 이용가이드, 투투에 문의하기, 만든이들 클릭했을 때
     func didTapMyInfoLists(index: Int) async {
         let myInfo = MyInfoLists(rawValue: index)
@@ -145,13 +145,13 @@ extension MyInfoInteractor {
             await self.worker.logout()
             self.didTriggerRouteToLoginScene.send(())
         }
-
+        
         if myInfo == .singout {
             let socailLoginType = self.worker.fetchSocialLoginType()
-
+            
             if socailLoginType == .appleLogin {
                 try? await self.worker.retryAppleLogin()
-
+                
                 let isSingOutRequired = self.worker.fetchAppleSignOutStatus()
                 // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
                 if isSingOutRequired {
@@ -165,7 +165,7 @@ extension MyInfoInteractor {
                 // true면 회원탈퇴 신청한 상태 false면 회원탈퇴 신청전 상태
                 if isSingOutRequired {
                     await self.presenter.presentSignOutCancelPopup()
-
+                    
                 } else {
                     await self.presenter.presentSignOutPopup()
                 }
@@ -173,7 +173,7 @@ extension MyInfoInteractor {
         }
         
         guard let url = myInfo?.url else { return }
-     
+        
         await self.router.routeToMyInfoListsScene(url: url)
     }
 }
@@ -185,43 +185,43 @@ extension MyInfoInteractor {
         await self.presenter.dismissSignOutPopup()
         await self.presenter.presentSignOutCompletePopup()
     }
-
+    
     func didTapSignOutPopupCancelButton() async {
         await self.presenter.dismissSignOutPopup()
     }
-
+    
     func didTapSignOutCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCompletePopup()
         self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
     }
-
+    
     func didTapCancelSignOutCancelButton() async {
         await self.presenter.dismissSignOutCancelPopup()
         await self.presenter.presentSignOutCancelCompletePopup()
     }
-
+    
     func didTapSignOutCancelCompleteNobutton() async {
         await self.presenter.dismissSignOutCancelPopup()
     }
-
+    
     func didTapSignOutCancelCompleteConfirmButton() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
         self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
     }
-
+    
     func didTapSignOutPopupBackground() async {
         await self.presenter.dismissSignOutPopup()
     }
-
+    
     func didTapSignOutCompletePopupBackground() async {
         await self.presenter.dismissSignOutCompletePopup()
         self.worker.setSignoutStatus(required: true, socialType: self.worker.fetchSocialLoginType())
     }
-
+    
     func didTapSignOutCancelPopupBackground() async {
         await self.presenter.dismissSignOutCancelPopup()
     }
-
+    
     func didTapSignOutCancelCompletePopupBackground() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
         self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
@@ -232,7 +232,7 @@ extension MyInfoInteractor {
 
 extension MyInfoInteractor {
     func didTapChangeNicknameButton() async {
-      await self.router.routeToChangeNicknameScene()
+        await self.router.routeToChangeNicknameScene()
     }
 }
 

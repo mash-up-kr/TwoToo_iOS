@@ -10,8 +10,8 @@ import UIKit
 
 @MainActor
 protocol ChangeNicknameRoutingLogic {
-  // 화면을 닫는다.
-  func dismiss()
+    // 화면을 닫는다.
+    func dismiss()
 }
 
 final class ChangeNicknameRouter {
@@ -20,7 +20,7 @@ final class ChangeNicknameRouter {
 }
 
 extension ChangeNicknameRouter: ChangeNicknameRoutingLogic {
-  func dismiss() {
-    self.viewController?.navigationController?.popViewController(animated: true)
-  }
+    func dismiss() {
+        self.viewController?.navigationController?.popViewController(animated: true)
+    }
 }

@@ -9,12 +9,12 @@
 import CoreKit
 
 protocol ChangeNicknameBusinessLogic {
-  /// 닉네임 문구 입력
-  func didEnterMyNickname(name: String) async
-  /// 확인 버튼 클릭
-  func didTapChangeButton() async
-  /// 변경 버튼 enable
-  func didUpdateChangeButton() async
+    /// 닉네임 문구 입력
+    func didEnterMyNickname(name: String) async
+    /// 확인 버튼 클릭
+    func didTapChangeButton() async
+    /// 변경 버튼 enable
+    func didUpdateChangeButton() async
 }
 
 protocol ChangeNicknameDataStore: AnyObject {}
@@ -38,7 +38,7 @@ final class ChangeNicknameInteractor: ChangeNicknameDataStore, ChangeNicknameBus
     
     // MARK: - DataStore
     
-  var nicknameDataSource: String?
+    var nicknameDataSource: String?
 }
 
 // MARK: - Interactive Business Logic
@@ -54,31 +54,31 @@ extension ChangeNicknameInteractor {
 // MARK: Feature (닉네임 변경)
 
 extension ChangeNicknameInteractor {
-  func didEnterMyNickname(name: String) async {
-    self.nicknameDataSource = name
-    await self.didUpdateChangeButton()
-  }
-  
-  func didTapChangeButton() async {
-    do {
-      try await self.worker.requestChangeNickname(name: self.nicknameDataSource ?? "")
-      await self.presenter.presentChangeNicknameSucess(text: "닉네임이 변경되었습니다")
-      await self.router.dismiss()
+    func didEnterMyNickname(name: String) async {
+        self.nicknameDataSource = name
+        await self.didUpdateChangeButton()
     }
-    catch {
-      await self.presenter.presentChangeNicknameError(error: error)
-      await self.router.dismiss()
+    
+    func didTapChangeButton() async {
+        do {
+            try await self.worker.requestChangeNickname(name: self.nicknameDataSource ?? "")
+            await self.presenter.presentChangeNicknameSucess(text: "닉네임이 변경되었습니다")
+            await self.router.dismiss()
+        }
+        catch {
+            await self.presenter.presentChangeNicknameError(error: error)
+            await self.router.dismiss()
+        }
     }
-  }
-  
-  func didUpdateChangeButton() async {
-    if self.nicknameDataSource != "" {
-      await self.presenter.presentEnabled(changeButton: .init(isEnabled: true))
+    
+    func didUpdateChangeButton() async {
+        if self.nicknameDataSource != "" {
+            await self.presenter.presentEnabled(changeButton: .init(isEnabled: true))
+        }
+        else {
+            await self.presenter.presentEnabled(changeButton: .init(isEnabled: false))
+        }
     }
-    else {
-      await self.presenter.presentEnabled(changeButton: .init(isEnabled: false))
-    }
-  }
 }
 
 // MARK: - Application Business Logic

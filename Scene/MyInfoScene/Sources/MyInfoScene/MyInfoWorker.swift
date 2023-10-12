@@ -26,7 +26,7 @@ protocol MyInfoWorkerProtocol {
 }
 
 final class MyInfoWorker: MyInfoWorkerProtocol {
-
+    
     var meLocalWorker: MeLocalWorkerProtocol
     var meNetworkWorker: MeNetworkWorkerProtocol
     var appleLoginWorker: AppleLoginWorkerProtocol
@@ -58,22 +58,22 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
     func logout() async {
         self.meLocalWorker.token = ""
     }
-
+    
     func fetchSocialLoginType() -> MyInfo.Model.SocialLoginStatus {
         return .init(rawValue: self.meLocalWorker.socialType ?? "") ?? .appleLogin
     }
-
+    
     func retryAppleLogin() async throws {
         _ = try await self.appleLoginWorker.retryAppleLogin()
     }
-
+    
     func setSignoutStatus(required: Bool, socialType: MyInfo.Model.SocialLoginStatus) {
         switch socialType {
-            case .kakaoLogin:
-                self.myInfoLocalWorker.kakaoSignOutRequestCompleted = required
-                
-            case .appleLogin:
-                self.myInfoLocalWorker.appleSignOutRequestCompleted = required
+        case .kakaoLogin:
+            self.myInfoLocalWorker.kakaoSignOutRequestCompleted = required
+            
+        case .appleLogin:
+            self.myInfoLocalWorker.appleSignOutRequestCompleted = required
         }
     }
     
@@ -81,7 +81,7 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
         guard let requestCompletedStatus = self.myInfoLocalWorker.kakaoSignOutRequestCompleted else { return true}
         return requestCompletedStatus
     }
-
+    
     func fetchAppleSignOutStatus() -> Bool {
         guard let requestCompletedStatus = self.myInfoLocalWorker.appleSignOutRequestCompleted else { return true}
         return requestCompletedStatus
