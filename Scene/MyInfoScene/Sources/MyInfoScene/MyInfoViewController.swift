@@ -119,13 +119,17 @@ final class MyInfoViewController: UIViewController {
         super.viewDidLoad()
         self.setUI()
         
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         Task {
             Loading.shared.showLoadingView()
-            await self.interactor.didLoad()
+            await self.interactor.didAppear()
             Loading.shared.stopLoadingView()
         }
-        
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Layout
@@ -148,8 +152,9 @@ final class MyInfoViewController: UIViewController {
         
         self.mainImageView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
-            make.leading.trailing.equalToSuperview().inset(113)
-            make.height.equalTo(UIScreen.main.bounds.height * 0.158)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(149)
+            make.height.equalTo(129)
         }
         
         self.nameStackView.snp.makeConstraints { make in
