@@ -49,37 +49,29 @@ public final class TTNavigationDetailBar: UIView {
     
     // MARK: - Init
     
-    override public init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-    }
-    
-    /// - Parameters:
-    ///  - title: 타이틀 설정
-    ///  - leftButtonImage: 좌측 버튼 이미지 설정
-    ///  - rightButtonImage: 우측 버튼 이미지 설정
-    ///  사용 예시
-    ///  ```swift
-    /// TTNavigationDetailBar(title: "Hello",
-    ///                       leftButtonImage: .asset(.icon_more),
-    ///                       rightButtonImage: nil)
-    ///  ```
-    public convenience init(title: String?,
-                            leftButtonImage: UIImage?,
-                            rightButtonImage: UIImage?) {
-        self.init()
-        self.titleLabel.text = title
-        self.leftButton.setImage(leftButtonImage, for: .normal)
-        self.rightButton.setImage(rightButtonImage , for: .normal)
-       
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// - Parameters:
+    ///  - title: 타이틀 설정
+    ///  - leftButtonImage: 좌측 버튼 이미지 설정
+    ///  - rightButtonImage: 우측 버튼 이미지 설정
+    public func configure(title: String?,
+                   leftButtonImage: UIImage?,
+                   rightButtonImage: UIImage?) {
+        self.titleLabel.text = title
+        self.leftButton.setImage(leftButtonImage, for: .normal)
+        self.rightButton.setImage(rightButtonImage , for: .normal)
+    }
+    
     // MARK: - Layout
-
+    
     private func layout() {
         [self.titleLabel, self.leftButton, self.rightButton].forEach {
             self.addSubview($0)

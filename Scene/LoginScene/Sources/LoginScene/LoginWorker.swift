@@ -81,7 +81,7 @@ final class LoginWorker: LoginWorkerProtocol {
         let authResponse = try await self.authNetworkWorker.requestAuthorize(
             socialId: socialId,
             loginType: loginType,
-            deviceToken: self.meLocalWorker.deviceToken ?? ""
+            deviceToken: self.meLocalWorker.deviceToken ?? "FCM Token"
         )
         self.meLocalWorker.token = authResponse.accessToken
         self.meLocalWorker.nickname = authResponse.nickname

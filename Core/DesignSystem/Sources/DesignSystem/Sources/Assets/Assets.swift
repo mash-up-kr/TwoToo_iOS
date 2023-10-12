@@ -134,6 +134,7 @@ public enum Assets: String {
     case history_waiting
     case img_buds
     case icon_challenge_progress
+    case icon_title_arrow
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

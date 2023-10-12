@@ -24,14 +24,8 @@ protocol MyInfoPresentationLogic {
     func presentSignOutCompletePopup()
     /// 회원 탈퇴  완료 팝업을 제거한다.
     func dismissSignOutCompletePopup()
-    /// 회원 탈퇴 취소 팝업을 보여준다.
-    func presentSignOutCancelPopup()
-    /// 회원 탈퇴 취소 팝업을 제거한다.
-    func dismissSignOutCancelPopup()
-    /// 회원 탈퇴 취소 완료 팝업을 보여준다.
-    func presentSignOutCancelCompletePopup()
-    /// 회원 탈퇴 취소 완료 팝업을 제거한다.
-    func dismissSignOutCancelCompletePopup()
+    /// 회원 탈퇴 오류를 보여준다.
+    func presentSignOutError(error: Error)
 }
 
 final class MyInfoPresenter {
@@ -79,20 +73,8 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
     func dismissSignOutCompletePopup() {
         self.viewController?.displaySignOutCompletePopup(viewModel: .init(dismiss: ()))
     }
-
-    func presentSignOutCancelPopup() {
-        self.viewController?.displaySignOutCancelPopup(viewModel: .init(show: .asset(.icon_nickname_mate)))
-    }
-
-    func dismissSignOutCancelPopup() {
-        self.viewController?.displaySignOutCancelPopup(viewModel: .init(dismiss: ()))
-    }
-
-    func presentSignOutCancelCompletePopup() {
-        self.viewController?.displaySignOutCancelCompletePopup(viewModel: .init(show: .asset(.icon_congratulation)))
-    }
-
-    func dismissSignOutCancelCompletePopup() {
-        self.viewController?.displaySignOutCancelCompletePopup(viewModel: .init(dismiss: ()))
+    
+    func presentSignOutError(error: Error) {
+        self.viewController?.displayToast(viewModel: .init(message: error.localizedDescription))
     }
 }
