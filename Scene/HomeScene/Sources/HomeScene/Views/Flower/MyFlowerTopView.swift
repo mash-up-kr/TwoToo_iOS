@@ -126,6 +126,7 @@ final class MyFlowerTopView: UIView {
     func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel.TopViewModel) {
         self.wateringCanView.isHidden = viewModel.isCertificationButtonHidden
         self.wateringCanView.titleLabel.text = viewModel.cetificationGuideText
+        self.wateringCanView.titleLabel.isHidden = viewModel.isHiddenCetificationGuideText
         
         if viewModel.isComplimentCommentHidden {
             self.speechBubbleView.isHidden = true

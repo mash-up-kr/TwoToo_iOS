@@ -33,11 +33,13 @@ public final class HistoryCollectionViewCell: UICollectionViewCell {
     
     private lazy var myFlowerImageView: UIImageView = {
         let v = UIImageView()
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
     private lazy var partnerFlowerImageView: UIImageView = {
         let v = UIImageView()
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
@@ -78,7 +80,7 @@ public final class HistoryCollectionViewCell: UICollectionViewCell {
         }
         
         self.dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(7)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().inset(12)
         }
@@ -95,11 +97,21 @@ public final class HistoryCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(viewModel: History.ViewModel.CellInfo) {
-        self.orderLabel.text = viewModel.orderText
         self.titleLabel.text = viewModel.nameText
         self.dateLabel.text = viewModel.dateText
         self.myFlowerImageView.image = viewModel.myFlowerImage
         self.partnerFlowerImageView.image = viewModel.partnerFlowerImage
+        
+        if viewModel.isFinished {
+            self.partnerFlowerImageView.isHidden = false
+            self.orderLabel.text = "\(viewModel.order)번째 챌린지"
+            self.orderLabel.textColor = .mainCoral
+        }
+        else {
+            self.partnerFlowerImageView.isHidden = true
+            self.orderLabel.text = "\(viewModel.order)번째 챌린지 중"
+            self.myFlowerImageView.image = .asset(.icon_challenge_progress)
+            self.orderLabel.textColor = .mainPink
+        }
     }
-    
 }

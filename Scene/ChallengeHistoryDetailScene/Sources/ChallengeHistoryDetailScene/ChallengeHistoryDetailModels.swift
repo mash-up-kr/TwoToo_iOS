@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SKPhotoBrowser
 
 enum ChallengeHistoryDetail {
     
@@ -59,6 +60,11 @@ enum ChallengeHistoryDetail {
             var complimentTitle: String
             /// 칭찬 문구
             var complimentComment: String?
+        }
+        
+        /// 사진
+        struct Photo {
+            var images: [SKPhoto]
         }
     }
 }
