@@ -30,7 +30,6 @@ final class TTFlowerPopup: UIView {
         v.textColor = .primary
         v.font = .h2
         v.textAlignment = .center
-        v.text = "목화"
         return v
     }()
     
@@ -39,13 +38,12 @@ final class TTFlowerPopup: UIView {
         v.textColor = .primary
         v.font = .body2
         v.textAlignment = .center
-        v.text = "순결, 순결한 사랑, 순결한 마음"
         return v
     }()
     
     lazy var flowerImageView: UIImageView = {
         let v = UIImageView()
-        v.image = .asset(.flower_blur_camellia)
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
@@ -56,7 +54,6 @@ final class TTFlowerPopup: UIView {
         v.backgroundColor = .white
         v.layer.cornerRadius = 10
         v.clipsToBounds = true
-        v.text = "1번째 꽃"
         return v
     }()
     
@@ -85,6 +82,7 @@ final class TTFlowerPopup: UIView {
                       self.backgroundImageView,
                       self.closeButton)
         v.sendSubviewToBack(self.backgroundImageView)
+        v.layer.cornerRadius = 20
         return v
     }()
     
@@ -143,7 +141,7 @@ final class TTFlowerPopup: UIView {
         }
         
         self.flowerImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(32)
+            make.top.equalTo(self.flowerDescLabel.snp.bottom).offset(32)
             make.centerX.equalToSuperview()
             make.width.equalTo(100)
             make.height.lessThanOrEqualTo(165)
@@ -156,6 +154,11 @@ final class TTFlowerPopup: UIView {
         
         self.backgroundImageView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        self.closeButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().inset(14)
         }
     }
     
