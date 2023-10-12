@@ -122,6 +122,8 @@ enum ChallengeHistory {
             var iconImage: UIImage
             /// 설명
             var description: String
+            /// 경고 문구
+            var warningText: String
             /// 하단의 왼쪽, 오른쪽 버튼 타이틀
             var buttonTitles: [String]
         }
