@@ -78,6 +78,26 @@ final class MyInfoViewController: UIViewController {
         v.font = .body3
         return v
     }()
+  
+    private lazy var nicknameStackView: UIStackView = {
+      let v = UIStackView()
+      v.axis = .horizontal
+      v.spacing = 9
+      v.backgroundColor = .white
+      v.layer.cornerRadius = 15
+      return v
+    }()
+  
+    private lazy var changeButton: UIButton = {
+      let v = UIButton()
+      v.setImage(.asset(.icon_edit), for: .normal)
+      v.addAction { [weak self] in
+        Task {
+          await self?.interactor.didTapChangeNicknameButton()
+        }
+      }
+      return v
+    }()
     
     private lazy var myNameTagView: TTTagView = {
         let v = TTTagView(textColor: .primary, fontSize: .body2, cornerRadius: 15)
@@ -131,6 +151,15 @@ final class MyInfoViewController: UIViewController {
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Task {
+      Loading.shared.showLoadingView()
+      await self.interactor.didLoad()
+      Loading.shared.stopLoadingView()
+    }
+  }
     
     // MARK: - Layout
     
@@ -138,11 +167,16 @@ final class MyInfoViewController: UIViewController {
         self.view.setBackgroundDefault()
 
         self.nameStackView.addArrangedSubviews(self.myNicknameLabel, self.heartImageView, self.partnerNicknameLabel)
+        self.nicknameStackView.addArrangedSubviews(self.myNameTagView, self.changeButton)
         self.view.addSubviews(
             self.navigationBar, self.mainImageView,
             self.nameStackView, self.challengeCountLabel,
-            self.myNameTagView, self.separator, self.tableView
+            self.nicknameStackView, self.separator, self.tableView
         )
+      
+        self.changeButton.snp.makeConstraints { make in
+          make.height.width.equalTo(30)
+        }
         
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -170,10 +204,10 @@ final class MyInfoViewController: UIViewController {
             make.centerX.equalTo(self.mainImageView.snp.centerX)
         }
         
-        self.myNameTagView.snp.makeConstraints { make in
+        self.nicknameStackView.snp.makeConstraints { make in
             make.top.equalTo(self.challengeCountLabel.snp.bottom).offset(14)
             make.centerX.equalTo(self.mainImageView.snp.centerX)
-            make.height.equalTo(28)
+            make.height.equalTo(30)
         }
         
         self.separator.snp.makeConstraints { make in

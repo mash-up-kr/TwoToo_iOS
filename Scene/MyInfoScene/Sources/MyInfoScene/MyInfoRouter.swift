@@ -8,11 +8,14 @@
 
 import UIKit
 import SafariServices
+import ChangeNicknameScene
 
 @MainActor
 protocol MyInfoRoutingLogic {
     /// 마이페이지 내 공지사항, 이용가이드, 투투에 문의하기, 만든이들 화면으로 이동한다.
     func routeToMyInfoListsScene(url: URL)
+    /// 닉네임 변경 화면으로 이동한다.
+    func routeToChangeNicknameScene()
 }
 
 final class MyInfoRouter {
@@ -27,5 +30,11 @@ extension MyInfoRouter: MyInfoRoutingLogic {
         let safariViewController = SFSafariViewController(url: url)
         
         self.viewController?.present(safariViewController, animated: true, completion: nil)
+    }
+  
+    func routeToChangeNicknameScene() {
+      let changeNicknameScene = ChangeNicknameSceneFactory().make(with: .init()).viewController
+      changeNicknameScene.hidesBottomBarWhenPushed = true
+      self.viewController?.navigationController?.pushViewController(changeNicknameScene, animated: true)
     }
 }

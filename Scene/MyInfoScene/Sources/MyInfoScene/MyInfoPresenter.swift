@@ -32,6 +32,8 @@ protocol MyInfoPresentationLogic {
     func presentSignOutCancelCompletePopup()
     /// 회원 탈퇴 취소 완료 팝업을 제거한다.
     func dismissSignOutCancelCompletePopup()
+    /// 닉네임 변경 화면을 보여준다
+    func presentChangeNicknameView()
 }
 
 final class MyInfoPresenter {
@@ -94,5 +96,9 @@ extension MyInfoPresenter: MyInfoPresentationLogic {
 
     func dismissSignOutCancelCompletePopup() {
         self.viewController?.displaySignOutCancelCompletePopup(viewModel: .init(dismiss: ()))
+    }
+  
+    func presentChangeNicknameView() {
+      
     }
 }

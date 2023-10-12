@@ -36,6 +36,8 @@ protocol MyInfoBusinessLogic {
     func didTapSignOutCancelPopupBackground() async
     /// 회원 탈퇴 취소 완료 팝업의 배경 클릭
     func didTapSignOutCancelCompletePopupBackground() async
+    /// 닉네임 변경 버튼을 클릭
+    func didTapChangeNicknameButton() async
 }
 
 protocol MyInfoDataStore: AnyObject {
@@ -223,6 +225,14 @@ extension MyInfoInteractor {
     func didTapSignOutCancelCompletePopupBackground() async {
         await self.presenter.dismissSignOutCancelCompletePopup()
         self.worker.setSignoutStatus(required: false, socialType: self.worker.fetchSocialLoginType())
+    }
+}
+
+// MARK: Feature (닉네임 변경)
+
+extension MyInfoInteractor {
+    func didTapChangeNicknameButton() async {
+      await self.router.routeToChangeNicknameScene()
     }
 }
 
