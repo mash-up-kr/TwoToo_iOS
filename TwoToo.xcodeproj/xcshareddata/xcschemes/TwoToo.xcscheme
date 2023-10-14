@@ -52,7 +52,11 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-FIRAnalyticsDebugEnabled"
-            isEnabled = "YES">
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-FIRDebugEnabled"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
