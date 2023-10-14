@@ -26,10 +26,6 @@ protocol MyInfoBusinessLogic {
     func didTapSignOutPopupBackground() async
     /// 회원 탈퇴 완료 팝업의 배경 클릭
     func didTapSignOutCompletePopupBackground() async
-    /// 회원 탈퇴 취소하기 팝업의 배경 클릭
-    func didTapSignOutCancelPopupBackground() async
-    /// 회원 탈퇴 취소 완료 팝업의 배경 클릭
-    func didTapSignOutCancelCompletePopupBackground() async
     /// 닉네임 변경 버튼을 클릭
     func didTapChangeNicknameButton() async
 }

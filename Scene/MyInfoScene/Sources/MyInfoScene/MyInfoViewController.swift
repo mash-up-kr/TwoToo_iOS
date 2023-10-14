@@ -157,15 +157,6 @@ final class MyInfoViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Task {
-            Loading.shared.showLoadingView()
-            await self.interactor.didLoad()
-            Loading.shared.stopLoadingView()
-        }
-    }
-    
     // MARK: - Layout
     
     private func setUI() {
