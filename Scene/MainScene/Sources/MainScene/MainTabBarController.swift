@@ -42,7 +42,7 @@ final class MainTabBarController: UITabBarController {
     // MARK: - Layout
     
     private func setUI() {
-        self.view.backgroundColor = .clear
+        self.view.setBackgroundDefault()
     }
     
     func setTab(_ tab: Main.ViewModel.MainTab) {
