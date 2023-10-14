@@ -41,7 +41,7 @@ final class ChallengeInProgressView: UIView {
     /// 내 꽃 상위 컴포넌트
     lazy var myFlowerTopView: MyFlowerTopView = {
         let v = MyFlowerTopView()
-        v.delegate = self
+        v.inProgressDelegate = self
         return v
     }()
     /// 내 꽃 정보 뷰
@@ -53,7 +53,6 @@ final class ChallengeInProgressView: UIView {
     /// 상대방 꽃 상위 컴포넌트
     lazy var partnerFlowerTopView: PartnerFlowerTopView = {
         let v = PartnerFlowerTopView()
-//        v.delegate = self
         return v
     }()
     /// 상대방 꽃 정보 뷰
@@ -191,7 +190,7 @@ final class ChallengeInProgressView: UIView {
     
 }
 
-extension ChallengeInProgressView: MyFlowerViewDelegate, MyFlowerTopViewDelegate {
+extension ChallengeInProgressView: MyFlowerViewDelegate, MyFlowerTopInProgressDelegate {
     func didTapEmptySpeechBubbleView() {
         self.delegate?.didTapMyFlowerEmptySpeechBubbleView()
     }
@@ -204,4 +203,3 @@ extension ChallengeInProgressView: MyFlowerViewDelegate, MyFlowerTopViewDelegate
         self.delegate?.didTapCertificateButton()
     }
 }
-

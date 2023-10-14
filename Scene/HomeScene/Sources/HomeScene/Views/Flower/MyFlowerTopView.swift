@@ -8,16 +8,22 @@
 import UIKit
 import DesignSystem
 
-protocol MyFlowerTopViewDelegate: AnyObject {
+protocol MyFlowerTopInProgressDelegate: AnyObject {
     /// 물뿌리개를 탭 했을 때 - 인증
     func didTapWateringCanView()
     /// 비어있는 말풍선을 탭 했을 때
     func didTapEmptySpeechBubbleView()
 }
 
+protocol MyFlowerTopInCompletedDelegate: AnyObject {
+    /// 꽃말 보기 말풍선을 탭 했을 때 - 팝업 띄우기
+    func didTapShowMyFlowerLanguage()
+}
+
 final class MyFlowerTopView: UIView {
     
-    weak var delegate: MyFlowerTopViewDelegate?
+    weak var inProgressDelegate: MyFlowerTopInProgressDelegate?
+    weak var inCompletedDelegate: MyFlowerTopInCompletedDelegate?
     
     // MARK: - 챌린지 진행 중
     /// 칭찬시 나타나는 말풍선
@@ -31,7 +37,7 @@ final class MyFlowerTopView: UIView {
         let v = WateringCanView()
         v.isHidden = true
         v.addTapAction { [weak self] in
-            self?.delegate?.didTapWateringCanView()
+            self?.inProgressDelegate?.didTapWateringCanView()
         }
         return v
     }()
@@ -41,15 +47,27 @@ final class MyFlowerTopView: UIView {
         v.isHidden = true
         v.isUserInteractionEnabled = true
         v.addTapAction { [weak self] in
-            self?.delegate?.didTapEmptySpeechBubbleView()
+            self?.inProgressDelegate?.didTapEmptySpeechBubbleView()
         }
         return v
     }()
     // MARK: - 챌린지 완료
     /// 꽃말 보기 말풍선 이미지
-    lazy var showFlowerTextImageView: UIImageView = {
+    lazy var showFlowerLanguageBubbleView: UIImageView = {
         let v = UIImageView()
         v.image = .asset(.icon_bubble_flowerLanguage)
+        v.isHidden = true
+        v.isUserInteractionEnabled = true
+        v.addTapAction { [weak self] in
+            self?.inCompletedDelegate?.didTapShowMyFlowerLanguage()
+        }
+        return v
+    }()
+    
+    /// 챌린지 실패시(꽃을 피우지 못 했을 때) 보여지는 말풍선 뷰
+    lazy var challengeFailBubbleView: UIImageView = {
+        let v = UIImageView()
+        v.image = .asset(.bubble_challenge_fail)
         v.isHidden = true
         return v
     }()
@@ -67,8 +85,9 @@ final class MyFlowerTopView: UIView {
     private func layout() {
         self.addSubviews(self.speechBubbleView,
                          self.wateringCanView,
-                         self.showFlowerTextImageView,
-                         self.complimentWriteBubbleImageView)
+                         self.showFlowerLanguageBubbleView,
+                         self.complimentWriteBubbleImageView,
+                         self.challengeFailBubbleView)
         
         let speechBubbleBottom = UIDevice.current.deviceType == .default ? 15 : 32
 
@@ -90,10 +109,17 @@ final class MyFlowerTopView: UIView {
             make.bottom.equalToSuperview().offset(-12)
         }
         
-        self.showFlowerTextImageView.snp.makeConstraints { make in
+        self.showFlowerLanguageBubbleView.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.height.equalTo(48)
             make.centerX.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalToSuperview().offset(-4)
+        }
+        
+        self.challengeFailBubbleView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.height.equalTo(63)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
     
@@ -120,9 +146,13 @@ final class MyFlowerTopView: UIView {
         }
     }
     
-    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.MyFlowerViewModel) {
-        // 꽃말 보기 말풍선 히든 여부
-        self.showFlowerTextImageView.isHidden = viewModel.isFlowerTextHidden
-        // TODO: 챌린지 실패 시에 말풍선도 매핑 필요
+    func configureCompleted(isHidden isFlowerLanguageBubbleHidden: Bool) {
+        if isFlowerLanguageBubbleHidden { // 챌린지 실패
+            self.challengeFailBubbleView.isHidden = false
+            self.showFlowerLanguageBubbleView.isHidden = true
+        } else { // 챌린지 성공
+            self.challengeFailBubbleView.isHidden = true
+            self.showFlowerLanguageBubbleView.isHidden = false
+        }
     }
 }

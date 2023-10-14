@@ -135,6 +135,8 @@ public enum Assets: String {
     case history_waiting
     case icon_edit
     case img_buds
+    case bubble_challenge_fail
+    case flowerPopup_background
     case icon_challenge_progress
     case icon_title_arrow
 

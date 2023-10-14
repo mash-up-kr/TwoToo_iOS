@@ -38,7 +38,6 @@ final class MyFlowerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
-//        self.backgroundColor = .orange
     }
     
     required init?(coder: NSCoder) {
@@ -77,4 +76,3 @@ final class MyFlowerView: UIView {
         self.nicknameView.titleLabel.text = viewModel.myNameText
     }
 }
-
