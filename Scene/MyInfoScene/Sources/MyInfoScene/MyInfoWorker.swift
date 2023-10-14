@@ -60,7 +60,7 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
 
     func signOut() async throws {
         
-        let signOutResponse = try await self.signOutNetworkWorker.requestSignOut()
+        _ = try await self.signOutNetworkWorker.requestSignOut()
         
         await self.logout()
     }

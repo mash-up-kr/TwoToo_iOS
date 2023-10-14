@@ -122,6 +122,7 @@ final class LoginWorker: LoginWorkerProtocol {
         }
     }
     
+    @MainActor
     private func loginWithKakaoAccountSDK() async throws {
         return try await withCheckedThrowingContinuation { continuation in
             UserApi.shared.loginWithKakaoAccount { oAuthToken, error in

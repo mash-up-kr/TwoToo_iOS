@@ -176,7 +176,7 @@ extension ChangeNicknameViewController: KeyboardDelegate {
         
         UIView.animate(withDuration: duration) {
             self.changeButton.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height - 20)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height + 20)
             }
             self.view.layoutIfNeeded()
         }
@@ -185,7 +185,7 @@ extension ChangeNicknameViewController: KeyboardDelegate {
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: duration) {
             self.changeButton.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
             self.view.layoutIfNeeded()
         }

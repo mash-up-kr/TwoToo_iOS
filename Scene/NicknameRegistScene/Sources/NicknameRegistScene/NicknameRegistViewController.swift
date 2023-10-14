@@ -152,7 +152,7 @@ final class NicknameRegistViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(57)
-            make.bottom.equalTo(guide.snp.bottom)
+            make.bottom.equalTo(guide.snp.bottom).inset(20)
         }
     }
     
@@ -205,7 +205,7 @@ extension NicknameRegistViewController: KeyboardDelegate {
                 make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
             }
             self.confirmButton.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(keyboardFrame.height - 10)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(keyboardFrame.height + 20)
             }
             self.view.layoutIfNeeded()
         }
@@ -217,7 +217,7 @@ extension NicknameRegistViewController: KeyboardDelegate {
                 make.top.equalTo(self.titleLabel.snp.bottom).offset(35)
             }
             self.confirmButton.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(20)
             }
             self.view.layoutIfNeeded()
         }
