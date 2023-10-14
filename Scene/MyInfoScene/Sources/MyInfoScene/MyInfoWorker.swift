@@ -20,15 +20,21 @@ protocol MyInfoWorkerProtocol {
 final class MyInfoWorker: MyInfoWorkerProtocol {
     
     var meLocalWorker: MeLocalWorkerProtocol
+    var invitationLocalWorker: InvitationLocalWorkerProtocol
+    var invitedUserLocalWorker: InvitedUserLocalWorkerProtocol
     var meNetworkWorker: MeNetworkWorkerProtocol
     var signOutNetworkWorker: SignOutNetworkWorkerProtocol
     
     init(
         meLocalWorker: MeLocalWorkerProtocol,
+        invitationLocalWorker: InvitationLocalWorkerProtocol,
+        invitedUserLocalWorker: InvitedUserLocalWorkerProtocol,
         meNetworkWorker: MeNetworkWorkerProtocol,
         signOutNetworkWorker: SignOutNetworkWorkerProtocol
     ) {
         self.meLocalWorker = meLocalWorker
+        self.invitationLocalWorker = invitationLocalWorker
+        self.invitedUserLocalWorker = invitedUserLocalWorker
         self.meNetworkWorker = meNetworkWorker
         self.signOutNetworkWorker = signOutNetworkWorker
     }
@@ -46,6 +52,10 @@ final class MyInfoWorker: MyInfoWorkerProtocol {
     
     func logout() async {
         self.meLocalWorker.token = ""
+        self.invitationLocalWorker.isInvitationSend = false
+        self.invitationLocalWorker.invitationLink = ""
+        self.invitedUserLocalWorker.invitedUser = ""
+        self.invitedUserLocalWorker.invitedUserNo = 0
     }
 
     func signOut() async throws {

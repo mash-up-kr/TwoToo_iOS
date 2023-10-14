@@ -30,6 +30,8 @@ public final class MyInfoSceneFactory {
         
         let localDataSource = LocalDataSource()
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
+        let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
+        let invitedUserLocalWorker = InvitedUserLocalWorker(localDataSource: localDataSource)
         let meNetworkWorker = MeNetworkWorker()
         let signOutNetworkWorker = SignOutNetworkWorker()
         
@@ -37,6 +39,8 @@ public final class MyInfoSceneFactory {
         let router = MyInfoRouter()
         let worker = MyInfoWorker(
             meLocalWorker: meLocalWorker,
+            invitationLocalWorker: invitationLocalWorker,
+            invitedUserLocalWorker: invitedUserLocalWorker,
             meNetworkWorker: meNetworkWorker,
             signOutNetworkWorker: signOutNetworkWorker
         )
