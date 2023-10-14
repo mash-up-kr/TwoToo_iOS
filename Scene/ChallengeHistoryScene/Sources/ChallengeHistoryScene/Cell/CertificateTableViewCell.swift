@@ -5,6 +5,7 @@
 //  Created by Julia on 2023/07/24.
 //
 
+import Kingfisher
 import UIKit
 import Util
 
@@ -102,6 +103,9 @@ final class CertificateTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var myImageDownloadTask: DownloadTask?
+    var partnerImageDownloadTask: DownloadTask?
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         
@@ -109,14 +113,18 @@ final class CertificateTableViewCell: UITableViewCell {
         self.partnerImageView.image = nil
         self.myCertificateID = ""
         self.partnerCertificateID = ""
+        self.myImageDownloadTask?.cancel()
+        self.partnerImageDownloadTask?.cancel()
         self.willCertificate = false
+        self.myImageView.subviews.forEach { $0.removeFromSuperview() }
+        self.partnerImageView.subviews.forEach { $0.removeFromSuperview() }
     }
     
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
         self.dateLabel.text = viewModel.dateText
         // 유저 인증 O
         if let myInfo = viewModel.my {
-            self.myImageView.kf.setImage(with: myInfo.photoURL)
+            self.myImageDownloadTask =  self.myImageView.kf.setImage(with: myInfo.photoURL)
             self.myTimeLabel.text = myInfo.timeText
             self.myCertificateID = myInfo.certificateID
             self.applyDimming(userImageView: self.myImageView,
@@ -126,7 +134,7 @@ final class CertificateTableViewCell: UITableViewCell {
         }
         // 파트너 인증 O
         if let partnerInfo = viewModel.partner {
-            self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
+            self.partnerImageDownloadTask = self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
             self.partnerTimeLabel.text = partnerInfo.timeText
             self.partnerCertificateID = partnerInfo.certificateID
             self.applyDimming(userImageView: self.partnerImageView,
