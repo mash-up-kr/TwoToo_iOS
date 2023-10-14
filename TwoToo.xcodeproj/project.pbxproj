@@ -200,7 +200,6 @@
 			);
 			mainGroup = C87E316D2A2B041900FD31C8;
 			packageReferences = (
-				A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 			);
 			productRefGroup = C87E31772A2B041900FD31C8 /* Products */;
 			projectDirPath = "";
@@ -495,17 +494,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scenee/FloatingPanel";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		C8DB2B462ADA423A00FD85D9 /* SceneKit */ = {

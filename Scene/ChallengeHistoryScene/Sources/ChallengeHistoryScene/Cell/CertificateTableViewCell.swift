@@ -5,6 +5,7 @@
 //  Created by Julia on 2023/07/24.
 //
 
+import Kingfisher
 import UIKit
 import Util
 
@@ -96,12 +97,14 @@ final class CertificateTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layout()
         self.attribute()
-        self.applyDimming()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    var myImageDownloadTask: DownloadTask?
+    var partnerImageDownloadTask: DownloadTask?
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -110,24 +113,32 @@ final class CertificateTableViewCell: UITableViewCell {
         self.partnerImageView.image = nil
         self.myCertificateID = ""
         self.partnerCertificateID = ""
+        self.myImageDownloadTask?.cancel()
+        self.partnerImageDownloadTask?.cancel()
         self.willCertificate = false
+        self.myImageView.subviews.forEach { $0.removeFromSuperview() }
+        self.partnerImageView.subviews.forEach { $0.removeFromSuperview() }
     }
     
     func configure(viewModel: ChallengeHistory.ViewModel.CellInfo) {
         self.dateLabel.text = viewModel.dateText
         // 유저 인증 O
         if let myInfo = viewModel.my {
-            self.myImageView.kf.setImage(with: myInfo.photoURL)
+            self.myImageDownloadTask =  self.myImageView.kf.setImage(with: myInfo.photoURL)
             self.myTimeLabel.text = myInfo.timeText
             self.myCertificateID = myInfo.certificateID
+            self.applyDimming(userImageView: self.myImageView,
+                              isMyImageView: true)
         } else  { // 유저 인증 X, 오늘인지 판단
             self.myImageView.image = viewModel.isToday ? .asset(.history_certificate) : .asset(.history_fail)
         }
         // 파트너 인증 O
         if let partnerInfo = viewModel.partner {
-            self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
+            self.partnerImageDownloadTask = self.partnerImageView.kf.setImage(with: partnerInfo.photoURL)
             self.partnerTimeLabel.text = partnerInfo.timeText
             self.partnerCertificateID = partnerInfo.certificateID
+            self.applyDimming(userImageView: self.partnerImageView,
+                              isMyImageView: false)
         } else { // 파트너 인증 X, 오늘인지 판단
             self.partnerImageView.image = viewModel.isToday ? .asset(.history_waiting) : .asset(.history_fail)
         }
@@ -146,20 +157,8 @@ final class CertificateTableViewCell: UITableViewCell {
                                      self.lineImageView,
                                      self.partnerImageView)
         
-        self.contentView.bringSubviewToFront(self.dateView)
-        self.myImageView.addSubview(self.myTimeLabel)
-        self.partnerImageView.addSubview(self.partnerTimeLabel)
-        
         self.dateLabel.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-        }
-        
-        self.myTimeLabel.snp.makeConstraints { make in
-            make.trailing.bottom.equalToSuperview().inset(12)
-        }
-        
-        self.partnerTimeLabel.snp.makeConstraints { make in
-            make.trailing.bottom.equalToSuperview().inset(12)
         }
         
         self.myImageView.snp.makeConstraints { make in
@@ -193,12 +192,26 @@ final class CertificateTableViewCell: UITableViewCell {
         self.selectionStyle = .none
     }
 
-    func applyDimming() {
-        [self.myImageView, self.partnerImageView].forEach { image in
-            let dimLayer = CALayer()
-            dimLayer.backgroundColor = UIColor.black.withAlphaComponent(0.1).cgColor
-            dimLayer.frame = .init(x: 0, y: 0, width: 127, height: 127)
-            image.layer.addSublayer(dimLayer)
+    func applyDimming(userImageView: UIImageView, isMyImageView: Bool) {
+        let dimView = UIView()
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        userImageView.addSubview(dimView)
+        
+        dimView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
+        
+        if isMyImageView {
+            dimView.addSubview(self.myTimeLabel)
+            self.myTimeLabel.snp.makeConstraints { make in
+                make.trailing.bottom.equalToSuperview().inset(12)
+            }
+        } else {
+            dimView.addSubview(self.partnerTimeLabel)
+            self.partnerTimeLabel.snp.makeConstraints { make in
+                make.trailing.bottom.equalToSuperview().inset(12)
+            }
+        }
+
     }
 }
