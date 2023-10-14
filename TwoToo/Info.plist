@@ -27,8 +27,8 @@
 			</array>
 		</dict>
 	</array>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <string>No</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>No</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
 		<string>https://twotoo.page.link</string>

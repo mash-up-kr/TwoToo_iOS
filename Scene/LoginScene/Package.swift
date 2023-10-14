@@ -37,7 +37,9 @@ let package = Package(
             dependencies: [
                 .product(name: "CoreKit", package: "CoreKit"),
                 .product(name: "KakaoSDK", package: "kakao-ios-sdk"),
-                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
             ],
             resources: [.process("Assets")]
         ),
