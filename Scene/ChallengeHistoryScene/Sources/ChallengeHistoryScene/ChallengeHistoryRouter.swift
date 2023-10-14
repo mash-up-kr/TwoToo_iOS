@@ -35,9 +35,6 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
                                             nickname: String,
                                             partnerNickname: String) {
         
-        guard let dataStore = self.dataStore else {
-            return
-        }
         let fac = ChallengeHistoryDetailSceneFactory().make(with: .init(detail: .init(id: certificate.id,
                                                                                       challengeName: title,
                                                                                       certificateImageUrl: certificate.certificateImageUrl,

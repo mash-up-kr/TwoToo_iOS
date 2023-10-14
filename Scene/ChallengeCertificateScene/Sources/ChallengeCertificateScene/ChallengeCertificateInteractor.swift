@@ -138,13 +138,8 @@ extension ChallengeCertificateInteractor {
     }
     
     func didCropImage(image: UIImage) async {
-        do {
-            await self.updateCertificateImage(certificateImage: image)
-            await self.presenter.presentCertificateImage(image: image)
-        }
-        catch {
-            await self.presenter.presentPhotoSaveError(error: error)
-        }
+        await self.updateCertificateImage(certificateImage: image)
+        await self.presenter.presentCertificateImage(image: image)
     }
 }
 
