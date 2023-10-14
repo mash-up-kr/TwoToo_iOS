@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		583509D22A789ADD00C8D5BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 583509D12A789ADD00C8D5BC /* Assets.xcassets */; };
-		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
-		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
 		C85CB5742A755AA100968E67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C85CB5732A755AA100968E67 /* GoogleService-Info.plist */; };
 		C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E31792A2B041900FD31C8 /* AppDelegate.swift */; };
 		C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */; };
@@ -17,6 +15,7 @@
 		C87E31812A2B041900FD31C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E317F2A2B041900FD31C8 /* Main.storyboard */; };
 		C87E31862A2B041A00FD31C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E31842A2B041A00FD31C8 /* LaunchScreen.storyboard */; };
 		C87E31902A2B435B00FD31C8 /* SplashScene in Resources */ = {isa = PBXBuildFile; fileRef = C87E318F2A2B435B00FD31C8 /* SplashScene */; };
+		C8DB2B472ADA423A00FD85D9 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8DB2B462ADA423A00FD85D9 /* SceneKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,8 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */,
-				A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */,
+				C8DB2B472ADA423A00FD85D9 /* SceneKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +161,7 @@
 				C87E31722A2B041900FD31C8 /* Sources */,
 				C87E31732A2B041900FD31C8 /* Frameworks */,
 				C87E31742A2B041900FD31C8 /* Resources */,
+				C8DB2B452ADA3FDA00FD85D9 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -170,8 +169,7 @@
 			);
 			name = TwoToo;
 			packageProductDependencies = (
-				C8396CBF2A2C40BC00A79E98 /* SceneKit */,
-				A322FC122A455F2900DAB491 /* FloatingPanel */,
+				C8DB2B462ADA423A00FD85D9 /* SceneKit */,
 			);
 			productName = TwoToo;
 			productReference = C87E31762A2B041900FD31C8 /* TwoToo.app */;
@@ -227,6 +225,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C8DB2B452ADA3FDA00FD85D9 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C87E31722A2B041900FD31C8 /* Sources */ = {
@@ -385,6 +406,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -486,12 +508,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A322FC122A455F2900DAB491 /* FloatingPanel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
-			productName = FloatingPanel;
-		};
-		C8396CBF2A2C40BC00A79E98 /* SceneKit */ = {
+		C8DB2B462ADA423A00FD85D9 /* SceneKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SceneKit;
 		};
