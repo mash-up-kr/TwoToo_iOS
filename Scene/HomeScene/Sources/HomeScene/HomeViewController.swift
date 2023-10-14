@@ -134,11 +134,25 @@ final class HomeViewController: UIViewController {
         }
     }
     
+    @objc private func appDidBecomeActive() {
+        Task {
+            Loading.shared.showLoadingView()
+            await self.interactor.didAppear()
+            Loading.shared.stopLoadingView()
+        }
+    }
+    
     private func registNotification() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.viewDidAppearWithModalDismissed),
             name: NSNotification.Name("modal_dismissed"),
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
     }
