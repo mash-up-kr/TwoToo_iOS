@@ -54,7 +54,7 @@ enum MyInfo {
             /// 타이틀
             static let title: String = "회원 탈퇴하기"
             /// 메세지
-            static let message: String = "파트너도 같이 삭제 되어요."
+            static let warning: String = "*(경고) 회원 탈퇴 시 모든 기록이 삭제되고 복구가 불가능합니다. 또한 파트너 정보도 함께 삭제됩니다!*"
             /// 취소
             static let cancelOptionText: String = "취소"
             /// 탈퇴하기 옵션

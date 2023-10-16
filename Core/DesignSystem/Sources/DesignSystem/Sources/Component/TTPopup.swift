@@ -47,6 +47,7 @@ public final class TTPopup: UIView, UIComponentBased {
         v.font = .omyupretty(size: ._16)
         v.numberOfLines = 0
         v.textColor = .grey500
+        v.isHidden = true
         return v
     }()
     
@@ -120,7 +121,7 @@ public final class TTPopup: UIView, UIComponentBased {
     
     public func configure(title: String,
                           resultView: UIView,
-                          description: String,
+                          description: String = "",
                           warningText: String = "",
                           buttonTitles: [String]) {
         self.titleLabel.text = title
@@ -129,9 +130,12 @@ public final class TTPopup: UIView, UIComponentBased {
             make.centerX.centerY.equalToSuperview()
         }
         
-        self.descriptionLabel.text = description
-        self.descriptionLabel.setLineSpacing(8)
-        self.descriptionLabel.textAlignment = .center
+        if !description.isEmpty {
+            self.descriptionLabel.isHidden = false
+            self.descriptionLabel.text = description
+            self.descriptionLabel.setLineSpacing(8)
+            self.descriptionLabel.textAlignment = .center
+        }
         
         if !warningText.isEmpty {
             self.waringLabel.isHidden = false
