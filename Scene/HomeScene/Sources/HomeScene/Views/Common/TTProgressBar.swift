@@ -92,15 +92,18 @@ final class TTProgressBar: UIView {
                          self.myNicknameLabel,
                          self.myPercentContentView,
                          self.myPercentLabel)
+        
+        let percentContentLeadingOffset = UIDevice.current.deviceType == .default ? 9 : 14
+
         // --> partner
         self.partnerNicknameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview().multipliedBy(0.3)
             make.centerY.equalToSuperview().multipliedBy(0.6)
         }
-        
+                
         self.partnerPercentContentView.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.trailing.equalToSuperview().inset(43)
+            make.leading.equalTo(self.partnerNicknameLabel.snp.trailing).offset(percentContentLeadingOffset)
+            make.trailing.equalTo(self.partnerPercentLabel.snp.leading).offset(-6)
             make.height.equalToSuperview().dividedBy(5.5)
             make.centerY.equalToSuperview().multipliedBy(0.6)
         }
@@ -117,8 +120,8 @@ final class TTProgressBar: UIView {
         }
         
         self.myPercentContentView.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.trailing.equalToSuperview().inset(43)
+            make.leading.equalTo(self.myNicknameLabel.snp.trailing).offset(percentContentLeadingOffset)
+            make.trailing.equalTo(self.myPercentLabel.snp.leading).offset(-6)
             make.height.equalToSuperview().dividedBy(5.5)
             make.centerY.equalToSuperview().multipliedBy(1.4)
         }
