@@ -57,7 +57,7 @@ final class HistoryViewController: UIViewController, TTNavigationBarDelegate, UI
         let v = UILabel()
         v.textColor = .grey500
         v.font = .h3
-        v.text = "챌린지를 완료해\n히스토리를 만들어보세요 :)"
+        v.text = "진행중인 챌린지가 없어요\n챌린지를 만들어보세요 :)"
         v.setLineSpacing(10)
         v.textAlignment = .center
         v.numberOfLines = 0
