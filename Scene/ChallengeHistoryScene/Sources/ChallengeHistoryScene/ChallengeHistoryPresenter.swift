@@ -52,8 +52,8 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
         var buttonTitles: [String] = ["취소", "그만두기"]
         if self.isCompleted {
             title = "챌린지 삭제하기"
-            description = "선택한 챌린지는 삭제됩니다.\n"
-            warningText = ""
+            description = "완료한 챌린지는 삭제됩니다."
+            warningText = "*(경고) 삭제하기 시 양쪽 모두에게 삭제됩니다!*"
             buttonTitles = ["취소", "삭제하기"]
         }
         

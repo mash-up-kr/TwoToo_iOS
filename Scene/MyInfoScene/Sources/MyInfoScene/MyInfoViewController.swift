@@ -250,7 +250,7 @@ extension MyInfoViewController: MyInfoDisplayLogic {
             let popupView = TTPopup()
             popupView.configure(title: MyInfo.ViewModel.SignOutViewModel.title,
                                 resultView: popupContentView,
-                                description: MyInfo.ViewModel.SignOutViewModel.message,
+                                warningText: MyInfo.ViewModel.SignOutViewModel.warning,
                                 buttonTitles: [
                                     MyInfo.ViewModel.SignOutViewModel.cancelOptionText,
                                     MyInfo.ViewModel.SignOutViewModel.signOutOptionText
