@@ -169,7 +169,7 @@ extension ChallengeHistoryPresenter {
     
     /// 시작일부터 종료일까지 디데이 계산
     private func makedDayText(start: Date, end: Date) -> String {
-        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day, diffDay > 0 {
+        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day, diffDay >= 0 {
             return "D-\(diffDay)"
         } else {
             self.isCompleted = true
