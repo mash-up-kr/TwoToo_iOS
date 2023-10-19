@@ -51,14 +51,14 @@ final class MyInfoViewController: UIViewController {
     private lazy var myNicknameLabel: UILabel = {
         let v = UILabel()
         v.textColor = .mainCoral
-        v.font = .body3
+        v.font = .body2
         return v
     }()
     
     private lazy var partnerNicknameLabel: UILabel = {
         let v = UILabel()
         v.textColor = .mainCoral
-        v.font = .body3
+        v.font = .body2
         return v
     }()
     
@@ -71,7 +71,7 @@ final class MyInfoViewController: UIViewController {
     private lazy var challengeCountLabel: UILabel = {
         let v = UILabel()
         v.textColor = .mainCoral
-        v.font = .body3
+        v.font = .body2
         return v
     }()
     
@@ -190,7 +190,7 @@ final class MyInfoViewController: UIViewController {
         }
         
         self.heartImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(10)
+            make.height.width.equalTo(14)
         }
         
         self.challengeCountLabel.snp.makeConstraints { make in

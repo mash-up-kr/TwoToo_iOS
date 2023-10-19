@@ -45,6 +45,7 @@ final class ChangeNicknameViewController: UIViewController {
         let v = UILabel()
         v.setLineSpacing(11)
         v.text = "변경할 닉네임을\n입력해주세요"
+        v.textAlignment = .center
         v.font = .h1
         v.textColor = .primary
         v.numberOfLines = 0
