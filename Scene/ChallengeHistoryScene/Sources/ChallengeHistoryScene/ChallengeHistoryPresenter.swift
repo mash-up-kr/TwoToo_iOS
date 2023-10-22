@@ -87,7 +87,8 @@ extension ChallengeHistoryPresenter {
         return .init(id: model.id,
                      name: model.name,
                      dDayText: self.makedDayText(start: Date(),
-                                                   end: model.endDate),
+                                                 end: model.endDate,
+                                                 isFinished: model.isFinished),
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
@@ -168,13 +169,15 @@ extension ChallengeHistoryPresenter {
     }
     
     /// 시작일부터 종료일까지 디데이 계산
-    private func makedDayText(start: Date, end: Date) -> String {
-        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day, diffDay >= 0 {
-            return "D-\(diffDay)"
-        } else {
+    private func makedDayText(start: Date, end: Date, isFinished: Bool) -> String {
+        if isFinished {
             self.isCompleted = true
             return "완료"
         }
+        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day {
+            return "D-\(diffDay)"
+        }
+        return ""
     }
     
     /// 시작일부터 종료일까지 날짜 배열 리턴, 최신순 정렬
