@@ -89,48 +89,34 @@ final class MyFlowerTopView: UIView {
                          self.complimentWriteBubbleImageView,
                          self.challengeFailBubbleView)
         
-        let speechBubbleBottom = UIDevice.current.deviceType == .default ? 15 : 32
-
-        self.speechBubbleView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(5)
-            make.centerX.equalToSuperview()
-            make.width.lessThanOrEqualTo(150)
-        }
+        self.remakeInProgressLayout()
         
-        self.complimentWriteBubbleImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().offset(-speechBubbleBottom)
-        }
-        
-        self.wateringCanView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-12)
-        }
-        
-        self.showFlowerLanguageBubbleView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.height.equalTo(48)
-            make.centerX.equalToSuperview().multipliedBy(0.8)
-            make.bottom.equalToSuperview().offset(-4)
-        }
-        
-        self.challengeFailBubbleView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().multipliedBy(0.8)
-            make.height.equalTo(63)
-            make.bottom.equalToSuperview().offset(-16)
-        }
+        self.remakeCompletedLayout()
     }
     
     func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.MyFlowerViewModel.TopViewModel) {
-        self.wateringCanView.isHidden = viewModel.isCertificationButtonHidden
+        self.remakeInProgressLayout()
+        
+        self.showFlowerLanguageBubbleView.snp.removeConstraints()
+        self.challengeFailBubbleView.snp.removeConstraints()
+        
         self.wateringCanView.titleLabel.text = viewModel.cetificationGuideText
         self.wateringCanView.titleLabel.isHidden = viewModel.isHiddenCetificationGuideText
+        
+        if viewModel.isCertificationButtonHidden {
+            self.wateringCanView.isHidden = true
+            self.wateringCanView.snp.removeConstraints()
+        }
+        else {
+            self.wateringCanView.isHidden = false
+        }
         
         if viewModel.isComplimentCommentHidden {
             self.speechBubbleView.isHidden = true
             self.complimentWriteBubbleImageView.isHidden = true
+            
+            self.speechBubbleView.snp.removeConstraints()
+            self.complimentWriteBubbleImageView.snp.removeConstraints()
         }
         else {
             // 칭찬문구 O
@@ -138,21 +124,76 @@ final class MyFlowerTopView: UIView {
                 self.speechBubbleView.configure(title: viewModel.complimentCommentText)
                 self.speechBubbleView.isHidden = false
                 self.complimentWriteBubbleImageView.isHidden = true
+                
+                self.complimentWriteBubbleImageView.snp.removeConstraints()
             }
             else { // 칭찬문구 X
                 self.complimentWriteBubbleImageView.isHidden = false
                 self.speechBubbleView.isHidden = true
+                
+                self.speechBubbleView.snp.removeConstraints()
             }
         }
     }
     
     func configureCompleted(isHidden isFlowerLanguageBubbleHidden: Bool) {
+        self.remakeCompletedLayout()
+        
+        self.wateringCanView.snp.removeConstraints()
+        self.complimentWriteBubbleImageView.snp.removeConstraints()
+        self.speechBubbleView.snp.removeConstraints()
+        
         if isFlowerLanguageBubbleHidden { // 챌린지 실패
             self.challengeFailBubbleView.isHidden = false
             self.showFlowerLanguageBubbleView.isHidden = true
+            
+            self.showFlowerLanguageBubbleView.snp.removeConstraints()
         } else { // 챌린지 성공
             self.challengeFailBubbleView.isHidden = true
             self.showFlowerLanguageBubbleView.isHidden = false
+            
+            self.challengeFailBubbleView.snp.removeConstraints()
+        }
+    }
+    
+    private func remakeInProgressLayout() {
+        let speechBubbleBottom = UIDevice.current.deviceType == .default ? 15 : 32
+        
+        self.speechBubbleView.snp.remakeConstraints { make in
+            make.top.equalToSuperview().offset(5)
+            make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualTo(150)
+            make.bottom.equalToSuperview().offset(-speechBubbleBottom)
+        }
+        
+        self.complimentWriteBubbleImageView.snp.remakeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(62)
+            make.bottom.equalToSuperview().offset(-speechBubbleBottom)
+        }
+        
+        self.wateringCanView.snp.remakeConstraints { make in
+            make.top.equalToSuperview().offset(5)
+            make.leading.trailing.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-12)
+        }
+    }
+    
+    private func remakeCompletedLayout() {
+        self.showFlowerLanguageBubbleView.snp.remakeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(48)
+            make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalToSuperview().offset(-4)
+        }
+        
+        self.challengeFailBubbleView.snp.remakeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(63)
+            make.centerX.equalToSuperview().multipliedBy(0.8)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 }

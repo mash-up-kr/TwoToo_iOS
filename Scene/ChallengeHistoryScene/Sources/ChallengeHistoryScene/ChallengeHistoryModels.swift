@@ -30,6 +30,8 @@ enum ChallengeHistory {
             var myInfo: User
             /// 상대방 정보
             var partnerInfo: User
+            /// 완료 여부
+            var isFinished: Bool
         }
         
         /// 유저

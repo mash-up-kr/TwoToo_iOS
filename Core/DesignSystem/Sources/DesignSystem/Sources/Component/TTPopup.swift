@@ -32,7 +32,7 @@ public final class TTPopup: UIView, UIComponentBased {
         let v = UILabel()
         v.font = .h2
         v.textColor = .primary
-
+        v.textAlignment = .center
         return v
     }()
 
@@ -90,8 +90,7 @@ public final class TTPopup: UIView, UIComponentBased {
     lazy var buttonStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-        v.alignment = .center
-        v.spacing = 89
+        v.distribution = .fillEqually
         v.addArrangedSubviews(self.leftButton,
                               self.rightButton)
         return v
@@ -100,7 +99,6 @@ public final class TTPopup: UIView, UIComponentBased {
     lazy var stackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.alignment = .center
         v.spacing = 37
         v.addArrangedSubviews(self.titleLabel,
                               self.resultView,

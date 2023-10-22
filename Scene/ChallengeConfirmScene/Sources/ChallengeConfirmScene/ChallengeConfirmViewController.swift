@@ -267,7 +267,7 @@ final class ChallengeConfirmViewController: UIViewController {
         self.nextButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
         
         self.popupView.snp.makeConstraints { make in
