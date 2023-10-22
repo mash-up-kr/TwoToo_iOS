@@ -9,6 +9,8 @@ import UIKit
 import DesignSystem
 
 protocol ChallengeCompletedViewDelegate: AnyObject {
+    /// 챌린지 정보를 탭 했을 때
+    func didTapChallengeInfo()
     /// 챌린지 완료하기 버튼 탭 했을 때
     func didTapChallengeCompletedFinishButton()
     /// 내 꽃말 보기 이미지 뷰를 탭했을 때
@@ -23,6 +25,9 @@ final class ChallengeCompletedView: UIView {
     /// 닉네임 정보, 챌린지 정보를 담은 스택뷰
     lazy var topChallengeInfoView: TopChallengeInfoView = {
         let v = TopChallengeInfoView()
+        v.addTapAction { [weak self] in
+            self?.delegate?.didTapChallengeInfo()
+        }
         return v
     }()
     /// 챌린지 진행도 뷰
