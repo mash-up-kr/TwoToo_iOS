@@ -26,6 +26,11 @@ final class TopChallengeInfoView: UIView {
         return v
     }()
     
+    let arrowImageView: UIImageView = {
+        let v = UIImageView(image: .asset(.icon_title_arrow))
+        return v
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
@@ -37,10 +42,14 @@ final class TopChallengeInfoView: UIView {
     }
     
     func layout() {
-        self.addSubviews(self.titleLabel, self.dateTagView)
+        self.addSubviews(self.titleLabel, 
+                         self.dateTagView,
+                         self.arrowImageView)
+        
+        let titleTopBottomOffset = UIDevice.current.deviceType == .default ? 12 : 16
         
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(titleTopBottomOffset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(20)
         }
@@ -48,7 +57,13 @@ final class TopChallengeInfoView: UIView {
         self.dateTagView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(23)
+            make.bottom.equalToSuperview().offset(-titleTopBottomOffset)
+        }
+        
+        self.arrowImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(18)
         }
     }
     

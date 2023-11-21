@@ -119,6 +119,7 @@ public enum Assets: String {
     case icon_buds
     case icon_bubble_tail_my
     case icon_bubble_tail_partner
+    case icon_bubble_flowerLanguage
     case icon_check
     case icon_cryingseed
     case icon_blossome
@@ -132,6 +133,12 @@ public enum Assets: String {
     case history_certificate
     case history_line
     case history_waiting
+    case icon_edit
+    case img_buds
+    case bubble_challenge_fail
+    case flowerPopup_background
+    case icon_challenge_progress
+    case icon_title_arrow
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		583509D22A789ADD00C8D5BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 583509D12A789ADD00C8D5BC /* Assets.xcassets */; };
-		A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = A322FC122A455F2900DAB491 /* FloatingPanel */; };
-		A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */; };
-		C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8396CBF2A2C40BC00A79E98 /* SceneKit */; };
 		C85CB5742A755AA100968E67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C85CB5732A755AA100968E67 /* GoogleService-Info.plist */; };
 		C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E31792A2B041900FD31C8 /* AppDelegate.swift */; };
 		C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */; };
@@ -18,12 +15,12 @@
 		C87E31812A2B041900FD31C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E317F2A2B041900FD31C8 /* Main.storyboard */; };
 		C87E31862A2B041A00FD31C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C87E31842A2B041A00FD31C8 /* LaunchScreen.storyboard */; };
 		C87E31902A2B435B00FD31C8 /* SplashScene in Resources */ = {isa = PBXBuildFile; fileRef = C87E318F2A2B435B00FD31C8 /* SplashScene */; };
+		C8DB2B472ADA423A00FD85D9 /* SceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = C8DB2B462ADA423A00FD85D9 /* SceneKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		583509D12A789ADD00C8D5BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		641E51372A5A4ED0002C8561 /* TwoToo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoToo.entitlements; sourceTree = "<group>"; };
-		A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviTestViewController.swift; sourceTree = "<group>"; };
 		C8396CBD2A2C3F2500A79E98 /* SceneKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SceneKit; sourceTree = "<group>"; };
 		C8396CBE2A2C3FA600A79E98 /* ChallengeCreateFinishScene */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChallengeCreateFinishScene; sourceTree = "<group>"; };
 		C85CB5732A755AA100968E67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -65,8 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8396CC02A2C40BC00A79E98 /* SceneKit in Frameworks */,
-				A322FC132A455F2900DAB491 /* FloatingPanel in Frameworks */,
+				C8DB2B472ADA423A00FD85D9 /* SceneKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +95,6 @@
 				641E51372A5A4ED0002C8561 /* TwoToo.entitlements */,
 				C87E31792A2B041900FD31C8 /* AppDelegate.swift */,
 				C87E317B2A2B041900FD31C8 /* SceneDelegate.swift */,
-				A32AC9622A417ED40086EE5B /* NaviTestViewController.swift */,
 				C87E317D2A2B041900FD31C8 /* ViewController.swift */,
 				C87E317F2A2B041900FD31C8 /* Main.storyboard */,
 				C87E31842A2B041A00FD31C8 /* LaunchScreen.storyboard */,
@@ -166,6 +161,7 @@
 				C87E31722A2B041900FD31C8 /* Sources */,
 				C87E31732A2B041900FD31C8 /* Frameworks */,
 				C87E31742A2B041900FD31C8 /* Resources */,
+				C8DB2B452ADA3FDA00FD85D9 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -173,8 +169,7 @@
 			);
 			name = TwoToo;
 			packageProductDependencies = (
-				C8396CBF2A2C40BC00A79E98 /* SceneKit */,
-				A322FC122A455F2900DAB491 /* FloatingPanel */,
+				C8DB2B462ADA423A00FD85D9 /* SceneKit */,
 			);
 			productName = TwoToo;
 			productReference = C87E31762A2B041900FD31C8 /* TwoToo.app */;
@@ -205,7 +200,6 @@
 			);
 			mainGroup = C87E316D2A2B041900FD31C8;
 			packageReferences = (
-				A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 			);
 			productRefGroup = C87E31772A2B041900FD31C8 /* Products */;
 			projectDirPath = "";
@@ -231,12 +225,34 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C8DB2B452ADA3FDA00FD85D9 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C87E31722A2B041900FD31C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A32AC9632A417ED40086EE5B /* NaviTestViewController.swift in Sources */,
 				C87E317E2A2B041900FD31C8 /* ViewController.swift in Sources */,
 				C87E317A2A2B041900FD31C8 /* AppDelegate.swift in Sources */,
 				C87E317C2A2B041900FD31C8 /* SceneDelegate.swift in Sources */,
@@ -389,6 +405,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MRMBCYN83C;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -406,14 +423,17 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Dev TwoToo";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -444,14 +464,17 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.mash-up.TwoToo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Dev TwoToo";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -478,24 +501,8 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scenee/FloatingPanel";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		A322FC122A455F2900DAB491 /* FloatingPanel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A322FC112A455F2900DAB491 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
-			productName = FloatingPanel;
-		};
-		C8396CBF2A2C40BC00A79E98 /* SceneKit */ = {
+		C8DB2B462ADA423A00FD85D9 /* SceneKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SceneKit;
 		};

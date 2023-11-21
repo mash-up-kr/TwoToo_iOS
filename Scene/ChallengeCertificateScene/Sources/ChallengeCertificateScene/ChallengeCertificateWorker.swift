@@ -79,7 +79,7 @@ final class ChallengeCertificateWorker: ChallengeCertificateWorkerProtocol {
         guard let challengeNo = Int(challengeID) else {
             throw NSError(domain: "not fount challenge", code: -1)
         }
-        guard let img = certificateImage.jpegData(compressionQuality: 1.0) else {
+        guard let img = self.compressImage(certificateImage) else {
             throw NSError(domain: "not fount img", code: -1)
         }
         let date = Date()
@@ -93,5 +93,40 @@ final class ChallengeCertificateWorker: ChallengeCertificateWorkerProtocol {
             img: img,
             fileName: formattedDate
         )
+    }
+    
+    private func compressImage(
+        _ image: UIImage,
+        quality: CGFloat = 1,
+        maxWidth: CGFloat = 1920,
+        maxHeight: CGFloat = 1920
+    ) -> Data? {
+        var actualHeight: CGFloat = image.size.height
+        var actualWidth: CGFloat = image.size.width
+        var imgRatio: CGFloat = actualWidth / actualHeight
+        let maxRatio: CGFloat = maxWidth / maxHeight
+
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+            if imgRatio < maxRatio {
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if imgRatio > maxRatio {
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+
+        let rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0)
+        image.draw(in: rect)
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return resizedImage?.jpegData(compressionQuality: quality)
     }
 }

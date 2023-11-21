@@ -10,6 +10,7 @@ import UIKit
 import KakaoSDKCommon
 import Firebase
 import FirebaseMessaging
+import FirebaseAnalytics
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Font.registerTTFont()
 
         FirebaseApp.configure()
+        
+        Analytics.setUserID("")
 
         Messaging.messaging().delegate = self
         

@@ -13,6 +13,11 @@ protocol ChallengeConfirmDisplayLogic: AnyObject {
     func displayCreateView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
     func displayConfirmView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
     func displayAcceptView(info: ChallengeConfirm.ViewModel.ChallengeInfo)
+    
+    func displayOptionPopup(title: String)
+    func displayQuitPopup(viewModel: ChallengeConfirm.ViewModel.QuitPopup)
+    func dismissQuitPopup()
+    func displayToast(message: String)
 }
 
 final class ChallengeConfirmViewController: UIViewController {
@@ -21,7 +26,10 @@ final class ChallengeConfirmViewController: UIViewController {
     // MARK: - UI
 
     private lazy var navigationbar: TTNavigationDetailBar = {
-        let v = TTNavigationDetailBar(title: "", leftButtonImage: .asset(.icon_back), rightButtonImage: nil)
+        let v = TTNavigationDetailBar()
+        v.configure(title: nil, 
+                    leftButtonImage: .asset(.icon_back),
+                    rightButtonImage: nil)
         v.delegate = self
         return v
     }()
@@ -117,6 +125,27 @@ final class ChallengeConfirmViewController: UIViewController {
         v.image = .asset(.icon_seed)
         return v
     }()
+    
+    lazy var popupView: TTPopup = {
+        let v = TTPopup()
+        v.isHidden = true
+        v.didTapLeftButton {
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupCancelButton()
+            }
+        }
+        v.didTapRightButton {
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupQuitButton()
+            }
+        }
+        v.didTapBackground {
+            Task { [weak self] in
+                await self?.interactor.didTapQuitPopupBackground()
+            }
+        }
+        return v
+    }()
 
     private lazy var nextButton: TTPrimaryButtonType = {
         let v = TTPrimaryButton.create(title: "다음", .large)
@@ -149,6 +178,14 @@ final class ChallengeConfirmViewController: UIViewController {
         }
     }
     
+    @objc private func viewDidAppearWithModalDismissed() {
+        Task {
+            Loading.shared.showLoadingView()
+            await self.interactor.didAppear()
+            Loading.shared.stopLoadingView()
+        }
+    }
+    
     // MARK: - Layout
     
     private func setUI() {
@@ -159,7 +196,11 @@ final class ChallengeConfirmViewController: UIViewController {
         self.challengeConfirmView.addSubviews(self.challenageTitleStackView, self.challengeRuleLabel)
         self.challengeTitleView.addSubviews(self.challengeAppLabel, self.challengeImage)
         self.challengeContentView.addSubviews(self.challengeConfirmView, self.challengeTitleView)
-        self.view.addSubviews(self.navigationbar, self.headerStackView, self.challengeContentView, self.nextButton)
+        self.view.addSubviews(self.navigationbar, 
+                              self.headerStackView,
+                              self.challengeContentView,
+                              self.nextButton,
+                              self.popupView)
 
         self.headerStackView.setCustomSpacing(8, after: self.processLabel)
         self.headerStackView.setCustomSpacing(12, after: self.headerLabel)
@@ -226,7 +267,13 @@ final class ChallengeConfirmViewController: UIViewController {
         self.nextButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        self.popupView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.width.equalTo(273)
+            make.height.equalTo(349)
         }
     }
 }
@@ -235,12 +282,17 @@ final class ChallengeConfirmViewController: UIViewController {
 
 extension ChallengeConfirmViewController: TTNavigationDetailBarDelegate {
     func didTapDetailLeftButton() {
-        self.navigationController?.popViewController(animated: true)
+        Task {
+            await self.interactor.didTapBackButton()
+        }
     }
-
+    
     func didTapDetailRightButton() {
-
+        Task {
+            await self.interactor.didTapOptionButton()
+        }
     }
+    
 }
 
 // MARK: - Trigger by Parent Scene
@@ -265,7 +317,9 @@ extension ChallengeConfirmViewController: ChallengeConfirmDisplayLogic {
 
         self.headerStackView.isHidden = true
         self.nextButton.isHidden = true
-        self.title = "챌린지 정보"
+        self.navigationbar.configure(title: "챌린지 정보",
+                                     leftButtonImage: .asset(.icon_back),
+                                     rightButtonImage: .asset(.icon_more))
     }
 
     func displayAcceptView(info: ChallengeConfirm.ViewModel.ChallengeInfo) {
@@ -276,4 +330,40 @@ extension ChallengeConfirmViewController: ChallengeConfirmDisplayLogic {
         self.title = ""
         self.processLabel.isHidden = true
     }
+    
+    // MARK: - Display Popup
+    func displayQuitPopup(viewModel: ChallengeConfirm.ViewModel.QuitPopup) {
+        self.popupView.configure(title: viewModel.title,
+                                 resultView: UIImageView(image: viewModel.iconImage),
+                                 description: viewModel.description,
+                                 warningText: viewModel.warning,
+                                 buttonTitles: viewModel.buttonTitles)
+        self.popupView.isHidden = false
+    }
+    
+    func displayOptionPopup(title: String) {
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: title, style: .destructive) { [weak self] _ in
+            Task {
+                await self?.interactor.didTapOptionPopupQuitButton()
+            }
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
+            Task {
+                await self.interactor.didTapQuitPopupCancelButton()
+            }
+        }
+        alertVC.addAction(action)
+        alertVC.addAction(cancel)
+        self.present(alertVC, animated: true)
+    }
+    
+    func dismissQuitPopup() {
+        self.popupView.isHidden = true
+    }
+    
+    func displayToast(message: String) {
+        Toast.shared.makeToast(message)
+    }
+    
 }

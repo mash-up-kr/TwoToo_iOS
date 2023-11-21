@@ -31,6 +31,7 @@ final class HistoryWorker: HistoryWorkerProtocol {
         if historyResponse.first?.user1No == self.meLocalWorker.userNo {
             return historyResponse.enumerated().map({ index, history in
                 return .init(
+                    viewState: history.viewState,
                     id: String(history.challengeNo),
                     order: index + 1,
                     name: history.name,
@@ -44,6 +45,7 @@ final class HistoryWorker: HistoryWorkerProtocol {
         else {
             return historyResponse.enumerated().map({ index, history in
                 return .init(
+                    viewState: history.viewState,
                     id: String(history.challengeNo),
                     order: index + 1,
                     name: history.name,

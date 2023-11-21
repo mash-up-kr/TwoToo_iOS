@@ -228,12 +228,12 @@ class NetworkManagerTests: QuickSpec {
             }
         }
         
-        describe("네트워크 요청 결과가 15초 이상 반환되지 않는다.") {
+        describe("네트워크 요청 결과가 25초 이상 반환되지 않는다.") {
             beforeEach {
                 stub(condition: isHost("api.example.com")) { _ in
                     let stubData = "{\"success\": true}".data(using: .utf8)
                     let response = HTTPStubsResponse(data: stubData!, statusCode: 200, headers: ["Content-Type": "application/json"])
-                    response.requestTime = 15.5
+                    response.requestTime = 25.5
                     return response
                 }
             }

@@ -23,8 +23,10 @@ public struct NetworkConfiguration {
             "accept": "application/json",
             "Content-Type": "application/json"
         ],
-        baseURL: String = "http://43.202.68.239:3000",
-        maxWaitTime: Double = 15.0
+        baseURL: String = "https://twotoo-node-zmtrd.run.goorm.site", // 개발 서버
+//        baseURL: String = "https://imv0qb1bei.execute-api.ap-northeast-2.amazonaws.com", // 현 상용 서버
+//        baseURL: String = "http://43.202.68.239:3000", // 구 상용 서버
+        maxWaitTime: Double = 25.0
     ) {
         self.headers = headers
         self.baseURL = baseURL

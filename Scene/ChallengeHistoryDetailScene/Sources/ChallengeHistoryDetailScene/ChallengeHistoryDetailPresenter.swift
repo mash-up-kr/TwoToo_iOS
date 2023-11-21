@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import SKPhotoBrowser
 
 @MainActor
 protocol ChallengeHistoryDetailPresentationLogic {
     func presentChallengeDetail(detail: ChallengeHistoryDetail.Model.ChallengeDetail)
+    func presentPhoto(imageUrl: String)
     
 }
 
@@ -27,6 +29,14 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         let (certification, compliment) = self.map(detail)
         self.viewController?.displayCertification(certification: certification)
         self.viewController?.displayCompliment(compliment: compliment)
+    }
+    
+    func presentPhoto(imageUrl: String) {
+        var images = [SKPhoto]()
+        let photo = SKPhoto.photoWithImageURL(imageUrl)
+        photo.shouldCachePhotoURLImage = false
+        images.append(photo)
+        self.viewController?.displayPhoto(photo: .init(images: images))
     }
     
     // model -> viewModel
