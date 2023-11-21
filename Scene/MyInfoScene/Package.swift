@@ -10,6 +10,10 @@ let package = Package(
         .library(
             name: "MyInfoScene",
             targets: ["MyInfoScene"]
+        ),
+        .library(
+          name: "ChangeNicknameScene",
+          targets: ["ChangeNicknameScene"]
         )
     ],
     dependencies: [
@@ -27,7 +31,8 @@ let package = Package(
         .target(
             name: "MyInfoScene",
             dependencies: [
-                .product(name: "CoreKit", package: "CoreKit")
+                .product(name: "CoreKit", package: "CoreKit"),
+                "ChangeNicknameScene"
             ],
             resources: [.process("Assets")]
         ),
@@ -38,6 +43,12 @@ let package = Package(
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "Quick", package: "Quick")
             ]
+        ),
+        .target(
+          name: "ChangeNicknameScene",
+          dependencies: [
+            .product(name: "CoreKit", package: "CoreKit")
+          ]
         )
     ]
 )

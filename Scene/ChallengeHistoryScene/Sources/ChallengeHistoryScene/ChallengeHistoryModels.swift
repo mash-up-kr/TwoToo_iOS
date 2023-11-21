@@ -30,6 +30,8 @@ enum ChallengeHistory {
             var myInfo: User
             /// 상대방 정보
             var partnerInfo: User
+            /// 완료 여부
+            var isFinished: Bool
         }
         
         /// 유저
@@ -122,6 +124,8 @@ enum ChallengeHistory {
             var iconImage: UIImage
             /// 설명
             var description: String
+            /// 경고 문구
+            var warningText: String
             /// 하단의 왼쪽, 오른쪽 버튼 타이틀
             var buttonTitles: [String]
         }

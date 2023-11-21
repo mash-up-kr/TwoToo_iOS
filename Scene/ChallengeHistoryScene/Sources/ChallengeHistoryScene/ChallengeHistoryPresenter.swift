@@ -27,7 +27,8 @@ protocol ChallengeHistoryPresentationLogic {
 
 final class ChallengeHistoryPresenter {
     weak var viewController: ChallengeHistoryDisplayLogic?
-    
+    /// 챌린지가 완료된 상태인지 체크
+    private var isCompleted: Bool = false
 }
 
 // MARK: - Presentation Logic
@@ -40,14 +41,27 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
     }
     
     func presentOptionPopup() {
-        self.viewController?.displayOptionPopup(title: "챌린지 그만두기")
+        let title = self.isCompleted ? "챌린지 삭제하기" : "챌린지 그만두기"
+        self.viewController?.displayOptionPopup(title: title)
     }
     
     func presentQuitPopup() {
-        let viewModel = ChallengeHistory.ViewModel.QuitPopup(title: "챌린지 그만두기",
+        var title: String = "챌린지 그만두기"
+        var description: String = "기존의 챌린지는 삭제 됩니다."
+        var warningText: String = "*(경고) 그만두기 시 양쪽 모두에게\n삭제 및 종료 됩니다!"
+        var buttonTitles: [String] = ["취소", "그만두기"]
+        if self.isCompleted {
+            title = "챌린지 삭제하기"
+            description = "완료한 챌린지는 삭제됩니다."
+            warningText = "*(경고) 삭제하기 시 양쪽 모두에게 삭제됩니다!*"
+            buttonTitles = ["취소", "삭제하기"]
+        }
+        
+        let viewModel = ChallengeHistory.ViewModel.QuitPopup(title: title,
                                                              iconImage: .asset(.icon_delete)!,
-                                                             description: "기존의 챌린지는 삭제 됩니다\n*(경고) 그만두기 시 양쪽 모두에게\n삭제 및 종료 됩니다!*",
-                                                             buttonTitles: ["취소", "그만두기"])
+                                                             description: description, 
+                                                             warningText: warningText,
+                                                             buttonTitles: buttonTitles)
         self.viewController?.displayQuitPopup(viewModel: viewModel)
     }
     
@@ -56,7 +70,8 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
     }
     
     func presentChallengeQuitSuccess() {
-        self.viewController?.displayToast(message: "기존 챌린지를 삭제했어요. 새로운 챌린지를 도전하세요!")
+        let message = self.isCompleted ? "완료된 챌린지를 삭제했어요." : "기존 챌린지를 삭제했어요. 새로운 챌린지를 도전하세요!"
+        self.viewController?.displayToast(message: message)
     }
     
     func presentChallengeQuitError(error: Error) {
@@ -65,13 +80,15 @@ extension ChallengeHistoryPresenter: ChallengeHistoryPresentationLogic {
 }
 
 extension ChallengeHistoryPresenter {
+    
     /// Model -> ViewModel
     private func map(model: ChallengeHistory.Model.Challenge)
     -> ChallengeHistory.ViewModel.Challenge {
         return .init(id: model.id,
                      name: model.name,
                      dDayText: self.makedDayText(start: Date(),
-                                                   end: model.endDate),
+                                                 end: model.endDate,
+                                                 isFinished: model.isFinished),
                      additionalInfo: model.additionalInfo,
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
@@ -152,12 +169,15 @@ extension ChallengeHistoryPresenter {
     }
     
     /// 시작일부터 종료일까지 디데이 계산
-    private func makedDayText(start: Date, end: Date) -> String {
-        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day, diffDay > 0 {
-            return "D-\(diffDay)"
-        } else {
+    private func makedDayText(start: Date, end: Date, isFinished: Bool) -> String {
+        if isFinished {
+            self.isCompleted = true
             return "완료"
         }
+        if let diffDay = Calendar.current.dateComponents([.day], from: start, to: end).day {
+            return "D-\(diffDay)"
+        }
+        return ""
     }
     
     /// 시작일부터 종료일까지 날짜 배열 리턴, 최신순 정렬

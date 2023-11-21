@@ -19,6 +19,8 @@ enum History {
         
         /// 챌린지
         struct Challenge {
+            // 챌린지 진행 상태
+            var viewState: String
             /// 챌린지 ID
             var id: String
             /// 챌린지 순서 - n번째 챌린지
@@ -47,8 +49,10 @@ enum History {
             
         /// 히스토리 셀 정보
         struct CellInfo {
-            /// 챌린지 순서 텍스트
-            var orderText: String
+            /// 챌린지 진행 상태
+            var isFinished: Bool
+            /// 챌린지 순서
+            var order: Int
             /// 챌린지 이름 텍스트
             var nameText: String
             /// 챌린지 날짜 정보 텍스트

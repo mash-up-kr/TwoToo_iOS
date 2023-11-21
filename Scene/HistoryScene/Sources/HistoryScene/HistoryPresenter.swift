@@ -51,14 +51,26 @@ private extension HistoryPresenter {
             let end: String = $0.endDate.dateToString(.shortYearMonthDay)
             let dateText: String = start + " ~ " + end
             var partnerFlower: UIImage?
+            var order = 0
             if let partnerInfoFlower = $0.partnerFlower {
                 partnerFlower = FlowerMappingWorker(flowerType: partnerInfoFlower).getSmallImage()
+            }
+            else {
+                partnerFlower = .asset(.img_buds)
             }
             var myFlower: UIImage?
             if let myInfoFlower = $0.myFlower {
                 myFlower = FlowerMappingWorker(flowerType: myInfoFlower).getSmallImage()
             }
-            let cellInfo = History.ViewModel.CellInfo(orderText: "\($0.order)번째 챌린지",
+            else {
+                myFlower = .asset(.img_buds)
+            }
+            
+            order = $0.order
+          
+            let cellInfo = History.ViewModel.CellInfo(
+                isFinished: $0.viewState == "Finished",
+                order: order,
                                                       nameText: $0.name,
                                                       dateText: dateText,
                                                       partnerFlowerImage: partnerFlower,

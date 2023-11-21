@@ -80,7 +80,8 @@ final class ChallengeHistoryWorker: ChallengeHistoryWorkerProtocol {
             startDate: startDate,
             endDate: endDate,
             myInfo: myInfo,
-            partnerInfo: partnerInfo
+            partnerInfo: partnerInfo,
+            isFinished: challengeDetailResponse.isFinished
         )
     }
     

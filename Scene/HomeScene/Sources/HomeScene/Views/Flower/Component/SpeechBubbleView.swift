@@ -26,6 +26,7 @@ final class SpeechBubbleView: UIView {
     let titleLabel: UILabel = {
         let v = UILabel()
         v.font = .body1
+        v.textAlignment = .center
         v.textColor = .primary
         v.numberOfLines = 0
         return v

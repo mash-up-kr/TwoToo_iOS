@@ -81,7 +81,7 @@ final class LoginWorker: LoginWorkerProtocol {
         let authResponse = try await self.authNetworkWorker.requestAuthorize(
             socialId: socialId,
             loginType: loginType,
-            deviceToken: self.meLocalWorker.deviceToken ?? ""
+            deviceToken: self.meLocalWorker.deviceToken ?? "FCM Token"
         )
         self.meLocalWorker.token = authResponse.accessToken
         self.meLocalWorker.nickname = authResponse.nickname
@@ -122,6 +122,7 @@ final class LoginWorker: LoginWorkerProtocol {
         }
     }
     
+    @MainActor
     private func loginWithKakaoAccountSDK() async throws {
         return try await withCheckedThrowingContinuation { continuation in
             UserApi.shared.loginWithKakaoAccount { oAuthToken, error in

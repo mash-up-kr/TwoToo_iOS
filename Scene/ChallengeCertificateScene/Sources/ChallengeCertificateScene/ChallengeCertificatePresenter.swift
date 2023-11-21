@@ -22,8 +22,6 @@ protocol ChallengeCertificatePresentationLogic {
     func presentImagePicker()
     /// 이미지 크롭 화면을 보여준다.
     func presentImageCropView(with image: ChallengeCertificate.Model.Image)
-    /// 사진 저장 실패 오류를 보여준다.
-    func presentPhotoSaveError(error: Error)
     /// 인증 사진을 보여준다.
     func presentCertificateImage(image: ChallengeCertificate.Model.Image)
     /// 인증하기를 활성화하여 보여준다.
@@ -85,10 +83,6 @@ extension ChallengeCertificatePresenter: ChallengeCertificatePresentationLogic {
     
     func presentImageCropView(with image: ChallengeCertificate.Model.Image) {
         self.viewController?.displayImageCropView(viewModel: .init(image: image))
-    }
-    
-    func presentPhotoSaveError(error: Error) {
-        self.viewController?.displayToast(viewModel: .init(message: "사진 저장에 실패하였습니다."))
     }
     
     func presentCertificateImage(image: ChallengeCertificate.Model.Image) {

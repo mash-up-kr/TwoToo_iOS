@@ -108,7 +108,7 @@ final class InvitationSendViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().inset(24)
             make.height.equalTo(57)
-            make.bottom.equalToSuperview().inset(54)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
     }
 }

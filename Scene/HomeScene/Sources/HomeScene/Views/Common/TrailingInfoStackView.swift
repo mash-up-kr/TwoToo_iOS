@@ -70,7 +70,7 @@ final class TrailingInfoStackView: UIView {
                          self.challengeCountLabel)
         
         self.heartImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(12)
+            make.width.height.equalTo(14)
         }
         
         self.nicknameStackView.snp.makeConstraints { make in
