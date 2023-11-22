@@ -201,7 +201,10 @@ extension InvitationWaitViewController: InvitationWaitDisplayLogic {
 }
 
 extension InvitationWaitViewController: TTNavigationBarDelegate {
+    /// 나가기 버튼 탭 했을 때
     func didTapRightButton() {
-        // TODO: 나가기 구현
+        Task {
+            await self.interactor.didTapExitButton()
+        }
     }
 }
