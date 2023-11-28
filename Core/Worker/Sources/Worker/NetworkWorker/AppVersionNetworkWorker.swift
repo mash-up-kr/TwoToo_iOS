@@ -40,6 +40,6 @@ public final class AppVersionNetworkWorker: AppVersionNetworkWorkerProtocol {
     let verFloat = NSString.init(string: version).floatValue
     let currentVerFloat = NSString.init(string: currentVersion).floatValue
     
-    return verFloat == currentVerFloat
+    return verFloat < currentVerFloat ? true : false
   }
 }
