@@ -7,10 +7,12 @@
 //
 
 import CoreKit
+import Foundation
 
 protocol SplashWorkerProtocol {
     /// 유저 상태 조회
     func fetchUserState() async throws -> Splash.Model.UserState
+    func checkAppVersion() async throws -> Bool
 }
 
 final class SplashWorker: SplashWorkerProtocol {
@@ -18,15 +20,23 @@ final class SplashWorker: SplashWorkerProtocol {
     var meLocalWorker: MeLocalWorkerProtocol
     var invitationLocalWorker: InvitationLocalWorkerProtocol
     var meNetworkWorker: MeNetworkWorkerProtocol
+    var appVersionWorker: AppVersionNetworkWorkerProtocol
     
     init(
         meLocalWorker: MeLocalWorkerProtocol,
         invitationLocalWorker: InvitationLocalWorkerProtocol,
-        meNetworkWorker: MeNetworkWorkerProtocol
+        meNetworkWorker: MeNetworkWorkerProtocol,
+        appVersionWorker: AppVersionNetworkWorkerProtocol
     ) {
         self.meLocalWorker = meLocalWorker
         self.invitationLocalWorker = invitationLocalWorker
         self.meNetworkWorker = meNetworkWorker
+        self.appVersionWorker = appVersionWorker
+    }
+  
+    // 최신버전인지 아닌지 확인하는 함수
+    func checkAppVersion() async throws -> Bool {
+        return try await self.appVersionWorker.requestAppVersion()
     }
     
     func fetchUserState() async throws -> Splash.Model.UserState {

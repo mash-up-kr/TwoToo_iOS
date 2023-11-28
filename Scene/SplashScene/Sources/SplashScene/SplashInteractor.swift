@@ -11,6 +11,8 @@ import CoreKit
 protocol SplashBusinessLogic {
     /// 첫 진입
     func didLoad() async
+    /// 업데이트 버튼 클릭
+    func didTapUpdateButton() async
 }
 
 protocol SplashDataStore: AnyObject {
@@ -78,10 +80,18 @@ extension SplashInteractor {
 
 // MARK: Feature (진입)
 
+import UIKit
+
 extension SplashInteractor {
-    
+  
     func didLoad() async {
+      
         do {
+          let isVersionSame = try await self.worker.checkAppVersion()
+          
+          if !isVersionSame {
+            await self.presenter.presentUpdatePopup()
+          } else {
             let userState = try await self.worker.fetchUserState()
             switch userState {
                 case .login:
@@ -99,11 +109,25 @@ extension SplashInteractor {
                 case .home:
                     self.didTriggerRouteToHomeScene.send(())
             }
+          }
         }
         catch {
             self.didTriggerRouteToLoginScene.send(())
         }
     }
+}
+
+// MARK: Feature (강제업데이트)
+
+extension SplashInteractor {
+  func didTapUpdateButton() async {
+    let appleId = "6455260918"
+    DispatchQueue.main.async {
+        if let url = URL(string: "itms-apps://itunes.apple.com/app/apple-store/\(appleId)"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+  }
 }
 
 // MARK: - Application Business Logic

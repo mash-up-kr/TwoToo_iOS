@@ -29,6 +29,15 @@ enum Splash {
     }
     
     enum ViewModel {
-        
+      struct UpdatePopup {
+        /// 타이틀
+        var title: String
+        /// 업데이트 아이콘
+        var iconImage: UIImage
+        /// 설명
+        var description: String
+        /// 버튼 타이틀
+        var buttonTitle: [String]
+      }
     }
 }
