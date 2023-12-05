@@ -33,7 +33,7 @@ final class SplashWorker: SplashWorkerProtocol {
         self.meNetworkWorker = meNetworkWorker
         self.appVersionWorker = appVersionWorker
     }
-  
+    
     // 최신버전인지 아닌지 확인하는 함수
     func checkAppVersion() async throws -> Bool {
         return try await self.appVersionWorker.requestAppVersion()

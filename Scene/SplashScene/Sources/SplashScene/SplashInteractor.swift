@@ -83,17 +83,17 @@ extension SplashInteractor {
 import UIKit
 
 extension SplashInteractor {
-  
+    
     func didLoad() async {
-      
+        
         do {
-          let isVersionSame = try await self.worker.checkAppVersion()
-          
-          if !isVersionSame {
-            await self.presenter.presentUpdatePopup()
-          } else {
-            let userState = try await self.worker.fetchUserState()
-            switch userState {
+            let isVersionSame = try await self.worker.checkAppVersion()
+            
+            if !isVersionSame {
+                await self.presenter.presentUpdatePopup()
+            } else {
+                let userState = try await self.worker.fetchUserState()
+                switch userState {
                 case .login:
                     self.didTriggerRouteToLoginScene.send(())
                     
@@ -108,8 +108,8 @@ extension SplashInteractor {
                     
                 case .home:
                     self.didTriggerRouteToHomeScene.send(())
+                }
             }
-          }
         }
         catch {
             self.didTriggerRouteToLoginScene.send(())
@@ -120,14 +120,14 @@ extension SplashInteractor {
 // MARK: Feature (강제업데이트)
 
 extension SplashInteractor {
-  func didTapUpdateButton() async {
-    let appleId = "6455260918"
-    DispatchQueue.main.async {
-        if let url = URL(string: "itms-apps://itunes.apple.com/app/apple-store/\(appleId)"), UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    func didTapUpdateButton() async {
+        let appleId = "6455260918"
+        DispatchQueue.main.async {
+            if let url = URL(string: "itms-apps://itunes.apple.com/app/apple-store/\(appleId)"), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
     }
-  }
 }
 
 // MARK: - Application Business Logic

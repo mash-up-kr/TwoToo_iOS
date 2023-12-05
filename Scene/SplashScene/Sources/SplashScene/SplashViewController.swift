@@ -10,7 +10,7 @@ import CoreKit
 import UIKit
 
 protocol SplashDisplayLogic: AnyObject {
-  func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup)
+    func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup)
 }
 
 final class SplashViewController: UIViewController {
@@ -46,16 +46,16 @@ final class SplashViewController: UIViewController {
         v.image = .asset(.app_logo)!
         return v
     }()
-  
+    
     lazy var updatePopupView: TTPopup = {
-      let v = TTPopup()
-      v.isHidden = true
-      v.didTapLeftButton {
-        Task { [weak self] in
-          await self?.interactor.didTapUpdateButton()
+        let v = TTPopup()
+        v.isHidden = true
+        v.didTapLeftButton {
+            Task { [weak self] in
+                await self?.interactor.didTapUpdateButton()
+            }
         }
-      }
-      return v
+        return v
     }()
     
     // MARK: - View Lifecycle
@@ -88,7 +88,7 @@ final class SplashViewController: UIViewController {
             make.width.equalTo(135)
             make.height.equalTo(23)
         }
-      
+        
         self.updatePopupView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
@@ -106,14 +106,14 @@ extension SplashViewController: SplashScene {
 // MARK: - Display Logic
 
 extension SplashViewController: SplashDisplayLogic {
-  func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup) {
-    
-    updatePopupView.configure(
-      title: viewModel.title,
-      resultView: UIImageView(image: viewModel.iconImage),
-      description: viewModel.description,
-      buttonTitles: viewModel.buttonTitle
-    )
-    self.updatePopupView.isHidden = false
-  }
+    func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup) {
+        
+        updatePopupView.configure(
+            title: viewModel.title,
+            resultView: UIImageView(image: viewModel.iconImage),
+            description: viewModel.description,
+            buttonTitles: viewModel.buttonTitle
+        )
+        self.updatePopupView.isHidden = false
+    }
 }
