@@ -44,6 +44,7 @@ public final class InvitationWaitSceneFactory {
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let partnerNetworkWorker = PartnerNetworkWorker()
         let nicknameNetworkWorker = NicknameNetworkWorker()
+        let onboardLocalWorker = OnboardingLocalWorker(localDataSource: localDataSource)
         
         let presenter = InvitationWaitPresenter()
         let router = InvitationWaitRouter()
@@ -52,7 +53,9 @@ public final class InvitationWaitSceneFactory {
             invitationLocalWorker: invitationLocalWorker,
             meLocalWorker: meLocalWorker,
             partnerNetworkWorker: partnerNetworkWorker,
-            nicknameNetworkWorker: nicknameNetworkWorker
+            nicknameNetworkWorker: nicknameNetworkWorker,
+            resetLocalDataSource: localDataSource,
+            onboardLocalWorker: onboardLocalWorker
         )
         let interactor = InvitationWaitInteractor(
             presenter: presenter,

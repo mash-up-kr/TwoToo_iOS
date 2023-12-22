@@ -123,6 +123,7 @@ extension InvitationWaitInteractor {
     
     func didTapExitButton() async {
         self.didTriggerRouteToLoginScene.send(())
+        await self.worker.resetLocalData()
     }
 }
 

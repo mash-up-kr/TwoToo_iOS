@@ -13,6 +13,8 @@ protocol InvitationWaitWorkerProtocol {
     var invitationLink: String? { get }
     /// 파트너 조회
     func inquiryPartner() async throws -> InvitationWait.Model.Partner?
+    /// 로컬 데이터 리셋
+    func resetLocalData() async
 }
 
 final class InvitationWaitWorker: InvitationWaitWorkerProtocol {
@@ -22,19 +24,25 @@ final class InvitationWaitWorker: InvitationWaitWorkerProtocol {
     var meLocalWorker: MeLocalWorkerProtocol
     var partnerNetworkWorker: PartnerNetworkWorkerProtocol
     var nicknameNetworkWorker: NicknameNetworkWorkerProtocol
+    var resetLocalDataSource: ResetLocalDataSourceProtocol
+    var onboardLocalWorker: OnboardingLocalWorkerProtocol
     
     init(
         invitedUserLocalWorker: InvitedUserLocalWorkerProtocol,
         invitationLocalWorker: InvitationLocalWorkerProtocol,
         meLocalWorker: MeLocalWorkerProtocol,
         partnerNetworkWorker: PartnerNetworkWorkerProtocol,
-        nicknameNetworkWorker: NicknameNetworkWorkerProtocol
+        nicknameNetworkWorker: NicknameNetworkWorkerProtocol,
+        resetLocalDataSource: ResetLocalDataSourceProtocol,
+        onboardLocalWorker: OnboardingLocalWorkerProtocol
     ) {
         self.invitedUserLocalWorker = invitedUserLocalWorker
         self.invitationLocalWorker = invitationLocalWorker
         self.meLocalWorker = meLocalWorker
         self.partnerNetworkWorker = partnerNetworkWorker
         self.nicknameNetworkWorker = nicknameNetworkWorker
+        self.resetLocalDataSource = resetLocalDataSource
+        self.onboardLocalWorker = onboardLocalWorker
     }
     
     var invitationLink: String? {
@@ -76,5 +84,10 @@ final class InvitationWaitWorker: InvitationWaitWorkerProtocol {
         else {
             return nil
         }
+    }
+    
+    func resetLocalData() async {
+        self.resetLocalDataSource.removeAll()
+        self.onboardLocalWorker.isCheckedOnboarding = true
     }
 }
