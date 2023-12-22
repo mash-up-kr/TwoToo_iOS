@@ -9,7 +9,9 @@
 import CoreKit
 import UIKit
 
-protocol SplashDisplayLogic: AnyObject {}
+protocol SplashDisplayLogic: AnyObject {
+    func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup)
+}
 
 final class SplashViewController: UIViewController {
     var interactor: SplashBusinessLogic
@@ -29,8 +31,7 @@ final class SplashViewController: UIViewController {
         let v = UIStackView()
         v.axis = .vertical
         v.spacing = 28
-        v.addArrangedSubview(self.appIconImageView)
-        v.addArrangedSubview(self.appLogoImageView)
+        v.addArrangedSubviews(self.appIconImageView, self.appLogoImageView, self.updatePopupView)
         return v
     }()
     
@@ -43,6 +44,17 @@ final class SplashViewController: UIViewController {
     lazy var appLogoImageView: UIImageView = {
         let v = UIImageView()
         v.image = .asset(.app_logo)!
+        return v
+    }()
+    
+    lazy var updatePopupView: TTPopup = {
+        let v = TTPopup()
+        v.isHidden = true
+        v.didTapLeftButton {
+            Task { [weak self] in
+                await self?.interactor.didTapUpdateButton()
+            }
+        }
         return v
     }()
     
@@ -62,7 +74,8 @@ final class SplashViewController: UIViewController {
     private func setUI() {
         self.view.setBackgroundDefault()
         
-        self.view.addSubview(self.contentView)
+        self.view.addSubviews(self.contentView, self.updatePopupView)
+        self.view.bringSubviewToFront(self.updatePopupView)
         
         self.contentView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -74,6 +87,10 @@ final class SplashViewController: UIViewController {
         self.appLogoImageView.snp.makeConstraints { make in
             make.width.equalTo(135)
             make.height.equalTo(23)
+        }
+        
+        self.updatePopupView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
@@ -89,5 +106,14 @@ extension SplashViewController: SplashScene {
 // MARK: - Display Logic
 
 extension SplashViewController: SplashDisplayLogic {
-    
+    func displayUpdatePopup(viewModel: Splash.ViewModel.UpdatePopup) {
+        
+        updatePopupView.configure(
+            title: viewModel.title,
+            resultView: UIImageView(image: viewModel.iconImage),
+            description: viewModel.description,
+            buttonTitles: viewModel.buttonTitle
+        )
+        self.updatePopupView.isHidden = false
+    }
 }

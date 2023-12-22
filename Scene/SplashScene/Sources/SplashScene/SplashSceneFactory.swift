@@ -44,13 +44,15 @@ public final class SplashSceneFactory {
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let invitationLocalWorker = InvitationLocalWorker(localDataSource: localDataSource)
         let meNetworkWorker = MeNetworkWorker()
+        let appVersionWorker = AppVersionNetworkWorker()
         
         let presenter = SplashPresenter()
         let router = SplashRouter()
         let worker = SplashWorker(
             meLocalWorker: meLocalWorker,
             invitationLocalWorker: invitationLocalWorker,
-            meNetworkWorker: meNetworkWorker
+            meNetworkWorker: meNetworkWorker,
+            appVersionWorker: appVersionWorker
         )
         let interactor = SplashInteractor(
             presenter: presenter,
