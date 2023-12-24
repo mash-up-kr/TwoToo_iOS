@@ -6,24 +6,28 @@
 //
 
 import UIKit
-import DesignSystem
 
 /// 말풍선 뷰
 ///
 /// Parameter
 /// - title : 말풍선 텍스트
 /// - tailPosition : 말풍선 꼬리 위치 (좌 / 우)
-final class SpeechBubbleView: UIView {
+final public class SpeechBubbleView: UIView {
     
     private var _backgroundColor: UIColor = .white
     private var tailCoordinate: CGFloat = 0.5
+    private var tailPosition: TailPosition = .my
     
-    enum TailPosition{
+    public enum TailPosition{
+        /// 홈 - 파트너 말풍선
         case partner
+        /// 홈 - 내 말풍선
         case my
+        /// 챌린지 대기중 - 나가기 말풍선
+        case exit
     }
     
-    let titleLabel: UILabel = {
+    public let titleLabel: UILabel = {
         let v = UILabel()
         v.font = .body1
         v.textAlignment = .center
@@ -38,8 +42,9 @@ final class SpeechBubbleView: UIView {
         return v
     }()
     
-    init(tailPosition: TailPosition) {
+    public init(tailPosition: TailPosition) {
         super.init(frame: .zero)
+        self.tailPosition = tailPosition
         switch tailPosition {
         case .partner:
             self._backgroundColor = UIColor.mainLightPink
@@ -49,6 +54,10 @@ final class SpeechBubbleView: UIView {
             self._backgroundColor = UIColor.second01
             self.tailCoordinate = 1.5
             self.tailImageView.image = UIImage.asset(.icon_bubble_tail_my)
+        case .exit:
+            self._backgroundColor = UIColor.second01
+            self.tailImageView.image = UIImage(resource: .iconBubbleTailExit)
+            self.tailCoordinate = 1.7
         }
         self.layout()
         self.attribute()
@@ -65,10 +74,19 @@ final class SpeechBubbleView: UIView {
         self.titleLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
-        self.tailImageView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(10)
-            make.centerX.equalToSuperview().multipliedBy(self.tailCoordinate)
+        switch tailPosition {
+        case .partner, .my:
+            self.tailImageView.snp.makeConstraints { make in
+                make.bottom.equalToSuperview().offset(10)
+                make.centerX.equalToSuperview().multipliedBy(self.tailCoordinate)
+            }
+        case .exit:
+            self.tailImageView.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(-10)
+                make.centerX.equalToSuperview().multipliedBy(self.tailCoordinate)
+            }
         }
+
     }
     
     func attribute() {
@@ -76,7 +94,7 @@ final class SpeechBubbleView: UIView {
         self.backgroundColor = _backgroundColor
     }
     
-    func configure(title: String) {
+    public func configure(title: String) {
         if title.count > 10 {
             let index = title.index(title.startIndex, offsetBy: 10)
             let firstPart = title[..<index]

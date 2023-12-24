@@ -59,7 +59,8 @@ public final class TTNavigationBar: UIView {
     /// TTNavigationBar(title: "마이페이지", rightButtonImage: .asset(.icon_info))
     ///  ```
     public convenience init(title: String?,
-                            rightButtonImage: UIImage?) {
+                            rightButtonImage: UIImage?,
+                            rightButtonText: String? = nil) {
         self.init()
         if let _title = title, _title == "TwoToo" {
             self.logoImageView.isHidden = false
@@ -67,6 +68,11 @@ public final class TTNavigationBar: UIView {
             self.titleLabel.text = title
         }
         self.rightButton.setImage(rightButtonImage, for: .normal)
+        if let text = rightButtonText {
+            self.rightButton.setTitle(text, for: .normal)
+            self.rightButton.titleLabel?.font = .h4
+            self.rightButton.setTitleColor(.primary, for: .normal)
+        }
     }
     
     required init?(coder: NSCoder) {

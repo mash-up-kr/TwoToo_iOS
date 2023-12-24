@@ -21,7 +21,11 @@ public protocol LocalDataSourceProtocol {
     func remove(key: String)
 }
 
-public final class LocalDataSource: LocalDataSourceProtocol {
+public protocol ResetLocalDataSourceProtocol {
+    func removeAll()
+}
+
+public final class LocalDataSource: LocalDataSourceProtocol, ResetLocalDataSourceProtocol {
     
     public init() {}
     

@@ -15,11 +15,15 @@ protocol InvitationWaitBusinessLogic {
     func didTapRefreshButton() async
     /// 초대장 다시 보내기 버튼 클릭
     func didTapResendButton() async
+    /// 나가기 버튼 클릭
+    func didTapExitButton() async
 }
 
 protocol InvitationWaitDataStore: AnyObject {
     /// 홈 화면 이동 트리거
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never> { get }
+    /// 로그인 화면 이동 트리거
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never> { get }
     /// 공유 링크 (optional)
     var invitationLink: String? { get }
 }
@@ -36,18 +40,21 @@ final class InvitationWaitInteractor: InvitationWaitDataStore, InvitationWaitBus
         router: InvitationWaitRoutingLogic,
         worker: InvitationWaitWorkerProtocol,
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>,
         invitationLink: String?
     ) {
         self.presenter = presenter
         self.router = router
         self.worker = worker
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
         self.invitationLink = invitationLink
     }
     
     // MARK: - DataStore
     
     var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
     
     var invitationLink: String?
 }
@@ -107,6 +114,16 @@ extension InvitationWaitInteractor {
         else {
             await self.presenter.presentInvitationLinkError()
         }
+    }
+}
+
+// MARK: Feature (나가기 > 로그인 화면 이동)
+
+extension InvitationWaitInteractor {
+    
+    func didTapExitButton() async {
+        self.didTriggerRouteToLoginScene.send(())
+        await self.worker.resetLocalData()
     }
 }
 
