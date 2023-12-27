@@ -87,9 +87,9 @@ extension SplashInteractor {
     func didLoad() async {
         
         do {
-            let isVersionSame = try await self.worker.checkAppVersion()
+            let isNeedUpdate = try await self.worker.checkAppVersion()
             
-            if !isVersionSame {
+            if isNeedUpdate {
                 await self.presenter.presentUpdatePopup()
             } else {
                 let userState = try await self.worker.fetchUserState()
