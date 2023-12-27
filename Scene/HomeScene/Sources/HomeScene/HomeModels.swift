@@ -193,7 +193,7 @@ enum Home {
             }
             
             /// 프로그래스
-            struct ProgressViewModel {
+            struct ProgressViewModel: TTProgressViewModelProtocol {
                 /// 상대방 이름 텍스트
                 var partnerNameText: String
                 /// 내 이름 텍스트
@@ -298,7 +298,7 @@ enum Home {
             }
 
             /// 프로그래스
-            struct ProgressViewModel {
+            struct ProgressViewModel: TTProgressViewModelProtocol {
                 /// 상대방 이름 텍스트
                 var partnerNameText: String
                 /// 내 이름 텍스트
