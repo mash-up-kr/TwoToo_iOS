@@ -97,7 +97,11 @@ final class ChallengeHistoryWorker: ChallengeHistoryWorkerProtocol {
         return self.meLocalWorker.partnerNickname
     }
     
-    private func mapUserInfo(from user: ChallengeDetailResponse.User, commitList: [ChallengeDetailResponse.Commit]?, commitCount: Int?) -> ChallengeHistory.Model.User {
+    private func mapUserInfo(from user: ChallengeDetailResponse.User, 
+                             commitList: [ChallengeDetailResponse.Commit]?,
+                             commitCount: Int?) 
+    -> ChallengeHistory.Model.User 
+    {
         var certificates: [ChallengeHistory.Model.Certificate] = []
         if let commitList = commitList {
             certificates = commitList.map {
@@ -114,6 +118,7 @@ final class ChallengeHistoryWorker: ChallengeHistoryWorkerProtocol {
         let userInfo: ChallengeHistory.Model.User = .init(
             id: String(user.userNo),
             nickname: user.nickname,
+            certCount: commitCount,
             certificates: certificates
         )
         
