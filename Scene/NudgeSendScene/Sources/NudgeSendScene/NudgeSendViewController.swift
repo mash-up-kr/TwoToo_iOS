@@ -43,7 +43,8 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     }()
     
     private lazy var messageTextView: TTTextView = {
-        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n최대 30자까지 입력 가능", maxCount: 30)
+        let v = TTTextView(placeHolder: "찌르기 문구를 입력해주세요.\n최대 30자까지 입력 가능", 
+                           maxCount: 30)
         v.customDelegate = self
         return v
     }()
@@ -71,7 +72,8 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView()
+        let heightRatio = UIDevice.current.deviceType == .default ? 0.8 : 0.67
+        let v = SelfSizingScrollView(maxHeightRatio: heightRatio)
         v.addSubview(self.scrollSizeFitView)
         return v
     }()
@@ -82,6 +84,8 @@ final class NudgeSendViewController: UIViewController, BottomSheetViewController
         super.viewDidLoad()
         self.setUI()
         self.messageTextView.becomeFirstResponder()
+        self.registKeyboardDelegate()
+
         Task {
             await self.interactor.didLoad()
         }
@@ -175,5 +179,24 @@ extension NudgeSendViewController: NudgeSendDisplayLogic {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
         }
+    }
+}
+
+extension NudgeSendViewController: KeyboardDelegate {
+    func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
+        let bottomOffset = keyboardFrame.height + 14
+        UIView.animate(withDuration: duration) {
+            self.pushButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().inset(24)
+                make.height.equalTo(57)
+                make.bottom.equalTo(self.view.snp.bottom).inset(bottomOffset)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func willHideKeyboard(duration: Double) {
+        // 키보드 안내려가게 고정해둠
     }
 }
