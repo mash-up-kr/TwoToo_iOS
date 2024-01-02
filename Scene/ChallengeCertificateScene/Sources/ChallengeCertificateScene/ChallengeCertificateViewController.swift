@@ -102,7 +102,8 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView(maxHeight: UIScreen.main.bounds.height * 0.72)
+        let heightRatio = UIDevice.current.deviceType == .default ? 0.85 : 0.72
+        let v = SelfSizingScrollView(maxHeightRatio: heightRatio)
         v.delegate = self
         v.addTapAction { [weak self] in
             self?.view.endEditing(true)
@@ -198,6 +199,13 @@ extension ChallengeCertificateViewController: TTTextViewDelegate,
                 make.bottom.equalToSuperview().inset(keyboardFrame.height)
             }
             self.backScrollView.contentOffset.y = keyboardFrame.height
+            let bottomOffset = keyboardFrame.height + 14
+            self.commitButton.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().inset(24)
+                make.height.equalTo(57)
+                make.bottom.equalTo(self.view.snp.bottom).inset(bottomOffset)
+            }
             self.view.layoutIfNeeded()
         }
     }
