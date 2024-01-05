@@ -25,6 +25,10 @@ protocol ChallengeCertificateDisplayLogic: AnyObject {
 final class ChallengeCertificateViewController: UIViewController, BottomSheetViewController {
     var interactor: ChallengeCertificateBusinessLogic
     
+    private var isCheckDeviceSE: Bool {
+        UIDevice.current.deviceType == .default
+    }
+    
     init(interactor: ChallengeCertificateBusinessLogic) {
         self.interactor = interactor
         super.init(nibName: nil, bundle: nil)
@@ -102,7 +106,7 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let heightRatio = UIDevice.current.deviceType == .default ? 0.85 : 0.72
+        let heightRatio = UIDevice.current.deviceType == .default ? 0.87 : 0.72
         let v = SelfSizingScrollView(maxHeightRatio: heightRatio)
         v.delegate = self
         v.addTapAction { [weak self] in
@@ -142,10 +146,13 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
             make.centerX.equalToSuperview()
         }
         
+        let leadingTrailningInset = isCheckDeviceSE ? 5 : 0
+        let height = isCheckDeviceSE ? 300 : 312
         self.commitPhotoView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.commitPhotoView.snp.width)
+            make.leading.equalToSuperview().offset(leadingTrailningInset)
+            make.trailing.equalToSuperview().offset(-leadingTrailningInset)
+            make.height.equalTo(height)
         }
         
         self.commentTextView.snp.makeConstraints { make in
@@ -154,11 +161,12 @@ final class ChallengeCertificateViewController: UIViewController, BottomSheetVie
             make.height.equalTo(85)
         }
         
+        let bottomOffset = isCheckDeviceSE ? 4 : 0
         self.commitButton.snp.makeConstraints { make in
             make.top.equalTo(self.commentTextView.snp.bottom).offset(29)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(57)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(bottomOffset)
         }
         
         self.scrollSizeFitView.snp.makeConstraints { make in
@@ -198,14 +206,18 @@ extension ChallengeCertificateViewController: TTTextViewDelegate,
             self.scrollSizeFitView.snp.updateConstraints { make in
                 make.bottom.equalToSuperview().inset(keyboardFrame.height)
             }
-            self.backScrollView.contentOffset.y = keyboardFrame.height
-            let bottomOffset = keyboardFrame.height + 14
-            self.commitButton.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().inset(24)
-                make.height.equalTo(57)
-                make.bottom.equalTo(self.view.snp.bottom).inset(bottomOffset)
+            var scrollOffset = keyboardFrame.height
+            if UIDevice.current.deviceType == .default {
+                scrollOffset += 14
             }
+            self.backScrollView.contentOffset.y = scrollOffset
+//            let bottomOffset = keyboardFrame.height + 14
+//            self.commitButton.snp.remakeConstraints { make in
+//                make.leading.equalToSuperview().offset(24)
+//                make.trailing.equalToSuperview().inset(24)
+//                make.height.equalTo(57)
+//                make.bottom.equalTo(self.view.snp.bottom).inset(bottomOffset)
+//            }
             self.view.layoutIfNeeded()
         }
     }
