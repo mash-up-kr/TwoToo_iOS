@@ -89,13 +89,23 @@ extension ChallengeHistoryPresenter {
                      dDayText: self.makedDayText(start: Date(),
                                                  end: model.endDate,
                                                  isFinished: model.isFinished),
-                     additionalInfo: model.additionalInfo,
+                     additionalInfo: model.additionalInfo, 
+                     progress: self.mappingProgress(partnerInfo: model.partnerInfo, myInfo: model.myInfo),
                      myNickname: model.myInfo.nickname,
                      partnerNickname: model.partnerInfo.nickname,
                      cellInfo: self.makeCellInfoList(start: model.startDate,
                                                      end: model.endDate,
                                                      myList: model.myInfo.certificates,
                                                      partnerList: model.partnerInfo.certificates))
+    }
+    
+    private func mappingProgress(partnerInfo: ChallengeHistory.Model.User, myInfo: ChallengeHistory.Model.User) -> ChallengeHistory.ViewModel.ProgressViewModel {
+        return .init(partnerNameText: partnerInfo.nickname,
+                     myNameText: myInfo.nickname,
+                     partnerPercentageText: self.calculatePercentageText(certCount: partnerInfo.certCount),
+                     myPercentageText: self.calculatePercentageText(certCount: myInfo.certCount),
+                     partnerPercentageNumber: self.calculatePercentageNumber(certCount: partnerInfo.certCount),
+                     myPercentageNumber: self.calculatePercentageNumber(certCount: myInfo.certCount))
     }
     /// cell 뷰모델 리스트 생성
     private func makeCellInfoList(start: Date,
@@ -192,5 +202,35 @@ extension ChallengeHistoryPresenter {
         let today = Date()
         return Calendar.current.isDate(today, inSameDayAs: date)
     }
+    
+    private func calculatePercentageText(certCount: Int?) -> String {
+        guard let certCount = certCount else {
+            return ""
+        }
+        
+        if certCount < 20 {
+            let percentage = (certCount * 5) // 5% 씩 증가
+            return "\(percentage)%"
+        } else if certCount < 22 {
+            return "99%" // 20부터 99%로 유지
+        } else {
+            return "100%" // 22가 되면 100%로 표시
+        }
+    }
+
+    private func calculatePercentageNumber(certCount: Int?) -> Double {
+        guard let certCount = certCount else {
+            return 0.0
+        }
+        
+        if certCount < 20 {
+            return Double(certCount) * 0.05 // 5% 씩 증가
+        } else if certCount < 22 {
+            return 0.99 // 20부터 99%로 유지
+        } else {
+            return 1.0 // 22가 되면 100%로 표시
+        }
+    }
+    
     
 }

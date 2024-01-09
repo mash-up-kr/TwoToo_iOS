@@ -7,7 +7,22 @@
 
 import UIKit
 
-final class TTProgressBar: UIView {
+public protocol TTProgressViewModelProtocol {
+    /// 상대방 이름 텍스트
+    var partnerNameText: String { get set }
+    /// 내 이름 텍스트
+    var myNameText: String { get set }
+    /// 상대방 퍼센테이지 텍스트
+    var partnerPercentageText: String { get set }
+    /// 내 퍼센테이지 텍스트
+    var myPercentageText: String { get set }
+    /// 상대방 퍼센테이지 넘버
+    var partnerPercentageNumber: Double { get set }
+    /// 내 퍼센테이지 넘버
+    var myPercentageNumber: Double { get set }
+}
+
+public final class TTProgressBar: UIView {
     
     // MARK: - My UI
     private lazy var partnerNicknameLabel: UILabel = {
@@ -137,7 +152,7 @@ final class TTProgressBar: UIView {
         self.layer.cornerRadius = 15
     }
     
-    func configureInProgress(viewModel: Home.ViewModel.ChallengeInProgressViewModel.ProgressViewModel) {
+    public func configure(viewModel: TTProgressViewModelProtocol) {
         self.myNicknameLabel.text = viewModel.myNameText
         self.myPercentLabel.text = viewModel.myPercentageText
         self.partnerNicknameLabel.text = viewModel.partnerNameText
@@ -145,16 +160,6 @@ final class TTProgressBar: UIView {
         self.configurePercent(my: viewModel.myPercentageNumber,
                               partner: viewModel.partnerPercentageNumber)
     }
-    
-    func configureCompleted(viewModel: Home.ViewModel.ChallengeCompletedViewModel.ProgressViewModel) {
-        self.myNicknameLabel.text = viewModel.myNameText
-        self.myPercentLabel.text = viewModel.myPercentageText
-        self.partnerNicknameLabel.text = viewModel.partnerNameText
-        self.partnerPercentLabel.text = viewModel.partnerPercentageText
-        self.configurePercent(my: viewModel.myPercentageNumber,
-                              partner: viewModel.partnerPercentageNumber)
-    }
-    
     
     private func configurePercent(my: Double, partner: Double) {
         if my == 0 {
