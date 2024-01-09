@@ -19,10 +19,11 @@ public final class AppVersionNetworkWorker: AppVersionNetworkWorkerProtocol {
     
     public func requestAppVersion() async throws -> Bool {
         guard let info = Bundle.main.infoDictionary,
-              // 현재 버전 가져오기
-              let currentVersion = info["CFBundleShortVersionString"] as? String,
+              // 내 디바이스 현재 버전 가져오기
+              let deviceAppVersion = info["CFBundleShortVersionString"] as? String,
               // 앱 번들아이디 가져오기
               let identifier = info["CFBundleIdentifier"] as? String,
+              // 앱스토어 앱버전
               let url = URL(string: "http://itunes.apple.com/kr/lookup?bundleId=\(identifier)")
         else {
             return false
@@ -32,14 +33,10 @@ public final class AppVersionNetworkWorker: AppVersionNetworkWorkerProtocol {
         let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]
         
         guard let result = (json?["results"] as? [Any])?.first as? [String: Any],
-              let version = result["version"] as? String
+              let appStoreAppVersion = result["version"] as? String
         else {
             return false
         }
-        
-        let verFloat = NSString.init(string: version).floatValue
-        let currentVerFloat = NSString.init(string: currentVersion).floatValue
-        
-        return verFloat < currentVerFloat ? true : false
+        return appStoreAppVersion > deviceAppVersion
     }
 }
