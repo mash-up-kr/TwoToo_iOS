@@ -17,6 +17,8 @@ enum ChallengeHistoryDetail {
         
         /// 챌린지 상세 정보
         struct ChallengeDetail: Equatable {
+            /// 챌린지 ID
+            var challengeID: String
             /// 인증 ID
             var id: String
             /// 챌린지 이름

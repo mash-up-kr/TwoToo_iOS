@@ -27,6 +27,8 @@ public struct ChallengeHistoryDetailConfiguration {
     
     /// 챌린지 인증 상세 정보
     public struct ChallengeDetail {
+        /// 챌린지 ID
+        public var challengeID: String
         /// 인증 ID
         public var id: String
         /// 챌린지 이름
@@ -40,12 +42,14 @@ public struct ChallengeHistoryDetailConfiguration {
         /// 칭찬 문구
         public var complimentComment: String?
         
-        public init(id: String,
+        public init(challengeID: String,
+                    id: String,
                     challengeName: String,
                     certificateImageUrl: String,
                     certificateComment: String,
                     certificateTime: Date,
                     complimentComment: String?) {
+            self.challengeID = challengeID
             self.id = id
             self.challengeName = challengeName
             self.certificateImageUrl = certificateImageUrl
@@ -82,15 +86,18 @@ public final class ChallengeHistoryDetailSceneFactory {
     public init() {}
     
     public func make(with configuration: ChallengeHistoryDetailConfiguration) -> ChallengeHistoryDetailScene {
-        
+        let meLocalWorker = MeLocalWorker(localDataSource: LocalDataSource())
+        let challengeDetailNetworkWorker = ChallengeDetailNetworkWorker()
+
         let presenter = ChallengeHistoryDetailPresenter()
         let router = ChallengeHistoryDetailRouter()
-        let worker = ChallengeHistoryDetailWorker()
+        let worker = ChallengeHistoryDetailWorker(meLocalWorker: meLocalWorker, challengeDetailNetworkWorker: challengeDetailNetworkWorker)
         let interactor = ChallengeHistoryDetailInteractor(
             presenter: presenter,
             router: router,
             worker: worker,
-            detail: .init(id: configuration.detail.id,
+            detail: .init(challengeID: configuration.detail.challengeID,
+                          id: configuration.detail.id,
                           challengeName: configuration.detail.challengeName,
                           myNickname: configuration.user.myNickname,
                           certificateImageUrl: configuration.detail.certificateImageUrl,

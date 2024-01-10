@@ -45,7 +45,7 @@ extension HomeRouter: HomeRoutingLogic {
         challengeEssentialInfoInputViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeEssentialInfoInputViewController, animated: true)
     }
-    
+
     func routeToChallengeConfirmScene(entryPoint: String) {
         guard let dataStore = self.dataStore else {
             return
@@ -62,35 +62,36 @@ extension HomeRouter: HomeRoutingLogic {
         challengeConfirmViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
-    
+
     func routeToPartnerHistoryDetailScene(title: String,
                                           certificate: Home.Model.Certificate,
                                           nickname: String,
                                           partnerNickname: String) {
-      guard let dataStore = self.dataStore else {
-          return
-      }
-      
-      let historyDetailScene = ChallengeHistoryDetailSceneFactory().make(with: .init(
-        detail: .init(
-          id: certificate.id,
-          challengeName: dataStore.challenge?.name ?? "",
-          certificateImageUrl: certificate.imageURL,
-          certificateComment: certificate.contents,
-          certificateTime: dataStore.challenge?.partnerInfo.todayCert?.time.fullStringDate(.iso) ?? Date(),
-          complimentComment: certificate.complimentComment
-        ), user: .init(
-          myNickname: dataStore.challenge?.myInfo.nickname ?? "",
-          partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
-          isMyHistoryDetail: false
-        )
-      ))
-      
-      let vc = historyDetailScene.viewController
-      vc.modalPresentationStyle = .fullScreen
-      self.viewController?.present(vc, animated: true)
+        guard let dataStore = self.dataStore else {
+            return
+        }
+
+        let historyDetailScene = ChallengeHistoryDetailSceneFactory().make(with: .init(
+            detail: .init(
+                challengeID: dataStore.challenge?.id ?? "",
+                id: certificate.id,
+                challengeName: dataStore.challenge?.name ?? "",
+                certificateImageUrl: certificate.imageURL,
+                certificateComment: certificate.contents,
+                certificateTime: dataStore.challenge?.partnerInfo.todayCert?.time.fullStringDate(.iso) ?? Date(),
+                complimentComment: certificate.complimentComment
+            ), user: .init(
+                myNickname: dataStore.challenge?.myInfo.nickname ?? "",
+                partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
+                isMyHistoryDetail: false
+            )
+        ))
+
+        let vc = historyDetailScene.viewController
+        vc.modalPresentationStyle = .fullScreen
+        self.viewController?.present(vc, animated: true)
     }
-    
+
     func routeToChallengeCertificateScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -100,7 +101,7 @@ extension HomeRouter: HomeRoutingLogic {
         )
         self.viewController?.present(challengeCertificateScene.bottomSheetViewController, animated: true)
     }
-    
+
     func routeToNudgeSendScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -110,7 +111,7 @@ extension HomeRouter: HomeRoutingLogic {
         )
         self.viewController?.present(nudgeSendScene.bottomSheetViewController, animated: true)
     }
-    
+
     func routeToChallengeHistoryScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -122,13 +123,13 @@ extension HomeRouter: HomeRoutingLogic {
         challengeHistoryViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeHistoryViewController, animated: true)
     }
-    
+
     func routeToGuideScene() {
         guard let url = URL(string: "https://two2too2.github.io/") else {
             return
         }
         let safariViewController = SFSafariViewController(url: url)
-        
+
         self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
 }

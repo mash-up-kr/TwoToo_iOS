@@ -130,12 +130,34 @@ final class ChallengeHistoryDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUI()
+        self.registNotification()
         self.view.setBackgroundDefault()
+    }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    Task {
+        await self.interactor.didLoad()
+    }
+  }
+
+    @objc private func viewDidAppearWithModalDismissed() {
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
         }
     }
-    
+
+    private func registNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewDidAppearWithModalDismissed),
+            name: NSNotification.Name("modal_dismissed"),
+            object: nil
+        )
+    }
+
     // MARK: - Layout
     
     private func setUI() {

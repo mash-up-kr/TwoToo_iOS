@@ -24,14 +24,14 @@ protocol ChallengeHistoryDetailDataStore: AnyObject {
     var detail: ChallengeHistoryDetail.Model.ChallengeDetail { get }
 }
 
-final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {  
-    
+final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {
+
     var cancellables: Set<AnyCancellable> = []
-    
+
     var presenter: ChallengeHistoryDetailPresentationLogic
     var router: ChallengeHistoryDetailRoutingLogic
     var worker: ChallengeHistoryDetailWorkerProtocol
-    
+
     init(
         presenter: ChallengeHistoryDetailPresentationLogic,
         router: ChallengeHistoryDetailRoutingLogic,
@@ -43,7 +43,7 @@ final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, C
         self.worker = worker
         self.detail = detail
     }
-    
+
     // MARK: - DataStore
     var detail: ChallengeHistoryDetail.Model.ChallengeDetail
 }
@@ -51,10 +51,10 @@ final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, C
 // MARK: - Interactive Business Logic
 
 extension ChallengeHistoryDetailInteractor {
-    
+
     /// 외부 액션 옵저빙
     func observe() {
-        
+
     }
 }
 
@@ -63,17 +63,21 @@ extension ChallengeHistoryDetailInteractor {
 extension ChallengeHistoryDetailInteractor {
 
     func didLoad() async {
-        await self.presenter.presentChallengeDetail(detail: self.detail)
+        do {
+            try await self.worker.requestChallengeDetailInquiry(challengeID: self.detail.challengeID)
+            await self.presenter.presentChallengeDetail(detail: self.detail)
+        } catch {
+            print("실패")
+        }
     }
-    
 }
 
 // MARK: - Feature (사진 상세)
 
 extension ChallengeHistoryDetailInteractor {
-    
+
     func didTapPhoto() async {
-      await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
+        await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
     }
 }
 
@@ -90,11 +94,11 @@ extension ChallengeHistoryDetailInteractor {
 
 extension ChallengeHistoryDetailInteractor {
 
-  func didTapPraiseButton() async {
-    if self.detail.complicateComment?.isEmpty != nil {
-      await self.router.routeToPraiseSendScene()
+    func didTapPraiseButton() async {
+        if self.detail.complicateComment?.isEmpty != nil {
+            await self.router.routeToPraiseSendScene()
+        }
     }
-  }
 }
 
 
@@ -103,5 +107,5 @@ extension ChallengeHistoryDetailInteractor {
 // MARK: UseCase ()
 
 extension ChallengeHistoryDetailInteractor {
-    
+
 }
