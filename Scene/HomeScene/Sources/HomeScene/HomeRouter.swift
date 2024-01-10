@@ -64,6 +64,7 @@ extension HomeRouter: HomeRoutingLogic {
     }
     
   
+    // TODO: - 값 넣어줘야함
     func routeToPartnerHistoryDetailScene(title: String,
                                           certificate: Home.Model.Certificate,
                                           nickname: String,
@@ -82,7 +83,9 @@ extension HomeRouter: HomeRoutingLogic {
           complimentComment: ""
         ), user: .init(
           myNickname: dataStore.challenge?.myInfo.nickname ?? "",
-          partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "")
+          partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
+          isMyHistoryDetail: false
+        )
       ))
     }
     

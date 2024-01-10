@@ -47,16 +47,21 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         let dateText = model.certificateTime.dateToString(.hangleYearMonthDay)
         let timeText = "인증 시간  " + model.certificateTime.dateToString(.hourMinute)
         let title = "\(model.myNickname)의 기록"
-        let certification = ChallengeHistoryDetail.ViewModel.Challenge(challengeName: model.challengeName,
-                                                                       certificationDateText: dateText,
-                                                                       navigationTitle: title,
-                                                                       certificationImageURL: URL(string: model.certificateImageUrl),
-                                                                       certificationComment: model.certificateComment,
-                                                                       certificationTimeText: timeText)
+        let certification = ChallengeHistoryDetail.ViewModel.Challenge(
+          challengeName: model.challengeName,
+          certificationDateText: dateText,
+          navigationTitle: title,
+          certificationImageURL: URL(string: model.certificateImageUrl),
+          certificationComment: model.certificateComment,
+          certificationTimeText: timeText
+        )
         
         let complimentTitle = "\(model.partnerNickname)이 보낸 칭찬"
-        let compliment = ChallengeHistoryDetail.ViewModel.Compliment(complimentTitle: complimentTitle,
-                                                                     complimentComment: model.complicateComment)
+        let compliment = ChallengeHistoryDetail.ViewModel.Compliment(
+          complimentTitle: complimentTitle,
+          complimentComment: model.complicateComment, 
+          isMyHitstoyDetail: model.isMyHistoryDetail
+        )
         return (certification, compliment)
     }
 

@@ -273,7 +273,7 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
             self.complimentLabel.setLineSpacing(8)
         }
         else {
-            self.prasiseButton.isHidden = false
+            self.prasiseButton.isHidden = compliment.isMyHitstoyDetail
             self.complimentTitleLabel.isHidden = true
             self.complimentContentView.isHidden = true
         }

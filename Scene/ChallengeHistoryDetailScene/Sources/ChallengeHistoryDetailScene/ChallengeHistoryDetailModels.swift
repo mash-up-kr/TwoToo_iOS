@@ -33,6 +33,8 @@ enum ChallengeHistoryDetail {
             var partnerNickname: String
             /// 칭찬 문구
             var complicateComment: String?
+            /// 내 챌린지 상세정보 여부
+            var isMyHistoryDetail: Bool
         }
  
     }
@@ -60,6 +62,8 @@ enum ChallengeHistoryDetail {
             var complimentTitle: String
             /// 칭찬 문구
             var complimentComment: String?
+            /// 내 히스토리 디테일 여부
+            var isMyHitstoyDetail: Bool
         }
         
         /// 사진
