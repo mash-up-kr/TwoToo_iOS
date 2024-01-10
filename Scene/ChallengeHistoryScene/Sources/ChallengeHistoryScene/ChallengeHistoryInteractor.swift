@@ -136,8 +136,8 @@ extension ChallengeHistoryInteractor {
         else if let partnerCertificate = partnerCertificate {
             await self.router.routeToChallengeHistoryDetailScene(title: challenge.name,
                                                                  certificate: partnerCertificate,
-                                                                 nickname: self.worker.partnerNickname ?? "",
-                                                                 partnerNickname: self.worker.myNickname ?? "", isMyHistoryDetail: false)
+                                                                 nickname: self.worker.myNickname ?? "",
+                                                                 partnerNickname: self.worker.partnerNickname ?? "", isMyHistoryDetail: false)
         }
     }
 }
