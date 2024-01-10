@@ -65,14 +65,14 @@ enum Home {
         struct Certificate: Equatable {
             /// 인증 ID
             var id: String
-//            /// 인증 사진
-//            var certificateImageUrl: String
-//            /// 인증 소감
-//            var certificateComment: String
-//            /// 입력 시간
-//            var certificateTime: Date
             /// 칭찬 문구
             var complimentComment: String?
+            /// 인증 Image URL
+            var imageURL: String
+            /// 인증 시간
+            var time: String
+            /// 인증 내용
+            var contents: String
         }
 
         /// 성장도

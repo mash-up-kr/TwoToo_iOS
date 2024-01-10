@@ -415,7 +415,7 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
     
     func didTapMyFlowerEmptySpeechBubbleView() {
         Task {
-            await self.interactor.didTapMyComplimentCommnet()
+            await self.interactor.didTapMyComplimentComment()
         }
     }
     

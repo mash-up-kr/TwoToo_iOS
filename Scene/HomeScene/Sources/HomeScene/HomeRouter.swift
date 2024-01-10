@@ -63,8 +63,6 @@ extension HomeRouter: HomeRoutingLogic {
         self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
     
-  
-    // TODO: - 값 넣어줘야함
     func routeToPartnerHistoryDetailScene(title: String,
                                           certificate: Home.Model.Certificate,
                                           nickname: String,
@@ -77,16 +75,20 @@ extension HomeRouter: HomeRoutingLogic {
         detail: .init(
           id: certificate.id,
           challengeName: dataStore.challenge?.name ?? "",
-          certificateImageUrl: "",
-          certificateComment: "",
-          certificateTime: Date(),
-          complimentComment: ""
+          certificateImageUrl: certificate.imageURL,
+          certificateComment: certificate.contents,
+          certificateTime: dataStore.challenge?.partnerInfo.todayCert?.time.fullStringDate(.iso) ?? Date(),
+          complimentComment: certificate.complimentComment
         ), user: .init(
           myNickname: dataStore.challenge?.myInfo.nickname ?? "",
           partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
           isMyHistoryDetail: false
         )
       ))
+      
+      let vc = historyDetailScene.viewController
+      vc.modalPresentationStyle = .fullScreen
+      self.viewController?.present(vc, animated: true)
     }
     
     func routeToChallengeCertificateScene() {

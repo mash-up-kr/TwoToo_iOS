@@ -23,7 +23,7 @@ protocol HomeBusinessLogic {
     /// 챌린지 완료하기 버튼 클릭
     func didTapChallengeCompleteButton() async
     /// 내 칭찬 문구 클릭
-    func didTapMyComplimentCommnet() async
+    func didTapMyComplimentComment() async
     /// 내 꽃 클릭
     func didTapMyFlower() async
     /// 찌르기 버튼 클릭
@@ -205,9 +205,23 @@ extension HomeInteractor {
 // MARK: Feature (칭찬)
 
 extension HomeInteractor {
-  // TODO: - 값 넣어줘야함
-    func didTapMyComplimentCommnet() async {
-      await self.router.routeToPartnerHistoryDetailScene(title: "", certificate: .init(id: ""), nickname: "", partnerNickname: "")
+  func didTapMyComplimentComment() async {
+      guard let challenge = self.challenge else {
+          return
+      }
+      
+      await self.router.routeToPartnerHistoryDetailScene(
+        title: challenge.name ?? "",
+        certificate: .init(
+          id: challenge.partnerInfo.todayCert?.id ?? "",
+          complimentComment: challenge.partnerInfo.todayCert?.complimentComment,
+          imageURL: challenge.partnerInfo.todayCert?.imageURL ?? "",
+          time: challenge.partnerInfo.todayCert?.time ?? "",
+          contents: challenge.partnerInfo.todayCert?.contents ?? ""
+        ),
+        nickname: challenge.myInfo.nickname,
+        partnerNickname: challenge.partnerInfo.nickname
+      )
     }
 }
 
