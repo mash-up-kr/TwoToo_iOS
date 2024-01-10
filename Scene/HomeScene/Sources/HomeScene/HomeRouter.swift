@@ -7,9 +7,9 @@
 //
 
 import NudgeSendScene
-import PraiseSendScene
 import ChallengeCertificateScene
 import ChallengeHistoryScene
+import ChallengeHistoryDetailScene
 import ChallengeEssentialInfoInputScene
 import ChallengeConfirmScene
 import SafariServices
@@ -21,8 +21,8 @@ protocol HomeRoutingLogic {
     func routeToChallengeEssentialInfoInputScene()
     /// 챌린지 정보 확인 화면으로 이동한다.
     func routeToChallengeConfirmScene(entryPoint: String)
-    /// 칭찬하기 화면으로 이동한다.
-    func routeToPraiseSendScene()
+    /// 상대방 챌린지 히스토리 디테일 화면으로 이동한다.
+    func routeToPartnerHistoryDetailScene(title: String, certificate: Home.Model.Certificate, nickname: String, partnerNickname: String)
     /// 인증하기 화면으로 이동한다.
     func routeToChallengeCertificateScene()
     /// 찌르기 화면으로 이동한다.
@@ -39,7 +39,6 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRoutingLogic {
-    
     func routeToChallengeEssentialInfoInputScene() {
         let challengeEssentialInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init())
         let challengeEssentialInfoInputViewController = challengeEssentialInfoInputScene.viewController
@@ -64,14 +63,27 @@ extension HomeRouter: HomeRoutingLogic {
         self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
     
-    func routeToPraiseSendScene() {
-        guard let dataStore = self.dataStore else {
-            return
-        }
-        let praiseSendScene = PraiseSendSceneFactory().make(
-            with: .init(certificateID: dataStore.challenge?.partnerInfo.todayCert?.id ?? "")
-        )
-        self.viewController?.present(praiseSendScene.bottomSheetViewController, animated: true)
+  
+    func routeToPartnerHistoryDetailScene(title: String,
+                                          certificate: Home.Model.Certificate,
+                                          nickname: String,
+                                          partnerNickname: String) {
+      guard let dataStore = self.dataStore else {
+          return
+      }
+      
+      let historyDetailScene = ChallengeHistoryDetailSceneFactory().make(with: .init(
+        detail: .init(
+          id: certificate.id,
+          challengeName: dataStore.challenge?.name ?? "",
+          certificateImageUrl: "",
+          certificateComment: "",
+          certificateTime: Date(),
+          complimentComment: ""
+        ), user: .init(
+          myNickname: dataStore.challenge?.myInfo.nickname ?? "",
+          partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "")
+      ))
     }
     
     func routeToChallengeCertificateScene() {

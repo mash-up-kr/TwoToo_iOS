@@ -65,6 +65,12 @@ enum Home {
         struct Certificate: Equatable {
             /// 인증 ID
             var id: String
+//            /// 인증 사진
+//            var certificateImageUrl: String
+//            /// 인증 소감
+//            var certificateComment: String
+//            /// 입력 시간
+//            var certificateTime: Date
             /// 칭찬 문구
             var complimentComment: String?
         }
@@ -259,22 +265,6 @@ enum Home {
                     var complimentCommentText: String
                 }
             }
-            
-            /// 둘다 인증 팝업
-            struct BothCertificationPopupViewModel {
-                var show: (UIImage)?
-                var dismiss: ()?
-                
-                /// 타이틀
-                static let title: String = "모두 인증 완료"
-                /// 메세지
-                static let message: String = "서로 인증을 완료했어요!\n 짝꿍에게 응원 한마디를 남겨요"
-                /// 아니요
-                static let noOptionText: String = "괜찮아요"
-                /// 네 옵션
-                static let yesOptionText: String = "칭찬하기"
-            }
-
         }
         
 

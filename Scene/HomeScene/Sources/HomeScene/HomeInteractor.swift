@@ -22,12 +22,6 @@ protocol HomeBusinessLogic {
     func didTapChallengeCompletedPopupConfirmButton() async
     /// 챌린지 완료하기 버튼 클릭
     func didTapChallengeCompleteButton() async
-    /// 둘다 인증 팝업의 배경 클릭
-    func didTapBothCertificationPopupBackground() async
-    /// 둘다 인증 팝업의 괜찮아요(no) 버튼 클릭
-    func didTapBothCertificationPopupNoOption() async
-    /// 둘다 인증 팝업의 칭찬하기(yes) 버튼 클릭
-    func didTapBothCertificationPopupYesOption() async
     /// 내 칭찬 문구 클릭
     func didTapMyComplimentCommnet() async
     /// 내 꽃 클릭
@@ -130,11 +124,6 @@ extension HomeInteractor {
                 case let .inProgress(inProgress):
                     await self.presenter.presentChallengeInProgress(challenge: challenge)
                     
-                    if inProgress == .bothCertificated(.uncomfirmed) {
-                        self.worker.bothCertificationConfirmed = true
-                        await self.presenter.presentBothCertificationPopup()
-                    }
-                    
                 case let .completed(completed):
                     await self.presenter.presentChallengeCompleted(challenge: challenge)
                     
@@ -217,23 +206,8 @@ extension HomeInteractor {
 
 extension HomeInteractor {
     
-    func didTapBothCertificationPopupBackground() async {
-        await self.presenter.dismissBothCertificationPopup()
-    }
-    
-    func didTapBothCertificationPopupNoOption() async {
-        await self.presenter.dismissBothCertificationPopup()
-    }
-    
-    func didTapBothCertificationPopupYesOption() async {
-        await self.presenter.dismissBothCertificationPopup()
-        await self.router.routeToPraiseSendScene()
-    }
-    
     func didTapMyComplimentCommnet() async {
-        if self.challenge?.partnerInfo.todayCert?.complimentComment?.isEmpty ?? true {
-            await self.router.routeToPraiseSendScene()
-        }
+      await self.router.routeToPartnerHistoryDetailScene(title: "", certificate: .init(id: ""), nickname: "", partnerNickname: "")
     }
 }
 

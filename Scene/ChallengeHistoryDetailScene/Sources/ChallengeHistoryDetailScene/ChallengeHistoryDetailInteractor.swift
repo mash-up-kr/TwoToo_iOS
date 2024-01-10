@@ -15,6 +15,8 @@ protocol ChallengeHistoryDetailBusinessLogic {
     func didTapCloseButton() async
     /// 사진 클릭
     func didTapPhoto() async
+    /// 칭찬하기 버튼 클릭
+    func didTapPraiseButton() async
 }
 
 protocol ChallengeHistoryDetailDataStore: AnyObject {
@@ -22,7 +24,7 @@ protocol ChallengeHistoryDetailDataStore: AnyObject {
     var detail: ChallengeHistoryDetail.Model.ChallengeDetail { get }
 }
 
-final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {
+final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {  
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -71,7 +73,7 @@ extension ChallengeHistoryDetailInteractor {
 extension ChallengeHistoryDetailInteractor {
     
     func didTapPhoto() async {
-        await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
+      await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
     }
 }
 
@@ -82,7 +84,17 @@ extension ChallengeHistoryDetailInteractor {
     func didTapCloseButton() async {
         await self.router.dismiss()
     }
-    
+}
+
+// MARK: Feature (칭찬하기)
+
+extension ChallengeHistoryDetailInteractor {
+
+  func didTapPraiseButton() async {
+    if self.detail.complicateComment?.isEmpty != nil {
+      await self.router.routeToPraiseSendScene()
+    }
+  }
 }
 
 

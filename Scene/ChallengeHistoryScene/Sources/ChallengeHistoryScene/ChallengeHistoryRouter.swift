@@ -35,13 +35,18 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
                                             nickname: String,
                                             partnerNickname: String) {
         
-        let fac = ChallengeHistoryDetailSceneFactory().make(with: .init(detail: .init(id: certificate.id,
-                                                                                      challengeName: title,
-                                                                                      certificateImageUrl: certificate.certificateImageUrl,
-                                                                                      certificateComment: certificate.certificateComment,
-                                                                                      certificateTime: certificate.certificateTime,
-                                                                                      complimentComment: certificate.complimentComment),
-                                                                        user: .init(myNickname: nickname, partnerNickname: partnerNickname)))
+        let fac = ChallengeHistoryDetailSceneFactory().make(
+          with: .init(
+            detail: .init(
+              id: certificate.id,
+              challengeName: title,
+              certificateImageUrl: certificate.certificateImageUrl,
+              certificateComment: certificate.certificateComment,
+              certificateTime: certificate.certificateTime,
+              complimentComment: certificate.complimentComment),
+            user: .init(myNickname: nickname, partnerNickname: partnerNickname)
+          )
+        )
         let vc = fac.viewController
         vc.modalPresentationStyle = .fullScreen
         self.viewController?.present(vc, animated: true)

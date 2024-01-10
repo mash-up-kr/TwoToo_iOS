@@ -102,6 +102,19 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         v.isHidden = true
         return v
     }()
+  
+    /// 칭찬하기 버튼
+    private lazy var prasiseButton: TTPrimaryButtonType = {
+      let v = TTPrimaryButton.create(title: "칭찬하기", .large)
+      v.addAction { [weak self] in
+        Task {
+          try await Task.sleep(nanoseconds: 100000000)
+          await self?.interactor.didTapPraiseButton()
+        }
+      }
+      v.setIsEnabled(true)
+      return v
+    }()
     
     private lazy var scrollView: UIScrollView = {
         let v = UIScrollView()
@@ -129,13 +142,16 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         let leadingTrailingPadding: Int = 24
         let guide = self.view.safeAreaLayoutGuide
 
-        self.scrollContentView.addSubviews(self.dateLabel,
-                                           self.certificateImageView,
-                                           self.challengeNameLabel,
-                                           self.certificationCommentLabel,
-                                           self.timeLabel,
-                                           self.complimentTitleLabel,
-                                           self.complimentContentView)
+        self.scrollContentView.addSubviews(
+          self.dateLabel,
+          self.certificateImageView,
+          self.challengeNameLabel,
+          self.certificationCommentLabel,
+          self.timeLabel,
+          self.complimentTitleLabel,
+          self.complimentContentView,
+          self.prasiseButton
+        )
         self.scrollView.addSubview(self.scrollContentView)
         
         self.view.addSubviews(self.navigationBar,
@@ -197,6 +213,13 @@ final class ChallengeHistoryDetailViewController: UIViewController {
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
             make.bottom.equalToSuperview()
         }
+        
+        self.prasiseButton.snp.makeConstraints { make in
+          make.leading.equalToSuperview().offset(leadingTrailingPadding)
+          make.trailing.equalToSuperview().inset(leadingTrailingPadding)
+          make.top.equalTo(self.timeLabel.snp.bottom).offset(80)
+          make.bottom.equalToSuperview()
+        }
       
         // ---> 스크롤뷰
         self.scrollView.snp.makeConstraints { make in
@@ -244,11 +267,13 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
         if !(compliment.complimentComment?.isEmpty ?? true) {
             self.complimentTitleLabel.isHidden = false
             self.complimentContentView.isHidden = false
+            self.prasiseButton.isHidden = true
             self.complimentTitleLabel.text = compliment.complimentTitle
             self.complimentLabel.text = compliment.complimentComment
             self.complimentLabel.setLineSpacing(8)
         }
         else {
+            self.prasiseButton.isHidden = false
             self.complimentTitleLabel.isHidden = true
             self.complimentContentView.isHidden = true
         }

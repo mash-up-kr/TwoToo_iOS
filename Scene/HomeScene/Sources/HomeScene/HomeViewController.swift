@@ -17,7 +17,6 @@ protocol HomeDisplayLogic: AnyObject {
     func displayChallengeAfterStartDateViewModel(viewModel: Home.ViewModel.ChallengeAfterStartDateViewModel)
     func displayChallengeInProgressViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel)
     func displayChallengeCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel)
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel)
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
     func displayToast(viewModel: Home.ViewModel.Toast)
 }
@@ -284,59 +283,6 @@ extension HomeViewController: HomeDisplayLogic {
         self.displayWithClearAndAnimation { [weak self] in
             self?.completedView.configure(viewModel: viewModel)
             self?.completedView.isHidden = false
-        }
-    }
-    
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
-                
-                let popupView = TTPopup()
-                popupView.configure(title: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.title,
-                                    resultView: popupContentView,
-                                    description: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.message,
-                                    buttonTitles: [
-                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.noOptionText,
-                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.yesOptionText
-                                    ])
-                
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupNoOption()
-                    }
-                }
-                
-                popupView.didTapRightButton {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupYesOption()
-                    }
-                }
-                
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupBackground()
-                    }
-                }
-                
-                self?.bothCertificationPopupView = popupView
-                
-                if let bothCertificationPopupView = self?.bothCertificationPopupView {
-                    self?.view.addSubview(bothCertificationPopupView)
-                }
-            }
-            
-            viewModel.dismiss.unwrap {
-                self?.bothCertificationPopupView?.removeFromSuperview()
-                self?.bothCertificationPopupView = nil
-            }
         }
     }
     
