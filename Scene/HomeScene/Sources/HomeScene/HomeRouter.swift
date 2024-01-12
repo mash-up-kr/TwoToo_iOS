@@ -83,7 +83,7 @@ extension HomeRouter: HomeRoutingLogic {
             ), user: .init(
                 myNickname: dataStore.challenge?.myInfo.nickname ?? "",
                 partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
-                isMyHistoryDetail: false
+                isMine: false
             )
         ))
 

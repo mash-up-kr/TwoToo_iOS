@@ -19,7 +19,7 @@ protocol ChallengeHistoryRoutingLogic {
     func routeToChallengeHistoryDetailScene(challenge: ChallengeHistory.Model.Challenge, title: String,
                                             certificate: ChallengeHistory.Model.Certificate,
                                             nickname: String,
-                                            partnerNickname: String, isMyHistoryDetail: Bool)
+                                            partnerNickname: String, isMine: Bool)
     /// 화면을 닫는다.
     func dismiss()
 }
@@ -36,7 +36,7 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
         certificate: ChallengeHistory.Model.Certificate,
         nickname: String,
         partnerNickname: String,
-        isMyHistoryDetail: Bool
+        isMine: Bool
     ) {
         let fac = ChallengeHistoryDetailSceneFactory().make(
             with: .init(
@@ -48,7 +48,7 @@ extension ChallengeHistoryRouter: ChallengeHistoryRoutingLogic {
                     certificateComment: certificate.certificateComment,
                     certificateTime: certificate.certificateTime,
                     complimentComment: certificate.complimentComment),
-                user: .init(myNickname: nickname, partnerNickname: partnerNickname, isMyHistoryDetail: isMyHistoryDetail)
+                user: .init(myNickname: nickname, partnerNickname: partnerNickname, isMine: isMine)
             )
         )
         let vc = fac.viewController

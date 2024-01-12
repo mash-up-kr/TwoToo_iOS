@@ -64,10 +64,12 @@ extension ChallengeHistoryDetailInteractor {
 
     func didLoad() async {
         do {
-            try await self.worker.requestChallengeDetailInquiry(challengeID: self.detail.challengeID)
+            let challenge = try await self.worker
+                .requestChallengeDetailInquiry(challengeID: self.detail.challengeID, commitID: Int(self.detail.id) ?? 0)
+            self.detail = challenge
             await self.presenter.presentChallengeDetail(detail: self.detail)
         } catch {
-            print("실패")
+            print("히스토리 디테일 가져오기 실패했습니다.")
         }
     }
 }

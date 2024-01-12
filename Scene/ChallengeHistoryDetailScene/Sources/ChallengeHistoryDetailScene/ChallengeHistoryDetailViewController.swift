@@ -102,18 +102,19 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         v.isHidden = true
         return v
     }()
-  
+    
     /// 칭찬하기 버튼
     private lazy var prasiseButton: TTPrimaryButtonType = {
-      let v = TTPrimaryButton.create(title: "칭찬하기", .large)
-      v.addAction { [weak self] in
-        Task {
-          try await Task.sleep(nanoseconds: 100000000)
-          await self?.interactor.didTapPraiseButton()
+        let v = TTPrimaryButton.create(title: "칭찬하기", .large)
+        v.addAction { [weak self] in
+            Task {
+                try await Task.sleep(nanoseconds: 100000000)
+                await self?.interactor.didTapPraiseButton()
+            }
         }
-      }
-      v.setIsEnabled(true)
-      return v
+        v.setIsEnabled(true)
+        v.isHidden = true
+        return v
     }()
     
     private lazy var scrollView: UIScrollView = {
@@ -129,18 +130,20 @@ final class ChallengeHistoryDetailViewController: UIViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setUI()
         self.registNotification()
         self.view.setBackgroundDefault()
+        self.setUI()
     }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    Task {
-        await self.interactor.didLoad()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Task {
+            Loading.shared.showLoadingView()
+            await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
+        }
     }
-  }
-
+    
     @objc private func viewDidAppearWithModalDismissed() {
         Task {
             Loading.shared.showLoadingView()
@@ -148,7 +151,7 @@ final class ChallengeHistoryDetailViewController: UIViewController {
             Loading.shared.stopLoadingView()
         }
     }
-
+    
     private func registNotification() {
         NotificationCenter.default.addObserver(
             self,
@@ -157,22 +160,22 @@ final class ChallengeHistoryDetailViewController: UIViewController {
             object: nil
         )
     }
-
+    
     // MARK: - Layout
     
     private func setUI() {
         let leadingTrailingPadding: Int = 24
         let guide = self.view.safeAreaLayoutGuide
-
+        
         self.scrollContentView.addSubviews(
-          self.dateLabel,
-          self.certificateImageView,
-          self.challengeNameLabel,
-          self.certificationCommentLabel,
-          self.timeLabel,
-          self.complimentTitleLabel,
-          self.complimentContentView,
-          self.prasiseButton
+            self.dateLabel,
+            self.certificateImageView,
+            self.challengeNameLabel,
+            self.certificationCommentLabel,
+            self.timeLabel,
+            self.complimentTitleLabel,
+            self.complimentContentView,
+            self.prasiseButton
         )
         self.scrollView.addSubview(self.scrollContentView)
         
@@ -185,50 +188,50 @@ final class ChallengeHistoryDetailViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
         }
-
+        
         // ---> 컴포넌트
         self.dateLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(18)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
         }
-
+        
         let widthHeight = UIScreen.main.bounds.width - CGFloat(leadingTrailingPadding * 2)
         self.certificateImageView.snp.makeConstraints { make in
             make.top.equalTo(self.dateLabel.snp.bottom).offset(21)
             make.width.height.equalTo(widthHeight)
             make.centerX.equalToSuperview()
         }
-
+        
         self.challengeNameLabel.snp.makeConstraints { make in
             make.top.equalTo(self.certificateImageView.snp.bottom).offset(24)
             make.leading.equalTo(leadingTrailingPadding)
         }
-
+        
         self.certificationCommentLabel.snp.makeConstraints { make in
             make.top.equalTo(self.challengeNameLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
         }
-
+        
         self.timeLabel.snp.makeConstraints { make in
             make.top.equalTo(self.certificationCommentLabel.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
-
+        
         // ---> 칭찬
         self.complimentTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.timeLabel.snp.bottom).offset(33)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
-
+        
         self.complimentLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().inset(10)
             make.bottom.equalToSuperview().inset(15)
         }
-
+        
         self.complimentContentView.snp.makeConstraints { make in
             make.top.equalTo(self.complimentTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
@@ -237,18 +240,18 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         }
         
         self.prasiseButton.snp.makeConstraints { make in
-          make.leading.equalToSuperview().offset(leadingTrailingPadding)
-          make.trailing.equalToSuperview().inset(leadingTrailingPadding)
-          make.top.equalTo(self.timeLabel.snp.bottom).offset(80)
-          make.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+            make.trailing.equalToSuperview().inset(leadingTrailingPadding)
+            make.top.equalTo(self.timeLabel.snp.bottom).offset(80)
+            make.bottom.equalToSuperview()
         }
-      
+        
         // ---> 스크롤뷰
         self.scrollView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
-
+        
         self.scrollContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()

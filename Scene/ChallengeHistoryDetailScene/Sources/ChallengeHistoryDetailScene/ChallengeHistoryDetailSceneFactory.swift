@@ -66,16 +66,16 @@ public struct ChallengeHistoryDetailConfiguration {
         /// 상대방 닉네임
         public var partnerNickname: String
         /// 본인여부 파악
-        public var isMyHistoryDetail: Bool
+        public var isMine: Bool
       
         public init(
           myNickname: String,
           partnerNickname: String,
-          isMyHistoryDetail: Bool
+          isMine: Bool
         ) {
             self.myNickname = myNickname
             self.partnerNickname = partnerNickname
-            self.isMyHistoryDetail = isMyHistoryDetail
+            self.isMine = isMine
         }
     }
     
@@ -105,7 +105,7 @@ public final class ChallengeHistoryDetailSceneFactory {
                           certificateTime: configuration.detail.certificateTime,
                           partnerNickname: configuration.user.partnerNickname,
                           complicateComment: configuration.detail.complimentComment,
-                          isMyHistoryDetail: configuration.user.isMyHistoryDetail)
+                          isMine: configuration.user.isMine)
         )
         let viewController = ChallengeHistoryDetailViewController(
             interactor: interactor

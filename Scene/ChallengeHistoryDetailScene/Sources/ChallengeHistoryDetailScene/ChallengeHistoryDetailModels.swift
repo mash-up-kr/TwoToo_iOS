@@ -36,9 +36,8 @@ enum ChallengeHistoryDetail {
             /// 칭찬 문구
             var complicateComment: String?
             /// 내 챌린지 상세정보 여부
-            var isMyHistoryDetail: Bool
+            var isMine: Bool
         }
- 
     }
     
     enum ViewModel {
