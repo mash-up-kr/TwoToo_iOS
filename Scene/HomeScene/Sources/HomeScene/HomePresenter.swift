@@ -253,12 +253,17 @@ extension Home.Model.Challenge {
                 viewModel.myFlower.topViewModel.isComplimentCommentHidden = false
                 viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = false
                 viewModel.isHeartHidden = false
-                viewModel.stickText = "카드 보내기"
-                viewModel.isCardSendTooltipHidden = false
-                viewModel.isCardSendHidden = false
             }
         default:
             break
+        }
+        
+        // 카드 보내기 활성화 여부
+        if !(self.partnerInfo.todayCert?.complimentComment ?? "").isEmpty,
+           !(self.myInfo.todayCert?.complimentComment ?? "").isEmpty {
+            viewModel.stickText = "카드 보내기"
+            viewModel.isCardSendTooltipHidden = false
+            viewModel.isCardSendHidden = false
         }
         
         return viewModel
