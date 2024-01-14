@@ -97,7 +97,7 @@ extension ChallengeHistoryDetailInteractor {
 extension ChallengeHistoryDetailInteractor {
 
     func didTapPraiseButton() async {
-        if self.detail.complicateComment?.isEmpty != nil {
+        if (self.detail.complicateComment ?? "").isEmpty {
             await self.router.routeToPraiseSendScene()
         }
     }
