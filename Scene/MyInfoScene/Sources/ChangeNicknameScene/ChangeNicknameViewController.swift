@@ -176,6 +176,12 @@ extension ChangeNicknameViewController: KeyboardDelegate {
     func willShowKeyboard(keyboardFrame: CGRect, duration: Double) {
         
         UIView.animate(withDuration: duration) {
+            if UIDevice.current.deviceType == .default {
+                self.descriptionLabel.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.nicknameTextField.snp.top).offset(-10)
+                }
+            }
+
             self.changeButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(keyboardFrame.height + 20)
             }
