@@ -71,5 +71,9 @@ enum ChallengeHistoryDetail {
         struct Photo {
             var images: [SKPhoto]
         }
+
+        struct Toast {
+            var message: String?
+        }
     }
 }

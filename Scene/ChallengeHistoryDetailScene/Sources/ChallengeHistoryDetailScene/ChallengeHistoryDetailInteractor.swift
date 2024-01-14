@@ -69,7 +69,7 @@ extension ChallengeHistoryDetailInteractor {
             self.detail = challenge
             await self.presenter.presentChallengeDetail(detail: self.detail)
         } catch {
-            print("히스토리 디테일 가져오기 실패했습니다.")
+            await self.presenter.presentHistoryDetailError(error: error)
         }
     }
 }

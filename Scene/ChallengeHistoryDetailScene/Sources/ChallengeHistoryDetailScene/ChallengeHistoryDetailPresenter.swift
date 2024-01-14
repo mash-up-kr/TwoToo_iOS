@@ -13,7 +13,9 @@ import SKPhotoBrowser
 protocol ChallengeHistoryDetailPresentationLogic {
     func presentChallengeDetail(detail: ChallengeHistoryDetail.Model.ChallengeDetail)
     func presentPhoto(imageUrl: String)
-    
+    /// 챌린지 디테일 정보 오류를 보여준다.
+    func presentHistoryDetailError(error: Error)
+
 }
 
 final class ChallengeHistoryDetailPresenter {
@@ -38,7 +40,11 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         images.append(photo)
         self.viewController?.displayPhoto(photo: .init(images: images))
     }
-    
+
+    func presentHistoryDetailError(error: Error) {
+        self.viewController?.displayToast(viewModel: .init(message: "히스토리 디테일 정보를 가져오는데 실패했습니다."))
+    }
+
     // model -> viewModel
     private func map(_ model: ChallengeHistoryDetail.Model.ChallengeDetail)
     -> (ChallengeHistoryDetail.ViewModel.Challenge,

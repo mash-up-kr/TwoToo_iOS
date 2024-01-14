@@ -14,6 +14,7 @@ protocol ChallengeHistoryDetailDisplayLogic: AnyObject {
     func displayCertification(certification: ChallengeHistoryDetail.ViewModel.Challenge)
     func displayCompliment(compliment: ChallengeHistoryDetail.ViewModel.Compliment)
     func displayPhoto(photo: ChallengeHistoryDetail.ViewModel.Photo)
+    func displayToast(viewModel: ChallengeHistoryDetail.ViewModel.Toast)
 }
 
 final class ChallengeHistoryDetailViewController: UIViewController {
@@ -108,7 +109,6 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         let v = TTPrimaryButton.create(title: "칭찬하기", .large)
         v.addAction { [weak self] in
             Task {
-                try await Task.sleep(nanoseconds: 100000000)
                 await self?.interactor.didTapPraiseButton()
             }
         }
@@ -308,5 +308,11 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
         let browser = SKPhotoBrowser(photos: photo.images)
         browser.initializePageIndex(0)
         self.present(browser, animated: true, completion: {})
+    }
+
+    func displayToast(viewModel: ChallengeHistoryDetail.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
 }
