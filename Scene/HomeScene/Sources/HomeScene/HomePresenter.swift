@@ -220,7 +220,7 @@ extension Home.Model.Challenge {
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
         // 찌르기 텍스트
-        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
+        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/3)"
         
         // 챌린지 진행 상태 매핑
         switch  self.status {
