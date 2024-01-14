@@ -191,6 +191,12 @@ extension ChangeNicknameViewController: KeyboardDelegate {
     
     func willHideKeyboard(duration: Double) {
         UIView.animate(withDuration: duration) {
+            if UIDevice.current.deviceType == .default {
+                self.descriptionLabel.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.nicknameTextField.snp.top).offset(-40)
+                }
+            }
+
             self.changeButton.snp.updateConstraints { make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             }
