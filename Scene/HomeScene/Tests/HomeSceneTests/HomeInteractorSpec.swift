@@ -786,7 +786,7 @@ class HomePresenterMock: HomePresentationLogic {
         self.isPresentExceededStickCountErrorCalled = true
     }
     
-    func presentCertificationSharePopup() {
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
         self.isPresentCertificationSharePopupCalled = true
     }
 }

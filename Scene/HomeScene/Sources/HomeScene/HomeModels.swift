@@ -379,9 +379,17 @@ enum Home {
             }
         }
         
+        struct CertificationSharePopupViewModel {
+            /// 냘짜 텍스트
+            var dateText: String
+            /// 챌린지 명 타이틀 텍스트
+            var titleNameText: String
+            /// 진행도 텍스트
+            var progressText: String
+        }
+        
         struct Toast {
             var message: String?
         }
-
     }
 }

@@ -244,7 +244,10 @@ extension HomeInteractor {
 extension HomeInteractor {
     
     func didTapCardSendButton() async {
-        
+        guard let challenge = self.challenge else {
+            return
+        }
+        await self.presenter.presentCertificationSharePopup(challenge: challenge)
     }
 }
 

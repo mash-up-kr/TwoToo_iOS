@@ -19,6 +19,7 @@ protocol HomeDisplayLogic: AnyObject {
     func displayChallengeCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel)
     func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel)
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
+    func displayCertificationSharePopupViewModel(viewModel: Home.ViewModel.CertificationSharePopupViewModel)
     func displayToast(viewModel: Home.ViewModel.Toast)
 }
 
@@ -38,6 +39,7 @@ final class HomeViewController: UIViewController {
     var bothCertificationPopupView: TTPopup?
     var completedPopupView: TTPopup?
     var flowerLanguagePopupView: TTFlowerPopup?
+    var certificationSharePopupView: TTCertificationSharePopup?
     
     // MARK: - UI Component
     /// 네비게이션 바
@@ -384,6 +386,45 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
+    func displayCertificationSharePopupViewModel(viewModel: Home.ViewModel.CertificationSharePopupViewModel) {
+        // Pre Condition
+        let y = 217 + self.view.safeAreaInsets.top
+        let height = 354.0
+        
+        let isNudgeBeeButtonHidden = self.inProgressView.nudgeBeeButton.isHidden
+        let isNudgeTitleLabelHidden = self.inProgressView.nudgeTitleLabel.isHidden
+        let isCardSendButtonHidden = self.inProgressView.cardSendButton.isHidden
+        let isCardSendButtonTooltipHidden = self.inProgressView.cardSendButtonTooltip.isHidden
+        self.inProgressView.nudgeBeeButton.isHidden = true
+        self.inProgressView.nudgeTitleLabel.isHidden = true
+        self.inProgressView.cardSendButton.isHidden = true
+        self.inProgressView.cardSendButtonTooltip.isHidden = true
+        
+        
+        // Crop Imge
+        let renderer = UIGraphicsImageRenderer(bounds: .init(x: 0, y: y, width: self.view.bounds.width, height: height))
+        
+        let image = renderer.image { ctx in
+            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: true)
+        }
+        
+        self.inProgressView.nudgeBeeButton.isHidden = isNudgeBeeButtonHidden
+        self.inProgressView.nudgeTitleLabel.isHidden = isNudgeTitleLabelHidden
+        self.inProgressView.cardSendButton.isHidden = isCardSendButtonHidden
+        self.inProgressView.cardSendButtonTooltip.isHidden = isCardSendButtonTooltipHidden
+        
+        // Show Popup
+        let popupView = TTCertificationSharePopup(frame: .zero)
+        popupView.configure(image: image, viewModel: viewModel)
+  
+        self.certificationSharePopupView = popupView
+        self.certificationSharePopupView?.delegate = self
+        
+        if let certificationSharePopupView = self.certificationSharePopupView {
+            self.view.addSubview(certificationSharePopupView)
+        }
+    }
+    
     func displayToast(viewModel: Home.ViewModel.Toast) {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
@@ -535,6 +576,24 @@ extension HomeViewController: TTNavigationBarDelegate {
         Task {
             await self.interactor.didTapGuideButton()
         }
+    }
+}
+
+extension HomeViewController: TTCertificationSharePopupDelegate {
+    
+    func didTapCertificationSharePopupDimView() {
+        self.certificationSharePopupView?.removeFromSuperview()
+        self.certificationSharePopupView = nil
+    }
+    
+    func didTapCertificationSharePopupCloseButton() {
+        self.certificationSharePopupView?.removeFromSuperview()
+        self.certificationSharePopupView = nil
+    }
+    
+    func didTapCertificationSharePopupShareButton(image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
     }
 }
 

@@ -40,7 +40,7 @@ protocol HomePresentationLogic {
     /// 찌르기 횟수 초과 오류를 보여준다.
     func presentExceededStickCountError()
     /// 인증 성공 공유하기 모달을 보여준다.
-    func presentCertificationSharePopup()
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge)
 }
 
 final class HomePresenter {
@@ -120,8 +120,14 @@ extension HomePresenter: HomePresentationLogic {
         self.viewController?.displayToast(viewModel: .init(message: "오늘의 콕 찌르기가 다 소진되었어요 ㅠㅜ"))
     }
     
-    func presentCertificationSharePopup() {
-        // TODO
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
+        let percentageText = challenge.calculatePercentageText(certCount: challenge.myInfo.certCount ?? 0)
+        let viewModel = Home.ViewModel.CertificationSharePopupViewModel(
+            dateText: Date().dateToString(.monthDayE),
+            titleNameText: challenge.name ?? "",
+            progressText: "\(percentageText) 달성중 인증완료"
+        )
+        self.viewController?.displayCertificationSharePopupViewModel(viewModel: viewModel)
     }
 }
 

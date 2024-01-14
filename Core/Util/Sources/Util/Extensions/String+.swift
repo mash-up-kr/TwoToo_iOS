@@ -31,6 +31,8 @@ public extension String {
                 return "yyyy-MM-dd'T'HH:mm:ss.SSZ"
             case .hangleYearMonthDay:
                 return "yyyy년 MM월 dd일"
+            case .monthDayE:
+                return "M월 d일 (E)"
             }
         }
 
