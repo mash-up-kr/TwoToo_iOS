@@ -23,10 +23,6 @@ protocol HomePresentationLogic {
     func presentChallengeAfterStartDate(challenge: Home.Model.Challenge)
     /// 챌린지 진행중 화면을 보여준다.
     func presentChallengeInProgress(challenge: Home.Model.Challenge)
-    /// 둘다 인증 팝업을 보여준다.
-    func presentBothCertificationPopup()
-    /// 둘다 인증 팝업을 닫는다.
-    func dismissBothCertificationPopup()
     /// 챌린지 완료 화면을 보여준다.
     func presentChallengeCompleted(challenge: Home.Model.Challenge)
     /// 챌린지 완료 팝업을 보여준다.
@@ -84,14 +80,6 @@ extension HomePresenter: HomePresentationLogic {
         self.viewController?.displayChallengeInProgressViewModel(
             viewModel: challenge.toChallengeInProgressViewModel()
         )
-    }
-    
-    func presentBothCertificationPopup() {
-        self.viewController?.displayBothCertificationViewModel(viewModel: .init(show: (.asset(.icon_all_verified)!)))
-    }
-    
-    func dismissBothCertificationPopup() {
-        self.viewController?.displayBothCertificationViewModel(viewModel: .init(dismiss: ()))
     }
     
     func presentChallengeCompleted(challenge: Home.Model.Challenge) {

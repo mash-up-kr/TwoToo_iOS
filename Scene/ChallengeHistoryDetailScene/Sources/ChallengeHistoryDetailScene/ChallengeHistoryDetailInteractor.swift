@@ -15,6 +15,8 @@ protocol ChallengeHistoryDetailBusinessLogic {
     func didTapCloseButton() async
     /// 사진 클릭
     func didTapPhoto() async
+    /// 칭찬하기 버튼 클릭
+    func didTapPraiseButton() async
 }
 
 protocol ChallengeHistoryDetailDataStore: AnyObject {
@@ -23,13 +25,13 @@ protocol ChallengeHistoryDetailDataStore: AnyObject {
 }
 
 final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, ChallengeHistoryDetailBusinessLogic {
-    
+
     var cancellables: Set<AnyCancellable> = []
-    
+
     var presenter: ChallengeHistoryDetailPresentationLogic
     var router: ChallengeHistoryDetailRoutingLogic
     var worker: ChallengeHistoryDetailWorkerProtocol
-    
+
     init(
         presenter: ChallengeHistoryDetailPresentationLogic,
         router: ChallengeHistoryDetailRoutingLogic,
@@ -41,7 +43,7 @@ final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, C
         self.worker = worker
         self.detail = detail
     }
-    
+
     // MARK: - DataStore
     var detail: ChallengeHistoryDetail.Model.ChallengeDetail
 }
@@ -49,10 +51,10 @@ final class ChallengeHistoryDetailInteractor: ChallengeHistoryDetailDataStore, C
 // MARK: - Interactive Business Logic
 
 extension ChallengeHistoryDetailInteractor {
-    
+
     /// 외부 액션 옵저빙
     func observe() {
-        
+
     }
 }
 
@@ -61,15 +63,21 @@ extension ChallengeHistoryDetailInteractor {
 extension ChallengeHistoryDetailInteractor {
 
     func didLoad() async {
-        await self.presenter.presentChallengeDetail(detail: self.detail)
+        do {
+            let challenge = try await self.worker
+                .requestChallengeDetailInquiry(challengeID: self.detail.challengeID, commitID: Int(self.detail.id) ?? 0)
+            self.detail = challenge
+            await self.presenter.presentChallengeDetail(detail: self.detail)
+        } catch {
+            await self.presenter.presentHistoryDetailError(error: error)
+        }
     }
-    
 }
 
 // MARK: - Feature (사진 상세)
 
 extension ChallengeHistoryDetailInteractor {
-    
+
     func didTapPhoto() async {
         await self.presenter.presentPhoto(imageUrl: self.detail.certificateImageUrl)
     }
@@ -82,7 +90,17 @@ extension ChallengeHistoryDetailInteractor {
     func didTapCloseButton() async {
         await self.router.dismiss()
     }
-    
+}
+
+// MARK: Feature (칭찬하기)
+
+extension ChallengeHistoryDetailInteractor {
+
+    func didTapPraiseButton() async {
+        if (self.detail.complicateComment ?? "").isEmpty {
+            await self.router.routeToPraiseSendScene()
+        }
+    }
 }
 
 
@@ -91,5 +109,5 @@ extension ChallengeHistoryDetailInteractor {
 // MARK: UseCase ()
 
 extension ChallengeHistoryDetailInteractor {
-    
+
 }
