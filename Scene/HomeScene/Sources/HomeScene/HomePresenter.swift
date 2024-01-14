@@ -39,6 +39,8 @@ protocol HomePresentationLogic {
     func presentCompleteRequestError(error: Error)
     /// 찌르기 횟수 초과 오류를 보여준다.
     func presentExceededStickCountError()
+    /// 인증 성공 공유하기 모달을 보여준다.
+    func presentCertificationSharePopup()
 }
 
 final class HomePresenter {
@@ -117,6 +119,10 @@ extension HomePresenter: HomePresentationLogic {
     func presentExceededStickCountError() {
         self.viewController?.displayToast(viewModel: .init(message: "오늘의 콕 찌르기가 다 소진되었어요 ㅠㅜ"))
     }
+    
+    func presentCertificationSharePopup() {
+        // TODO
+    }
 }
 
 // MARK: - Mapping Logic
@@ -171,7 +177,9 @@ extension Home.Model.Challenge {
                 topViewModel: .init(isHiddenCetificationGuideText: false, isCertificationButtonHidden: false, cetificationGuideText: "", isComplimentCommentHidden: false, complimentCommentText: ""),
                 myNameText: ""),
             isHeartHidden: false,
-            stickText: ""
+            stickText: "",
+            isCardSendTooltipHidden: true,
+            isCardSendHidden: true
         )
         
         // 챌린지 정보 매핑
@@ -211,6 +219,9 @@ extension Home.Model.Challenge {
         viewModel.myFlower.topViewModel.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
+        // 찌르기 텍스트
+        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
+        
         // 챌린지 진행 상태 매핑
         switch  self.status {
         case .inProgress(let inProgressStatus):
@@ -242,13 +253,13 @@ extension Home.Model.Challenge {
                 viewModel.myFlower.topViewModel.isComplimentCommentHidden = false
                 viewModel.partnerFlower.topViewModel.isComplimentCommentHidden = false
                 viewModel.isHeartHidden = false
+                viewModel.stickText = "카드 보내기"
+                viewModel.isCardSendTooltipHidden = false
+                viewModel.isCardSendHidden = false
             }
         default:
             break
         }
-        
-        // 찌르기 텍스트
-        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
         
         return viewModel
     }

@@ -485,6 +485,11 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
         }
     }
     
+    func didTapCardSendButton() {
+        Task {
+            await self.interactor.didTapCardSendButton()
+        }
+    }
 }
 extension HomeViewController: ChallengeCompletedViewDelegate, TTFlowerPopupDelegate {
     

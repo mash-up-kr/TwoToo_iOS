@@ -183,6 +183,10 @@ enum Home {
             var isHeartHidden: Bool
             /// 찌르기 텍스트
             var stickText: String
+            /// 카드 보내기 유도 툴팁 히든 여부
+            var isCardSendTooltipHidden: Bool
+            /// 카드 보내기 히든 여부
+            var isCardSendHidden: Bool
             
             /// 챌린지 정보
             struct ChallengeInfoViewModel {
