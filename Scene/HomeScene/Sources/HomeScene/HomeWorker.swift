@@ -211,9 +211,9 @@ final class HomeWorker: HomeWorkerProtocol {
         case 10...15:
             return .peak
         case 16...21:
-            return .bloom
-        case 22:
             return .flower
+        case 22:
+            return .bloom
         default:
             return nil
         }
