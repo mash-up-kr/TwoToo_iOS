@@ -34,7 +34,7 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                         certCount: 1,
                         todayCert: .init(id: "certId", complimentComment: "Test")
                     ),
-                    stickRemaining: 5
+                    stickRemaining: 3
                 )
 
                 viewModel = model.toChallengeInProgressViewModel()
@@ -283,8 +283,8 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
             }
 
             context("찌르기 남은 횟수") {
-                it("찌르기 텍스트가 '콕 찌르기 (5/5)'로 표현된다.") {
-                    expect(viewModel.stickText).to(equal("콕 찌르기 (5/5)"))
+                it("찌르기 텍스트가 '콕 찌르기 (3/3)'로 표현된다.") {
+                    expect(viewModel.stickText).to(equal("콕 찌르기 (3/3)"))
                 }
             }
         }

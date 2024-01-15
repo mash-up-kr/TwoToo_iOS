@@ -116,7 +116,7 @@ final class HomeWorker: HomeWorkerProtocol {
             status: challengeStatus,
             myInfo: myInfo,
             partnerInfo: partnerInfo,
-            stickRemaining: 5 - (homeResponse.myStingCnt ?? 0),
+            stickRemaining: 3 - (homeResponse.myStingCnt ?? 0),
             description: homeResponse.onGoingChallenge?.description
         )
         
@@ -211,9 +211,9 @@ final class HomeWorker: HomeWorkerProtocol {
         case 10...15:
             return .peak
         case 16...21:
-            return .bloom
-        case 22:
             return .flower
+        case 22:
+            return .bloom
         default:
             return nil
         }

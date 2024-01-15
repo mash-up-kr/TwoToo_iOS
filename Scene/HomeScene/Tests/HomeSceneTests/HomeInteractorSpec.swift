@@ -682,6 +682,19 @@ final class HomeInteractorSpec: QuickSpec {
                 }
             }
         }
+        
+        describe("공유하기") {
+            context("카드 보내기 버튼을 클릭하였을 때") {
+                beforeEach {
+                    await interactor.didTapCardSendButton()
+                }
+                
+                it("인증 성공 공유하기 팝업이 표출된다.") {
+                    let isPresentCertificationSharePopupCalled = await presenter.isPresentCertificationSharePopupCalled
+                    expect(isPresentCertificationSharePopupCalled).to(beTrue())
+                }
+            }
+        }
     }
 }
 
@@ -701,6 +714,7 @@ class HomePresenterMock: HomePresentationLogic {
     var isPresentHomeErrorCalled = false
     var isPresentCompleteRequestErrorCalled = false
     var isPresentExceededStickCountErrorCalled = false
+    var isPresentCertificationSharePopupCalled = false
     
     var lastChallenge: Home.Model.Challenge?
     var lastHomeError: Error?
@@ -770,6 +784,10 @@ class HomePresenterMock: HomePresentationLogic {
     
     func presentExceededStickCountError() {
         self.isPresentExceededStickCountErrorCalled = true
+    }
+    
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
+        self.isPresentCertificationSharePopupCalled = true
     }
 }
 

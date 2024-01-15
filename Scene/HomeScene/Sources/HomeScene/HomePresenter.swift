@@ -35,6 +35,8 @@ protocol HomePresentationLogic {
     func presentCompleteRequestError(error: Error)
     /// 찌르기 횟수 초과 오류를 보여준다.
     func presentExceededStickCountError()
+    /// 인증 성공 공유하기 모달을 보여준다.
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge)
 }
 
 final class HomePresenter {
@@ -105,6 +107,16 @@ extension HomePresenter: HomePresentationLogic {
     func presentExceededStickCountError() {
         self.viewController?.displayToast(viewModel: .init(message: "오늘의 콕 찌르기가 다 소진되었어요 ㅠㅜ"))
     }
+    
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
+        let percentageText = challenge.calculatePercentageText(certCount: challenge.myInfo.certCount ?? 0)
+        let viewModel = Home.ViewModel.CertificationSharePopupViewModel(
+            dateText: Date().dateToString(.monthDayE),
+            titleNameText: challenge.name ?? "",
+            progressText: "\(percentageText) 달성중 인증완료"
+        )
+        self.viewController?.displayCertificationSharePopupViewModel(viewModel: viewModel)
+    }
 }
 
 // MARK: - Mapping Logic
@@ -159,7 +171,9 @@ extension Home.Model.Challenge {
                 topViewModel: .init(isHiddenCetificationGuideText: false, isCertificationButtonHidden: false, cetificationGuideText: "", isComplimentCommentHidden: false, complimentCommentText: ""),
                 myNameText: ""),
             isHeartHidden: false,
-            stickText: ""
+            stickText: "",
+            isCardSendTooltipHidden: true,
+            isCardSendHidden: true
         )
         
         // 챌린지 정보 매핑
@@ -199,6 +213,9 @@ extension Home.Model.Challenge {
         viewModel.myFlower.topViewModel.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
+        // 찌르기 텍스트
+        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/3)"
+        
         // 챌린지 진행 상태 매핑
         switch  self.status {
         case .inProgress(let inProgressStatus):
@@ -235,8 +252,13 @@ extension Home.Model.Challenge {
             break
         }
         
-        // 찌르기 텍스트
-        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
+        // 카드 보내기 활성화 여부
+        if !(self.partnerInfo.todayCert?.complimentComment ?? "").isEmpty,
+           !(self.myInfo.todayCert?.complimentComment ?? "").isEmpty {
+            viewModel.stickText = "카드 보내기"
+            viewModel.isCardSendTooltipHidden = false
+            viewModel.isCardSendHidden = false
+        }
         
         return viewModel
     }

@@ -56,7 +56,7 @@ final public class SpeechBubbleView: UIView {
             self.tailImageView.image = UIImage.asset(.icon_bubble_tail_my)
         case .exit:
             self._backgroundColor = UIColor.second01
-            self.tailImageView.image = UIImage(resource: .iconBubbleTailExit)
+//            self.tailImageView.image = UIImage(resource: .iconBubbleTailExit)
             self.tailCoordinate = 1.7
         }
         self.layout()

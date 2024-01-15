@@ -14,6 +14,7 @@ public enum DateFormatType: String {
     case hourMinute = "HH:mm"
     case iso = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
     case hangleYearMonthDay = "yyyy년 MM월 dd일"
+    case monthDayE = "M월 d일 (E)"
 
 
     var displayName: String {

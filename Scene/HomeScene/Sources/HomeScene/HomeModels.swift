@@ -189,6 +189,10 @@ enum Home {
             var isHeartHidden: Bool
             /// 찌르기 텍스트
             var stickText: String
+            /// 카드 보내기 유도 툴팁 히든 여부
+            var isCardSendTooltipHidden: Bool
+            /// 카드 보내기 히든 여부
+            var isCardSendHidden: Bool
             
             /// 챌린지 정보
             struct ChallengeInfoViewModel {
@@ -365,9 +369,17 @@ enum Home {
             }
         }
         
+        struct CertificationSharePopupViewModel {
+            /// 냘짜 텍스트
+            var dateText: String
+            /// 챌린지 명 타이틀 텍스트
+            var titleNameText: String
+            /// 진행도 텍스트
+            var progressText: String
+        }
+        
         struct Toast {
             var message: String?
         }
-
     }
 }
