@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignSystem
 
 protocol ChallengeInProgressViewDelegate: AnyObject {
     func didTapCertificateButton()
@@ -176,7 +177,7 @@ final class ChallengeInProgressView: UIView {
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel) {
         self.topChallengeInfoView.configureInProgress(viewModel: viewModel.challengeInfo)
-        self.progressBar.configureInProgress(viewModel: viewModel.progress)
+        self.progressBar.configure(viewModel: viewModel.progress)
         self.nicknameStackView.configure(challengeOrderText: viewModel.order.challengeOrderText,
                                          myNickname: viewModel.order.myNameText,
                                          partnerNickname: viewModel.order.partenrNameText)

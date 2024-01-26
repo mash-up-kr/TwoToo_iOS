@@ -14,6 +14,7 @@ protocol ChallengeHistoryDetailDisplayLogic: AnyObject {
     func displayCertification(certification: ChallengeHistoryDetail.ViewModel.Challenge)
     func displayCompliment(compliment: ChallengeHistoryDetail.ViewModel.Compliment)
     func displayPhoto(photo: ChallengeHistoryDetail.ViewModel.Photo)
+    func displayToast(viewModel: ChallengeHistoryDetail.ViewModel.Toast)
 }
 
 final class ChallengeHistoryDetailViewController: UIViewController {
@@ -103,6 +104,19 @@ final class ChallengeHistoryDetailViewController: UIViewController {
         return v
     }()
     
+    /// 칭찬하기 버튼
+    private lazy var prasiseButton: TTPrimaryButtonType = {
+        let v = TTPrimaryButton.create(title: "칭찬하기", .large)
+        v.addAction { [weak self] in
+            Task {
+                await self?.interactor.didTapPraiseButton()
+            }
+        }
+        v.setIsEnabled(true)
+        v.isHidden = true
+        return v
+    }()
+    
     private lazy var scrollView: UIScrollView = {
         let v = UIScrollView()
         return v
@@ -116,11 +130,35 @@ final class ChallengeHistoryDetailViewController: UIViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setUI()
+        self.registNotification()
         self.view.setBackgroundDefault()
+        self.setUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         Task {
+            Loading.shared.showLoadingView()
             await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
         }
+    }
+    
+    @objc private func viewDidAppearWithModalDismissed() {
+        Task {
+            Loading.shared.showLoadingView()
+            await self.interactor.didLoad()
+            Loading.shared.stopLoadingView()
+        }
+    }
+    
+    private func registNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewDidAppearWithModalDismissed),
+            name: NSNotification.Name("modal_dismissed"),
+            object: nil
+        )
     }
     
     // MARK: - Layout
@@ -128,14 +166,17 @@ final class ChallengeHistoryDetailViewController: UIViewController {
     private func setUI() {
         let leadingTrailingPadding: Int = 24
         let guide = self.view.safeAreaLayoutGuide
-
-        self.scrollContentView.addSubviews(self.dateLabel,
-                                           self.certificateImageView,
-                                           self.challengeNameLabel,
-                                           self.certificationCommentLabel,
-                                           self.timeLabel,
-                                           self.complimentTitleLabel,
-                                           self.complimentContentView)
+        
+        self.scrollContentView.addSubviews(
+            self.dateLabel,
+            self.certificateImageView,
+            self.challengeNameLabel,
+            self.certificationCommentLabel,
+            self.timeLabel,
+            self.complimentTitleLabel,
+            self.complimentContentView,
+            self.prasiseButton
+        )
         self.scrollView.addSubview(self.scrollContentView)
         
         self.view.addSubviews(self.navigationBar,
@@ -147,63 +188,70 @@ final class ChallengeHistoryDetailViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
         }
-
+        
         // ---> 컴포넌트
         self.dateLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(18)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
         }
-
+        
         let widthHeight = UIScreen.main.bounds.width - CGFloat(leadingTrailingPadding * 2)
         self.certificateImageView.snp.makeConstraints { make in
             make.top.equalTo(self.dateLabel.snp.bottom).offset(21)
             make.width.height.equalTo(widthHeight)
             make.centerX.equalToSuperview()
         }
-
+        
         self.challengeNameLabel.snp.makeConstraints { make in
             make.top.equalTo(self.certificateImageView.snp.bottom).offset(24)
             make.leading.equalTo(leadingTrailingPadding)
         }
-
+        
         self.certificationCommentLabel.snp.makeConstraints { make in
             make.top.equalTo(self.challengeNameLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
         }
-
+        
         self.timeLabel.snp.makeConstraints { make in
             make.top.equalTo(self.certificationCommentLabel.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
-
+        
         // ---> 칭찬
         self.complimentTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.timeLabel.snp.bottom).offset(33)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
-
+        
         self.complimentLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().inset(10)
             make.bottom.equalToSuperview().inset(15)
         }
-
+        
         self.complimentContentView.snp.makeConstraints { make in
             make.top.equalTo(self.complimentTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
             make.trailing.equalToSuperview().inset(leadingTrailingPadding)
             make.bottom.equalToSuperview()
         }
-      
+        
+        self.prasiseButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+            make.trailing.equalToSuperview().inset(leadingTrailingPadding)
+            make.top.equalTo(self.timeLabel.snp.bottom).offset(80)
+            make.bottom.equalToSuperview()
+        }
+        
         // ---> 스크롤뷰
         self.scrollView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
-
+        
         self.scrollContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
@@ -244,11 +292,13 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
         if !(compliment.complimentComment?.isEmpty ?? true) {
             self.complimentTitleLabel.isHidden = false
             self.complimentContentView.isHidden = false
+            self.prasiseButton.isHidden = true
             self.complimentTitleLabel.text = compliment.complimentTitle
             self.complimentLabel.text = compliment.complimentComment
             self.complimentLabel.setLineSpacing(8)
         }
         else {
+            self.prasiseButton.isHidden = compliment.isMyHitstoyDetail
             self.complimentTitleLabel.isHidden = true
             self.complimentContentView.isHidden = true
         }
@@ -258,5 +308,11 @@ extension ChallengeHistoryDetailViewController: ChallengeHistoryDetailDisplayLog
         let browser = SKPhotoBrowser(photos: photo.images)
         browser.initializePageIndex(0)
         self.present(browser, animated: true, completion: {})
+    }
+
+    func displayToast(viewModel: ChallengeHistoryDetail.ViewModel.Toast) {
+        viewModel.message.unwrap {
+            Toast.shared.makeToast($0)
+        }
     }
 }

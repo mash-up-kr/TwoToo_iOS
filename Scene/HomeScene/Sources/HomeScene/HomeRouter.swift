@@ -7,9 +7,9 @@
 //
 
 import NudgeSendScene
-import PraiseSendScene
 import ChallengeCertificateScene
 import ChallengeHistoryScene
+import ChallengeHistoryDetailScene
 import ChallengeEssentialInfoInputScene
 import ChallengeConfirmScene
 import SafariServices
@@ -21,8 +21,8 @@ protocol HomeRoutingLogic {
     func routeToChallengeEssentialInfoInputScene()
     /// 챌린지 정보 확인 화면으로 이동한다.
     func routeToChallengeConfirmScene(entryPoint: String)
-    /// 칭찬하기 화면으로 이동한다.
-    func routeToPraiseSendScene()
+    /// 상대방 챌린지 히스토리 디테일 화면으로 이동한다.
+    func routeToPartnerHistoryDetailScene(title: String, certificate: Home.Model.Certificate, nickname: String, partnerNickname: String)
     /// 인증하기 화면으로 이동한다.
     func routeToChallengeCertificateScene()
     /// 찌르기 화면으로 이동한다.
@@ -39,14 +39,13 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRoutingLogic {
-    
     func routeToChallengeEssentialInfoInputScene() {
         let challengeEssentialInfoInputScene = ChallengeEssentialInfoInputSceneFactory().make(with: .init())
         let challengeEssentialInfoInputViewController = challengeEssentialInfoInputScene.viewController
         challengeEssentialInfoInputViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeEssentialInfoInputViewController, animated: true)
     }
-    
+
     func routeToChallengeConfirmScene(entryPoint: String) {
         guard let dataStore = self.dataStore else {
             return
@@ -63,17 +62,36 @@ extension HomeRouter: HomeRoutingLogic {
         challengeConfirmViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeConfirmViewController, animated: true)
     }
-    
-    func routeToPraiseSendScene() {
+
+    func routeToPartnerHistoryDetailScene(title: String,
+                                          certificate: Home.Model.Certificate,
+                                          nickname: String,
+                                          partnerNickname: String) {
         guard let dataStore = self.dataStore else {
             return
         }
-        let praiseSendScene = PraiseSendSceneFactory().make(
-            with: .init(certificateID: dataStore.challenge?.partnerInfo.todayCert?.id ?? "")
-        )
-        self.viewController?.present(praiseSendScene.bottomSheetViewController, animated: true)
+
+        let historyDetailScene = ChallengeHistoryDetailSceneFactory().make(with: .init(
+            detail: .init(
+                challengeID: dataStore.challenge?.id ?? "",
+                id: certificate.id,
+                challengeName: dataStore.challenge?.name ?? "",
+                certificateImageUrl: certificate.imageURL,
+                certificateComment: certificate.contents,
+                certificateTime: dataStore.challenge?.partnerInfo.todayCert?.time.fullStringDate(.iso) ?? Date(),
+                complimentComment: certificate.complimentComment
+            ), user: .init(
+                myNickname: dataStore.challenge?.myInfo.nickname ?? "",
+                partnerNickname: dataStore.challenge?.partnerInfo.nickname ?? "",
+                isMine: false
+            )
+        ))
+
+        let vc = historyDetailScene.viewController
+        vc.modalPresentationStyle = .fullScreen
+        self.viewController?.present(vc, animated: true)
     }
-    
+
     func routeToChallengeCertificateScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -83,7 +101,7 @@ extension HomeRouter: HomeRoutingLogic {
         )
         self.viewController?.present(challengeCertificateScene.bottomSheetViewController, animated: true)
     }
-    
+
     func routeToNudgeSendScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -93,7 +111,7 @@ extension HomeRouter: HomeRoutingLogic {
         )
         self.viewController?.present(nudgeSendScene.bottomSheetViewController, animated: true)
     }
-    
+
     func routeToChallengeHistoryScene() {
         guard let dataStore = self.dataStore else {
             return
@@ -105,13 +123,13 @@ extension HomeRouter: HomeRoutingLogic {
         challengeHistoryViewController.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(challengeHistoryViewController, animated: true)
     }
-    
+
     func routeToGuideScene() {
         guard let url = URL(string: "https://two2too2.github.io/") else {
             return
         }
         let safariViewController = SFSafariViewController(url: url)
-        
+
         self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
 }

@@ -184,7 +184,7 @@ final class HomeWorker: HomeWorkerProtocol {
         )
         
         if let commit = commit {
-            userInfo.todayCert = .init(id: String(commit.commitNo), complimentComment: commit.partnerComment)
+            userInfo.todayCert = .init(id: String(commit.commitNo), complimentComment: commit.partnerComment, imageURL: commit.photoUrl, time: commit.createdAt, contents: commit.text)
         }
         
         userInfo.certCount = commitCount ?? 0

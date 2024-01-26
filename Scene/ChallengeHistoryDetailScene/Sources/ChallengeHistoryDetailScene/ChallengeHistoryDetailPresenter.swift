@@ -13,7 +13,9 @@ import SKPhotoBrowser
 protocol ChallengeHistoryDetailPresentationLogic {
     func presentChallengeDetail(detail: ChallengeHistoryDetail.Model.ChallengeDetail)
     func presentPhoto(imageUrl: String)
-    
+    /// 챌린지 디테일 정보 오류를 보여준다.
+    func presentHistoryDetailError(error: Error)
+
 }
 
 final class ChallengeHistoryDetailPresenter {
@@ -38,7 +40,11 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         images.append(photo)
         self.viewController?.displayPhoto(photo: .init(images: images))
     }
-    
+
+    func presentHistoryDetailError(error: Error) {
+        self.viewController?.displayToast(viewModel: .init(message: "히스토리 디테일 정보를 가져오는데 실패했습니다."))
+    }
+
     // model -> viewModel
     private func map(_ model: ChallengeHistoryDetail.Model.ChallengeDetail)
     -> (ChallengeHistoryDetail.ViewModel.Challenge,
@@ -47,16 +53,21 @@ extension ChallengeHistoryDetailPresenter: ChallengeHistoryDetailPresentationLog
         let dateText = model.certificateTime.dateToString(.hangleYearMonthDay)
         let timeText = "인증 시간  " + model.certificateTime.dateToString(.hourMinute)
         let title = "\(model.myNickname)의 기록"
-        let certification = ChallengeHistoryDetail.ViewModel.Challenge(challengeName: model.challengeName,
-                                                                       certificationDateText: dateText,
-                                                                       navigationTitle: title,
-                                                                       certificationImageURL: URL(string: model.certificateImageUrl),
-                                                                       certificationComment: model.certificateComment,
-                                                                       certificationTimeText: timeText)
+        let certification = ChallengeHistoryDetail.ViewModel.Challenge(
+          challengeName: model.challengeName,
+          certificationDateText: dateText,
+          navigationTitle: title,
+          certificationImageURL: URL(string: model.certificateImageUrl),
+          certificationComment: model.certificateComment,
+          certificationTimeText: timeText
+        )
         
         let complimentTitle = "\(model.partnerNickname)이 보낸 칭찬"
-        let compliment = ChallengeHistoryDetail.ViewModel.Compliment(complimentTitle: complimentTitle,
-                                                                     complimentComment: model.complicateComment)
+        let compliment = ChallengeHistoryDetail.ViewModel.Compliment(
+          complimentTitle: complimentTitle,
+          complimentComment: model.complicateComment, 
+          isMyHitstoyDetail: model.isMine
+        )
         return (certification, compliment)
     }
 

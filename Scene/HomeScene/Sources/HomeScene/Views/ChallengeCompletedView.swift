@@ -33,6 +33,7 @@ final class ChallengeCompletedView: UIView {
     /// 챌린지 진행도 뷰
     lazy var progressBar: TTProgressBar = {
         let v = TTProgressBar()
+        v.isHidden = true
         return v
     }()
     /// 나와 상대의 닉네임 뷰
@@ -156,7 +157,7 @@ final class ChallengeCompletedView: UIView {
     
     func configure(viewModel: Home.ViewModel.ChallengeCompletedViewModel) {
         self.topChallengeInfoView.configureCompleted(viewModel: viewModel.challengeInfo)
-        self.progressBar.configureCompleted(viewModel: viewModel.progress)
+        self.progressBar.configure(viewModel: viewModel.progress)
         self.nicknameStackView.configure(challengeOrderText: viewModel.order.challengeOrderText,
                                          myNickname: viewModel.order.myNameText,
                                          partnerNickname: viewModel.order.partenrNameText)
