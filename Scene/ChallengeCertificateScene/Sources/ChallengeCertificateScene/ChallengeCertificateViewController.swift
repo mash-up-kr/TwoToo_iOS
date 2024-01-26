@@ -211,13 +211,6 @@ extension ChallengeCertificateViewController: TTTextViewDelegate,
                 scrollOffset += 14
             }
             self.backScrollView.contentOffset.y = scrollOffset
-//            let bottomOffset = keyboardFrame.height + 14
-//            self.commitButton.snp.remakeConstraints { make in
-//                make.leading.equalToSuperview().offset(24)
-//                make.trailing.equalToSuperview().inset(24)
-//                make.height.equalTo(57)
-//                make.bottom.equalTo(self.view.snp.bottom).inset(bottomOffset)
-//            }
             self.view.layoutIfNeeded()
         }
     }
