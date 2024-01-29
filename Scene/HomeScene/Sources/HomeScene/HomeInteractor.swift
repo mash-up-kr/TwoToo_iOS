@@ -28,6 +28,8 @@ protocol HomeBusinessLogic {
     func didTapMyFlower() async
     /// 찌르기 버튼 클릭
     func didTapStickButton() async
+    /// 카드 보내기 버튼 클릭
+    func didTapCardSendButton() async
     /// 챌린지 정보 클릭
     func didTapChallengeInfo() async
     /// 설명서 버튼 클릭
@@ -222,6 +224,18 @@ extension HomeInteractor {
         nickname: challenge.myInfo.nickname,
         partnerNickname: challenge.partnerInfo.nickname
       )
+    }
+}
+
+// MARK: - Feature (공유하기)
+
+extension HomeInteractor {
+    
+    func didTapCardSendButton() async {
+        guard let challenge = self.challenge else {
+            return
+        }
+        await self.presenter.presentCertificationSharePopup(challenge: challenge)
     }
 }
 

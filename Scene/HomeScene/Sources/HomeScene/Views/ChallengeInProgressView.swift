@@ -12,6 +12,7 @@ protocol ChallengeInProgressViewDelegate: AnyObject {
     func didTapCertificateButton()
     func didTapMyFlowerEmptySpeechBubbleView()
     func didTapStickButton()
+    func didTapCardSendButton()
     func didTapChallengeInfo()
 }
 
@@ -78,10 +79,25 @@ final class ChallengeInProgressView: UIView {
     /// 찌르기 버튼 타이틀
     lazy var nudgeTitleLabel: UILabel = {
         let v = UILabel()
-        v.text = "콕 찌르기 (5/5)"
+        v.text = "콕 찌르기 (3/3)"
         v.textColor = .primary
         v.font = .body2
         v.textAlignment = .center
+        return v
+    }()
+    /// 카드 보내기 버튼
+    lazy var cardSendButton: UIButton = {
+        let v = UIButton()
+        v.setImage(.asset(.icon_send_card), for: .normal)
+        v.addAction { [weak self] in
+            self?.delegate?.didTapCardSendButton()
+        }
+        return v
+    }()
+    /// 카드 보내기 버튼 유도 툴팁
+    lazy var cardSendButtonTooltip: UIImageView = {
+        let v = UIImageView()
+        v.image = .asset(.img_send_card_tooltip)
         return v
     }()
 
@@ -105,7 +121,10 @@ final class ChallengeInProgressView: UIView {
                          self.myFlowerView,
                          self.heartImage,
                          self.nudgeBeeButton,
-                         self.nudgeTitleLabel)
+                         self.nudgeTitleLabel,
+                         self.cardSendButton,
+                         self.cardSendButtonTooltip
+        )
                 
         self.topChallengeInfoView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -173,6 +192,18 @@ final class ChallengeInProgressView: UIView {
             make.bottom.equalToSuperview().offset(-beeButtonBottomOffset)
         }
         
+        self.cardSendButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(beeButtonWidthHeight)
+            make.bottom.equalTo(self.nudgeTitleLabel.snp.top).offset(-8)
+        }
+        
+        self.cardSendButtonTooltip.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(self.cardSendButton.snp.top).offset(-14)
+            make.width.equalTo(149)
+            make.height.equalTo(60)
+        }
     }
     
     func configure(viewModel: Home.ViewModel.ChallengeInProgressViewModel) {
@@ -187,6 +218,8 @@ final class ChallengeInProgressView: UIView {
         self.myFlowerTopView.configureInProgress(viewModel: viewModel.myFlower.topViewModel)
         self.heartImage.isHidden = viewModel.isHeartHidden
         self.nudgeTitleLabel.text = viewModel.stickText
+        self.cardSendButton.isHidden = viewModel.isCardSendHidden
+        self.cardSendButtonTooltip.isHidden = viewModel.isCardSendTooltipHidden
     }
     
 }

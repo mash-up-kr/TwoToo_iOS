@@ -107,7 +107,7 @@ extension HomeRouter: HomeRoutingLogic {
             return
         }
         let nudgeSendScene = NudgeSendSceneFactory().make(
-            with: .init(remainingNudgeCount: dataStore.challenge?.stickRemaining ?? 5)
+            with: .init(remainingNudgeCount: dataStore.challenge?.stickRemaining ?? 3)
         )
         self.viewController?.present(nudgeSendScene.bottomSheetViewController, animated: true)
     }
