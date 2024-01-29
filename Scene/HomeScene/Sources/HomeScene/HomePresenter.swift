@@ -41,6 +41,8 @@ protocol HomePresentationLogic {
     func presentExceededStickCountError()
     /// 인증 성공 공유하기 모달을 보여준다.
     func presentCertificationSharePopup(challenge: Home.Model.Challenge)
+    /// 챌린지 성공 공유하기 모달을 보여준다.
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge)
 }
 
 final class HomePresenter {
@@ -128,6 +130,18 @@ extension HomePresenter: HomePresentationLogic {
             progressText: "\(percentageText) 달성중 인증완료"
         )
         self.viewController?.displayCertificationSharePopupViewModel(viewModel: viewModel)
+    }
+    
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge) {
+        let challengeCompletedViewModel = challenge.toChallengeCompletedViewModel()
+        let viewModel = Home.ViewModel.ChallengeCompleteSharePopupViewModel(
+            dateText: Date().dateToString(.monthDayE),
+            titleNameText: challenge.name ?? "",
+            orderText: "\(challenge.order ?? 0)번째 챌린지 완료",
+            partnerFlowerImage: challengeCompletedViewModel.partnerFlower.image,
+            myFlowerImage: challengeCompletedViewModel.myFlower.image
+        )
+        self.viewController?.displayChallengeCompleteSharePopupViewModel(viewModel: viewModel)
     }
 }
 
@@ -226,7 +240,7 @@ extension Home.Model.Challenge {
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
         // 찌르기 텍스트
-        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/3)"
+        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
         
         // 챌린지 진행 상태 매핑
         switch  self.status {
@@ -264,13 +278,13 @@ extension Home.Model.Challenge {
             break
         }
         
-        // 카드 보내기 활성화 여부
-        if !(self.partnerInfo.todayCert?.complimentComment ?? "").isEmpty,
-           !(self.myInfo.todayCert?.complimentComment ?? "").isEmpty {
-            viewModel.stickText = "카드 보내기"
-            viewModel.isCardSendTooltipHidden = false
-            viewModel.isCardSendHidden = false
-        }
+//        // 카드 보내기 활성화 여부
+//        if !(self.partnerInfo.todayCert?.complimentComment ?? "").isEmpty,
+//           !(self.myInfo.todayCert?.complimentComment ?? "").isEmpty {
+//            viewModel.stickText = "카드 보내기"
+//            viewModel.isCardSendTooltipHidden = false
+//            viewModel.isCardSendHidden = false
+//        }
         
         return viewModel
     }

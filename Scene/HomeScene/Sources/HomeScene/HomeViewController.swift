@@ -20,6 +20,7 @@ protocol HomeDisplayLogic: AnyObject {
     func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel)
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
     func displayCertificationSharePopupViewModel(viewModel: Home.ViewModel.CertificationSharePopupViewModel)
+    func displayChallengeCompleteSharePopupViewModel(viewModel: Home.ViewModel.ChallengeCompleteSharePopupViewModel)
     func displayToast(viewModel: Home.ViewModel.Toast)
 }
 
@@ -40,6 +41,7 @@ final class HomeViewController: UIViewController {
     var completedPopupView: TTPopup?
     var flowerLanguagePopupView: TTFlowerPopup?
     var certificationSharePopupView: TTCertificationSharePopup?
+    var challengeCompletePopupView: TTChallengeCompleteSharePopup?
     
     // MARK: - UI Component
     /// 네비게이션 바
@@ -425,6 +427,18 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
+    func displayChallengeCompleteSharePopupViewModel(viewModel: Home.ViewModel.ChallengeCompleteSharePopupViewModel) {
+        let popupView = TTChallengeCompleteSharePopup(frame: .zero)
+        popupView.configure(viewModel: viewModel)
+  
+        self.challengeCompletePopupView = popupView
+        self.challengeCompletePopupView?.delegate = self
+        
+        if let challengeCompletePopupView = self.challengeCompletePopupView {
+            self.view.addSubview(challengeCompletePopupView)
+        }
+    }
+    
     func displayToast(viewModel: Home.ViewModel.Toast) {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
@@ -592,6 +606,24 @@ extension HomeViewController: TTCertificationSharePopupDelegate {
     }
     
     func didTapCertificationSharePopupShareButton(image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
+    }
+}
+
+extension HomeViewController: TTChallengeCompleteSharePopupDelegate {
+    
+    func didTapChallengeCompleteSharePopupDimView() {
+        self.challengeCompletePopupView?.removeFromSuperview()
+        self.challengeCompletePopupView = nil
+    }
+    
+    func didTapChallengeCompleteSharePopupCloseButton() {
+        self.challengeCompletePopupView?.removeFromSuperview()
+        self.challengeCompletePopupView = nil
+    }
+    
+    func didTapChallengeCompleteSharePopupShareButton(image: UIImage) {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         self.present(activityViewController, animated: true)
     }

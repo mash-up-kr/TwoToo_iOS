@@ -142,7 +142,7 @@ extension HomeInteractor {
                     
                     if completed == .uncomfirmed {
                         self.worker.challengeCompletedConfirmed = true
-                        await self.presenter.presentCompletedPopup(challenge: challenge)
+                        await self.presenter.presentChallengeCompleteSharePopup(challenge: challenge)
                     }
             }
         }
