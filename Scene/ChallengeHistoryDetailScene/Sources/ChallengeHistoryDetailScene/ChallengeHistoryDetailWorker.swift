@@ -37,14 +37,17 @@ final class ChallengeHistoryDetailWorker: ChallengeHistoryDetailWorkerProtocol {
         
         let myNickname: String
         let partnerNickname: String
-        let isMine = challengeDetailListResponse.user1CommitList.map(\.commitNo).contains(commitID)
-        
-        if isMine {
+        let isMine: Bool
+
+        if challengeDetailListResponse.user1.userNo == self.meLocalWorker.userNo {
             myNickname = challengeDetailListResponse.user1.nickname
             partnerNickname = challengeDetailListResponse.user2.nickname
-        } else {
+            isMine = challengeDetailListResponse.user1CommitList.map(\.commitNo).contains(commitID)
+        }
+        else {
             myNickname = challengeDetailListResponse.user2.nickname
             partnerNickname = challengeDetailListResponse.user1.nickname
+            isMine = challengeDetailListResponse.user2CommitList.map(\.commitNo).contains(commitID)
         }
         
         return .init(
