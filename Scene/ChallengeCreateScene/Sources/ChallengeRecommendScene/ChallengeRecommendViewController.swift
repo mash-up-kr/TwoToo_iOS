@@ -55,7 +55,8 @@ final class ChallengeRecommendViewController: UIViewController, BottomSheetViewC
     }()
     
     private lazy var backScrollView: UIScrollView = {
-        let v = SelfSizingScrollView()
+        let heightRatio = UIDevice.current.deviceType == .default ? 0.8 : 0.67
+        let v = SelfSizingScrollView(maxHeightRatio: heightRatio)
         v.addSubview(self.scrollSizeFitView)
         v.delegate = self
         v.addTapAction { [weak self] in
