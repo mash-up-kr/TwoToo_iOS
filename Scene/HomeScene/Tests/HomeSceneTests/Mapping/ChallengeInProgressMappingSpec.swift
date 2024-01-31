@@ -26,13 +26,13 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                         id: "userId",
                         nickname: "Test",
                         certCount: 1,
-                        todayCert: .init(id: "certId", complimentComment: "Test")
+                        todayCert: .init(id: "certId", complimentComment: "Test", imageURL: "", time: "", contents: "")
                     ),
                     partnerInfo: Home.Model.User(
                         id: "partnerId",
                         nickname: "Test",
                         certCount: 1,
-                        todayCert: .init(id: "certId", complimentComment: "Test")
+                        todayCert: .init(id: "certId", complimentComment: "Test", imageURL: "", time: "", contents: "")
                     ),
                     stickRemaining: 5
                 )

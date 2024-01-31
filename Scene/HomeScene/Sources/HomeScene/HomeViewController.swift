@@ -17,7 +17,6 @@ protocol HomeDisplayLogic: AnyObject {
     func displayChallengeAfterStartDateViewModel(viewModel: Home.ViewModel.ChallengeAfterStartDateViewModel)
     func displayChallengeInProgressViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel)
     func displayChallengeCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel)
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel)
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
     func displayCertificationSharePopupViewModel(viewModel: Home.ViewModel.CertificationSharePopupViewModel)
     func displayChallengeCompleteSharePopupViewModel(viewModel: Home.ViewModel.ChallengeCompleteSharePopupViewModel)
@@ -39,9 +38,9 @@ final class HomeViewController: UIViewController {
     // MARK: - Popup
     var bothCertificationPopupView: TTPopup?
     var completedPopupView: TTPopup?
-    var flowerLanguagePopupView: TTFlowerPopup?
-    var certificationSharePopupView: TTCertificationSharePopup?
     var challengeCompletePopupView: TTChallengeCompleteSharePopup?
+    var certificationSharePopupView: TTCertificationSharePopup?
+    var flowerLanguageSharePopupView: TTLanguageFlowerSharePopup?
     
     // MARK: - UI Component
     /// 네비게이션 바
@@ -105,7 +104,7 @@ final class HomeViewController: UIViewController {
         let v = UIImageView(.home_ground)
         return v
     }()
-
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -160,7 +159,7 @@ final class HomeViewController: UIViewController {
             object: nil
         )
     }
-
+    
     // MARK: - Layout
     private func setUI() {
         self.view.setBackgroundDefault()
@@ -291,59 +290,6 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
-    func displayBothCertificationViewModel(viewModel: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel) {
-        self.displayWithAnimation { [weak self] in
-            viewModel.show.unwrap {
-                let popupContentView = UIView()
-                let imageView = UIImageView()
-                imageView.image = $0
-                imageView.contentMode = .scaleAspectFit
-                popupContentView.addSubview(imageView)
-                imageView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
-                
-                let popupView = TTPopup()
-                popupView.configure(title: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.title,
-                                    resultView: popupContentView,
-                                    description: Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.message,
-                                    buttonTitles: [
-                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.noOptionText,
-                                        Home.ViewModel.ChallengeInProgressViewModel.BothCertificationPopupViewModel.yesOptionText
-                                    ])
-                
-                popupView.didTapLeftButton {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupNoOption()
-                    }
-                }
-                
-                popupView.didTapRightButton {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupYesOption()
-                    }
-                }
-                
-                popupView.didTapBackground {
-                    Task {
-                        await self?.interactor.didTapBothCertificationPopupBackground()
-                    }
-                }
-                
-                self?.bothCertificationPopupView = popupView
-                
-                if let bothCertificationPopupView = self?.bothCertificationPopupView {
-                    self?.view.addSubview(bothCertificationPopupView)
-                }
-            }
-            
-            viewModel.dismiss.unwrap {
-                self?.bothCertificationPopupView?.removeFromSuperview()
-                self?.bothCertificationPopupView = nil
-            }
-        }
-    }
-    
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel) {
         self.displayWithAnimation { [weak self] in
             viewModel.show.unwrap {
@@ -418,7 +364,7 @@ extension HomeViewController: HomeDisplayLogic {
         // Show Popup
         let popupView = TTCertificationSharePopup(frame: .zero)
         popupView.configure(image: image, viewModel: viewModel)
-  
+        
         self.certificationSharePopupView = popupView
         self.certificationSharePopupView?.delegate = self
         
@@ -524,7 +470,7 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
     
     func didTapMyFlowerEmptySpeechBubbleView() {
         Task {
-            await self.interactor.didTapMyComplimentCommnet()
+            await self.interactor.didTapMyComplimentComment()
         }
     }
     
@@ -546,36 +492,30 @@ extension HomeViewController: ChallengeInProgressViewDelegate{
         }
     }
 }
-extension HomeViewController: ChallengeCompletedViewDelegate, TTFlowerPopupDelegate {
+extension HomeViewController: ChallengeCompletedViewDelegate {
     
     func didTapShowFlowerLaunage(viewModel: Home.ViewModel.ChallengeCompletedViewModel.FlowerLanguagePopupViewModel) {
         self.displayWithAnimation { [weak self] in
             viewModel.show.unwrap {
-                let popupView = TTFlowerPopup()
-                popupView.configure(name: $0.flowerNameText,
-                                    description: $0.flowerDescText,
-                                    image: $0.flowerImage,
-                                    order: $0.flowerOrderText)
-          
-                self?.flowerLanguagePopupView = popupView
-                self?.flowerLanguagePopupView?.delegate = self
+                guard let self = self else { return }
                 
-                if let flowerLanguagePopupView = self?.flowerLanguagePopupView {
-                    self?.view.addSubview(flowerLanguagePopupView)
+                // Show Popup
+                let popupView = TTLanguageFlowerSharePopup(frame: .zero)
+                popupView.configure(image: $0.flowerImage, title: $0.flowerNameText, description: $0.flowerDescText, order: $0.flowerOrderText)
+                
+                self.flowerLanguageSharePopupView = popupView
+                self.flowerLanguageSharePopupView?.delegate = self
+                
+                if let certificationSharePopupView = self.flowerLanguageSharePopupView {
+                    self.view.addSubview(certificationSharePopupView)
                 }
             }
             
             viewModel.dismiss.unwrap {
-                self?.flowerLanguagePopupView?.removeFromSuperview()
-                self?.flowerLanguagePopupView = nil
+                self?.flowerLanguageSharePopupView?.removeFromSuperview()
+                self?.flowerLanguageSharePopupView = nil
             }
         }
-    }
-    
-    // TTFlowerPopupDelegate
-    func didTapCloseView() {
-        self.flowerLanguagePopupView?.removeFromSuperview()
-        self.flowerLanguagePopupView = nil
     }
     
     func didTapChallengeCompletedFinishButton() {
@@ -593,7 +533,7 @@ extension HomeViewController: TTNavigationBarDelegate {
     }
 }
 
-extension HomeViewController: TTCertificationSharePopupDelegate {
+extension HomeViewController: TTCertificationSharePopupDelegate, TTLanguageFlowerSharePopupDelegate, TTChallengeCompleteSharePopupDelegate {
     
     func didTapCertificationSharePopupDimView() {
         self.certificationSharePopupView?.removeFromSuperview()
@@ -609,9 +549,6 @@ extension HomeViewController: TTCertificationSharePopupDelegate {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         self.present(activityViewController, animated: true)
     }
-}
-
-extension HomeViewController: TTChallengeCompleteSharePopupDelegate {
     
     func didTapChallengeCompleteSharePopupDimView() {
         self.challengeCompletePopupView?.removeFromSuperview()
@@ -624,6 +561,21 @@ extension HomeViewController: TTChallengeCompleteSharePopupDelegate {
     }
     
     func didTapChallengeCompleteSharePopupShareButton(image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
+    }
+    
+    func didTapLanguageFlowerSharePopupDimView() {
+        self.flowerLanguageSharePopupView?.removeFromSuperview()
+        self.flowerLanguageSharePopupView = nil
+    }
+    
+    func didTapLanguageFlowerSharePopupCloseButton() {
+        self.flowerLanguageSharePopupView?.removeFromSuperview()
+        self.flowerLanguageSharePopupView = nil
+    }
+    
+    func didTapLanguageFlowerSharePopupShareButton(image: UIImage) {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         self.present(activityViewController, animated: true)
     }

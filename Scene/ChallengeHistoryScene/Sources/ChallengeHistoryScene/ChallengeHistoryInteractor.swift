@@ -42,11 +42,11 @@ protocol ChallengeHistoryDataStore: AnyObject {
 
 final class ChallengeHistoryInteractor: ChallengeHistoryDataStore, ChallengeHistoryBusinessLogic {
     var cancellables: Set<AnyCancellable> = []
-    
+
     var presenter: ChallengeHistoryPresentationLogic
     var router: ChallengeHistoryRoutingLogic
     var worker: ChallengeHistoryWorkerProtocol
-    
+
     init(
         presenter: ChallengeHistoryPresentationLogic,
         router: ChallengeHistoryRoutingLogic,
@@ -58,17 +58,17 @@ final class ChallengeHistoryInteractor: ChallengeHistoryDataStore, ChallengeHist
         self.worker = worker
         self.challengeID = challengeID
     }
-    
+
     // MARK: - DataStore
-    
+
     var challengeID: String
-    
+
     var challenge: ChallengeHistory.Model.Challenge?
-    
+
     var myNickname: String? {
         self.worker.myNickname
     }
-    
+
     var partnerNickname: String? {
         self.worker.partnerNickname
     }
@@ -77,17 +77,17 @@ final class ChallengeHistoryInteractor: ChallengeHistoryDataStore, ChallengeHist
 // MARK: - Interactive Business Logic
 
 extension ChallengeHistoryInteractor {
-    
+
     /// 외부 액션 옵저빙
     func observe() {
-        
+
     }
 }
 
 // MARK: Feature (진입)
 
 extension ChallengeHistoryInteractor {
-    
+
     func didAppear() async {
         do {
             let challenge = try await self.worker.requestChallengeDetailInquiry(challengeID: self.challengeID)
@@ -103,7 +103,7 @@ extension ChallengeHistoryInteractor {
 // MARK: Feature (인증)
 
 extension ChallengeHistoryInteractor {
-    
+
     func didTapCertificate() async {
         await self.router.routeToChallengeCertificateScene()
     }
@@ -112,12 +112,12 @@ extension ChallengeHistoryInteractor {
 // MARK: Feature (인증 상세)
 
 extension ChallengeHistoryInteractor {
-    
+
     func didSelectCertificate(certificateID: String) async {
         guard let challenge = self.challenge else {
             return
         }
-        
+
         let myCertificate = challenge.myInfo.certificates
             .filter {
                 $0.id == certificateID
@@ -126,18 +126,20 @@ extension ChallengeHistoryInteractor {
             .filter {
                 $0.id == certificateID
             }.first
-        
+
         if let myCertificate = myCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(title: challenge.name,
+            await self.router.routeToChallengeHistoryDetailScene(challenge: challenge,
+                                                                 title: challenge.name,
                                                                  certificate: myCertificate,
                                                                  nickname: self.worker.myNickname ?? "",
-                                                                 partnerNickname: self.worker.partnerNickname ?? "")
+                                                                 partnerNickname: self.worker.partnerNickname ?? "", isMine: true)
         }
         else if let partnerCertificate = partnerCertificate {
-            await self.router.routeToChallengeHistoryDetailScene(title: challenge.name,
+            await self.router.routeToChallengeHistoryDetailScene(challenge: challenge,
+                                                                 title: challenge.name,
                                                                  certificate: partnerCertificate,
-                                                                 nickname: self.worker.partnerNickname ?? "",
-                                                                 partnerNickname: self.worker.myNickname ?? "")
+                                                                 nickname: self.worker.myNickname ?? "",
+                                                                 partnerNickname: self.worker.partnerNickname ?? "", isMine: false)
         }
     }
 }
@@ -145,23 +147,23 @@ extension ChallengeHistoryInteractor {
 // MARK: Feature (챌린지 그만두기)
 
 extension ChallengeHistoryInteractor {
-    
+
     func didTapOptionButton() async {
         await self.presenter.presentOptionPopup()
     }
-    
+
     func didTapOptionPopupQuitButton() async {
         await self.presenter.presentQuitPopup()
     }
-    
+
     func didTapQuitPopupCancelButton() async {
         await self.presenter.dismissQuitPopup()
     }
-    
+
     func didTapQuitPopupBackground() async {
         await self.presenter.dismissQuitPopup()
     }
-    
+
     func didTapQuitPopupQuitButton() async {
         do {
             try await self.worker.requestChallengeQuit(challengeID: self.challengeID)
@@ -177,7 +179,7 @@ extension ChallengeHistoryInteractor {
 // MARK: Feature (뒤로가기)
 
 extension ChallengeHistoryInteractor {
-    
+
     func didTapBackButton() async {
         await self.router.dismiss()
     }
@@ -188,5 +190,5 @@ extension ChallengeHistoryInteractor {
 // MARK: UseCase ()
 
 extension ChallengeHistoryInteractor {
-    
+
 }

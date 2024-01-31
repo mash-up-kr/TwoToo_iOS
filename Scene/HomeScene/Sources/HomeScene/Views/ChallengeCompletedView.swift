@@ -113,7 +113,7 @@ final class ChallengeCompletedView: UIView {
             make.trailing.equalToSuperview().inset(24)
         }
         
-        let flowerBottomOffset = UIDevice.current.deviceType == .default ? -12 : 33
+        let flowerBottomOffset = UIDevice.current.deviceType == .default ? 12 : 33
         
         // --> PartnerFlower
         self.partnerFlowerTopView.snp.makeConstraints { make in
@@ -144,10 +144,10 @@ final class ChallengeCompletedView: UIView {
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.confirmButton.snp.top).offset(-flowerBottomOffset)
         }
-
+        let bottomInset = UIDevice.current.deviceType == .default ? 20 : 49
         self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(49)
+            make.bottom.equalToSuperview().inset(bottomInset)
             make.width.equalTo(177)
         }
     }

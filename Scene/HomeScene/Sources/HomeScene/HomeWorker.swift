@@ -116,7 +116,7 @@ final class HomeWorker: HomeWorkerProtocol {
             status: challengeStatus,
             myInfo: myInfo,
             partnerInfo: partnerInfo,
-            stickRemaining: 5 - (homeResponse.myStingCnt ?? 0),
+            stickRemaining: 3 - (homeResponse.myStingCnt ?? 0),
             description: homeResponse.onGoingChallenge?.description
         )
         
@@ -184,7 +184,7 @@ final class HomeWorker: HomeWorkerProtocol {
         )
         
         if let commit = commit {
-            userInfo.todayCert = .init(id: String(commit.commitNo), complimentComment: commit.partnerComment)
+            userInfo.todayCert = .init(id: String(commit.commitNo), complimentComment: commit.partnerComment, imageURL: commit.photoUrl, time: commit.createdAt, contents: commit.text)
         }
         
         userInfo.certCount = commitCount ?? 0

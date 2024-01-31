@@ -79,7 +79,7 @@ final class ChallengeInProgressView: UIView {
     /// 찌르기 버튼 타이틀
     lazy var nudgeTitleLabel: UILabel = {
         let v = UILabel()
-        v.text = "콕 찌르기 (5/5)"
+        v.text = "콕 찌르기 (3/3)"
         v.textColor = .primary
         v.font = .body2
         v.textAlignment = .center

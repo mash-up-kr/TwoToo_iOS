@@ -17,6 +17,8 @@ enum ChallengeHistoryDetail {
         
         /// 챌린지 상세 정보
         struct ChallengeDetail: Equatable {
+            /// 챌린지 ID
+            var challengeID: String
             /// 인증 ID
             var id: String
             /// 챌린지 이름
@@ -33,8 +35,9 @@ enum ChallengeHistoryDetail {
             var partnerNickname: String
             /// 칭찬 문구
             var complicateComment: String?
+            /// 내 챌린지 상세정보 여부
+            var isMine: Bool
         }
- 
     }
     
     enum ViewModel {
@@ -60,11 +63,17 @@ enum ChallengeHistoryDetail {
             var complimentTitle: String
             /// 칭찬 문구
             var complimentComment: String?
+            /// 내 히스토리 디테일 여부
+            var isMyHitstoyDetail: Bool
         }
         
         /// 사진
         struct Photo {
             var images: [SKPhoto]
+        }
+
+        struct Toast {
+            var message: String?
         }
     }
 }
