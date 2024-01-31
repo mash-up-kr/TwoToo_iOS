@@ -34,7 +34,7 @@ final class ChallengeInProgressMappingSpec: QuickSpec {
                         certCount: 1,
                         todayCert: .init(id: "certId", complimentComment: "Test")
                     ),
-                    stickRemaining: 3
+                    stickRemaining: 5
                 )
 
                 viewModel = model.toChallengeInProgressViewModel()

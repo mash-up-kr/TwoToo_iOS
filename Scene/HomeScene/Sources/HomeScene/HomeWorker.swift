@@ -116,7 +116,7 @@ final class HomeWorker: HomeWorkerProtocol {
             status: challengeStatus,
             myInfo: myInfo,
             partnerInfo: partnerInfo,
-            stickRemaining: 3 - (homeResponse.myStingCnt ?? 0),
+            stickRemaining: 5 - (homeResponse.myStingCnt ?? 0),
             description: homeResponse.onGoingChallenge?.description
         )
         

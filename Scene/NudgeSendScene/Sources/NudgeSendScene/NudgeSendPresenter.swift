@@ -33,7 +33,7 @@ extension NudgeSendPresenter: NudgeSendPresentationLogic {
     
     func presentRemainingNudgeCount(remainingNudgeCount: Int) {
         self.viewController?.displayTitle(viewModel: .init(
-            text: "찌르기 문구 보내기 (\(remainingNudgeCount)/3)"
+            text: "찌르기 문구 보내기 (\(remainingNudgeCount)/5)"
         ))
     }
     

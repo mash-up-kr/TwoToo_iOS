@@ -715,6 +715,7 @@ class HomePresenterMock: HomePresentationLogic {
     var isPresentCompleteRequestErrorCalled = false
     var isPresentExceededStickCountErrorCalled = false
     var isPresentCertificationSharePopupCalled = false
+    var isPresentChallengeCompleteSharePopupCalled = false
     
     var lastChallenge: Home.Model.Challenge?
     var lastHomeError: Error?
@@ -788,6 +789,10 @@ class HomePresenterMock: HomePresentationLogic {
     
     func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
         self.isPresentCertificationSharePopupCalled = true
+    }
+    
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge) {
+        self.isPresentChallengeCompleteSharePopupCalled = true
     }
 }
 
