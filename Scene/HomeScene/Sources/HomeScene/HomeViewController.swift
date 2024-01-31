@@ -19,6 +19,7 @@ protocol HomeDisplayLogic: AnyObject {
     func displayChallengeCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel)
     func displayCompletedViewModel(viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel)
     func displayCertificationSharePopupViewModel(viewModel: Home.ViewModel.CertificationSharePopupViewModel)
+    func displayChallengeCompleteSharePopupViewModel(viewModel: Home.ViewModel.ChallengeCompleteSharePopupViewModel)
     func displayToast(viewModel: Home.ViewModel.Toast)
 }
 
@@ -37,6 +38,7 @@ final class HomeViewController: UIViewController {
     // MARK: - Popup
     var bothCertificationPopupView: TTPopup?
     var completedPopupView: TTPopup?
+    var challengeCompletePopupView: TTChallengeCompleteSharePopup?
     var certificationSharePopupView: TTCertificationSharePopup?
     var flowerLanguageSharePopupView: TTLanguageFlowerSharePopup?
     
@@ -371,6 +373,18 @@ extension HomeViewController: HomeDisplayLogic {
         }
     }
     
+    func displayChallengeCompleteSharePopupViewModel(viewModel: Home.ViewModel.ChallengeCompleteSharePopupViewModel) {
+        let popupView = TTChallengeCompleteSharePopup(frame: .zero)
+        popupView.configure(viewModel: viewModel)
+  
+        self.challengeCompletePopupView = popupView
+        self.challengeCompletePopupView?.delegate = self
+        
+        if let challengeCompletePopupView = self.challengeCompletePopupView {
+            self.view.addSubview(challengeCompletePopupView)
+        }
+    }
+    
     func displayToast(viewModel: Home.ViewModel.Toast) {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
@@ -519,7 +533,7 @@ extension HomeViewController: TTNavigationBarDelegate {
     }
 }
 
-extension HomeViewController: TTCertificationSharePopupDelegate, TTLanguageFlowerSharePopupDelegate {
+extension HomeViewController: TTCertificationSharePopupDelegate, TTLanguageFlowerSharePopupDelegate, TTChallengeCompleteSharePopupDelegate {
     
     func didTapCertificationSharePopupDimView() {
         self.certificationSharePopupView?.removeFromSuperview()
@@ -532,6 +546,21 @@ extension HomeViewController: TTCertificationSharePopupDelegate, TTLanguageFlowe
     }
     
     func didTapCertificationSharePopupShareButton(image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
+    }
+    
+    func didTapChallengeCompleteSharePopupDimView() {
+        self.challengeCompletePopupView?.removeFromSuperview()
+        self.challengeCompletePopupView = nil
+    }
+    
+    func didTapChallengeCompleteSharePopupCloseButton() {
+        self.challengeCompletePopupView?.removeFromSuperview()
+        self.challengeCompletePopupView = nil
+    }
+    
+    func didTapChallengeCompleteSharePopupShareButton(image: UIImage) {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         self.present(activityViewController, animated: true)
     }

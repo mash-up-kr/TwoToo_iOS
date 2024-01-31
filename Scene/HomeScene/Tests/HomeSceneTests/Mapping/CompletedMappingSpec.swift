@@ -9,7 +9,7 @@ final class CompletedMappingSpec: QuickSpec {
     override func spec() {
         describe("CompletedViewModel") {
             var model: Home.Model.Challenge!
-            var viewModel: Home.ViewModel.CompletedViewModel!
+            var viewModel: Home.ViewModel.ChallengeCompletedViewModel.CompletedPopupViewModel!
             
             beforeEach {
                 var tomorrowComponents = DateComponents()

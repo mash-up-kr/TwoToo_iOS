@@ -90,6 +90,7 @@ public enum Assets: String {
     case icon_bubble_not_mate
     case icon_mypage_brown
     case icon_info
+    case popup_ground
     case home_ground
     case home_background
     case icon_airplane

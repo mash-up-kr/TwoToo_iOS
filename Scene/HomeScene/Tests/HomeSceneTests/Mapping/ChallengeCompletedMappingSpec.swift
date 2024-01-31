@@ -101,31 +101,31 @@ final class ChallengeCompletedMappingSpec: QuickSpec {
                 it("내 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.myInfo.growStatus = .seed
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.myFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.myFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("내 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.myInfo.growStatus = .sprout
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.myFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.myFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("내 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.myInfo.growStatus = .peak
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.myFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.myFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("내 꽃의 꽃 이름 히든 여부가 false 로 표현된다.") {
                     model.myInfo.growStatus = .flower
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.myFlower.isFlowerTextHidden).to(beFalse())
+                    expect(viewModel.myFlower.isFlowerLanguageBubbleHidden).to(beFalse())
                 }
                 
                 it("내 꽃의 꽃 이름 히든 여부가 false 로 표현된다.") {
                     model.myInfo.growStatus = .bloom
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.myFlower.isFlowerTextHidden).to(beFalse())
+                    expect(viewModel.myFlower.isFlowerLanguageBubbleHidden).to(beFalse())
                 }
             }
             
@@ -181,31 +181,31 @@ final class ChallengeCompletedMappingSpec: QuickSpec {
                 it("상대방 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.partnerInfo.growStatus = .seed
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.partnerFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("상대방 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.partnerInfo.growStatus = .sprout
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.partnerFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("상대방 꽃의 꽃 이름 히든 여부가 true 로 표현된다.") {
                     model.partnerInfo.growStatus = .peak
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.partnerFlower.isFlowerTextHidden).to(beTrue())
+                    expect(viewModel.partnerFlower.isFlowerLanguageBubbleHidden).to(beTrue())
                 }
                 
                 it("상대방 꽃의 꽃 이름 히든 여부가 false 로 표현된다.") {
                     model.partnerInfo.growStatus = .flower
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.partnerFlower.isFlowerTextHidden).to(beFalse())
+                    expect(viewModel.partnerFlower.isFlowerLanguageBubbleHidden).to(beFalse())
                 }
                 
                 it("상대방 꽃의 꽃 이름 히든 여부가 false 로 표현된다.") {
                     model.partnerInfo.growStatus = .bloom
                     viewModel = model.toChallengeCompletedViewModel()
-                    expect(viewModel.partnerFlower.isFlowerTextHidden).to(beFalse())
+                    expect(viewModel.partnerFlower.isFlowerLanguageBubbleHidden).to(beFalse())
                 }
             }
         }

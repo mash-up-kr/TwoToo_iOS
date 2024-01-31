@@ -378,6 +378,19 @@ enum Home {
             var progressText: String
         }
         
+        struct ChallengeCompleteSharePopupViewModel {
+            /// 냘짜 텍스트
+            var dateText: String
+            /// 챌린지 명 타이틀 텍스트
+            var titleNameText: String
+            /// 챌린지 순서 텍스트
+            var orderText: String
+            /// 상대방 꽃 이미지
+            var partnerFlowerImage: UIImage
+            /// 내 꽃 이미지
+            var myFlowerImage: UIImage
+        }
+        
         struct Toast {
             var message: String?
         }
