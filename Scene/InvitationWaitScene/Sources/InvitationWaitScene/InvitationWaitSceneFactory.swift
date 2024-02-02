@@ -16,14 +16,18 @@ public protocol InvitationWaitScene: AnyObject, Scene {
 public struct InvitationWaitConfiguration {
     /// 홈 화면 이동 트리거
     public var didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>
+    /// 로그인 화면 이동 트리거
+    public var didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>
     /// 공유 링크 (optional)
     public var invitationLink: String?
     
     public init(
         didTriggerRouteToHomeScene: PassthroughSubject<Void, Never>,
+        didTriggerRouteToLoginScene: PassthroughSubject<Void, Never>,
         invitationLink: String? = nil
     ) {
         self.didTriggerRouteToHomeScene = didTriggerRouteToHomeScene
+        self.didTriggerRouteToLoginScene = didTriggerRouteToLoginScene
         self.invitationLink = invitationLink
     }
 }
@@ -40,6 +44,7 @@ public final class InvitationWaitSceneFactory {
         let meLocalWorker = MeLocalWorker(localDataSource: localDataSource)
         let partnerNetworkWorker = PartnerNetworkWorker()
         let nicknameNetworkWorker = NicknameNetworkWorker()
+        let onboardLocalWorker = OnboardingLocalWorker(localDataSource: localDataSource)
         
         let presenter = InvitationWaitPresenter()
         let router = InvitationWaitRouter()
@@ -48,13 +53,16 @@ public final class InvitationWaitSceneFactory {
             invitationLocalWorker: invitationLocalWorker,
             meLocalWorker: meLocalWorker,
             partnerNetworkWorker: partnerNetworkWorker,
-            nicknameNetworkWorker: nicknameNetworkWorker
+            nicknameNetworkWorker: nicknameNetworkWorker,
+            resetLocalDataSource: localDataSource,
+            onboardLocalWorker: onboardLocalWorker
         )
         let interactor = InvitationWaitInteractor(
             presenter: presenter,
             router: router,
             worker: worker,
             didTriggerRouteToHomeScene: configuration.didTriggerRouteToHomeScene,
+            didTriggerRouteToLoginScene: configuration.didTriggerRouteToLoginScene,
             invitationLink: configuration.invitationLink
         )
         let viewController = InvitationWaitViewController(

@@ -6,6 +6,7 @@
 //  Copyright (c) 2023 TwoToo. All rights reserved.
 //
 
+import CoreKit
 import UIKit
 
 enum ChallengeHistory {
@@ -40,6 +41,8 @@ enum ChallengeHistory {
             var id: String
             /// 닉네임
             var nickname: String
+            /// 인증 횟수
+            var certCount: Int?
             /// 인증 리스트
             var certificates: [Certificate]
         }
@@ -73,12 +76,30 @@ enum ChallengeHistory {
             var dDayText: String
             /// 챌린지 추가 정보 문구
             var additionalInfo: String?
+            /// 프로그래스
+            var progress: ProgressViewModel
             /// 유저 닉네임
             var myNickname: String
             /// 상대방 닉네임
             var partnerNickname: String
             /// 셀 정보
             var cellInfo: CellInfoList
+        }
+        
+        /// 프로그래스
+        struct ProgressViewModel: TTProgressViewModelProtocol {
+            /// 상대방 이름 텍스트
+            var partnerNameText: String
+            /// 내 이름 텍스트
+            var myNameText: String
+            /// 상대방 퍼센테이지 텍스트
+            var partnerPercentageText: String
+            /// 내 퍼센테이지 텍스트
+            var myPercentageText: String
+            /// 상대방 퍼센테이지 넘버
+            var partnerPercentageNumber: Double
+            /// 내 퍼센테이지 넘버
+            var myPercentageNumber: Double
         }
         
         /// 챌린지 테이블 셀 리스트

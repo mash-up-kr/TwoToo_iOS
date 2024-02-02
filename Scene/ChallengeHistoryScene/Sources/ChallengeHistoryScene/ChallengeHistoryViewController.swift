@@ -67,6 +67,12 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
         return v
     }()
     
+    private let progressBar: TTProgressBar = {
+        let v = TTProgressBar()
+        v.isHidden = true
+        return v
+    }()
+    
     private let myNicknameTagView: TTTagView = {
         let v = TTTagView(textColor: .mainCoral,
                           fontSize: .body2,
@@ -166,6 +172,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
                               self.dDayTagView,
                               self.titleLabel,
                               self.additionalInfoLabel,
+                              self.progressBar,
                               self.myNicknameTagView,
                               self.partnerNicknameTagView,
                               self.underLineView,
@@ -199,14 +206,21 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
             make.trailing.equalToSuperview().inset(25)
         }
         
+        self.progressBar.snp.makeConstraints { make in
+            make.top.equalTo(self.additionalInfoLabel.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(24)
+            make.width.equalToSuperview().multipliedBy(0.55)
+            make.height.equalTo(62)
+        }
+        
         self.partnerNicknameTagView.snp.makeConstraints { make in
-            make.top.equalTo(self.additionalInfoLabel.snp.bottom).offset(40)
+            make.top.equalTo(self.progressBar.snp.bottom).offset(30)
             make.centerX.equalToSuperview().multipliedBy(0.5)
             make.height.equalTo(28)
         }
         
         self.myNicknameTagView.snp.makeConstraints { make in
-            make.top.equalTo(self.additionalInfoLabel.snp.bottom).offset(40)
+            make.top.equalTo(self.progressBar.snp.bottom).offset(30)
             make.centerX.equalToSuperview().multipliedBy(1.5)
             make.height.equalTo(28)
         }
@@ -231,6 +245,7 @@ final class ChallengeHistoryViewController: UIViewController, UITableViewDataSou
             make.height.equalTo(349)
         }
     }
+    
     // MARK: - UITableViewDataSource
     var certificateList: ChallengeHistory.ViewModel.CellInfoList = []
     
@@ -300,8 +315,11 @@ extension ChallengeHistoryViewController: ChallengeHistoryDisplayLogic {
         self.myNicknameTagView.titleLabel.text = viewModel.myNickname
         self.partnerNicknameTagView.titleLabel.text = viewModel.partnerNickname
         self.certificateList = viewModel.cellInfo
+        self.progressBar.isHidden = false
+        self.progressBar.configure(viewModel: viewModel.progress)
         self.certificateTableView.reloadData()
     }
+    
 
     func displayOptionPopup(title: String) {
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

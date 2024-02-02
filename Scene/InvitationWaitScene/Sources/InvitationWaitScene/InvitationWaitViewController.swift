@@ -29,7 +29,16 @@ final class InvitationWaitViewController: UIViewController {
     // MARK: - UI
     
     lazy var navigationBar: TTNavigationBar = {
-        let v = TTNavigationBar(title: "Twotoo", rightButtonImage: nil)
+        let v = TTNavigationBar(title: "Twotoo",
+                                rightButtonImage: nil,
+                                rightButtonText: "나가기")
+        v.delegate = self
+        return v
+    }()
+    
+    let speechBubbleView: SpeechBubbleView = {
+        let v = SpeechBubbleView(tailPosition: .exit)
+        v.titleLabel.text =  "짝꿍 연결이 안된다면\n나가기를 눌러보세요!"
         return v
     }()
     
@@ -115,12 +124,21 @@ final class InvitationWaitViewController: UIViewController {
     private func setUI() {
         self.view.setBackgroundDefault()
         
-        self.view.addSubviews(self.navigationBar, self.contentView, self.captionLabel, self.refreshButton, self.resendButton)
+        self.view.addSubviews(self.navigationBar,
+                              self.speechBubbleView,
+                              self.contentView,
+                              self.captionLabel,
+                              self.refreshButton,
+                              self.resendButton)
         
         self.navigationBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
+        }
+        self.speechBubbleView.snp.makeConstraints { make in
+            make.top.equalTo(self.navigationBar.snp.bottom).offset(5)
+            make.trailing.equalToSuperview().inset(23)
         }
         self.contentView.snp.makeConstraints { make in
             make.centerY.equalToSuperview().offset(-20)
@@ -178,6 +196,15 @@ extension InvitationWaitViewController: InvitationWaitDisplayLogic {
     func displayToast(viewModel: InvitationWait.ViewModel.Toast) {
         viewModel.message.unwrap {
             Toast.shared.makeToast($0)
+        }
+    }
+}
+
+extension InvitationWaitViewController: TTNavigationBarDelegate {
+    /// 나가기 버튼 탭 했을 때
+    func didTapRightButton() {
+        Task {
+            await self.interactor.didTapExitButton()
         }
     }
 }

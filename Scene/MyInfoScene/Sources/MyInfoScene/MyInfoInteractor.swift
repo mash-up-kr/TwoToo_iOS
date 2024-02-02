@@ -80,7 +80,7 @@ final class MyInfoInteractor: MyInfoDataStore, MyInfoBusinessLogic {
             case .inquery:
                 return URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeUGNUGzl3MnGUAIR-rtfgYYrDYRIoKh_Ozpd4prqA1qIBKRw/viewform?usp=sf_link")
             case .creators:
-                return URL(string: "https://two2too2.github.io/creater.html")
+                return URL(string: "https://twotoo-landing.vercel.app/makers")
             case .logout:
                 return nil
             case .singout:

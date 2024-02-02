@@ -90,10 +90,12 @@ public enum Assets: String {
     case icon_bubble_not_mate
     case icon_mypage_brown
     case icon_info
+    case popup_ground
     case home_ground
     case home_background
     case icon_airplane
     case icon_push_bee
+    case icon_send_card
     case icon_certificated
     case icon_failed
     case icon_flower_seed
@@ -139,6 +141,8 @@ public enum Assets: String {
     case flowerPopup_background
     case icon_challenge_progress
     case icon_title_arrow
+    case update_icon
+    case img_send_card_tooltip
 
     public var image: UIImage {
         return .init(named: self.rawValue, in: Bundle.module, with: nil)!

@@ -8,7 +8,7 @@
 import UIKit
 
 public final class SelfSizingScrollView: UIScrollView {
-    private var maxHeight: CGFloat = UIScreen.main.bounds.height * 0.67
+    private var maxHeight: CGFloat = UIScreen.main.bounds.height
     
     public override var intrinsicContentSize: CGSize {
         CGSize(width: contentSize.width,
@@ -20,9 +20,9 @@ public final class SelfSizingScrollView: UIScrollView {
         invalidateIntrinsicContentSize()
     }
     
-    public convenience init(maxHeight: CGFloat) {
+    public convenience init(maxHeightRatio: CGFloat = 0.67) {
         self.init()
-        self.maxHeight = maxHeight
+        self.maxHeight *= maxHeightRatio
     }
     
     public override init(frame: CGRect) {

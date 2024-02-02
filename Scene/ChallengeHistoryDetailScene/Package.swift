@@ -25,14 +25,16 @@ let package = Package(
         .package(
             url: "https://github.com/Quick/Quick",
             .upToNextMajor(from: "6.0.0")
-        )
+        ),
+        .package(path: "./PraiseSendScene")
     ],
     targets: [
         .target(
             name: "ChallengeHistoryDetailScene",
             dependencies: [
                 .product(name: "CoreKit", package: "CoreKit"),
-                .product(name: "SKPhotoBrowser", package: "SKPhotoBrowser")
+                .product(name: "SKPhotoBrowser", package: "SKPhotoBrowser"),
+                .product(name: "PraiseSendScene", package: "PraiseSendScene")
             ],
             resources: [.process("Assets")]
         ),

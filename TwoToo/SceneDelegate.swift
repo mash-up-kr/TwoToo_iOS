@@ -168,7 +168,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .receive(on: DispatchQueue.main)
             .sink {
                 let invitationWaitScene = InvitationWaitSceneFactory().make(with: .init(
-                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene,
+                    didTriggerRouteToHomeScene: self.didTriggerRouteToHomeScene, 
+                    didTriggerRouteToLoginScene: self.didTriggerRouteToLoginScene,
                     invitationLink: $0
                 ))
                 let vc = invitationWaitScene.viewController

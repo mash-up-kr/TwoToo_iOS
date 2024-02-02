@@ -33,6 +33,7 @@ final class ChallengeCompletedView: UIView {
     /// 챌린지 진행도 뷰
     lazy var progressBar: TTProgressBar = {
         let v = TTProgressBar()
+        v.isHidden = true
         return v
     }()
     /// 나와 상대의 닉네임 뷰
@@ -112,7 +113,7 @@ final class ChallengeCompletedView: UIView {
             make.trailing.equalToSuperview().inset(24)
         }
         
-        let flowerBottomOffset = UIDevice.current.deviceType == .default ? -12 : 33
+        let flowerBottomOffset = UIDevice.current.deviceType == .default ? 12 : 33
         
         // --> PartnerFlower
         self.partnerFlowerTopView.snp.makeConstraints { make in
@@ -143,10 +144,10 @@ final class ChallengeCompletedView: UIView {
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.confirmButton.snp.top).offset(-flowerBottomOffset)
         }
-
+        let bottomInset = UIDevice.current.deviceType == .default ? 20 : 49
         self.confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(49)
+            make.bottom.equalToSuperview().inset(bottomInset)
             make.width.equalTo(177)
         }
     }
@@ -156,7 +157,7 @@ final class ChallengeCompletedView: UIView {
     
     func configure(viewModel: Home.ViewModel.ChallengeCompletedViewModel) {
         self.topChallengeInfoView.configureCompleted(viewModel: viewModel.challengeInfo)
-        self.progressBar.configureCompleted(viewModel: viewModel.progress)
+        self.progressBar.configure(viewModel: viewModel.progress)
         self.nicknameStackView.configure(challengeOrderText: viewModel.order.challengeOrderText,
                                          myNickname: viewModel.order.myNameText,
                                          partnerNickname: viewModel.order.partenrNameText)

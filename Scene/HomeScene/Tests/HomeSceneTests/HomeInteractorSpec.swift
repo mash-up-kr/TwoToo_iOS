@@ -524,60 +524,17 @@ final class HomeInteractorSpec: QuickSpec {
         }
         
         describe("칭찬") {
-            context("둘다 인증 팝업의 괜찮아요(no) 버튼을 클릭하였을 때") {
-                beforeEach {
-                    await interactor.didTapBothCertificationPopupNoOption()
-                }
-                
-                it("둘다 인증 팝업을 닫는다.") {
-                    let isDismissBothCertificationPopupCalled = await presenter.isDismissBothCertificationPopupCalled
-                    expect(isDismissBothCertificationPopupCalled).to(beTrue())
-                }
-            }
-            
-            context("둘다 인증 팝업의 배경을 클릭하였을 때") {
-                beforeEach {
-                    await interactor.didTapBothCertificationPopupBackground()
-                }
-                
-                it("둘다 인증 팝업을 닫는다.") {
-                    let isDismissBothCertificationPopupCalled = await presenter.isDismissBothCertificationPopupCalled
-                    expect(isDismissBothCertificationPopupCalled).to(beTrue())
-                }
-            }
-            
-            context("둘다 인증 팝업의 칭찬하기(yes) 버튼을 클릭하였을 때") {
-                beforeEach {
-                    await interactor.didTapBothCertificationPopupYesOption()
-                }
-                
-                it("확인함으로 둘다 인증 확인 여부 업데이트를 요청한다.") {
-                    expect(worker.isBothCertificationConfirmedCalled).to(beTrue())
-                    expect(worker.lastBothCertificationConfirmed).to(beTrue())
-                }
-                
-                it("둘다 인증 팝업을 닫는다.") {
-                    let isDismissBothCertificationPopupCalled = await presenter.isDismissBothCertificationPopupCalled
-                    expect(isDismissBothCertificationPopupCalled).to(beTrue())
-                }
-                
-                it("칭찬하기 화면으로 이동한다.") {
-                    let isRouteToPraiseSendSceneCalled = await router.isRouteToPraiseSendSceneCalled
-                    expect(isRouteToPraiseSendSceneCalled).to(beTrue())
-                }
-            }
-            
             describe("현재 챌린지의 내 칭찬 문구가 빈 값이다.") {
                 beforeEach {
                     interactor.challenge = .init(
                         status: .inProgress(.bothCertificated(.comfirmed)),
-                        myInfo: .init(id: "", nickname: "Test", todayCert: .init(id: "", complimentComment: "")),
+                        myInfo: .init(id: "", nickname: "Test", todayCert: .init(id: "", complimentComment: "", imageURL: "", time: "", contents: "")),
                         partnerInfo: .init(id: "", nickname: "Test")
                     )
                 }
                 context("내 칭찬 문구를 클릭하였을 때") {
                     beforeEach {
-                        await interactor.didTapMyComplimentCommnet()
+                        await interactor.didTapMyComplimentComment()
                     }
                     
                     it("칭찬하기 화면으로 이동한다.") {
@@ -682,6 +639,19 @@ final class HomeInteractorSpec: QuickSpec {
                 }
             }
         }
+        
+        describe("공유하기") {
+            context("카드 보내기 버튼을 클릭하였을 때") {
+                beforeEach {
+                    await interactor.didTapCardSendButton()
+                }
+                
+                it("인증 성공 공유하기 팝업이 표출된다.") {
+                    let isPresentCertificationSharePopupCalled = await presenter.isPresentCertificationSharePopupCalled
+                    expect(isPresentCertificationSharePopupCalled).to(beTrue())
+                }
+            }
+        }
     }
 }
 
@@ -701,6 +671,8 @@ class HomePresenterMock: HomePresentationLogic {
     var isPresentHomeErrorCalled = false
     var isPresentCompleteRequestErrorCalled = false
     var isPresentExceededStickCountErrorCalled = false
+    var isPresentCertificationSharePopupCalled = false
+    var isPresentChallengeCompleteSharePopupCalled = false
     
     var lastChallenge: Home.Model.Challenge?
     var lastHomeError: Error?
@@ -770,6 +742,14 @@ class HomePresenterMock: HomePresentationLogic {
     
     func presentExceededStickCountError() {
         self.isPresentExceededStickCountErrorCalled = true
+    }
+    
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
+        self.isPresentCertificationSharePopupCalled = true
+    }
+    
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge) {
+        self.isPresentChallengeCompleteSharePopupCalled = true
     }
 }
 
@@ -844,6 +824,7 @@ class HomeRouterMock: HomeRoutingLogic {
     var isRouteToNudgeSendSceneCalled = false
     var isRouteToChallengeHistorySceneCalled = false
     var isRouteToGuideSceneCalled = false
+    var isRouteToPartnerHistoryDetailSceneCalled = false
     
     var lastEntryPoint: String?
     
@@ -874,5 +855,9 @@ class HomeRouterMock: HomeRoutingLogic {
     
     func routeToGuideScene() {
         self.isRouteToGuideSceneCalled = true
+    }
+    
+    func routeToPartnerHistoryDetailScene(title: String, certificate: Home.Model.Certificate, nickname: String, partnerNickname: String) {
+        self.isRouteToPartnerHistoryDetailSceneCalled = true
     }
 }

@@ -23,10 +23,6 @@ protocol HomePresentationLogic {
     func presentChallengeAfterStartDate(challenge: Home.Model.Challenge)
     /// 챌린지 진행중 화면을 보여준다.
     func presentChallengeInProgress(challenge: Home.Model.Challenge)
-    /// 둘다 인증 팝업을 보여준다.
-    func presentBothCertificationPopup()
-    /// 둘다 인증 팝업을 닫는다.
-    func dismissBothCertificationPopup()
     /// 챌린지 완료 화면을 보여준다.
     func presentChallengeCompleted(challenge: Home.Model.Challenge)
     /// 챌린지 완료 팝업을 보여준다.
@@ -39,6 +35,10 @@ protocol HomePresentationLogic {
     func presentCompleteRequestError(error: Error)
     /// 찌르기 횟수 초과 오류를 보여준다.
     func presentExceededStickCountError()
+    /// 인증 성공 공유하기 모달을 보여준다.
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge)
+    /// 챌린지 성공 공유하기 모달을 보여준다.
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge)
 }
 
 final class HomePresenter {
@@ -86,14 +86,6 @@ extension HomePresenter: HomePresentationLogic {
         )
     }
     
-    func presentBothCertificationPopup() {
-        self.viewController?.displayBothCertificationViewModel(viewModel: .init(show: (.asset(.icon_all_verified)!)))
-    }
-    
-    func dismissBothCertificationPopup() {
-        self.viewController?.displayBothCertificationViewModel(viewModel: .init(dismiss: ()))
-    }
-    
     func presentChallengeCompleted(challenge: Home.Model.Challenge) {
         self.viewController?.displayChallengeCompletedViewModel(viewModel: challenge.toChallengeCompletedViewModel())
     }
@@ -116,6 +108,28 @@ extension HomePresenter: HomePresentationLogic {
     
     func presentExceededStickCountError() {
         self.viewController?.displayToast(viewModel: .init(message: "오늘의 콕 찌르기가 다 소진되었어요 ㅠㅜ"))
+    }
+    
+    func presentCertificationSharePopup(challenge: Home.Model.Challenge) {
+        let percentageText = challenge.calculatePercentageText(certCount: challenge.myInfo.certCount ?? 0)
+        let viewModel = Home.ViewModel.CertificationSharePopupViewModel(
+            dateText: Date().dateToString(.monthDayE),
+            titleNameText: challenge.name ?? "",
+            progressText: "\(percentageText) 달성중 인증완료"
+        )
+        self.viewController?.displayCertificationSharePopupViewModel(viewModel: viewModel)
+    }
+    
+    func presentChallengeCompleteSharePopup(challenge: Home.Model.Challenge) {
+        let challengeCompletedViewModel = challenge.toChallengeCompletedViewModel()
+        let viewModel = Home.ViewModel.ChallengeCompleteSharePopupViewModel(
+            dateText: Date().dateToString(.monthDayE),
+            titleNameText: challenge.name ?? "",
+            orderText: "\(challenge.order ?? 0)번째 챌린지 완료",
+            partnerFlowerImage: challengeCompletedViewModel.partnerFlower.image,
+            myFlowerImage: challengeCompletedViewModel.myFlower.image
+        )
+        self.viewController?.displayChallengeCompleteSharePopupViewModel(viewModel: viewModel)
     }
 }
 
@@ -171,7 +185,9 @@ extension Home.Model.Challenge {
                 topViewModel: .init(isHiddenCetificationGuideText: false, isCertificationButtonHidden: false, cetificationGuideText: "", isComplimentCommentHidden: false, complimentCommentText: ""),
                 myNameText: ""),
             isHeartHidden: false,
-            stickText: ""
+            stickText: "",
+            isCardSendTooltipHidden: true,
+            isCardSendHidden: true
         )
         
         // 챌린지 정보 매핑
@@ -211,6 +227,9 @@ extension Home.Model.Challenge {
         viewModel.myFlower.topViewModel.complimentCommentText = self.partnerInfo.todayCert?.complimentComment ?? ""
         viewModel.myFlower.myNameText = self.myInfo.nickname
         
+        // 찌르기 텍스트
+        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
+        
         // 챌린지 진행 상태 매핑
         switch  self.status {
         case .inProgress(let inProgressStatus):
@@ -246,9 +265,6 @@ extension Home.Model.Challenge {
         default:
             break
         }
-        
-        // 찌르기 텍스트
-        viewModel.stickText = "콕 찌르기 (\(self.stickRemaining ?? 0)/5)"
         
         return viewModel
     }
