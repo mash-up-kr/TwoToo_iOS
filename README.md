@@ -12,7 +12,7 @@ TwoToo를 통해 연인과 함께할 22일 챌린지를 생성하고 기록해�
 
 ## 🛠️ Tech
 `CleanSwift` `Modularization` `BDD`
-- [Tech ReadMe]()
+- [Tech ReadMe](https://github.com/mash-up-kr/TwoToo_iOS/blob/develop/Document/TechREADME.md)
 
 ## 🚀 AppStore
 - [iOS](https://play.google.com/store/apps/details?id=com.mashup.twotoo)
