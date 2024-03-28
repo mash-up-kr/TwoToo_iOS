@@ -15,8 +15,8 @@ TwoToo를 통해 연인과 함께할 22일 챌린지를 생성하고 기록해�
 - [Tech ReadMe](https://github.com/mash-up-kr/TwoToo_iOS/blob/develop/Document/TechREADME.md)
 
 ## 🚀 AppStore
-- [iOS](https://play.google.com/store/apps/details?id=com.mashup.twotoo)
-- [Android](https://apps.apple.com/kr/app/%ED%88%AC%ED%88%AC-twotoo-%EC%BB%A4%ED%94%8C-%EC%B1%8C%EB%A6%B0%EC%A7%80/id6455260918)
+- [iOS](https://apps.apple.com/kr/app/%ED%88%AC%ED%88%AC-twotoo-%EC%BB%A4%ED%94%8C-%EC%B1%8C%EB%A6%B0%EC%A7%80/id6455260918)
+- [Android](https://play.google.com/store/apps/details?id=com.mashup.twotoo)
 
 ## 🔗 Links
 
